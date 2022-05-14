@@ -1,0 +1,5834 @@
+{
+  "commodities":  {
+    "_embedded": {
+      "commodities": [
+        {
+          "objversion": 5,
+          "name": "Спрей Називин 10мл 0.05%",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 156.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/917"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/917"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/917/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/917/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/917/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Таблетки против кашля АЦЦ Лонг 600мг N10",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 345.4,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/918"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/918"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/918/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/918/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/918/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 8,
+          "name": "Гор. вода / Квартира 78",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м3",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 16.96,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/929"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/929"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/929/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/929/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/929/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Домофон / Квартира 78",
+          "unittype": {
+            "objversion": 2,
+            "shortName": "мес.",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 36.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/930"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/930"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/930/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/930/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/930/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Паркетная доска подложка / Квартира 78",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м2",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 30.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/985"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/985"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/985/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/985/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/985/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Охрана / Квартира 78",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м2",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 3.11,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/931"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/931"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/931/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/931/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/931/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Витамины и кальций Д-3 Никомел таб.жев 30",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 218.1,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/919"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/919"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/919/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/919/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/919/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 14,
+          "name": "Электроэнергия / Квартира 78",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "Квт/ч",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 2.93,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/932"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/932"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/932/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/932/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/932/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Презервативы Дюрекс Перформа 3",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 166.3,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/920"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/920"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/920/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/920/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/920/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Настенная плитка Zanzibar",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м2",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 1426.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/935"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/935"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/935/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/935/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/935/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 15,
+          "name": "Кофе глясе",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 99.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/921"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/921"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/921/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/921/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/921/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Двойной макмафин яйцо и свинина",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 116.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/922"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/922"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/922/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/922/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/922/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Пирожок вишневый",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 58.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/923"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/923"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/923/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/923/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/923/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 12,
+          "name": "Фреш ролл",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 101.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/924"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/924"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/924/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/924/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/924/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Дыни",
+          "unittype": {
+            "objversion": null,
+            "shortName": "кг",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 60.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/934"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/934"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/934/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/934/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/934/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Декоративная вставка Zanzibar",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 189.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/936"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/936"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/936/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/936/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/936/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Розетка Legrand Celiane ЛП ",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 87.9,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/937"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/937"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/937/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/937/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/937/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Розетка TV Legrand Celiane ЛП ",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 98.41,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/938"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/938"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/938/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/938/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/938/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Розетка RJ45 Legrand Celiane ЛП",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 174.56,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/939"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/939"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/939/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/939/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/939/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Рамка Legrand Celiane 1 позиция белая",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 45.13,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/940"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/940"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/940/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/940/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/940/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 7,
+          "name": "Рамка Legrand Celiane 2 позиции белая",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 82.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/941"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/941"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/941/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/941/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/941/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 76,
+          "name": "Бензин Ford Focus II по литрам / Автомобиль Ford Focus II",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "л",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 37.89,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/965"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/965"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/965/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/965/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/965/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Рамка Legrand Celiane 5 позиций кремовая",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 1165.01,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/943"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/943"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/943/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/943/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/943/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Розетка RJ45 Legrand Celiane ЛП кремовые",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 174.56,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/944"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/944"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/944/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/944/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/944/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Розетка Legrand Celiane ЛП кремовые",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 87.9,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/945"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/945"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/945/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/945/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/945/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Рамка Legrand Mosaic Support",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 44.32,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/946"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/946"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/946/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/946/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/946/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Сендвич с ветчиной",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 66.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/966"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/966"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/966/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/966/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/966/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Яблочные дольки",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 56.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/967"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/967"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/967/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/967/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/967/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Эль Suffolk St эль англ",
+          "unittype": {
+            "objversion": null,
+            "shortName": "бут",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 164.6,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/969"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/969"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/969/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/969/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/969/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Розетка Legrand Celiane",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 87.9,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/947"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/947"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/947/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/947/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/947/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Розетка RJ45 Legrand Celiane ",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 456.99,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/948"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/948"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/948/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/948/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/948/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Розетка TV Legrand Celiane ",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 98.41,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/949"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/949"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/949/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/949/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/949/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Выключатель Legrand Celiane 1 клавиша белые подсв",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": "",
+          "defaultPrice": 422.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/950"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/950"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/950/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/950/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/950/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Выключатель Legrand Celiane 2 клавиши белые подсв",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 1174.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/951"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/951"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/951/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/951/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/951/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Зубная щетка Splat",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 120.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/968"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/968"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/968/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/968/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/968/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Эль Belhaven Black",
+          "unittype": {
+            "objversion": null,
+            "shortName": "бут",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 149.8,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/970"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/970"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/970/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/970/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/970/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Лимонад 0,5",
+          "unittype": {
+            "objversion": null,
+            "shortName": "бут",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 20.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/971"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/971"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/971/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/971/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/971/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Рамка Legrand Valena 2 позиции белая",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 57.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/952"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/952"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/952/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/952/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/952/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Сырок глазированный",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 13.5,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/972"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/972"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/972/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/972/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/972/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Плитка Gambarelli Asia Calico Fango (W0AS02)",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м2",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 1462.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/976"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/976"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/976/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/976/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/976/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Плитка Gambarelli Asia Peacock Rosso (W0AS01)",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м2",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 1462.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/977"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/977"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/977/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/977/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/977/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Плитка Gambarelli Asia Old China Tan (W1AS1)",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 506.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/978"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/978"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/978/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/978/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/978/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Креветки 9 шт",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 169.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/986"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/986"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/986/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/986/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/986/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Плитка Gambarelli Asia Peacock Rosso (K0AS01)",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м2",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 1590.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/979"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/979"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/979/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/979/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/979/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Рамка Legrand Celiane 4 позиции белая",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 292.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/953"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/953"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/953/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/953/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/953/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Светорегулятор Legrand Celiane 1 клавиша",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 1732.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/954"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/954"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/954/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/954/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/954/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Чебуреки",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 40.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/991"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/991"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/991/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/991/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/991/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Плитка Gambarelli Asia Calico Fango (K0AS02)",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м2",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 1590.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/980"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/980"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/980/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/980/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/980/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Шримп ролл",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 175.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/992"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/992"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/992/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/992/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/992/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Пирожок яблочный",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 51.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/993"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/993"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/993/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/993/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/993/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Джинсы Levis 751 33/30",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 4180.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/987"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/987"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/987/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/987/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/987/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Полотно глухое Вист",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 8150.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/994"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/994"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/994/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/994/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/994/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Жесткий диск HDD 1Tb 2.5\" Western Digital Scorpio Blue WS10JPVX",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 2690.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/988"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/988"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/988/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/988/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/988/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Плитка Monopole Ceramica Antique",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м2",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 1234.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/981"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/981"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/981/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/981/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/981/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Флеш память Flash Drive TRANSCEND 8Gb",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 380.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/989"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/989"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/989/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/989/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/989/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Полотно со стеклом Вист",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 9800.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/995"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/995"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/995/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/995/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/995/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Паркетная доска OLD WOOD Дуб Какао Браш",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м2",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 1716.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/983"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/983"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/983/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/983/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/983/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Коробка Вист",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 1450.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/996"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/996"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/996/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/996/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/996/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Интернет \"Друзья\"",
+          "unittype": {
+            "objversion": 2,
+            "shortName": "мес.",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 800.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/984"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/984"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/984/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/984/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/984/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Добор Вист (150 мм)",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 700.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/997"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/997"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/997/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/997/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/997/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Наличник канилюр Вист",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 380.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/998"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/998"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/998/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/998/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/998/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Розетка дверная Вист",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 300.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/999"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/999"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/999/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/999/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/999/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Карниз Вист",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 850.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1000"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1000"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1000/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1000/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1000/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Дверные петли / Квартира 78",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 250.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1001"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1001"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1001/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1001/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1001/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Добор Вист (200 мм)",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 900.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1009"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1009"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1009/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1009/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1009/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Каша",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 69.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1010"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1010"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1010/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1010/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1010/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Пельмени Тураковские 1кг",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "пач",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 104.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1012"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1012"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1012/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1012/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1012/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Компьютерный сетевой хаб ZyXEL GS-108B",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 1802.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1011"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1011"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1011/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1011/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1011/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Установка дверей / Квартира 78",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 3000.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1002"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1002"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1002/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1002/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1002/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Установка портала / Квартира 78",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 2500.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1003"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1003"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1003/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1003/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1003/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Укладка паркетной доски / Квартира 78",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м2",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 500.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1004"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1004"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1004/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1004/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1004/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Укладка плитки на пол / Квартира 78",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м2",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 1888.8889,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1005"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1005"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1005/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1005/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1005/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Укладка плитки на стену / Квартира 78",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м2",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 1200.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1006"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1006"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1006/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1006/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1006/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Установка розеток и выключателей / Квартира 78",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 150.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1007"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1007"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1007/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1007/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1007/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 7,
+          "name": "Налог на квартиру 78",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 8946.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1008"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1008"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1008/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1008/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1008/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Лук",
+          "unittype": {
+            "objversion": null,
+            "shortName": "кг",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 10.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1013"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1013"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1013/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1013/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1013/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Инжир",
+          "unittype": {
+            "objversion": null,
+            "shortName": "кг",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 18.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1014"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1014"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1014/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1014/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1014/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Колбаса Одесская Полукопченая",
+          "unittype": {
+            "objversion": null,
+            "shortName": "кг",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 0.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1015"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1015"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1015/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1015/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1015/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Лечо",
+          "unittype": {
+            "objversion": null,
+            "shortName": "б",
+            "recalcAttr": 1
+          },
+          "remarks": "Верес и прочие",
+          "defaultPrice": 0.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1016"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1016"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1016/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1016/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1016/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Кабачковая икра Дядя Ваня",
+          "unittype": {
+            "objversion": null,
+            "shortName": "б",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 0.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1017"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1017"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1017/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1017/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1017/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 21,
+          "name": "Лаваш",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 35.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1018"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1018"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1018/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1018/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1018/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Кетчуп Heintz 350г",
+          "unittype": {
+            "objversion": null,
+            "shortName": "бут",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 0.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1019"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1019"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1019/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1019/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1019/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Вино Hoya De Cadenas",
+          "unittype": {
+            "objversion": null,
+            "shortName": "бут",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 449.9,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1020"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1020"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1020/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1020/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1020/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 10,
+          "name": "Сыр Моцарелла",
+          "unittype": {
+            "objversion": null,
+            "shortName": "кг",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 679.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1021"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1021"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1021/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1021/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1021/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "МакФлури",
+          "unittype": {
+            "objversion": null,
+            "shortName": "б",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 72.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1022"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1022"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1022/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1022/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1022/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 22,
+          "name": "Кофе, чай, снеки в буфете",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 800.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1023"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1023"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1023/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1023/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1023/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 7,
+          "name": "Подъем на этаж",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "раз",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 1000.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1024"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1024"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1024/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1024/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1024/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 10,
+          "name": "Телевизионная антенна / Квартира 78",
+          "unittype": {
+            "objversion": 2,
+            "shortName": "мес.",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 180.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1028"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1028"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1028/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1028/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1028/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 8,
+          "name": "Черновые материалы / Квартира 78",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 1376.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1025"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1025"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1025/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1025/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1025/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Вино Don Ramon (Oak Aged Red Wine) 2011",
+          "unittype": {
+            "objversion": null,
+            "shortName": "бут",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 459.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1066"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1066"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1066/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1066/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1066/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 7,
+          "name": "Содержание и текущий ремонт / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м2",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 0.84,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1029"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1029"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1029/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1029/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1029/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Налог на квартиру 25",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 338.61,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1026"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1026"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1026/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1026/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1026/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Налог на квартиру 92",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 274.12,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1027"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1027"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1027/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1027/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1027/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Хлеб Bonape: Фокаччо",
+          "unittype": {
+            "objversion": null,
+            "shortName": "булка",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 76.8,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1067"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1067"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1067/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1067/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1067/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Ремонт по протоколу ОСС / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м2",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 18.6,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1030"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1030"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1030/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1030/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1030/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Капитальный ремонт / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м2",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 1.07,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1031"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1031"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1031/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1031/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1031/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Холодное водоснабжение 1 / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м3",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 12.72,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1032"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1032"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1032/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1032/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1032/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Холодное водоснабжение 2 / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м3",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 14.43,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1033"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1033"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1033/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1033/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1033/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Водоотведение 1 / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м3",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 11.42,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1034"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1034"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1034/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1034/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1034/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Водоотведение 2 / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м3",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 12.96,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1035"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1035"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1035/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1035/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1035/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Отопление / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м2",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 66.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1036"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1036"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1036/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1036/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1036/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Гор. вода хим. очищенная 1 / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м3",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 27.27,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1037"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1037"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1037/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1037/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1037/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Буженина",
+          "unittype": {
+            "objversion": null,
+            "shortName": "кг",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 714.9,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1068"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1068"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1068/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1068/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1068/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Гор. вода хим. очищенная 2 / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м3",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 29.12,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1038"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1038"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1038/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1038/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1038/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Подогрев воды 1 / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "Гкал",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 1058.46,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1039"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1039"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1039/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1039/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1039/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Подогрев воды 2 / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "Гкал",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 1191.8,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1040"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1040"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1040/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1040/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1040/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 7,
+          "name": "Электроэнергия (день) 1 / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "Квт/ч",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 67.322,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1041"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1041"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1041/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1041/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1041/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Готовый завтрак",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 128.2,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1069"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1069"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1069/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1069/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1069/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Электроэнергия (день) 2 / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "Квт/ч",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 156.478,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1043"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1043"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1043/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1043/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1043/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Шампунь Kracie - Umi No Uruoiso",
+          "unittype": {
+            "objversion": null,
+            "shortName": "бут",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 569.9,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1073"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1073"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1073/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1073/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1073/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Электроэнергия (ночь) 1 / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "Квт/ч",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 28.878,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1044"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1044"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1044/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1044/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1044/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Электроэнергия (ночь) 2 / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "Квт/ч",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 67.122,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1045"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1045"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1045/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1045/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1045/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Гор водоснабжение (общее) / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м3",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 121.88,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1046"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1046"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1046/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1046/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1046/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Хол водоснабжение (общее) / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "м3",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 14.43,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1047"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1047"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1047/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1047/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1047/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Электроэнергия (общая день) / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "Квт/ч",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 2.15,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1048"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1048"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1048/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1048/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1048/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Электроэнергия (общая ночь) / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "Квт/ч",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 1.07,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1049"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1049"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1049/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1049/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1049/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Смесь Семушка 250гр",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 159.9,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1074"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1074"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1074/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1074/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1074/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Хлеб Вильякас 150гр",
+          "unittype": {
+            "objversion": null,
+            "shortName": "булка",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 22.99,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1075"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1075"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1075/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1075/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1075/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Выжимной подшипник Luk / Автомобиль Ford Focus ||",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 4430.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/31032"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/31032"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/31032/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/31032/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/31032/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Жидкость для мытья полов Ecover",
+          "unittype": {
+            "objversion": null,
+            "shortName": "бут",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 314.6,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1070"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1070"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1070/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1070/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1070/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Жидкое мыло Palmolive",
+          "unittype": {
+            "objversion": null,
+            "shortName": "б",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 108.4,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1071"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1071"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1071/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1071/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1071/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 8,
+          "name": "Туалетная бумага Cleenex",
+          "unittype": {
+            "objversion": 2,
+            "shortName": "рул",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 29.175,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1072"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1072"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1072/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1072/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1072/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Окорок",
+          "unittype": {
+            "objversion": null,
+            "shortName": "кг",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 549.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1076"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1076"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1076/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1076/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1076/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Нескафе 3в1 20гр карамель",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 6.29,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1077"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1077"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1077/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1077/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1077/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "УЗИ",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 1500.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1123"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1123"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1123/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1123/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1123/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Задолженность / Квартира 465",
+          "unittype": {
+            "objversion": 1,
+            "shortName": "раз",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 400.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1050"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1050"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1050/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1050/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1050/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Заглушка Legrand Celiane ",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 125.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1051"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1051"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1051/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1051/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1051/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Розетка в сборе Legrand Celiane ",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 169.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1052"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1052"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1052/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1052/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1052/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Розетка RJ45 в сборе Legrand Celiane ",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 548.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1053"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1053"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1053/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1053/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1053/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Рамка Legrand Celiane 3 позиции белая",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 158.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1054"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1054"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1054/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1054/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1054/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Вывод кабеля Legrand Celiane ",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 339.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1055"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1055"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1055/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1055/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1055/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Выключатель Legrand Valena 1 клавиша белые подсв",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": "",
+          "defaultPrice": 258.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1056"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1056"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1056/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1056/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1056/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Выключатель Legrand Valena 2 клавиши белые подсв",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 317.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1057"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1057"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1057/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1057/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1057/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Розетка в сборе Legrand Valena ",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 97.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1058"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1058"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1058/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1058/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1058/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Светорегулятор Legrand Valena ",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 1234.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1059"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1059"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1059/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1059/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1059/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Рамка Legrand Valena 1 позиция белая",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 26.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1060"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1060"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1060/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1060/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1060/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 14,
+          "name": "Фильтр Барьер Жесткость",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 213.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1078"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1078"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1078/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1078/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1078/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Эль Suffolk Spirit эль англ",
+          "unittype": {
+            "objversion": null,
+            "shortName": "бут",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 175.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1079"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1079"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1079/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1079/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1079/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Сыр Виола плавленый 100гр",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 70.8,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1080"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1080"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1080/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1080/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1080/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Ботинки Ecco Кож. 42 разм.",
+          "unittype": {
+            "objversion": null,
+            "shortName": "пара",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 7890.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1081"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1081"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1081/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1081/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1081/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 7,
+          "name": "Сыр а ла Каймак",
+          "unittype": {
+            "objversion": null,
+            "shortName": "кг",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 379.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1124"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1124"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1124/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1124/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1124/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Джинсы Levis 501 36/32",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 2900.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1082"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1082"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1082/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1082/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1082/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Джинсы Levis 501 34/32 черные",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 2900.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1083"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1083"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1083/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1083/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1083/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Футболка Levi's ",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 1400.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1084"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1084"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1084/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1084/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1084/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Толстовка Levi's",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 2200.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1085"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1085"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1085/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1085/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1085/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Джинсы Levi's",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 2900.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1086"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1086"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1086/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1086/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1086/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Печенье доминорики",
+          "unittype": {
+            "objversion": null,
+            "shortName": "кг",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 196.9,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1125"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1125"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1125/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1125/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1125/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 6,
+          "name": "Губки для мытья посуды 5 шт",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 34.99,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1126"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1126"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1126/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1126/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1126/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Пена для ванн Красная Линия 480мл",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 59.9,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1127"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1127"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1127/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1127/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1127/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Булочка лакомка 5шт",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 19.39,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1128"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1128"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1128/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1128/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1128/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Соус к креветкам",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 19.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1087"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1087"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1087/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1087/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1087/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Тряпка для мытья полов",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 329.9,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1129"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1129"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1129/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1129/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1129/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Ключ дубликат к коридору",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 400.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1088"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1088"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1088/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1088/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1088/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Бирка на ключ",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 10.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1089"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1089"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1089/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1089/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1089/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Затирка 5кг",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 658.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1090"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1090"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1090/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1090/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1090/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Слив-перелив пластик",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 1400.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1091"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1091"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1091/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1091/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1091/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Пескобетон",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 160.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1092"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1092"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1092/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1092/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1092/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Гипсовая штукатурка",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 350.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1093"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1093"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1093/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1093/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1093/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Шпаклевка Ветонит LR+",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 700.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1094"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1094"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1094/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1094/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1094/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Гипсокартон 10 влагостойкий",
+          "unittype": {
+            "objversion": 2,
+            "shortName": "лист",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 350.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1095"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1095"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1095/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1095/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1095/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Грунтовка",
+          "unittype": {
+            "objversion": null,
+            "shortName": "б",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 600.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1096"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1096"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1096/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1096/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1096/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Маяк",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 35.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1097"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1097"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1097/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1097/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1097/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Утеплитель Пеноплекс 5ка",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 1300.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1098"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1098"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1098/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1098/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1098/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Шпатель 10",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 40.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1099"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1099"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1099/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1099/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1099/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Валик 10",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 70.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1100"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1100"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1100/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1100/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1100/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Ведро 10 л",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 70.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1101"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1101"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1101/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1101/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1101/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Кисть махловица",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 150.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1102"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1102"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1102/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1102/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1102/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Клей для плитки Knauf Flizen 10кг",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 300.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1103"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1103"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1103/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1103/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1103/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Люк невидимка АТР 40 на 40",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 4100.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1104"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1104"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1104/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1104/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1104/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Завертка санузловая",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 350.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1105"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1105"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1105/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1105/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1105/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Ручка \"Евро\" хром",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 929.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1106"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1106"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1106/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1106/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1106/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Пена монтажная \"TYTAN\"",
+          "unittype": {
+            "objversion": null,
+            "shortName": "б",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 250.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1107"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1107"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1107/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1107/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1107/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Пена монтажная Прогрессив",
+          "unittype": {
+            "objversion": null,
+            "shortName": "б",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 300.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1108"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1108"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1108/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1108/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1108/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Теплый пол",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 3546.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1109"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1109"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1109/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1109/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1109/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Терморегулятор",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 2800.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1110"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1110"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1110/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1110/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1110/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Коробка для бетона 1 пост",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 6.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1111"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1111"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1111/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1111/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1111/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Труба",
+          "unittype": {
+            "objversion": 2,
+            "shortName": "м",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 180.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1112"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1112"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1112/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1112/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1112/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Теплый пол - накладка",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 40.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1113"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1113"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1113/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1113/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1113/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Теплый пол - угол",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 80.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1114"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1114"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1114/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1114/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1114/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Брусок",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 111.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1115"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1115"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1115/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1115/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1115/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Дюбель",
+          "unittype": {
+            "objversion": null,
+            "shortName": "кг",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 200.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1116"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1116"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1116/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1116/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1116/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Саморезы гипсокартон",
+          "unittype": {
+            "objversion": null,
+            "shortName": "кг",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 65.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1117"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1117"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1117/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1117/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1117/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Лента углозаделочная",
+          "unittype": {
+            "objversion": 2,
+            "shortName": "м",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 65.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1118"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1118"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1118/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1118/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1118/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Бур",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 50.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1119"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1119"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1119/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1119/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1119/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Ножовка",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 160.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1120"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1120"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1120/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1120/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1120/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Пена монтажная",
+          "unittype": {
+            "objversion": null,
+            "shortName": "б",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 260.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1121"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1121"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1121/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1121/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1121/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Пистолет",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 560.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1122"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1122"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1122/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1122/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1122/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Креветки 4 шт",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 92.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1130"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1130"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1130/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1130/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1130/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 11,
+          "name": "Мультивитамины Супрадин шипучий 20шт",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 579.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1143"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1143"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1143/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1143/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1143/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Мистер Пропер 1,5л",
+          "unittype": {
+            "objversion": null,
+            "shortName": "бут",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 114.9,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1131"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1131"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1131/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1131/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1131/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Булгур Ярмарка 350гр",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 59.9,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1132"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1132"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1132/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1132/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1132/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Фасоль Зел. ",
+          "unittype": {
+            "objversion": null,
+            "shortName": "кг",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 94.9,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1133"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1133"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1133/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1133/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1133/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Бальзам Natura Siberica 400 мл",
+          "unittype": {
+            "objversion": null,
+            "shortName": "бут",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 149.9,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1134"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1134"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1134/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1134/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1134/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 2,
+          "name": "Киккоман Соевый 1л",
+          "unittype": {
+            "objversion": null,
+            "shortName": "бут",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 375.9,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1135"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1135"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1135/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1135/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1135/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Сливочный вафельный пломбир",
+          "unittype": {
+            "objversion": null,
+            "shortName": "кг",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 129.9,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1136"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1136"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1136/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1136/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1136/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 7,
+          "name": "Виноград красный",
+          "unittype": {
+            "objversion": null,
+            "shortName": "кг",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 159.0,
+          "defaultQty": null,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1137"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1137"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1137/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1137/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1137/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Зубная нить Эфисепт 50м",
+          "unittype": {
+            "objversion": null,
+            "shortName": "шт",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 104.9,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1138"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1138"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1138/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1138/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1138/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 4,
+          "name": "Сок апельсиновый Глобус 1л",
+          "unittype": {
+            "objversion": null,
+            "shortName": "бут",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 74.9,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1139"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1139"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1139/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1139/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1139/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 5,
+          "name": "Сыр Олтермани Валио 33% Нарезка",
+          "unittype": {
+            "objversion": null,
+            "shortName": "уп",
+            "recalcAttr": 1
+          },
+          "remarks": null,
+          "defaultPrice": 99.9,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1146"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1146"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1146/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1146/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1146/defaultMoneyType"
+            }
+          }
+        },
+        {
+          "objversion": 3,
+          "name": "Сыр Натура",
+          "unittype": {
+            "objversion": null,
+            "shortName": "кг",
+            "recalcAttr": 0
+          },
+          "remarks": null,
+          "defaultPrice": 319.0,
+          "defaultQty": 1.0,
+          "_links": {
+            "self": {
+              "href": "http://192.168.1.2:18085/api/commodities/1140"
+            },
+            "commodity": {
+              "href": "http://192.168.1.2:18085/api/commodities/1140"
+            },
+            "parent": {
+              "href": "http://192.168.1.2:18085/api/commodities/1140/parent"
+            },
+            "defaultTradeplace": {
+              "href": "http://192.168.1.2:18085/api/commodities/1140/defaultTradeplace"
+            },
+            "defaultMoneyType": {
+              "href": "http://192.168.1.2:18085/api/commodities/1140/defaultMoneyType"
+            }
+          }
+        }
+      ]
+    },
+    "_links": {
+      "first": {
+        "href": "http://192.168.1.2:18085/api/commodities?page=0&size=200"
+      },
+      "prev": {
+        "href": "http://192.168.1.2:18085/api/commodities?page=1&size=200"
+      },
+      "self": {
+        "href": "http://192.168.1.2:18085/api/commodities?page=2&size=200"
+      },
+      "next": {
+        "href": "http://192.168.1.2:18085/api/commodities?page=3&size=200"
+      },
+      "last": {
+        "href": "http://192.168.1.2:18085/api/commodities?page=28&size=200"
+      },
+      "profile": {
+        "href": "http://192.168.1.2:18085/api/profile/commodities"
+      }
+    },
+    "page": {
+      "size": 200,
+      "totalElements": 5737,
+      "totalPages": 29,
+      "number": 2
+    }
+  }
+}
