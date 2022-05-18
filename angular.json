@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "money.tracker.ui": {
+    "money-tracker-ui": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/money.tracker.ui",
+            "outputPath": "dist/money-tracker-ui",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -71,10 +71,11 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "money.tracker.ui:build:production"
+              "browserTarget": "money-tracker-ui:build:production"
             },
             "development": {
-              "browserTarget": "money.tracker.ui:build:development"
+              "browserTarget": "money-tracker-ui:build:development",
+              "proxyConfig": "./proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
@@ -82,7 +83,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "money.tracker.ui:build"
+            "browserTarget": "money-tracker-ui:build"
           }
         },
         "test": {
@@ -105,5 +106,5 @@
       }
     }
   },
-  "defaultProject": "money.tracker.ui"
+  "defaultProject": "money-tracker-ui"
 }

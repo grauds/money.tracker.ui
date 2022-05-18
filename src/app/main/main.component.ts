@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
+import {CommodityGroup} from "../model/commodity-group";
 
 @Component({
   selector: 'app-main',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainComponent implements OnInit {
 
-  constructor() { }
+  constructor(private resourceService: HateoasResourceService) { }
 
   ngOnInit(): void {
+
+    this.resourceService.getPage(CommodityGroup).subscribe((page) => {
+
+    });
   }
 
 }
