@@ -13,6 +13,7 @@ export function initializeKeycloak(
       },
       initOptions: {
         checkLoginIframe: false
-      }
+      },
+      loadUserProfileAtStartUp: true
     });
 }

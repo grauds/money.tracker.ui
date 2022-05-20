@@ -1,0 +1,8 @@
+li > a {
+  cursor: pointer;
+}
+
+.pagination {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
