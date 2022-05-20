@@ -1,25 +1,48 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppComponent } from './app.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { initializeKeycloak } from './init/keycloak-init.factory';
-import { AuthGuard } from './auth/auth.guard';
 import { ContentLoaderModule } from '@ngneat/content-loader';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { NgxHateoasClientConfigurationService, NgxHateoasClientModule } from '@lagoshny/ngx-hateoas-client';
+import { environment } from '../environments/environment';
+
+import { AppComponent } from './app.component';
+import { AuthGuard } from './auth/auth.guard';
 import { HeaderComponent } from './header/header.component';
 import { MainComponent } from './main/main.component';
-import { NgxHateoasClientConfigurationService, NgxHateoasClientModule } from '@lagoshny/ngx-hateoas-client';
-import { HttpClientModule } from '@angular/common/http';
-import { environment } from '../environments/environment';
 import { CommodityGroup } from './common/model/commodity-group';
 import { EntityElementComponent } from './common/widgets/entity-element/entity-element.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PaginationBarComponent } from './common/widgets/pagination-bar/pagination-bar.component';
-import { CommodityGroupListComponent } from './commodities/groups/commodity-group-list/commodity-group-list.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-const routes: Routes = [
-  { path: '', component: MainComponent , canActivate: [AuthGuard]},
+// lists
+import { CommoditiesListComponent } from './commodities/commodities-list/commodities-list.component';
+import { CommodityGroupListComponent } from './commodities/commodity-group-list/commodity-group-list.component';
+import { OrganizationsListComponent } from './organizations/organizations-list/organizations-list.component';
+
+// pages
+import { CommoditiesComponent } from './pages/commodities/commodities.component';
+import { CommoditiesGroupsComponent } from './pages/commodities-groups/commodities-groups.component';
+import { OrganizationsComponent } from './pages/organizations/organizations.component';
+
+const routes: Routes = [{
+    path: 'commodities',
+    component: CommoditiesComponent,
+   canActivate: [AuthGuard]
+  }, {
+    path: 'commoditiesGroups',
+    component: CommoditiesGroupsComponent,
+    canActivate: [AuthGuard]
+  },{
+    path: 'organizations',
+    component: OrganizationsComponent,
+    canActivate: [AuthGuard]
+  },
+  { path: '', component: MainComponent, canActivate: [AuthGuard]},
   { path: '**', redirectTo: '' }
 ];
 
@@ -30,7 +53,12 @@ const routes: Routes = [
     MainComponent,
     EntityElementComponent,
     PaginationBarComponent,
-    CommodityGroupListComponent
+    CommodityGroupListComponent,
+    CommoditiesComponent,
+    CommoditiesGroupsComponent,
+    OrganizationsComponent,
+    CommoditiesListComponent,
+    OrganizationsListComponent
   ],
   imports: [
     HttpClientModule,

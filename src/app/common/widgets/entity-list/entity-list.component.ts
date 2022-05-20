@@ -4,6 +4,8 @@ import { HateoasResourceService, PagedResourceCollection, Resource } from '@lago
 
 export abstract class EntityListComponent<T extends Resource> {
 
+  path: string = '';
+
   // elements page
   entities: T[] = [];
 
