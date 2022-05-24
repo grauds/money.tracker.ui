@@ -1,6 +1,7 @@
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { HateoasResourceService, PagedResourceCollection, Resource } from '@lagoshny/ngx-hateoas-client';
+import { EntityElementComponent } from '../entity-element/entity-element.component';
 
 export abstract class EntityListComponent<T extends Resource> {
 
@@ -8,6 +9,9 @@ export abstract class EntityListComponent<T extends Resource> {
 
   // elements page
   entities: T[] = [];
+
+  // entity renderer
+  renderer: EntityElementComponent;
 
   // total number of elements
   total: number | undefined;
@@ -31,7 +35,10 @@ export abstract class EntityListComponent<T extends Resource> {
 
   protected constructor(private type: new () => T,
                         private resourceService: HateoasResourceService,
-                        private route: ActivatedRoute) {
+                        private route: ActivatedRoute,
+                        renderer: any = new EntityElementComponent()) {
+
+    this.renderer = renderer
 
     this.pageSubscription = route.queryParams.subscribe(
       (queryParam: any) => {

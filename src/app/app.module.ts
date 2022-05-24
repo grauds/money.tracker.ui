@@ -28,6 +28,10 @@ import { OrganizationsListComponent } from './organizations/organizations-list/o
 import { CommoditiesComponent } from './pages/commodities/commodities.component';
 import { CommoditiesGroupsComponent } from './pages/commodities-groups/commodities-groups.component';
 import { OrganizationsComponent } from './pages/organizations/organizations.component';
+import { ExpensesListComponent } from './commodities/expences-list/expenses-list.component';
+import {
+  ExpenseItemRendererComponent
+} from './commodities/expences-list/expense-item-renderer/expense-item-renderer.component';
 
 const routes: Routes = [{
     path: 'commodities',
@@ -37,7 +41,11 @@ const routes: Routes = [{
     path: 'commoditiesGroups',
     component: CommoditiesGroupsComponent,
     canActivate: [AuthGuard]
-  },{
+  }, {
+    path: 'expenses',
+    component: ExpensesListComponent,
+    canActivate: [AuthGuard]
+  }, {
     path: 'organizations',
     component: OrganizationsComponent,
     canActivate: [AuthGuard]
@@ -58,7 +66,9 @@ const routes: Routes = [{
     CommoditiesGroupsComponent,
     OrganizationsComponent,
     CommoditiesListComponent,
-    OrganizationsListComponent
+    OrganizationsListComponent,
+    ExpensesListComponent,
+    ExpenseItemRendererComponent
   ],
   imports: [
     HttpClientModule,
