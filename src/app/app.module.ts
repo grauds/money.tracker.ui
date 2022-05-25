@@ -11,6 +11,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxHateoasClientConfigurationService, NgxHateoasClientModule } from '@lagoshny/ngx-hateoas-client';
 import { environment } from '../environments/environment';
 
+import { SharedModule } from '../shared/shared.module';
+
 import { AppComponent } from './app.component';
 import { AuthGuard } from './auth/auth.guard';
 import { HeaderComponent } from './header/header.component';
@@ -81,13 +83,15 @@ const routes: Routes = [{
     ),
     NgxHateoasClientModule.forRoot(),
     NgbModule,
-    ContentLoaderModule
+    ContentLoaderModule,
+    SharedModule
   ],
-  providers: [{
-    provide: APP_INITIALIZER,
-    useFactory: initializeKeycloak,
-    multi: true,
-    deps: [KeycloakService],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService],
   }],
   bootstrap: [AppComponent]
 })
