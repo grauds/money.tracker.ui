@@ -34,6 +34,9 @@ import { ExpensesListComponent } from './commodities/expences-list/expenses-list
 import {
   ExpenseItemRendererComponent
 } from './commodities/expences-list/expense-item-renderer/expense-item-renderer.component';
+import {Commodity} from "./common/model/commodity";
+import {ExpenseItem} from "./common/model/expense-item";
+import {Organization} from "./common/model/organization";
 
 const routes: Routes = [{
     path: 'commodities',
@@ -103,7 +106,7 @@ export class AppModule {
         rootUrl: environment.apiUrl
       },
       useTypes: {
-        resources: [CommodityGroup]
+        resources: [CommodityGroup, Commodity, ExpenseItem, Organization]
       }
     });
   }

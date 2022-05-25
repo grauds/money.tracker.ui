@@ -16,13 +16,12 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
   constructor(private errorDialogService: ErrorDialogService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+     this.errorDialogService.open();
 
-    this.errorDialogService.open();
-
-    return next.handle(request).pipe(
-      finalize(() => {
-        this.errorDialogService.close();
-      })
-    ) as Observable<HttpEvent<any>>;
+     return next.handle(request).pipe(
+       finalize(() => {
+         this.errorDialogService.close();
+       })
+     ) as Observable<HttpEvent<any>>;
   }
 }
