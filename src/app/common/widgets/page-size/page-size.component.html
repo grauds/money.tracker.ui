@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-sm-12">
+    <ul class="pagination">
+      <li class="ngb-custom-pages-item" *ngIf="pageCount() > 0">
+        <div class="mb-2 d-flex flex-nowrap px-2">
+          <label
+            id="paginationInputLabel"
+            for="paginationInput"
+            class="col-form-label me-2 ms-1"
+          >Page:</label>
+          <input #i
+                 type="number"
+                 inputmode="numeric"
+                 pattern="[0-9]*"
+                 class="form-control custom-pages-input"
+                 id="paginationInput"
+                 [value]="currentPage"
+                 (keyup.enter)="setCurrentPage(i.valueAsNumber)"
+                 (blur)="setCurrentPage(i.valueAsNumber)"
+                 (change)="setCurrentPage(i.valueAsNumber)"
+                 aria-labelledby="paginationInputLabel paginationDescription"
+                 style="width: 4.5rem"
+          />
+          <span id="paginationDescription" class="col-form-label text-nowrap px-2">
+                  of {{pageCount()}}. </span>
+          <label
+            id="paginationSizeInputLabel"
+            for="paginationSizeInput"
+            class="col-form-label me-2 ms-1"
+          >Page size:</label>
+          <input #s
+                 type="number"
+                 inputmode="numeric"
+                 pattern="[0-9]*"
+                 class="form-control custom-pages-input"
+                 id="paginationSizeInput"
+                 [value]="itemsPerPage"
+                 (keyup.enter)="setPageSize(s.valueAsNumber)"
+                 (blur)="setPageSize(s.valueAsNumber)"
+                 (change)="setPageSize(s.valueAsNumber)"
+                 aria-labelledby="paginationSizeInputLabel paginationSizeDescription"
+                 style="width: 5.5rem"
+          />
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

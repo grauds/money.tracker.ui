@@ -44,6 +44,8 @@ export abstract class EntityListComponent<T extends Resource> {
       (queryParam: any) => {
         const page = Number.parseInt(queryParam['page'], 10)
         this.n = isNaN(page) ? 1 : page;
+        const size = Number.parseInt(queryParam['size'], 10)
+        this.limit = isNaN(size) ? 1 : size;
         this.onInit();
       }
     );
@@ -73,6 +75,7 @@ export abstract class EntityListComponent<T extends Resource> {
       this.entities = page.resources;
       this.loading = false;
       this.total = page.totalElements;
+      this.limit = page.pageSize;
       /* can use page methods
          page.first();
          page.last();

@@ -37,6 +37,7 @@ import {
 import {Commodity} from "./common/model/commodity";
 import {ExpenseItem} from "./common/model/expense-item";
 import {Organization} from "./common/model/organization";
+import { PageSizeComponent } from './common/widgets/page-size/page-size.component';
 
 const routes: Routes = [{
     path: 'commodities',
@@ -73,7 +74,8 @@ const routes: Routes = [{
     CommoditiesListComponent,
     OrganizationsListComponent,
     ExpensesListComponent,
-    ExpenseItemRendererComponent
+    ExpenseItemRendererComponent,
+    PageSizeComponent
   ],
   imports: [
     HttpClientModule,

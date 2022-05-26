@@ -12,12 +12,12 @@
 
     <div style="padding-top: 5px; padding-bottom: 5px;">
 
-      <div>{{commodity.name}}</div>
+     <div><a href="{{commodity}}">{{commodity ? commodityName : ''}}</a></div>
 
     </div>
 
   </div>
-  <div class="col-sm-3">
+  <div class="col-sm-1">
 
     <div style="padding-top: 5px; padding-bottom: 5px;">
 
@@ -26,11 +26,20 @@
     </div>
 
   </div>
-  <div class="col-sm-3">
+  <div class="col-sm-1">
 
     <div style="padding-top: 5px; padding-bottom: 5px;">
 
       <div>{{entity.qty}}</div>
+
+    </div>
+
+  </div>
+  <div class="col-sm-3">
+
+    <div style="padding-top: 5px; padding-bottom: 5px;">
+
+      <div><a href="{{organization}}">{{organization ? organizationName : ''}}</a></div>
 
     </div>
 

@@ -59,7 +59,7 @@ export class PaginationBarComponent implements OnInit, OnChanges {
     if (this.useLocation) {
       this.router.navigate([this.path], { queryParams: {
           page: currentPage
-        }});
+        }, queryParamsHandling: 'merge'});
     } else {
       this.changeCurrentPage.emit(currentPage);
     }

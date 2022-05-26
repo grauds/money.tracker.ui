@@ -45,9 +45,26 @@
     </div>
   </div>
 
+
   <div class="row" *ngIf="!loading">
 
     <div class="col-sm-12">
+
+      <app-page-size [path]="path"
+                     [currentPage]="n"
+                     [itemsPerPage]="limit"
+                     [total]="total"
+                     [useLocation]="true"
+                     (changeCurrentPage)="setCurrentPage($event)">
+
+      </app-page-size>
+
+    </div>
+  </div>
+
+  <div class="row" *ngIf="!loading">
+
+     <div class="col-sm-12">
 
       <app-pagination-bar
         [path]="path"
