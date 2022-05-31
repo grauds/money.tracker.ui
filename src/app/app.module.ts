@@ -34,15 +34,21 @@ import { ExpensesListComponent } from './commodities/expences-list/expenses-list
 import {
   ExpenseItemRendererComponent
 } from './commodities/expences-list/expense-item-renderer/expense-item-renderer.component';
-import {Commodity} from "./common/model/commodity";
-import {ExpenseItem} from "./common/model/expense-item";
-import {Organization} from "./common/model/organization";
+import { Commodity } from './common/model/commodity';
+import { ExpenseItem } from './common/model/expense-item';
+import { Organization } from './common/model/organization';
 import { PageSizeComponent } from './common/widgets/page-size/page-size.component';
+import { SearchComponent } from './common/widgets/search/search.component';
+import { CommodityComponent } from './commodities/commodity/commodity.component';
 
 const routes: Routes = [{
     path: 'commodities',
     component: CommoditiesComponent,
-   canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
+  }, {
+    path: 'commodities/:id',
+    component: CommodityComponent,
+    canActivate: [AuthGuard]
   }, {
     path: 'commoditiesGroups',
     component: CommoditiesGroupsComponent,
@@ -75,7 +81,9 @@ const routes: Routes = [{
     OrganizationsListComponent,
     ExpensesListComponent,
     ExpenseItemRendererComponent,
-    PageSizeComponent
+    PageSizeComponent,
+    SearchComponent,
+    CommodityComponent
   ],
   imports: [
     HttpClientModule,

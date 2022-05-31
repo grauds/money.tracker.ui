@@ -1,5 +1,3 @@
-import { environment } from '../../../environments/environment';
-
 export class Utils {
 
   static parseJwt(token: string) {
@@ -15,6 +13,7 @@ export class Utils {
   }
 
   static parseResourceUrlToAppUrl(url: string) {
-    return url.replace(environment.apiUrl, '');
+    const resourceAddress = new URL(url);
+    return resourceAddress.pathname.replace('/api', '');
   }
 }

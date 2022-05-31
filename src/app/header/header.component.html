@@ -17,11 +17,45 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="mr-auto collapse navbar-collapse justify-content-end" [ngbCollapse]="isCollapsed" id="navbarContent">
+  <div *ngIf="isLoggedIn()" class="mr-auto collapse navbar-collapse justify-content-end" [ngbCollapse]="isCollapsed" id="navbarContent">
 
-    <div class="my-2 my-lg-0 float-right" *ngIf="isLoggedIn()">
-      <span class="navbar-brand" style="border-left: 2px solid white;" > {{userInfo()}}</span>
-      <fa-icon class="logout-icon" (click)="logout()" [icon]="faLogout"></fa-icon>
+    <ul ngbNav #nav="ngbNav"
+        class="nav nav-pills float-right "
+        [(activeId)]="currentRoute"
+        style="border-left: 2px solid white; padding: 10px 10px 10px 30px">
+
+      <li ngbDropdown class="nav-item">
+        <a href (click)="false" class="nav-link" ngbDropdownToggle>
+          Dropdown button
+        </a>
+        <ul ngbDropdownMenu aria-labelledby="dropdownMenu">
+
+          <li ngbNavItem="/commodities">
+            <a ngbNavLink routerLink="/commodities">Commodities</a>
+          </li>
+
+          <li ngbNavItem="/commoditiesGroups">
+            <a ngbNavLink routerLink="/commoditiesGroups">Commodities Groups</a>
+          </li>
+
+          <li ngbNavItem="/expenses">
+            <a ngbNavLink routerLink="/expenses">Expenses</a>
+          </li>
+
+          <li ngbNavItem="/organizations">
+            <a ngbNavLink routerLink="/organizations">Organizations</a>
+          </li>
+        </ul>
+      </li>
+
+    </ul>
+
+
+    <div class="my-2 my-lg-0 float-right">
+      <span class="navbar-brand"   style="border-left: 2px solid white; font-size: 20px;">
+        {{userInfo()}} <fa-icon class="logout-icon" (click)="logout()" [icon]="faLogout"></fa-icon>
+      </span>
+
     </div>
 
   </div>

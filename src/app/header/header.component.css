@@ -28,14 +28,11 @@
   margin-left: 20px;
   padding-right: 20px;
 }
+
 .logout-icon {
   display:inline-block;
-  font-size: 40px;
-  line-height: 50px;
-  color:white;
   width: 50px;
   cursor: pointer;
-  height: 50px;
   text-align: center;
   vertical-align: bottom;
 }

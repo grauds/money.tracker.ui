@@ -31,7 +31,14 @@ export abstract class EntityListComponent<T extends Resource> {
   // number of records per page
   limit: number = 10;
 
+  // loading for the first time
   loading: boolean = true;
+
+  // loading page - a smaller area to update
+  pageLoading: boolean = false;
+
+  // search string to filter the list of entities by the names
+  search: string = '';
 
   protected constructor(private type: new () => T,
                         private resourceService: HateoasResourceService,
@@ -45,7 +52,7 @@ export abstract class EntityListComponent<T extends Resource> {
         const page = Number.parseInt(queryParam['page'], 10)
         this.n = isNaN(page) ? 1 : page;
         const size = Number.parseInt(queryParam['size'], 10)
-        this.limit = isNaN(size) ? 1 : size;
+        this.limit = isNaN(size) ? 10 : size;
         this.onInit();
       }
     );
@@ -61,32 +68,50 @@ export abstract class EntityListComponent<T extends Resource> {
     this.loadData()
   }
 
+  setSearchString($event: string) {
+    this.search = $event
+    this.loadData()
+  }
+
   loadData = () => {
     this.offset = this.n - 1
-    return this.resourceService.getPage<T>(this.type, {
-      pageParams: {
-        page: this.offset,
-        size: this.limit
-      },
-      sort: {
-        name: 'ASC'
-      }
-    }).subscribe((page: PagedResourceCollection<T>) => {
-      this.entities = page.resources;
-      this.loading = false;
-      this.total = page.totalElements;
-      this.limit = page.pageSize;
-      /* can use page methods
-         page.first();
-         page.last();
-         page.next();
-         page.prev();
-         page.size(...);
-         page.page(...);
-         page.sortElements(...);
-         page.customPage(...);
-      */
-    });
+    this.pageLoading = true
+    if (this.search) {
+      return this.resourceService.searchPage<T>(this.type, 'byName',{
+        pageParams: {
+          page: this.offset,
+          size: this.limit
+        },
+        params: {
+          name: this.search
+        },
+        sort: {
+          name: 'ASC'
+        }
+      }).subscribe((page: PagedResourceCollection<T>) => {
+        this.entities = page.resources;
+        this.loading = false;
+        this.pageLoading = false;
+        this.total = page.totalElements;
+        this.limit = page.pageSize;
+      })
+    } else {
+      return this.resourceService.getPage<T>(this.type, {
+        pageParams: {
+          page: this.offset,
+          size: this.limit
+        },
+        sort: {
+          name: 'ASC'
+        }
+      }).subscribe((page: PagedResourceCollection<T>) => {
+        this.entities = page.resources;
+        this.loading = false;
+        this.pageLoading = false;
+        this.total = page.totalElements;
+        this.limit = page.pageSize;
+      });
+    }
   }
 
 }

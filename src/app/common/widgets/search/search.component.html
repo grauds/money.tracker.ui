@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="mb-2 d-flex flex-nowrap px-2">
+    <input #s
+           type="string"
+           inputmode="numeric"
+           class="form-control custom-pages-input"
+           id="searchInput"
+           [value]="searchText"
+           (keyup.enter)="search(s.value)"
+           (blur)="search(s.value)"
+           (change)="search(s.value)"
+           aria-labelledby="searchInputLabel searchDescription"
+           style="width: 100%"
+    />
+  </div>
+</div>
