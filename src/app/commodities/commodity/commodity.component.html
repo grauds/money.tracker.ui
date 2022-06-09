@@ -3,14 +3,24 @@
     <div class='col-6 back-area jumbotron'>
       <div>
         <h2 style='margin: 10px'></h2>
-        <h3>
+        <h2>
            {{entity ? entity.name : 'Not loaded'}}
-        </h3>
+        </h2>
+        <h6>
+          <a href="{{parentLink}}">{{parent?.name}}</a>
+        </h6>
       </div>
       <div>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Aenean nisl felis, sagittis in feugiat eget, facilisis nec elit. In in risus eu nisl scelerisque ultrices.
-        Aliquam ac commodo ex, nec rutrum diam.
+        <ngb-rating [(rate)]="currentRate">
+          <ng-template let-fill="fill" let-index="index">
+            <span class="star" [class.filled]="fill === 10" [class.bad]="index < 3">&#9733;</span>
+          </ng-template>
+        </ngb-rating>
+        <hr>
+        <pre>Rate: <b>{{currentRate}}</b></pre>
+      </div>
+      <div>
+        Price: {{defaultPrice}} for {{defaultUnit}}
       </div>
       <div style='max-height: 350px; margin: 10px; overflow: auto'>
         {{entity ? entity.description : ''}} Lorem ipsum dolor sit amet, consectetur adipiscing elit.

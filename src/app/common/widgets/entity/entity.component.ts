@@ -20,10 +20,14 @@ export abstract class EntityComponent<T extends Entity> {
   loadData = () => {
     if (this.id) {
       this.resourceService.getResource<T>(this.type, this.id).subscribe((entity: T) => {
-        this.entity = entity
+        this.setEntity(entity)
       })
     }
 
+  }
+
+  setEntity(entity: T) {
+    this.entity = entity
   }
 
 }

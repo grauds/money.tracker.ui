@@ -7,6 +7,7 @@ import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { initializeKeycloak } from './init/keycloak-init.factory';
 import { ContentLoaderModule } from '@ngneat/content-loader';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 import { NgxHateoasClientConfigurationService, NgxHateoasClientModule } from '@lagoshny/ngx-hateoas-client';
 import { environment } from '../environments/environment';
@@ -40,6 +41,7 @@ import { Organization } from './common/model/organization';
 import { PageSizeComponent } from './common/widgets/page-size/page-size.component';
 import { SearchComponent } from './common/widgets/search/search.component';
 import { CommodityComponent } from './commodities/commodity/commodity.component';
+import { UnitType } from './common/model/unit-type';
 
 const routes: Routes = [{
     path: 'commodities',
@@ -97,7 +99,8 @@ const routes: Routes = [{
     NgxHateoasClientModule.forRoot(),
     NgbModule,
     ContentLoaderModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ],
   providers: [
     {
@@ -116,7 +119,7 @@ export class AppModule {
         rootUrl: environment.apiUrl
       },
       useTypes: {
-        resources: [CommodityGroup, Commodity, ExpenseItem, Organization]
+        resources: [CommodityGroup, Commodity, ExpenseItem, Organization, UnitType]
       }
     });
   }

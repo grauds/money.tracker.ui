@@ -1,5 +1,5 @@
-import {Entity} from "./entity";
-import {EntityCollection} from "./entity-collection";
+import { Entity } from './entity';
+import { EntityCollection } from './entity-collection';
 
 export class EntityGroup extends Entity {
 

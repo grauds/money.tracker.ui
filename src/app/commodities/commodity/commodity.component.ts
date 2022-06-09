@@ -3,6 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 import { EntityComponent } from '../../common/widgets/entity/entity.component';
 import { Commodity } from '../../common/model/commodity';
+import { MoneyType } from '../../common/model/money-type';
+import { Utils } from '../../common/utils/utils';
+import { CommodityGroup } from '../../common/model/commodity-group';
 
 @Component({
   selector: 'app-commodity',
@@ -13,6 +16,18 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
 
   images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
 
+  currentRate: number = 2;
+
+  defaultPrice: number | undefined = 0;
+
+  defaultUnit: string | undefined;
+
+  defaultMoneyType: MoneyType | undefined;
+
+  parent: CommodityGroup | undefined;
+
+  parentLink: string | undefined;
+
   constructor(resourceService: HateoasResourceService,
               route: ActivatedRoute) {
     super(Commodity, resourceService, route);
@@ -22,4 +37,21 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
     this.onInit()
   }
 
+
+  override setEntity(entity: Commodity) {
+    super.setEntity(entity)
+
+    this.defaultPrice = this.entity?.defaultPrice
+    this.defaultUnit = this.entity?.unittype?.shortName
+    this.entity?.getRelation<CommodityGroup>('defaultMoneyType')
+      .subscribe((defaultMoneyType: MoneyType) => {
+        this.defaultMoneyType = defaultMoneyType
+      })
+
+    this.entity?.getRelation<CommodityGroup>('parent')
+      .subscribe((parent: CommodityGroup) => {
+        this.parent = parent
+        this.parentLink = Utils.parseResourceUrlToAppUrl(this.parent.getSelfLinkHref())
+      })
+  };
 }

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { NavigationEnd, Router } from '@angular/router';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-header',
@@ -20,6 +21,9 @@ export class HeaderComponent implements OnInit {
 
   // current route of the application
   currentRoute: String = '';
+
+  // date
+  model: NgbDateStruct | undefined;
 
   constructor(private router: Router, private readonly keycloak: KeycloakService) {
     this.router.events.subscribe((event) => {
