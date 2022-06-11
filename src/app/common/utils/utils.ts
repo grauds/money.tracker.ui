@@ -1,3 +1,5 @@
+import { Resource } from '@lagoshny/ngx-hateoas-client';
+
 export class Utils {
 
   static parseJwt(token: string) {
@@ -15,5 +17,11 @@ export class Utils {
   static parseResourceUrlToAppUrl(url: string) {
     const resourceAddress = new URL(url);
     return resourceAddress.pathname.replace('/api', '');
+  }
+
+  static getIdFromSelfUrl(entity: Resource) {
+    const resourceAddress = new URL(entity.getSelfLinkHref());
+    return resourceAddress.pathname.substring(resourceAddress.pathname.lastIndexOf('/'),
+      resourceAddress.pathname.length);
   }
 }

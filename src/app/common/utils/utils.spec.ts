@@ -1,5 +1,6 @@
 import { Utils } from './utils';
 import {token, url, url2} from './utils.data';
+import {Commodity} from "../model/commodity";
 
 describe('Utils', () => {
   it('should create an instance', () => {
@@ -24,5 +25,9 @@ describe('Utils', () => {
     console.log(parsed)
     expect(parsed).toEqual('/expenseItems/47/tradeplace')
   });
+
+  it('should get an id', () => {
+    const commodity = new Commodity()
+  })
 
 });

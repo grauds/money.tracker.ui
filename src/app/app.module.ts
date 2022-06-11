@@ -42,6 +42,7 @@ import { PageSizeComponent } from './common/widgets/page-size/page-size.componen
 import { SearchComponent } from './common/widgets/search/search.component';
 import { CommodityComponent } from './commodities/commodity/commodity.component';
 import { UnitType } from './common/model/unit-type';
+import { CommodityGroupComponent } from './commodities/commodity-group/commodity-group.component';
 
 const routes: Routes = [{
     path: 'commodities',
@@ -52,8 +53,12 @@ const routes: Routes = [{
     component: CommodityComponent,
     canActivate: [AuthGuard]
   }, {
-    path: 'commoditiesGroups',
+    path: 'commodityGroups',
     component: CommoditiesGroupsComponent,
+    canActivate: [AuthGuard]
+  }, {
+    path: 'commodityGroups/:id',
+    component: CommodityGroupComponent,
     canActivate: [AuthGuard]
   }, {
     path: 'expenses',
@@ -85,7 +90,8 @@ const routes: Routes = [{
     ExpenseItemRendererComponent,
     PageSizeComponent,
     SearchComponent,
-    CommodityComponent
+    CommodityComponent,
+    CommodityGroupComponent
   ],
   imports: [
     HttpClientModule,

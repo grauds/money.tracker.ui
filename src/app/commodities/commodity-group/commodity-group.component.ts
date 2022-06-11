@@ -1,0 +1,51 @@
+import { Component, OnInit } from '@angular/core';
+import { EntityComponent } from '../../common/widgets/entity/entity.component';
+import { CommodityGroup } from '../../common/model/commodity-group';
+import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
+import { ActivatedRoute } from '@angular/router';
+import { Utils } from '../../common/utils/utils';
+
+@Component({
+  selector: 'app-commodity-group',
+  templateUrl: './commodity-group.component.html',
+  styleUrls: ['./commodity-group.component.css']
+})
+export class CommodityGroupComponent extends EntityComponent<CommodityGroup> implements OnInit {
+
+  currentRate: number = 2;
+
+  parent: CommodityGroup | undefined;
+
+  parentLink: string | undefined;
+
+  childGroups: CommodityGroup[] = []
+
+  constructor(resourceService: HateoasResourceService,
+              route: ActivatedRoute) {
+    super(CommodityGroup, resourceService, route);
+  }
+
+  ngOnInit(): void {
+    this.onInit()
+  }
+
+  override setEntity(entity: CommodityGroup) {
+    super.setEntity(entity)
+
+    this.entity?.getRelation<CommodityGroup>('parent')
+      .subscribe((parent: CommodityGroup) => {
+        this.parent = parent
+        this.parentLink = Utils.parseResourceUrlToAppUrl(this.parent.getSelfLinkHref())
+      })
+
+    this.resourceService.searchCollection(CommodityGroup, 'recursiveByParentId', {
+      params: {
+        id: this.id ? this.id : '1'
+      }
+    })
+      .subscribe((collection: ResourceCollection<CommodityGroup>) => {
+        this.childGroups = collection.resources;
+      });
+  };
+
+}

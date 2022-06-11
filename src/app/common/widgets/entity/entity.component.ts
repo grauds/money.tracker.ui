@@ -6,10 +6,10 @@ export abstract class EntityComponent<T extends Entity> {
 
   entity: T | undefined;
 
-  id: string | number | null | undefined
+  id: string | null = null
 
   protected constructor(private type: new () => T,
-                        private resourceService: HateoasResourceService,
+                        protected resourceService: HateoasResourceService,
                         private route: ActivatedRoute) { }
 
   onInit(): void {
