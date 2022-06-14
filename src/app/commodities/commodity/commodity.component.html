@@ -1,4 +1,4 @@
-<div class='container'>
+
   <div class='row'>
     <div class='col-6 back-area jumbotron'>
       <div>
@@ -22,26 +22,11 @@
       <div>
         Price: {{defaultPrice}} for {{defaultUnit}}
       </div>
+      <div>
+        Total: {{totalSum}} RUB
+      </div>
       <div style='max-height: 350px; margin: 10px; overflow: auto'>
-        {{entity ? entity.description : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n' +
-        '        Aenean nisl felis, sagittis in feugiat eget, facilisis nec elit. In in risus eu nisl scelerisque ultrices.\n' +
-        '        Aliquam ac commodo ex, nec rutrum diam. In convallis, augue vel condimentum rutrum, nisi eros tempus\n' +
-        '        diam, at finibus nibh quam in neque. Praesent lacus est, finibus eu ligula at, efficitur bibendum ligula.\n' +
-        '        Donec aliquet urna sed urna luctus, et tempor odio auctor. Mauris semper suscipit consequat.\n' +
-        '        Suspendisse semper orci vitae est varius dictum eu at neque. Aliquam rutrum tortor ut tellus hendrerit\n' +
-        '        lacinia. Nullam accumsan ultrices est, eu tincidunt nulla cursus non. Class aptent taciti sociosqu ad\n' +
-        '        litora torquent per conubia nostra, per inceptos himenaeos. Vivamus commodo, elit vitae aliquet maximus,\n' +
-        '        lectus leo euismod elit, id fringilla mauris risus nec nunc. Suspendisse egestas erat in nibh scelerisque\n' +
-        '        pharetra.\n' +
-        '\n' +
-        '        Curabitur ac velit ligula. Nullam vestibulum, elit quis dignissim semper, turpis sem laoreet dui,\n' +
-        '        pellentesque mollis odio nisl quis erat. Fusce scelerisque mauris at tincidunt tristique. Maecenas eu\n' +
-        '        vehicula felis, at condimentum turpis. In mi felis, tincidunt quis ligula a, posuere pretium sapien.\n' +
-        '        Aliquam erat volutpat. Suspendisse fringilla diam dui, eu pharetra sem finibus eu. Ut non porta sem.\n' +
-        '        Aliquam nisi turpis, eleifend ut pellentesque quis, faucibus eu leo. Vivamus mollis magna blandit est\n' +
-        '        elementum, nec egestas elit dapibus. Curabitur a sagittis nibh. Phasellus nec bibendum tellus, a molestie\n' +
-        '        dolor. Mauris quis quam non sem tempor aliquam ac nec elit. Ut a sapien sollicitudin, efficitur ligula ac,\n' +
-        '        sodales augue.'}}
+        {{entity ? entity.description : ''}}
       </div>
     </div>
     <div class='col-6'>
@@ -75,5 +60,4 @@
         </ng-template>
       </ngb-carousel>
     </div>
-</div>
 </div>

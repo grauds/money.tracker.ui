@@ -6,6 +6,8 @@ import { Commodity } from '../../common/model/commodity';
 import { MoneyType } from '../../common/model/money-type';
 import { Utils } from '../../common/utils/utils';
 import { CommodityGroup } from '../../common/model/commodity-group';
+import { TotalsStatisticsService } from '../../common/services/totals-statistics.service';
+import { MoneyTypes } from '../../common/model/money-types';
 
 @Component({
   selector: 'app-commodity',
@@ -28,7 +30,10 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
 
   parentLink: string | undefined;
 
+  totalSum: number | undefined;
+
   constructor(resourceService: HateoasResourceService,
+              private totalsStats: TotalsStatisticsService,
               route: ActivatedRoute) {
     super(Commodity, resourceService, route);
   }
@@ -43,6 +48,7 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
 
     this.defaultPrice = this.entity?.defaultPrice
     this.defaultUnit = this.entity?.unittype?.shortName
+
     this.entity?.getRelation<CommodityGroup>('defaultMoneyType')
       .subscribe((defaultMoneyType: MoneyType) => {
         this.defaultMoneyType = defaultMoneyType
@@ -53,5 +59,11 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
         this.parent = parent
         this.parentLink = Utils.parseResourceUrlToAppUrl(this.parent.getSelfLinkHref())
       })
+
+    this.totalsStats.getTotalsForCommodity(this.id, MoneyTypes.RUB, (response) => {
+      this.totalSum = response
+    }, (error) => {
+      // todo error handling
+    })
   };
 }

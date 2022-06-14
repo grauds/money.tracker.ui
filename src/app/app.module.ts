@@ -8,6 +8,7 @@ import { initializeKeycloak } from './init/keycloak-init.factory';
 import { ContentLoaderModule } from '@ngneat/content-loader';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
+import { AngularYandexMapsModule, YaConfig } from 'angular8-yandex-maps';
 
 import { NgxHateoasClientConfigurationService, NgxHateoasClientModule } from '@lagoshny/ngx-hateoas-client';
 import { environment } from '../environments/environment';
@@ -73,6 +74,11 @@ const routes: Routes = [{
   { path: '**', redirectTo: '' }
 ];
 
+const mapConfig: YaConfig = {
+  apikey: 'API_KEY',
+  lang: 'en_US',
+};
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -106,7 +112,8 @@ const routes: Routes = [{
     NgbModule,
     ContentLoaderModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    AngularYandexMapsModule.forRoot(mapConfig)
   ],
   providers: [
     {

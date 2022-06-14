@@ -4,6 +4,7 @@ import { CommodityGroup } from '../../common/model/commodity-group';
 import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
 import { ActivatedRoute } from '@angular/router';
 import { Utils } from '../../common/utils/utils';
+import {Commodity} from "../../common/model/commodity";
 
 @Component({
   selector: 'app-commodity-group',
@@ -19,6 +20,8 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup> imp
   parentLink: string | undefined;
 
   childGroups: CommodityGroup[] = []
+
+  childCommodities: Commodity[] = []
 
   constructor(resourceService: HateoasResourceService,
               route: ActivatedRoute) {
@@ -46,6 +49,16 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup> imp
       .subscribe((collection: ResourceCollection<CommodityGroup>) => {
         this.childGroups = collection.resources;
       });
+
+    this.resourceService.searchCollection(Commodity, 'recursiveByParentId', {
+      params: {
+        id: this.id ? this.id : '1'
+      }
+    })
+      .subscribe((collection: ResourceCollection<Commodity>) => {
+        this.childCommodities = collection.resources;
+      });
   };
+
 
 }
