@@ -4,7 +4,9 @@ import { CommodityGroup } from '../../common/model/commodity-group';
 import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
 import { ActivatedRoute } from '@angular/router';
 import { Utils } from '../../common/utils/utils';
-import {Commodity} from "../../common/model/commodity";
+import { Commodity } from '../../common/model/commodity';
+import { MoneyTypes } from '../../common/model/money-types';
+import { TotalsStatisticsService } from '../../common/services/totals-statistics.service';
 
 @Component({
   selector: 'app-commodity-group',
@@ -23,7 +25,10 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup> imp
 
   childCommodities: Commodity[] = []
 
+  totalSum: number | undefined;
+
   constructor(resourceService: HateoasResourceService,
+              private totalsStats: TotalsStatisticsService,
               route: ActivatedRoute) {
     super(CommodityGroup, resourceService, route);
   }
@@ -58,6 +63,12 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup> imp
       .subscribe((collection: ResourceCollection<Commodity>) => {
         this.childCommodities = collection.resources;
       });
+
+    this.totalsStats.getTotalsForCommodityGroup(this.id, MoneyTypes.RUB, (response) => {
+      this.totalSum = response
+    }, (error) => {
+      // todo error handling
+    })
   };
 
 

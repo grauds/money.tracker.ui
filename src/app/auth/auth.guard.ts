@@ -25,7 +25,7 @@ export class AuthGuard extends KeycloakAuthGuard {
     }
 
     await this.keycloak.getKeycloakInstance().loadUserProfile()
-    return this.authenticated;
+    return true
   }
 
 }

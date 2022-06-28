@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { MockedKeycloakService } from './auth/mocked-keycloak.service';
 import { initializeKeycloak } from './init/keycloak-init.factory';
 import { ContentLoaderModule } from '@ngneat/content-loader';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -115,8 +116,10 @@ const mapConfig: YaConfig = {
     FormsModule,
     AngularYandexMapsModule.forRoot(mapConfig)
   ],
-  providers: [
-    {
+  providers: [{
+      provide: KeycloakService,
+      useClass: environment.production ? KeycloakService : MockedKeycloakService
+    }, {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
