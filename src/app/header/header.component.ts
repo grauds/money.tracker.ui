@@ -22,9 +22,6 @@ export class HeaderComponent implements OnInit {
   // current route of the application
   currentRoute: String = '';
 
-  // date
-  model: NgbDateStruct | undefined;
-
   constructor(private router: Router, private readonly keycloak: KeycloakService) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {

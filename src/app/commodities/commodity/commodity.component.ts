@@ -8,6 +8,8 @@ import { Utils } from '../../common/utils/utils';
 import { CommodityGroup } from '../../common/model/commodity-group';
 import { TotalsStatisticsService } from '../../common/services/totals-statistics.service';
 import { MoneyTypes } from '../../common/model/money-types';
+import { ExpenseItem } from '../../common/model/expense-item';
+import Plotly from 'plotly.js';
 
 @Component({
   selector: 'app-commodity',
@@ -32,6 +34,19 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
 
   totalSum: number | undefined;
 
+  totalQty: number | undefined;
+
+  expenses: ExpenseItem[] = [];
+
+  graph: any = {
+    data: [{
+      x: [],
+      y: [],
+      type: 'scatter'
+    }],
+    layout: {autosize: true, title: 'Transactions History'},
+  };
+
   constructor(resourceService: HateoasResourceService,
               private totalsStats: TotalsStatisticsService,
               route: ActivatedRoute) {
@@ -49,7 +64,7 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
     this.defaultPrice = this.entity?.defaultPrice
     this.defaultUnit = this.entity?.unittype?.shortName
 
-    this.entity?.getRelation<CommodityGroup>('defaultMoneyType')
+    this.entity?.getRelation<MoneyType>('defaultMoneyType')
       .subscribe((defaultMoneyType: MoneyType) => {
         this.defaultMoneyType = defaultMoneyType
       })
@@ -65,5 +80,24 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
     }, (error) => {
       // todo error handling
     })
+
+    this.totalsStats.getTotalQtyForCommodity(this.id, (response) => {
+      this.totalQty = response
+    }, (error) => {
+      // todo error handling
+    })
+
+    this.totalsStats.getCommodityExpences(this.id, (response) => {
+      this.expenses = response.resources
+
+      this.expenses.forEach(expense => {
+        this.graph.data[0].x.push(expense.transferDate)
+        this.graph.data[0].y.push(expense.total)
+      })
+
+    }, (error) => {
+      // todo error handling
+    })
+
   };
 }

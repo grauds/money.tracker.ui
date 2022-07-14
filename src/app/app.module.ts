@@ -46,6 +46,11 @@ import { CommodityComponent } from './commodities/commodity/commodity.component'
 import { UnitType } from './common/model/unit-type';
 import { CommodityGroupComponent } from './commodities/commodity-group/commodity-group.component';
 
+import * as PlotlyJS from 'plotly.js-dist-min';
+import { PlotlyModule } from 'angular-plotly.js';
+
+PlotlyModule.plotlyjs = PlotlyJS;
+
 const routes: Routes = [{
     path: 'commodities',
     component: CommoditiesComponent,
@@ -114,7 +119,8 @@ const mapConfig: YaConfig = {
     ContentLoaderModule,
     SharedModule,
     FormsModule,
-    AngularYandexMapsModule.forRoot(mapConfig)
+    AngularYandexMapsModule.forRoot(mapConfig),
+    PlotlyModule
   ],
   providers: [{
       provide: KeycloakService,

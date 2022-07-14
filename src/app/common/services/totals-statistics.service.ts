@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
 import { environment } from '../../../environments/environment';
 import { MoneyTypes } from '../model/money-types';
+import { ExpenseItem } from '../model/expense-item';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TotalsStatisticsService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private resourceService: HateoasResourceService) { }
 
   getTotalsForCommodity(commodityId: string | null,
                         moneyCode: MoneyTypes,
@@ -23,7 +25,6 @@ export class TotalsStatisticsService {
           error(e)
         }
       }
-// todo id for an entity??
       this._queryTotalsForCommodity(commodityId, moneyCode.toString()).subscribe(observer)
     }
   }
@@ -50,7 +51,6 @@ export class TotalsStatisticsService {
           error(e)
         }
       }
-// todo id for an entity??
       this._queryTotalsForCommodityGroup(commodityGroupId, moneyCode.toString()).subscribe(observer)
     }
   }
@@ -60,6 +60,54 @@ export class TotalsStatisticsService {
       params: {
         commodityGroupId: commodityGroupId,
         moneyCode: moneyCode
+      }
+    })
+  }
+
+  getTotalQtyForCommodity(commodityId: string | null,
+                        callback: (arg0: number) => void,
+                        error: (arg0: Error) => void) {
+
+    if (commodityId) {
+      const observer = {
+        next: (response: any) => {
+          callback(response)
+        }, error: (e: Error) => {
+          error(e)
+        }
+      }
+      this._queryTotalQtyForCommodity(commodityId).subscribe(observer)
+    }
+  }
+
+  private _queryTotalQtyForCommodity(commodityId: string) {
+    return this.http.get<number>(environment.apiUrl + '/expenseItems/search/sumCommodityQuantity', {
+      params: {
+        commodityId: commodityId
+      }
+    })
+  }
+
+  getCommodityExpences(commodityId: string | null,
+                          callback: (arg0: ResourceCollection<ExpenseItem>) => void,
+                          error: (arg0: Error) => void) {
+
+    if (commodityId) {
+      const observer = {
+        next: (response: any) => {
+          callback(response)
+        }, error: (e: Error) => {
+          error(e)
+        }
+      }
+      this._getCommodityExpences(commodityId).subscribe(observer)
+    }
+  }
+
+  private _getCommodityExpences(commodityId: string) {
+    return this.resourceService.searchCollection(ExpenseItem, 'findByCommodityId', {
+      params: {
+        commodityId: commodityId
       }
     })
   }
