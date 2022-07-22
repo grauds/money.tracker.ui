@@ -48,6 +48,7 @@ import { CommodityGroupComponent } from './commodities/commodity-group/commodity
 
 import * as PlotlyJS from 'plotly.js-dist-min';
 import { PlotlyModule } from 'angular-plotly.js';
+import { AccountBalanceItemComponent } from './main/account-balance-item/account-balance-item.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -103,7 +104,8 @@ const mapConfig: YaConfig = {
     PageSizeComponent,
     SearchComponent,
     CommodityComponent,
-    CommodityGroupComponent
+    CommodityGroupComponent,
+    AccountBalanceItemComponent
   ],
   imports: [
     HttpClientModule,

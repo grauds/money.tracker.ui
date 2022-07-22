@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { HateoasResourceService, PagedResourceCollection, Resource } from '@lagoshny/ngx-hateoas-client';
+import { HateoasResourceService, PagedResourceCollection, Resource, Sort } from '@lagoshny/ngx-hateoas-client';
 import { EntityElementComponent } from '../entity-element/entity-element.component';
 
 export abstract class EntityListComponent<T extends Resource> {
@@ -85,9 +85,7 @@ export abstract class EntityListComponent<T extends Resource> {
         params: {
           name: this.search
         },
-        sort: {
-          name: 'ASC'
-        }
+        sort: this.getSortOption()
       }).subscribe((page: PagedResourceCollection<T>) => {
         this.entities = page.resources;
         this.loading = false;
@@ -101,9 +99,7 @@ export abstract class EntityListComponent<T extends Resource> {
           page: this.offset,
           size: this.limit
         },
-        sort: {
-          name: 'ASC'
-        }
+        sort: this.getSortOption()
       }).subscribe((page: PagedResourceCollection<T>) => {
         this.entities = page.resources;
         this.loading = false;
@@ -112,6 +108,14 @@ export abstract class EntityListComponent<T extends Resource> {
         this.limit = page.pageSize;
       });
     }
+  }
+
+  getSortOption() {
+    let ret: Sort = {
+      name: 'ASC'
+    }
+
+    return ret
   }
 
 }

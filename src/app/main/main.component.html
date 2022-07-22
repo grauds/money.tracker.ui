@@ -1,1 +1,3 @@
-
+<div *ngFor="let a of accountsBalances">
+  <app-account-balance-item [balance]="a" *ngIf="a.balance != 0"></app-account-balance-item>
+</div>

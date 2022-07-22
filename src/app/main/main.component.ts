@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
+import {TotalsStatisticsService} from "../common/services/totals-statistics.service";
+import {Commodity} from "../common/model/commodity";
+import {AccountBalance} from "../common/model/account-balance";
 
 @Component({
   selector: 'app-main',
@@ -8,10 +11,22 @@ import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 })
 export class MainComponent implements OnInit {
 
-  constructor(private resourceService: HateoasResourceService) { }
+  accountsBalances: AccountBalance[] = []
+
+  constructor(private totalsStats: TotalsStatisticsService) { }
 
   ngOnInit(): void {
-
+    this.loadData()
   }
 
+
+  loadData() {
+    this.totalsStats.getAccountsBalance((response) => {
+
+      this.accountsBalances = response.resources
+
+    }, (error) => {
+
+    })
+  }
 }

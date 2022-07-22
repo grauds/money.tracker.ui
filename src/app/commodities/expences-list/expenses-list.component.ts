@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
+import {HateoasResourceService, Sort} from '@lagoshny/ngx-hateoas-client';
 import { ActivatedRoute } from '@angular/router';
 import { EntityListComponent } from '../../common/widgets/entity-list/entity-list.component';
 import { ExpenseItem } from '../../common/model/expense-item';
@@ -26,5 +26,12 @@ export class ExpensesListComponent extends EntityListComponent<ExpenseItem> impl
     super.onInit()
   }
 
+  override getSortOption() {
+    let ret: Sort = {
+      transferDate: 'ASC'
+    }
+
+    return ret
+  }
 
 }

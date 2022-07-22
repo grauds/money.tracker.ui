@@ -9,7 +9,6 @@ import { CommodityGroup } from '../../common/model/commodity-group';
 import { TotalsStatisticsService } from '../../common/services/totals-statistics.service';
 import { MoneyTypes } from '../../common/model/money-types';
 import { ExpenseItem } from '../../common/model/expense-item';
-import Plotly from 'plotly.js';
 
 @Component({
   selector: 'app-commodity',
@@ -17,8 +16,6 @@ import Plotly from 'plotly.js';
   styleUrls: ['./commodity.component.css']
 })
 export class CommodityComponent extends EntityComponent<Commodity> implements OnInit {
-
-  images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
 
   currentRate: number = 2;
 
@@ -32,7 +29,7 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
 
   parentLink: string | undefined;
 
-  totalSum: number | undefined;
+  totalSum: number = 0;
 
   totalQty: number | undefined;
 
@@ -42,10 +39,23 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
     data: [{
       x: [],
       y: [],
+      name: 'Total Sum',
+      type: 'scatter'
+    }, {
+      x: [],
+      y: [],
+      name: 'Price',
+      type: 'scatter'
+    }, {
+      x: [],
+      y: [],
+      name: 'Quantity',
       type: 'scatter'
     }],
     layout: {autosize: true, title: 'Transactions History'},
   };
+
+  averagePrice: number | undefined;
 
   constructor(resourceService: HateoasResourceService,
               private totalsStats: TotalsStatisticsService,
@@ -77,12 +87,14 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
 
     this.totalsStats.getTotalsForCommodity(this.id, MoneyTypes.RUB, (response) => {
       this.totalSum = response
-    }, (error) => {
-      // todo error handling
-    })
 
-    this.totalsStats.getTotalQtyForCommodity(this.id, (response) => {
-      this.totalQty = response
+      this.totalsStats.getTotalQtyForCommodity(this.id, (response) => {
+        this.totalQty = response
+        this.averagePrice = this.totalSum / this.totalQty
+      }, (error) => {
+        // todo error handling
+      })
+
     }, (error) => {
       // todo error handling
     })
@@ -93,6 +105,12 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
       this.expenses.forEach(expense => {
         this.graph.data[0].x.push(expense.transferDate)
         this.graph.data[0].y.push(expense.total)
+
+        this.graph.data[1].x.push(expense.transferDate)
+        this.graph.data[1].y.push(expense.price)
+
+        this.graph.data[2].x.push(expense.transferDate)
+        this.graph.data[2].y.push(expense.qty)
       })
 
     }, (error) => {

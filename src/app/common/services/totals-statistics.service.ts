@@ -4,6 +4,8 @@ import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoa
 import { environment } from '../../../environments/environment';
 import { MoneyTypes } from '../model/money-types';
 import { ExpenseItem } from '../model/expense-item';
+import { AccountBalance } from '../model/account-balance';
+import { PagedResourceCollection } from '@lagoshny/ngx-hateoas-client/lib/model/resource/paged-resource-collection';
 
 @Injectable({
   providedIn: 'root'
@@ -25,17 +27,13 @@ export class TotalsStatisticsService {
           error(e)
         }
       }
-      this._queryTotalsForCommodity(commodityId, moneyCode.toString()).subscribe(observer)
+      this._doQuery('/expenseItems/search/sumCommodityExpenses', {
+        params: {
+          commodityId: commodityId,
+          moneyCode: moneyCode
+        }
+      }).subscribe(observer)
     }
-  }
-
-  private _queryTotalsForCommodity(commodityId: string, moneyCode: string) {
-    return this.http.get<number>(environment.apiUrl + '/expenseItems/search/sumCommodityExpenses', {
-      params: {
-        commodityId: commodityId,
-        moneyCode: moneyCode
-      }
-    })
   }
 
   getTotalsForCommodityGroup(commodityGroupId: string | null,
@@ -51,17 +49,13 @@ export class TotalsStatisticsService {
           error(e)
         }
       }
-      this._queryTotalsForCommodityGroup(commodityGroupId, moneyCode.toString()).subscribe(observer)
+      this._doQuery('/expenses/search/sumCommodityGroupExpenses', {
+        params: {
+          commodityGroupId: commodityGroupId,
+          moneyCode: moneyCode
+        }
+      }).subscribe(observer)
     }
-  }
-
-  private _queryTotalsForCommodityGroup(commodityGroupId: string, moneyCode: string) {
-    return this.http.get<number>(environment.apiUrl + '/expenses/search/sumCommodityGroupExpenses', {
-      params: {
-        commodityGroupId: commodityGroupId,
-        moneyCode: moneyCode
-      }
-    })
   }
 
   getTotalQtyForCommodity(commodityId: string | null,
@@ -76,21 +70,17 @@ export class TotalsStatisticsService {
           error(e)
         }
       }
-      this._queryTotalQtyForCommodity(commodityId).subscribe(observer)
+      this._doQuery('/expenseItems/search/sumCommodityQuantity', {
+        params: {
+          commodityId: commodityId
+        }
+      }).subscribe(observer)
     }
   }
 
-  private _queryTotalQtyForCommodity(commodityId: string) {
-    return this.http.get<number>(environment.apiUrl + '/expenseItems/search/sumCommodityQuantity', {
-      params: {
-        commodityId: commodityId
-      }
-    })
-  }
-
   getCommodityExpences(commodityId: string | null,
-                          callback: (arg0: ResourceCollection<ExpenseItem>) => void,
-                          error: (arg0: Error) => void) {
+                       callback: (arg0: ResourceCollection<ExpenseItem>) => void,
+                       error: (arg0: Error) => void) {
 
     if (commodityId) {
       const observer = {
@@ -100,15 +90,29 @@ export class TotalsStatisticsService {
           error(e)
         }
       }
-      this._getCommodityExpences(commodityId).subscribe(observer)
+      this.resourceService.searchCollection(ExpenseItem, 'findByCommodityId', {
+        params: {
+          commodityId: commodityId
+        }
+      }).subscribe(observer)
     }
   }
 
-  private _getCommodityExpences(commodityId: string) {
-    return this.resourceService.searchCollection(ExpenseItem, 'findByCommodityId', {
-      params: {
-        commodityId: commodityId
+  getAccountsBalance(callback: (arg0: PagedResourceCollection<AccountBalance>) => void,
+                     error: (arg0: Error) => void) {
+    const observer = {
+      next: (response: PagedResourceCollection<AccountBalance>) => {
+        callback(response)
+      }, error: (e: Error) => {
+        error(e)
       }
-    })
+    }
+    this.resourceService.getPage<AccountBalance>(AccountBalance, {pageParams: {
+        size: 100
+      }}).subscribe(observer)
+  }
+
+  private _doQuery(url: string, options: any) {
+    return this.http.get<number>(environment.apiUrl + url, options)
   }
 }

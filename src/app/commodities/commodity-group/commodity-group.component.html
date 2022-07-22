@@ -10,19 +10,9 @@
           <a href="{{parentLink}}">{{parent?.name}}</a>
         </h6>
       </div>
-      <div>
-        <ngb-rating [(rate)]="currentRate">
-          <ng-template let-fill="fill" let-index="index">
-            <span class="star" [class.filled]="fill === 10" [class.bad]="index < 3">&#9733;</span>
-          </ng-template>
-        </ngb-rating>
-        <hr>
-
-      </div>
       <div style='max-height: 350px; margin: 10px; overflow: auto'>
         {{entity ? entity.description : ''}}
       </div>
-
       <div>
         Total: {{totalSum}} RUB
       </div>
