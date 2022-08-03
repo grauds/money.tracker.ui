@@ -1,0 +1,105 @@
+{
+  "projectType": "application",
+  "generators": {
+    "@schematics/angular:application": {
+      "strict": true
+    }
+  },
+  "sourceRoot": "apps/money-tracker-ui/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "options": {
+        "outputPath": "dist/apps/money-tracker-ui",
+        "index": "apps/money-tracker-ui/src/index.html",
+        "main": "apps/money-tracker-ui/src/main.ts",
+        "polyfills": "apps/money-tracker-ui/src/polyfills.ts",
+        "tsConfig": "apps/money-tracker-ui/tsconfig.app.json",
+        "assets": [
+          "apps/money-tracker-ui/src/favicon.ico",
+          "apps/money-tracker-ui/src/assets"
+        ],
+        "styles": [
+          "node_modules/bootstrap/dist/css/bootstrap.min.css",
+          "apps/money-tracker-ui/src/styles.css",
+          {
+            "input": "./node_modules/bootstrap/dist/css/bootstrap.css"
+          }
+        ],
+        "scripts": [],
+        "allowedCommonJsDependencies": [
+          "keycloak-js"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/money-tracker-ui/src/environments/environment.ts",
+              "with": "apps/money-tracker-ui/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "money-tracker-ui:build:production"
+        },
+        "development": {
+          "browserTarget": "money-tracker-ui:build:development",
+          "proxyConfig": "./proxy.conf.json"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "money-tracker-ui:build"
+      }
+    },
+    "test": {
+      "executor": "@angular-devkit/build-angular:karma",
+      "options": {
+        "main": "apps/money-tracker-ui/src/test.ts",
+        "polyfills": "apps/money-tracker-ui/src/polyfills.ts",
+        "tsConfig": "apps/money-tracker-ui/tsconfig.spec.json",
+        "karmaConfig": "apps/money-tracker-ui/karma.conf.js",
+        "assets": [
+          "apps/money-tracker-ui/src/favicon.ico",
+          "apps/money-tracker-ui/src/assets"
+        ],
+        "styles": [
+          "apps/money-tracker-ui/src/styles.css"
+        ],
+        "scripts": []
+      }
+    }
+  }
+}
