@@ -1,0 +1,48 @@
+pipeline {
+
+  agent any
+
+  stages {
+
+    stage("Verify tooling") {
+      steps {
+        sh '''
+              cd jenkins
+              docker version
+              docker info
+              docker compose version
+              curl --version
+              jq --version
+              docker compose ps
+            '''
+      }
+    }
+
+    stage('Get code') {
+      steps {
+        // Get the code from a GitHub repository
+        git 'https://github.com/grauds/money.tracker.ui.git'
+      }
+    }
+
+    stage('Dockerized build') {
+      steps {
+        sh '''
+            cd ./apps/money-tracker-ui
+            docker build . -t money.tracker.ui
+        '''
+      }
+    }
+
+    stage("Build and start docker compose services") {
+      steps {
+        sh '''
+           cd ./apps/money-tracker-ui/jenkins
+           docker compose build
+           docker compose up -d
+        '''
+      }
+    }
+  }
+
+}
