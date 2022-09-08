@@ -7,7 +7,7 @@ pipeline {
     stage("Verify tooling") {
       steps {
         sh '''
-              cd jenkins
+              cd ./apps/money-tracker-ui/jenkins
               docker version
               docker info
               docker compose version
