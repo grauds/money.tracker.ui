@@ -1,9 +1,9 @@
 version: '3.9'
 services:
 
-  tinkoff_portfolio_ui:
+  money_tracker_ui:
     container_name: clematis-money-tracker-ui
-    image: money-tracker-ui:latest
+    image: money.tracker.ui:latest
     networks:
       - clematis_mt
     ports:
