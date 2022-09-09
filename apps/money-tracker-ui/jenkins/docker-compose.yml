@@ -1,7 +1,7 @@
 version: '3.9'
 services:
 
-  money_tracker_ui:
+  money-tracker-ui:
     container_name: clematis-money-tracker-ui
     image: money.tracker.ui:latest
     networks:
