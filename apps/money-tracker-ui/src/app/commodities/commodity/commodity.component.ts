@@ -46,13 +46,18 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
       y: [],
       name: 'Price',
       type: 'scatter'
-    }, {
+    }],
+    layout: {autosize: true, title: 'Money Spent'},
+  };
+
+  graphQty: any = {
+    data: [{
       x: [],
       y: [],
       name: 'Quantity',
       type: 'scatter'
     }],
-    layout: {autosize: true, title: 'Transactions History'},
+    layout: {autosize: true, title: 'Quantity Bought'},
   };
 
   averagePrice: number | undefined;
@@ -109,8 +114,8 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
         this.graph.data[1].x.push(expense.transferDate)
         this.graph.data[1].y.push(expense.price)
 
-        this.graph.data[2].x.push(expense.transferDate)
-        this.graph.data[2].y.push(expense.qty)
+        this.graphQty.data[0].x.push(expense.transferDate)
+        this.graphQty.data[0].y.push(expense.qty)
       })
 
     }, (error) => {

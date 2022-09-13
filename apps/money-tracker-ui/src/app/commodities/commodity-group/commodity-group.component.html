@@ -1,6 +1,6 @@
 
   <div class='row'>
-    <div class='col-6 back-area jumbotron'>
+    <div class='col-4 back-area jumbotron'>
       <div>
         <h2 style='margin: 10px'></h2>
         <h2>
@@ -18,13 +18,14 @@
       </div>
 
     </div>
-    <div class='col-6'>
+    <div class='col-4'>
       <div *ngIf="childGroups.length > 0">
         <div *ngFor="let a of childGroups">
           <app-entity-element [entity]="a"></app-entity-element>
         </div>
       </div>
-
+    </div>
+    <div class='col-4'>
       <div *ngIf="childCommodities.length > 0">
         <div *ngFor="let a of childCommodities">
           <app-entity-element [entity]="a"></app-entity-element>

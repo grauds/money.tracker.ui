@@ -1,8 +1,8 @@
 export const environment = {
-  production: false,
+  production: true,
   keyCloakUser: {
-    username: '111111111-11',
-    name: 'Whatever Something de Paula',
+    username: 'Rio de Paula',
+    name: 'Rio de Paula',
     email: 'whatever@gmail.com',
   },
   apiUrl: '/api',

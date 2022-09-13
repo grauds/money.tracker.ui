@@ -14,6 +14,7 @@ export function initializeKeycloak(
       initOptions: {
         checkLoginIframe: false
       },
-      loadUserProfileAtStartUp: true
+      loadUserProfileAtStartUp: true,
+      updateMinValidity: 900
     });
 }

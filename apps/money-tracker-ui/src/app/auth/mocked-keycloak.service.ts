@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
+import { environment } from '../../environments/environment.local';
 
 @Injectable()
 export class MockedKeycloakService extends KeycloakService {
@@ -17,7 +18,7 @@ export class MockedKeycloakService extends KeycloakService {
   }
 
   override getUsername() {
-    return 'Test User'
+    return environment.keyCloakUser.username
   }
 
   override getKeycloakInstance() {

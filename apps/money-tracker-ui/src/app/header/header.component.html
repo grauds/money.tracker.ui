@@ -4,56 +4,58 @@
 
   <a class="navbar-brand" href="#">{{title}}</a>
 
-  <button *ngIf="isLoggedIn()"
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarContent"
-          aria-controls="navbarContent"
-          aria-expanded="false"
-          (click)="isCollapsed = !isCollapsed"
-          [attr.aria-expanded]="!isCollapsed"
-          aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+  <div *ngIf="isLoggedIn()">
+    <button class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarContent"
+            aria-controls="navbarContent"
+            aria-expanded="false"
+            (click)="isCollapsed = !isCollapsed"
+            [attr.aria-expanded]="!isCollapsed"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div *ngIf="isLoggedIn()" class="mr-auto collapse navbar-collapse justify-content-end" [ngbCollapse]="isCollapsed" id="navbarContent">
-
-
-    <ul ngbNav #nav="ngbNav"
-        class="nav nav-pills float-right "
-        [(activeId)]="currentRoute"
-        style="border-left: 2px solid white; padding: 10px 10px 10px 30px">
+    <div class="mr-auto collapse navbar-collapse justify-content-end" [ngbCollapse]="isCollapsed" id="navbarContent">
 
 
-          <li ngbNavItem="/commodities">
-            <a ngbNavLink routerLink="/commodities">Commodities</a>
-          </li>
-
-          <li ngbNavItem="/commodityGroups">
-            <a ngbNavLink routerLink="/commodityGroups">Commodities Groups</a>
-          </li>
-
-          <li ngbNavItem="/expenses">
-            <a ngbNavLink routerLink="/expenses">Expenses</a>
-          </li>
-
-          <li ngbNavItem="/organizations">
-            <a ngbNavLink routerLink="/organizations">Organizations</a>
-          </li>
+      <ul ngbNav #nav="ngbNav"
+          class="nav nav-pills float-right "
+          [(activeId)]="currentRoute"
+          style="border-left: 2px solid white; padding: 10px 10px 10px 30px">
 
 
-    </ul>
+        <li ngbNavItem="/commodities">
+          <a ngbNavLink routerLink="/commodities">Commodities</a>
+        </li>
+
+        <li ngbNavItem="/commodityGroups">
+          <a ngbNavLink routerLink="/commodityGroups">Commodities Groups</a>
+        </li>
+
+        <li ngbNavItem="/expenses">
+          <a ngbNavLink routerLink="/expenses">Expenses</a>
+        </li>
+
+        <li ngbNavItem="/organizations">
+          <a ngbNavLink routerLink="/organizations">Organizations</a>
+        </li>
 
 
-    <div class="my-2 my-lg-0 float-right">
+      </ul>
+
+
+      <div class="my-2 my-lg-0 float-right">
       <span class="navbar-brand"   style="border-left: 2px solid white; font-size: 20px;">
         {{userInfo()}} <fa-icon class="logout-icon" (click)="logout()" [icon]="faLogout"></fa-icon>
       </span>
 
-    </div>
+      </div>
 
+    </div>
   </div>
+
 
 
 </div>
