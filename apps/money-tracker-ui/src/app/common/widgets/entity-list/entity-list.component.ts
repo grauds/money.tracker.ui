@@ -77,7 +77,7 @@ export abstract class EntityListComponent<T extends Resource> {
     this.offset = this.n - 1
     this.pageLoading = true
     if (this.search) {
-      return this.resourceService.searchPage<T>(this.type, 'byName',{
+      return this.resourceService.searchPage<T>(this.type, 'findByNameStarting',{
         pageParams: {
           page: this.offset,
           size: this.limit
