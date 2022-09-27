@@ -1,4 +1,9 @@
-.container {
-  width: 1000px;
+.ph-item {
+  width: 800px;
   height: 500px;
+  margin: 30px auto;
+  padding: 30px 15px 15px 15px;
+  overflow: hidden;
+  direction: ltr;
+  background-color: #fff;
 }

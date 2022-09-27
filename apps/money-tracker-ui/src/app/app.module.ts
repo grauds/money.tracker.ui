@@ -11,7 +11,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { AngularYandexMapsModule, YaConfig } from 'angular8-yandex-maps';
 
-import { NgxHateoasClientConfigurationService, NgxHateoasClientModule } from '@lagoshny/ngx-hateoas-client';
+import {
+  NgxHateoasClientConfigurationService,
+  NgxHateoasClientModule,
+} from '@lagoshny/ngx-hateoas-client';
 import { environment } from '../environments/environment';
 
 import { SharedModule } from '../shared/shared.module';
@@ -33,10 +36,8 @@ import { OrganizationsListComponent } from './organizations/organizations-list/o
 import { CommoditiesComponent } from './pages/commodities/commodities.component';
 import { CommoditiesGroupsComponent } from './pages/commodities-groups/commodities-groups.component';
 import { OrganizationsComponent } from './pages/organizations/organizations.component';
-import { ExpensesListComponent } from './commodities/expences-list/expenses-list.component';
-import {
-  ExpenseItemRendererComponent
-} from './commodities/expences-list/expense-item-renderer/expense-item-renderer.component';
+import { ExpensesListComponent } from './pages/expences-list/expenses-list.component';
+import { ExpenseItemRendererComponent } from './pages/expences-list/expense-item-renderer/expense-item-renderer.component';
 import { Commodity } from './common/model/commodity';
 import { ExpenseItem } from './common/model/expense-item';
 import { Organization } from './common/model/organization';
@@ -49,36 +50,60 @@ import { CommodityGroupComponent } from './commodities/commodity-group/commodity
 import * as PlotlyJS from 'plotly.js-dist-min';
 import { PlotlyModule } from 'angular-plotly.js';
 import { AccountBalanceItemComponent } from './main/account-balance-item/account-balance-item.component';
+import { OrganizationComponent } from './organizations/organization/organization.component';
+import { OrganizationGroupComponent } from './organizations/organization-group/organization-group.component';
+import { OrganizationGroupListComponent } from './organizations/organization-group-list/organization-group-list.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
-const routes: Routes = [{
+const routes: Routes = [
+  {
     path: 'commodities',
     component: CommoditiesComponent,
-    canActivate: [AuthGuard]
-  }, {
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'commodities/:id',
     component: CommodityComponent,
-    canActivate: [AuthGuard]
-  }, {
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'commodityGroups',
     component: CommoditiesGroupsComponent,
-    canActivate: [AuthGuard]
-  }, {
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'commodityGroups/:id',
     component: CommodityGroupComponent,
-    canActivate: [AuthGuard]
-  }, {
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'expenses',
     component: ExpensesListComponent,
-    canActivate: [AuthGuard]
-  }, {
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'organizations',
     component: OrganizationsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
-  { path: '', component: MainComponent, canActivate: [AuthGuard]},
-  { path: '**', redirectTo: '' }
+  {
+    path: 'organizations/:id',
+    component: OrganizationComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'organizationGroups',
+    component: OrganizationGroupListComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'organizationGroups/:id',
+    component: OrganizationGroupComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: '', component: MainComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: '' },
 ];
 
 const mapConfig: YaConfig = {
@@ -105,7 +130,10 @@ const mapConfig: YaConfig = {
     SearchComponent,
     CommodityComponent,
     CommodityGroupComponent,
-    AccountBalanceItemComponent
+    AccountBalanceItemComponent,
+    OrganizationComponent,
+    OrganizationGroupComponent,
+    OrganizationGroupListComponent,
   ],
   imports: [
     HttpClientModule,
@@ -114,7 +142,7 @@ const mapConfig: YaConfig = {
     KeycloakAngularModule,
     RouterModule.forRoot(
       routes,
-      {enableTracing: true} // <-- debugging purposes only
+      { enableTracing: true } // <-- debugging purposes only
     ),
     NgxHateoasClientModule.forRoot(),
     NgbModule,
@@ -122,29 +150,37 @@ const mapConfig: YaConfig = {
     SharedModule,
     FormsModule,
     AngularYandexMapsModule.forRoot(mapConfig),
-    PlotlyModule
+    PlotlyModule,
   ],
-  providers: [{
+  providers: [
+    {
       provide: KeycloakService,
-      useClass: environment.production ? KeycloakService : MockedKeycloakService
-    }, {
+      useClass: KeycloakService,
+    },
+    {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
       deps: [KeycloakService],
-  }],
-  bootstrap: [AppComponent]
+    },
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule {
-
   constructor(hateoasConfig: NgxHateoasClientConfigurationService) {
     hateoasConfig.configure({
       http: {
-        rootUrl: environment.apiUrl
+        rootUrl: environment.apiUrl,
       },
       useTypes: {
-        resources: [CommodityGroup, Commodity, ExpenseItem, Organization, UnitType]
-      }
+        resources: [
+          CommodityGroup,
+          Commodity,
+          ExpenseItem,
+          Organization,
+          UnitType,
+        ],
+      },
     });
   }
 }

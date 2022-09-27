@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { EntityComponent } from '../../common/widgets/entity/entity.component';
-import { CommodityGroup } from '../../common/model/commodity-group';
 import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
 import { ActivatedRoute } from '@angular/router';
+import { EntityComponent } from '../../common/widgets/entity/entity.component';
+import { CommodityGroup } from '../../common/model/commodity-group';
 import { Utils } from '../../common/utils/utils';
 import { Commodity } from '../../common/model/commodity';
 import { MoneyTypes } from '../../common/model/money-types';
@@ -16,6 +16,8 @@ import { TotalsStatisticsService } from '../../common/services/totals-statistics
 export class CommodityGroupComponent extends EntityComponent<CommodityGroup> implements OnInit {
 
   currentRate: number = 2;
+
+  loading: boolean = true;
 
   parent: CommodityGroup | undefined;
 

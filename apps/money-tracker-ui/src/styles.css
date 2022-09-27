@@ -8,3 +8,10 @@ body {
 .table-striped-fixed > tbody > tr:nth-of-type(odd) > tr {
   background-color: rgba(0,0,0,.05);
 }
+
+.jumbotron {
+  padding: 2rem 1rem;
+  margin-bottom: 2rem;
+  background-color: #e9ecef;
+  border-radius: .3rem;
+}

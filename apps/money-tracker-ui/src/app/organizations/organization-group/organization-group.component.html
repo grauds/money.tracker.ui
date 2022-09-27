@@ -1,0 +1,39 @@
+<div class='row'>
+
+  <div class='col-4 back-area jumbotron' style="min-width: 350px;">
+    <div>
+      <h2 style='margin: 10px'></h2>
+      <h2>
+        {{entity ? entity.name : ''}}
+      </h2>
+      <h6>
+        <a href="{{parentLink}}">{{parent?.name}}</a>
+      </h6>
+    </div>
+    <div style='max-height: 350px; margin: 10px; overflow: auto'>
+      {{entity ? entity.description : ''}}
+    </div>
+  </div>
+
+  <div *ngIf="childGroups.length > 0" class='col-4'>
+    <div *ngFor="let a of childGroups">
+      <app-entity-element [entity]="a"></app-entity-element>
+    </div>
+  </div>
+
+  <div *ngIf="childOrganizations.length > 0" class='col-4'>
+    <div *ngFor="let a of childOrganizations">
+      <app-entity-element [entity]="a"></app-entity-element>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+
+  <div class="col-12">
+    <ya-map [center]="[55.751952, 37.600739]" [zoom]="12">
+      <ya-placemark [geometry]="[55.751952, 37.600739]"></ya-placemark>
+    </ya-map>
+  </div>
+
+</div>
