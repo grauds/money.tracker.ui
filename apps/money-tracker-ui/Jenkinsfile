@@ -37,6 +37,7 @@ pipeline {
       steps {
         sh '''
            cd ./apps/money-tracker-ui/jenkins
+           docker compose stop
            docker compose build
            docker compose up -d
         '''
