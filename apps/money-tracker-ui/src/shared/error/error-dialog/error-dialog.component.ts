@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {ErrorDialogService} from "../error-dialog.service";
+import { ErrorDialogService } from '../error-dialog.service';
 
 @Component({
   selector: 'app-error-dialog',

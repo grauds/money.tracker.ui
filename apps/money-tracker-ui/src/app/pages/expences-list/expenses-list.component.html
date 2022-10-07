@@ -4,22 +4,6 @@
   </div>
 </div>
 
-<form class="row row-cols-sm-auto">
-  <div class="col-12">
-    <div class="input-group">
-      <input class="form-control" placeholder="yyyy-mm-dd"
-             name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
-      <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
-    </div>
-  </div>
-</form>
-
-<div class="row">
-  <div class="col-sm-12">
-    <hr class="shr"/>
-  </div>
-</div>
-
 <content-loader class="ph-item" *ngIf="loading">
   <svg:rect x="0" y="0" rx="3" ry="3" width="450" height="10" />
   <svg:rect x="20" y="20" rx="3" ry="3" width="220" height="10" />
@@ -48,40 +32,27 @@
 
 <div *ngIf="!error">
 
-  <span *ngIf="!loading">
-    <h3 *ngIf="total !== undefined && total > 1">There are {{total}} records found</h3>
-    <h3 *ngIf="total === 1">There is 1 record found</h3>
-    <h3 *ngIf="total === 0">No records found</h3>
-    <h4 *ngIf="total === undefined">The total number of records is not known, showing the first page</h4>
-  </span>
+  <div class="container" *ngIf="!loading">
 
-  <div class="row" *ngIf="!loading">
-
-    <div class="col-sm-12">
-
-      <app-pagination-bar
-        [path]="path"
-        [currentPage]="n"
-        [itemsPerPage]="limit"
-        [total]="total"
-        [useLocation]="true"
-        (changeCurrentPage)="setCurrentPage($event)"
-      ></app-pagination-bar>
+      <mat-paginator [length]="total"
+                     [pageSize]="limit"
+                     [pageSizeOptions]="[5, 10, 25, 100]"
+                     [pageIndex]="n"
+                     (page)="setCurrentPage($event)"
+                     aria-label="Select page">
+      </mat-paginator>
 
       <div *ngFor="let a of entities">
         <app-expense-item-renderer [entity]="a"></app-expense-item-renderer>
       </div>
 
-      <app-pagination-bar
-        [path]="path"
-        [currentPage]="n"
-        [itemsPerPage]="limit"
-        [total]="total"
-        [useLocation]="true"
-        (changeCurrentPage)="setCurrentPage($event)"
-      ></app-pagination-bar>
-
-    </div>
+      <mat-paginator [length]="total"
+                     [pageSize]="limit"
+                     [pageSizeOptions]="[5, 10, 25, 100]"
+                     [pageIndex]="n"
+                     (page)="setCurrentPage($event)"
+                     aria-label="Select page">
+      </mat-paginator>
 
   </div>
 

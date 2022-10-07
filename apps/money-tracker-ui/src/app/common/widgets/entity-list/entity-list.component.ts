@@ -2,6 +2,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { HateoasResourceService, PagedResourceCollection, Resource, Sort } from '@lagoshny/ngx-hateoas-client';
 import { EntityElementComponent } from '../entity-element/entity-element.component';
+import { PageEvent } from '@angular/material/paginator';
 
 export abstract class EntityListComponent<T extends Resource> {
 
@@ -17,16 +18,13 @@ export abstract class EntityListComponent<T extends Resource> {
   total: number | undefined;
 
   // current page number counter
-  n: number = 1;
+  n: number = 0;
 
   // subscribe for page updates in the address bar
   pageSubscription: Subscription;
 
   // error message
   error: string | undefined;
-
-  // offset from the start, offset = N * n, where N is a natural number
-  offset: number = 0;
 
   // number of records per page
   limit: number = 10;
@@ -50,7 +48,7 @@ export abstract class EntityListComponent<T extends Resource> {
     this.pageSubscription = route.queryParams.subscribe(
       (queryParam: any) => {
         const page = Number.parseInt(queryParam['page'], 10)
-        this.n = isNaN(page) ? 1 : page;
+        this.n = isNaN(page) ? 0 : page;
         const size = Number.parseInt(queryParam['size'], 10)
         this.limit = isNaN(size) ? 10 : size;
         this.onInit();
@@ -63,8 +61,9 @@ export abstract class EntityListComponent<T extends Resource> {
     this.loadData()
   }
 
-  setCurrentPage($event: number) {
-    this.n = $event
+  setCurrentPage(event: PageEvent) {
+    this.n = event.pageIndex
+    this.limit = event.pageSize
     this.loadData()
   }
 
@@ -74,12 +73,11 @@ export abstract class EntityListComponent<T extends Resource> {
   }
 
   loadData = () => {
-    this.offset = this.n - 1
     this.pageLoading = true
     if (this.search) {
       return this.resourceService.searchPage<T>(this.type, 'findByNameStarting',{
         pageParams: {
-          page: this.offset,
+          page: this.n,
           size: this.limit
         },
         params: {
@@ -96,7 +94,7 @@ export abstract class EntityListComponent<T extends Resource> {
     } else {
       return this.resourceService.getPage<T>(this.type, {
         pageParams: {
-          page: this.offset,
+          page: this.n,
           size: this.limit
         },
         sort: this.getSortOption()

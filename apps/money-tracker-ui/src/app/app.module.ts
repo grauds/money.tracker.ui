@@ -7,7 +7,6 @@ import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { MockedKeycloakService } from './auth/mocked-keycloak.service';
 import { initializeKeycloak } from './init/keycloak-init.factory';
 import { ContentLoaderModule } from '@ngneat/content-loader';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { AngularYandexMapsModule, YaConfig } from 'angular8-yandex-maps';
 
@@ -53,6 +52,15 @@ import { AccountBalanceItemComponent } from './main/account-balance-item/account
 import { OrganizationComponent } from './organizations/organization/organization.component';
 import { OrganizationGroupComponent } from './organizations/organization-group/organization-group.component';
 import { OrganizationGroupListComponent } from './organizations/organization-group-list/organization-group-list.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -133,7 +141,7 @@ const mapConfig: YaConfig = {
     AccountBalanceItemComponent,
     OrganizationComponent,
     OrganizationGroupComponent,
-    OrganizationGroupListComponent,
+    OrganizationGroupListComponent
   ],
   imports: [
     HttpClientModule,
@@ -142,15 +150,22 @@ const mapConfig: YaConfig = {
     KeycloakAngularModule,
     RouterModule.forRoot(
       routes,
-      { enableTracing: true } // <-- debugging purposes only
+      {enableTracing: true} // <-- debugging purposes only
     ),
     NgxHateoasClientModule.forRoot(),
-    NgbModule,
     ContentLoaderModule,
     SharedModule,
     FormsModule,
     AngularYandexMapsModule.forRoot(mapConfig),
     PlotlyModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatListModule,
+    MatIconModule,
+    LayoutModule,
+    MatPaginatorModule,
   ],
   providers: [
     {

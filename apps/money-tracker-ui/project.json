@@ -21,11 +21,8 @@
           "apps/money-tracker-ui/src/assets"
         ],
         "styles": [
-          "node_modules/bootstrap/dist/css/bootstrap.min.css",
-          "apps/money-tracker-ui/src/styles.css",
-          {
-            "input": "./node_modules/bootstrap/dist/css/bootstrap.css"
-          }
+          "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+          "apps/money-tracker-ui/src/styles.css"
         ],
         "scripts": [],
         "allowedCommonJsDependencies": [
@@ -96,6 +93,7 @@
           "apps/money-tracker-ui/src/assets"
         ],
         "styles": [
+          "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
           "apps/money-tracker-ui/src/styles.css"
         ],
         "scripts": []
