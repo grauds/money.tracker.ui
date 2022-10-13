@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ExpenseItem } from '../../../common/model/expense-item';
-import { Commodity } from '../../../common/model/commodity';
-import { Organization } from '../../../common/model/organization';
+import { ExpenseItem } from '../../../../../../../libs/model/src/model/expense-item';
+import { Commodity } from '../../../../../../../libs/model/src/model/commodity';
+import { Organization } from '../../../../../../../libs/model/src/model/organization';
 import { Utils } from '../../../common/utils/utils';
 
 @Component({

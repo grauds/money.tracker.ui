@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { EntityListComponent } from '../../common/widgets/entity-list/entity-list.component';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
-import { ActivatedRoute } from '@angular/router';
-import { Commodity } from '../../common/model/commodity';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Commodity } from '@clematis-shared/model';
 
 @Component({
   selector: 'app-commodities-list',
@@ -11,8 +11,8 @@ import { Commodity } from '../../common/model/commodity';
 })
 export class CommoditiesListComponent extends EntityListComponent<Commodity> implements OnInit {
 
-  constructor(resourceService: HateoasResourceService, route: ActivatedRoute) {
-    super(Commodity, resourceService, route)
+  constructor(resourceService: HateoasResourceService, router: Router, route: ActivatedRoute) {
+    super(Commodity, resourceService, router, route)
 
     this.path = 'commodities'
   }

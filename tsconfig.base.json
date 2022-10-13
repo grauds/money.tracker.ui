@@ -17,12 +17,12 @@
     "importHelpers": true,
     "target": "es2017",
     "module": "es2020",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "allowSyntheticDefaultImports": true,
-    "paths": {},
+    "paths": {
+      "@clematis-shared/model": ["libs/model/src/index.ts"],
+      "@clematis-shared/money-tracker-service": ["libs/money-tracker-service/src/index.ts"]
+    },
     "rootDir": "."
   },
   "angularCompilerOptions": {
@@ -31,8 +31,5 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }

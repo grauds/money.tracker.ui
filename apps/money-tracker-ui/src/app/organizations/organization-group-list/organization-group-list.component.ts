@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { EntityListComponent} from '../../common/widgets/entity-list/entity-list.component';
-import { OrganizationGroup } from '../../common/model/organization-group';
+import { OrganizationGroup } from '@clematis-shared/model';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { EntityListComponent} from '../../common/widgets/entity-list/entity-list.component';
 
 @Component({
   selector: 'app-organization-group-list',
@@ -11,8 +12,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class OrganizationGroupListComponent extends EntityListComponent<OrganizationGroup> implements OnInit {
 
-  constructor(resourceService: HateoasResourceService, route: ActivatedRoute) {
-    super(OrganizationGroup, resourceService, route)
+  constructor(resourceService: HateoasResourceService, router: Router, route: ActivatedRoute) {
+    super(OrganizationGroup, resourceService, router, route)
 
     this.path = 'organizationGroups'
   }

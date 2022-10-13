@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {HateoasResourceService, ResourceCollection} from '@lagoshny/ngx-hateoas-client';
 import { ActivatedRoute } from '@angular/router';
+import { Organization, OrganizationGroup } from '@clematis-shared/model';
+
 import { EntityComponent } from '../../common/widgets/entity/entity.component';
-import { OrganizationGroup } from '../../common/model/organization-group';
 import { Utils } from '../../common/utils/utils';
-import { Organization } from '../../common/model/organization';
 
 @Component({
   selector: 'app-organization-group',

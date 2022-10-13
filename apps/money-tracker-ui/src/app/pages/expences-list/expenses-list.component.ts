@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HateoasResourceService, Sort } from '@lagoshny/ngx-hateoas-client';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ExpenseItem } from '@clematis-shared/model';
+
 import { EntityListComponent } from '../../common/widgets/entity-list/entity-list.component';
-import { ExpenseItem } from '../../common/model/expense-item';
 import { ExpenseItemRendererComponent } from './expense-item-renderer/expense-item-renderer.component';
 
 @Component({
@@ -13,8 +14,8 @@ import { ExpenseItemRendererComponent } from './expense-item-renderer/expense-it
 export class ExpensesListComponent extends EntityListComponent<ExpenseItem> implements OnInit {
 
 
-  constructor(resourceService: HateoasResourceService, route: ActivatedRoute) {
-    super(ExpenseItem, resourceService, route, new ExpenseItemRendererComponent())
+  constructor(resourceService: HateoasResourceService, router: Router, route: ActivatedRoute) {
+    super(ExpenseItem, resourceService, router, route, new ExpenseItemRendererComponent())
 
     this.path = 'expenses'
   }

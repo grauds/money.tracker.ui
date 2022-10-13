@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Entity } from '../../model/entity';
+import { Entity } from '@clematis-shared/model';
 import {Utils} from "../../utils/utils";
 
 @Component({

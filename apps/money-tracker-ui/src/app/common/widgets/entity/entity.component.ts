@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Entity } from '../../model/entity';
+import { Entity } from '@clematis-shared/model';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 
 export abstract class EntityComponent<T extends Entity> {

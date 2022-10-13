@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HateoasResourceService, PagedResourceCollection, Resource, Sort } from '@lagoshny/ngx-hateoas-client';
 import { EntityElementComponent } from '../entity-element/entity-element.component';
 import { PageEvent } from '@angular/material/paginator';
@@ -40,6 +40,7 @@ export abstract class EntityListComponent<T extends Resource> {
 
   protected constructor(private type: new () => T,
                         private resourceService: HateoasResourceService,
+                        private router: Router,
                         private route: ActivatedRoute,
                         renderer: any = new EntityElementComponent()) {
 
@@ -64,12 +65,25 @@ export abstract class EntityListComponent<T extends Resource> {
   setCurrentPage(event: PageEvent) {
     this.n = event.pageIndex
     this.limit = event.pageSize
+    this.updateRoute()
     this.loadData()
   }
 
   setSearchString($event: string) {
     this.search = $event
     this.loadData()
+  }
+
+  updateRoute() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        page: this.n,
+        size: this.limit
+      },
+      queryParamsHandling: 'merge',
+      skipLocationChange: false
+    })
   }
 
   loadData = () => {

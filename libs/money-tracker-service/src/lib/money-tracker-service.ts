@@ -1,16 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
-import { environment } from '../../../environments/environment';
-import { MoneyTypes } from '../model/money-types';
-import { ExpenseItem } from '../model/expense-item';
-import { AccountBalance } from '../model/account-balance';
+import { AccountBalance, ExpenseItem, MoneyTypes } from '@clematis-shared/model';
 import { PagedResourceCollection } from '@lagoshny/ngx-hateoas-client/lib/model/resource/paged-resource-collection';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class TotalsStatisticsService {
+@Injectable()
+export class MoneyTrackerService {
 
   constructor(private http: HttpClient, private resourceService: HateoasResourceService) { }
 
@@ -37,9 +32,9 @@ export class TotalsStatisticsService {
   }
 
   getTotalsForCommodityGroup(commodityGroupId: string | null,
-                        moneyCode: MoneyTypes,
-                        callback: (arg0: number) => void,
-                        error: (arg0: Error) => void) {
+                             moneyCode: MoneyTypes,
+                             callback: (arg0: number) => void,
+                             error: (arg0: Error) => void) {
 
     if (commodityGroupId) {
       const observer = {
@@ -59,8 +54,8 @@ export class TotalsStatisticsService {
   }
 
   getTotalQtyForCommodity(commodityId: string | null,
-                        callback: (arg0: number) => void,
-                        error: (arg0: Error) => void) {
+                          callback: (arg0: number) => void,
+                          error: (arg0: Error) => void) {
 
     if (commodityId) {
       const observer = {
@@ -113,6 +108,6 @@ export class TotalsStatisticsService {
   }
 
   private _doQuery(url: string, options: any) {
-    return this.http.get<number>(environment.apiUrl + url, options)
+    return this.http.get<number>(process.env['MONEY_TRACKER_API_ENDPOINT'] + url, options)
   }
 }

@@ -1,0 +1,25 @@
+{
+  "name": "money-tracker-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/money-tracker-service/src",
+  "projectType": "library",
+  "prefix": "clematis-shared",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/money-tracker-service/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/money-tracker-service"],
+      "options": {
+        "jestConfig": "libs/money-tracker-service/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

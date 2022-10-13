@@ -2,13 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 import { EntityComponent } from '../../common/widgets/entity/entity.component';
-import { Commodity } from '../../common/model/commodity';
-import { MoneyType } from '../../common/model/money-type';
+import { Commodity, MoneyType, CommodityGroup, MoneyTypes, ExpenseItem } from '@clematis-shared/model';
 import { Utils } from '../../common/utils/utils';
-import { CommodityGroup } from '../../common/model/commodity-group';
-import { TotalsStatisticsService } from '../../common/services/totals-statistics.service';
-import { MoneyTypes } from '../../common/model/money-types';
-import { ExpenseItem } from '../../common/model/expense-item';
+import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
 
 @Component({
   selector: 'app-commodity',
@@ -63,7 +59,7 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
   averagePrice: number | undefined;
 
   constructor(resourceService: HateoasResourceService,
-              private totalsStats: TotalsStatisticsService,
+              private moneyTrackerService: MoneyTrackerService,
               route: ActivatedRoute) {
     super(Commodity, resourceService, route);
   }
@@ -90,10 +86,10 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
         this.parentLink = Utils.parseResourceUrlToAppUrl(this.parent.getSelfLinkHref())
       })
 
-    this.totalsStats.getTotalsForCommodity(this.id, MoneyTypes.RUB, (response) => {
+    this.moneyTrackerService.getTotalsForCommodity(this.id, MoneyTypes.RUB, (response) => {
       this.totalSum = response
 
-      this.totalsStats.getTotalQtyForCommodity(this.id, (response) => {
+      this.moneyTrackerService.getTotalQtyForCommodity(this.id, (response) => {
         this.totalQty = response
         this.averagePrice = this.totalSum / this.totalQty
       }, (error) => {
@@ -104,7 +100,7 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
       // todo error handling
     })
 
-    this.totalsStats.getCommodityExpences(this.id, (response) => {
+    this.moneyTrackerService.getCommodityExpences(this.id, (response) => {
       this.expenses = response.resources
 
       this.expenses.forEach(expense => {

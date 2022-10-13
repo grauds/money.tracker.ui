@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
-import {TotalsStatisticsService} from "../common/services/totals-statistics.service";
-import {Commodity} from "../common/model/commodity";
-import {AccountBalance} from "../common/model/account-balance";
+import { AccountBalance } from '@clematis-shared/model';
+import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
 
 @Component({
   selector: 'app-main',
@@ -13,7 +11,7 @@ export class MainComponent implements OnInit {
 
   accountsBalances: AccountBalance[] = []
 
-  constructor(private totalsStats: TotalsStatisticsService) { }
+  constructor(private moneyTrackerService: MoneyTrackerService) { }
 
   ngOnInit(): void {
     this.loadData()
@@ -21,7 +19,7 @@ export class MainComponent implements OnInit {
 
 
   loadData() {
-    this.totalsStats.getAccountsBalance((response) => {
+    this.moneyTrackerService.getAccountsBalance((response) => {
 
       this.accountsBalances = response.resources
 

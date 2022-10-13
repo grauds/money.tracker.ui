@@ -1,6 +1,6 @@
 import { Utils } from './utils';
-import {token, url, url2} from './utils.data';
-import {Commodity} from "../model/commodity";
+import { token, url, url2 } from './utils.data';
+import { Commodity } from '@clematis-shared/model';
 
 describe('Utils', () => {
   it('should create an instance', () => {

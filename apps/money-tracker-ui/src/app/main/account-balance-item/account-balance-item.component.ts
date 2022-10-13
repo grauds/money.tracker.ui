@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AccountBalance } from '../../common/model/account-balance';
+import { AccountBalance } from '../../../../../../libs/model/src/model/account-balance';
 
 @Component({
   selector: 'app-account-balance-item',

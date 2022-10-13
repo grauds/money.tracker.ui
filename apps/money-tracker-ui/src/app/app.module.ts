@@ -10,6 +10,16 @@ import { ContentLoaderModule } from '@ngneat/content-loader';
 import { FormsModule } from '@angular/forms';
 import { AngularYandexMapsModule, YaConfig } from 'angular8-yandex-maps';
 
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatPaginatorModule } from '@angular/material/paginator';
+
+import { CommodityGroup, Commodity, ExpenseItem, Organization, UnitType } from '@clematis-shared/model';
+
 import {
   NgxHateoasClientConfigurationService,
   NgxHateoasClientModule,
@@ -22,7 +32,6 @@ import { AppComponent } from './app.component';
 import { AuthGuard } from './auth/auth.guard';
 import { HeaderComponent } from './header/header.component';
 import { MainComponent } from './main/main.component';
-import { CommodityGroup } from './common/model/commodity-group';
 import { EntityElementComponent } from './common/widgets/entity-element/entity-element.component';
 import { PaginationBarComponent } from './common/widgets/pagination-bar/pagination-bar.component';
 
@@ -37,13 +46,9 @@ import { CommoditiesGroupsComponent } from './pages/commodities-groups/commoditi
 import { OrganizationsComponent } from './pages/organizations/organizations.component';
 import { ExpensesListComponent } from './pages/expences-list/expenses-list.component';
 import { ExpenseItemRendererComponent } from './pages/expences-list/expense-item-renderer/expense-item-renderer.component';
-import { Commodity } from './common/model/commodity';
-import { ExpenseItem } from './common/model/expense-item';
-import { Organization } from './common/model/organization';
 import { PageSizeComponent } from './common/widgets/page-size/page-size.component';
 import { SearchComponent } from './common/widgets/search/search.component';
 import { CommodityComponent } from './commodities/commodity/commodity.component';
-import { UnitType } from './common/model/unit-type';
 import { CommodityGroupComponent } from './commodities/commodity-group/commodity-group.component';
 
 import * as PlotlyJS from 'plotly.js-dist-min';
@@ -53,14 +58,6 @@ import { OrganizationComponent } from './organizations/organization/organization
 import { OrganizationGroupComponent } from './organizations/organization-group/organization-group.component';
 import { OrganizationGroupListComponent } from './organizations/organization-group-list/organization-group-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { LayoutModule } from '@angular/cdk/layout';
-import { MatPaginatorModule } from '@angular/material/paginator';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
