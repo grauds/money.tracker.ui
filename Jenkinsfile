@@ -28,7 +28,7 @@ pipeline {
     stage('Dockerized build') {
       steps {
         sh '''
-           docker build . -t money.tracker.ui -f ./apps/money-tracker-ui/Dockerfile
+           docker build . -t money.tracker.ui -f Dockerfile
         '''
       }
     }
