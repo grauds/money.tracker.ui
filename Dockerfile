@@ -1,28 +1,28 @@
+# ------------------------------------------------------------------------------
+# BUILD STAGE
+# ------------------------------------------------------------------------------
+
 FROM node:16-alpine as build
 
-ARG APP_NAME=money-tracker-ui
-ARG WORK_DIR=/opt/software
-ARG APP_SRC_DIR=$WORK_DIR/apps/$APP_NAME
+WORKDIR /opt/software
 
-RUN mkdir -p $APP_SRC_DIR
-WORKDIR $WORK_DIR
-
-COPY ./apps/$APP_NAME/*.json $APP_SRC_DIR/
-COPY ./apps/$APP_NAME/*.js $APP_SRC_DIR/
-COPY ./apps/$APP_NAME/.browserslistrc $APP_SRC_DIR/
-
-COPY *.json $WORK_DIR/
-COPY *.js $WORK_DIR/
-
-COPY ./apps/$APP_NAME/src $APP_SRC_DIR/src
-
-RUN echo $(ls -l $APP_SRC_DIR)
-
-RUN npm install
 RUN npm install -g @angular/cli
 RUN npm install -g nx
+RUN npm install -g @nrwl/cli
+
+COPY .eslintrc.json angular.json decorate-angular-cli.js jest.config.ts jest.preset.js nx.json \
+     package.json package-lock.json tsconfig.base.json ./
+
+COPY apps apps
+COPY libs libs
+
+RUN npm install
 
 RUN nx run money-tracker-ui:build:production --verbose
+
+# ------------------------------------------------------------------------------
+# RUNTIME STAGE (deployment)
+# ------------------------------------------------------------------------------
 
 FROM openresty/openresty:alpine-fat
 

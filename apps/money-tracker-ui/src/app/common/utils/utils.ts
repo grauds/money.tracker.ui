@@ -21,7 +21,7 @@ export class Utils {
 
   static getIdFromSelfUrl(entity: Resource) {
     const resourceAddress = new URL(entity.getSelfLinkHref());
-    return resourceAddress.pathname.substring(resourceAddress.pathname.lastIndexOf('/'),
+    return resourceAddress.pathname.substring(resourceAddress.pathname.lastIndexOf('/') + 1,
       resourceAddress.pathname.length);
   }
 }

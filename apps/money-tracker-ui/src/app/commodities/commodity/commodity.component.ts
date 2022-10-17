@@ -84,6 +84,11 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
       .subscribe((parent: CommodityGroup) => {
         this.parent = parent
         this.parentLink = Utils.parseResourceUrlToAppUrl(this.parent.getSelfLinkHref())
+        this.moneyTrackerService.getPathForCommodity(Utils.getIdFromSelfUrl(this.parent), (response) => {
+
+        }, (error) => {
+          // todo error handling
+        })
       })
 
     this.moneyTrackerService.getTotalsForCommodity(this.id, MoneyTypes.RUB, (response) => {

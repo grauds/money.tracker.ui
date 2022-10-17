@@ -58,6 +58,7 @@ import { OrganizationComponent } from './organizations/organization/organization
 import { OrganizationGroupComponent } from './organizations/organization-group/organization-group.component';
 import { OrganizationGroupListComponent } from './organizations/organization-group-list/organization-group-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MoneyTrackerServiceModule } from "@clematis-shared/money-tracker-service";
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -163,6 +164,7 @@ const mapConfig: YaConfig = {
     MatIconModule,
     LayoutModule,
     MatPaginatorModule,
+    MoneyTrackerServiceModule
   ],
   providers: [
     {

@@ -1,13 +1,36 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
-import { AccountBalance, ExpenseItem, MoneyTypes } from '@clematis-shared/model';
+import { AccountBalance, CommodityGroup, ExpenseItem, MoneyTypes } from '@clematis-shared/model';
 import { PagedResourceCollection } from '@lagoshny/ngx-hateoas-client/lib/model/resource/paged-resource-collection';
+
+import {environment} from "../../../../apps/money-tracker-ui/src/environments/environment";
 
 @Injectable()
 export class MoneyTrackerService {
 
   constructor(private http: HttpClient, private resourceService: HateoasResourceService) { }
+
+  getPathForCommodity(commodityGroupId: string | null,
+                      callback: (arg0: ResourceCollection<CommodityGroup>) => void,
+                      error: (arg0: Error) => void) {
+
+    if (commodityGroupId) {
+      const observer = {
+        next: (response: any) => {
+          callback(response)
+        }, error: (e: Error) => {
+          error(e)
+        }
+      }
+      this._doQuery('/commodityGroups/search/pathById', {
+        params: {
+          id: commodityGroupId
+        }
+      }).subscribe(observer)
+    }
+
+  }
 
   getTotalsForCommodity(commodityId: string | null,
                         moneyCode: MoneyTypes,
@@ -108,6 +131,6 @@ export class MoneyTrackerService {
   }
 
   private _doQuery(url: string, options: any) {
-    return this.http.get<number>(process.env['MONEY_TRACKER_API_ENDPOINT'] + url, options)
+    return this.http.get<number>(environment.apiUrl + url, options)
   }
 }
