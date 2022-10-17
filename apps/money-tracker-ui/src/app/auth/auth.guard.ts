@@ -18,13 +18,12 @@ export class AuthGuard extends KeycloakAuthGuard {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Promise<boolean | UrlTree> {
 
-    if (!this.authenticated) {
+    if (!await this.keycloak.isLoggedIn()) {
       await this.keycloak.login({
         redirectUri: window.location.origin + state.url,
       });
+      await this.keycloak.loadUserProfile()
     }
-
-    await this.keycloak.getKeycloakInstance().loadUserProfile()
     return true
   }
 

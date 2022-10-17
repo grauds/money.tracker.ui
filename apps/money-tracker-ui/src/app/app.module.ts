@@ -18,7 +18,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
-import { CommodityGroup, Commodity, ExpenseItem, Organization, UnitType } from '@clematis-shared/model';
+import {
+  CommodityGroup,
+  Commodity,
+  ExpenseItem,
+  Organization,
+  UnitType,
+} from '@clematis-shared/model';
 
 import {
   NgxHateoasClientConfigurationService,
@@ -58,58 +64,66 @@ import { OrganizationComponent } from './organizations/organization/organization
 import { OrganizationGroupComponent } from './organizations/organization-group/organization-group.component';
 import { OrganizationGroupListComponent } from './organizations/organization-group-list/organization-group-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MoneyTrackerServiceModule } from "@clematis-shared/money-tracker-service";
+import { MoneyTrackerServiceModule } from '@clematis-shared/money-tracker-service';
+import { WorkspaceComponent } from './workspace/workspace.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
 const routes: Routes = [
   {
-    path: 'commodities',
-    component: CommoditiesComponent,
-    canActivate: [AuthGuard],
+    path: '',
+    pathMatch: 'full',
+    redirectTo: '/main'
   },
+  { path: "main", component: MainComponent },
   {
-    path: 'commodities/:id',
-    component: CommodityComponent,
+    path: '',
     canActivate: [AuthGuard],
+    component: WorkspaceComponent,
+    children: [
+      {
+        path: 'commodities/:id',
+        component: CommodityComponent
+      },
+      {
+        path: 'commodities',
+        component: CommoditiesComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'commodityGroups',
+        component: CommoditiesGroupsComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'commodityGroups/:id',
+        component: CommodityGroupComponent,
+      },
+      {
+        path: 'expenses',
+        component: ExpensesListComponent,
+      },
+      {
+        path: 'organizations',
+        component: OrganizationsComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'organizations/:id',
+        component: OrganizationComponent,
+      },
+      {
+        path: 'organizationGroups',
+        component: OrganizationGroupListComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'organizationGroups/:id',
+        component: OrganizationGroupComponent,
+      }
+    ]
   },
-  {
-    path: 'commodityGroups',
-    component: CommoditiesGroupsComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'commodityGroups/:id',
-    component: CommodityGroupComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'expenses',
-    component: ExpensesListComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'organizations',
-    component: OrganizationsComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'organizations/:id',
-    component: OrganizationComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'organizationGroups',
-    component: OrganizationGroupListComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'organizationGroups/:id',
-    component: OrganizationGroupComponent,
-    canActivate: [AuthGuard],
-  },
-  { path: '', component: MainComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: '' }
 ];
 
 const mapConfig: YaConfig = {
@@ -139,7 +153,8 @@ const mapConfig: YaConfig = {
     AccountBalanceItemComponent,
     OrganizationComponent,
     OrganizationGroupComponent,
-    OrganizationGroupListComponent
+    OrganizationGroupListComponent,
+    WorkspaceComponent,
   ],
   imports: [
     HttpClientModule,
@@ -148,7 +163,7 @@ const mapConfig: YaConfig = {
     KeycloakAngularModule,
     RouterModule.forRoot(
       routes,
-      {enableTracing: true} // <-- debugging purposes only
+      { enableTracing: true } // <-- debugging purposes only
     ),
     NgxHateoasClientModule.forRoot(),
     ContentLoaderModule,
@@ -164,7 +179,7 @@ const mapConfig: YaConfig = {
     MatIconModule,
     LayoutModule,
     MatPaginatorModule,
-    MoneyTrackerServiceModule
+    MoneyTrackerServiceModule,
   ],
   providers: [
     {

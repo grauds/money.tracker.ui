@@ -12,9 +12,11 @@ export function initializeKeycloak(
         clientId: 'clematis-money-tracker-ui',
       },
       initOptions: {
-        checkLoginIframe: false
+        onLoad: 'check-sso',
+        checkLoginIframe: false,
+        silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
       },
       loadUserProfileAtStartUp: true,
-      updateMinValidity: 900
+      updateMinValidity: 90,
     });
 }

@@ -67,6 +67,7 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup> imp
 
     this.moneyTrackerService.getTotalsForCommodityGroup(this.id, MoneyTypes.RUB, (response) => {
       this.totalSum = response
+      this.loading = false
     }, (error) => {
       // todo error handling
     })

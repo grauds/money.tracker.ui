@@ -21,7 +21,9 @@
     "allowSyntheticDefaultImports": true,
     "paths": {
       "@clematis-shared/model": ["libs/model/src/index.ts"],
-      "@clematis-shared/money-tracker-service": ["libs/money-tracker-service/src/index.ts"]
+      "@clematis-shared/money-tracker-service": [
+        "libs/money-tracker-service/src/index.ts"
+      ]
     },
     "rootDir": "."
   },

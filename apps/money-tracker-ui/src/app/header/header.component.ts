@@ -2,9 +2,9 @@ import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { NavigationEnd, Router } from '@angular/router';
-import {BreakpointObserver, Breakpoints, MediaMatcher} from '@angular/cdk/layout';
-import {Observable} from "rxjs";
-import {map, shareReplay} from "rxjs/operators";
+import { BreakpointObserver, Breakpoints, MediaMatcher } from '@angular/cdk/layout';
+import { Observable } from "rxjs";
+import { map, shareReplay } from "rxjs/operators";
 
 @Component({
   selector: 'app-header',
@@ -26,10 +26,9 @@ export class HeaderComponent implements OnInit {
   // the header of the application
   @Input() title: String = ''
 
-  faLogout = faSignOut;
+  @Input() username: String = ''
 
-  // collapsed menu flag
-  isCollapsed: boolean = true;
+  faLogout = faSignOut;
 
   // current route of the application
   currentRoute: String = '';
@@ -39,9 +38,9 @@ export class HeaderComponent implements OnInit {
               media: MediaMatcher,
               private breakpointObserver: BreakpointObserver) {
 
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this.mobileQuery = media.matchMedia('(max-width: 800px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
+    this.mobileQuery.addEventListener("change", this._mobileQueryListener);
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -57,11 +56,7 @@ export class HeaderComponent implements OnInit {
     this.keycloak.logout('*').then()
   }
 
-  isLoggedIn() {
-    return this.keycloak.getKeycloakInstance().authenticated
-  }
-
   userInfo() {
-    return this.keycloak.getUsername()
+    return this.username
   }
 }
