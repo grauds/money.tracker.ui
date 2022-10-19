@@ -66,6 +66,7 @@ import { OrganizationGroupListComponent } from './organizations/organization-gro
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MoneyTrackerServiceModule } from '@clematis-shared/money-tracker-service';
 import { WorkspaceComponent } from './workspace/workspace.component';
+import { AboutComponent } from './about/about.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -73,12 +74,17 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/main'
+    redirectTo: '/main',
   },
-  { path: "main", component: MainComponent },
+  {
+    path: 'about',
+    pathMatch: 'full',
+    component: AboutComponent,
+  },
+  { path: 'main', component: MainComponent },
   {
     path: '',
-    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
     component: WorkspaceComponent,
     children: [
       {
@@ -120,10 +126,10 @@ const routes: Routes = [
       {
         path: 'organizationGroups/:id',
         component: OrganizationGroupComponent,
-      }
-    ]
+      },
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 const mapConfig: YaConfig = {
@@ -155,6 +161,7 @@ const mapConfig: YaConfig = {
     OrganizationGroupComponent,
     OrganizationGroupListComponent,
     WorkspaceComponent,
+    AboutComponent
   ],
   imports: [
     HttpClientModule,

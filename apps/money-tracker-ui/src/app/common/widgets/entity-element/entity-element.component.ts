@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Entity } from '@clematis-shared/model';
-import {Utils} from "../../utils/utils";
+import { Utils } from '../../utils/utils';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-entity-element',
@@ -13,10 +14,14 @@ export class EntityElementComponent implements OnInit {
 
   entityLink: string | undefined;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.entityLink = Utils.parseResourceUrlToAppUrl(this.entity.getSelfLinkHref())
+  }
+
+  navigate = () => {
+    this.router.navigate([this.entityLink])
   }
 
 }

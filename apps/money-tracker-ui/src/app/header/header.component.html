@@ -7,20 +7,28 @@
     <mat-toolbar>{{title}}</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item
-         routerLinkActive="/commodities"
-         routerLink="/commodities">Commodities</a>
+         routerLinkActive="/"
+         routerLink="/">Home</a>
+      <div *ngIf="isLoggedIn">
+        <a mat-list-item
+           routerLinkActive="/commodities"
+           routerLink="/commodities">Commodities</a>
+        <a mat-list-item
+           routerLinkActive="/commodityGroups"
+           routerLink="/commodityGroups">Commodities Groups</a>
+        <a mat-list-item
+           routerLinkActive="/organizations"
+           routerLink="/organizations">Organizations</a>
+        <a mat-list-item
+           routerLinkActive="/organizationGroups"
+           routerLink="/organizationGroups">Organizations Groups</a>
+        <a mat-list-item
+           routerLinkActive="/expenses"
+           routerLink="/expenses">Expenses</a>
+      </div>
       <a mat-list-item
-         routerLinkActive="/commodityGroups"
-         routerLink="/commodityGroups">Commodities Groups</a>
-      <a mat-list-item
-         routerLinkActive="/organizations"
-         routerLink="/organizations">Organizations</a>
-      <a mat-list-item
-         routerLinkActive="/organizationGroups"
-         routerLink="/organizationGroups">Organizations Groups</a>
-      <a mat-list-item
-         routerLinkActive="/expenses"
-         routerLink="/expenses">Expenses</a>
+         routerLinkActive="/about"
+         routerLink="/about">About</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -35,12 +43,16 @@
       </button>
       <span *ngIf="isHandset$ | async">{{title}}</span>
       <span class="header-spacer"></span>
-      <div>
-        <span class="navbar-brand" style="border-left: 2px solid white; font-size: 20px;">
-          {{userInfo()}}
-          <fa-icon class="logout-icon" (click)="logout()" [icon]="faLogout"></fa-icon>
-        </span>
-      </div>
+      <span class="navbar-brand" style="font-size: 20px; padding-right: 15px"
+            *ngIf="isLoggedIn">{{getUserInfo()}}</span>
+      <span class="navbar-brand" style="border-left: 2px solid white; font-size: 20px;">
+        <button mat-icon-button *ngIf="isLoggedIn" type="button" (click)="logout()">
+          <mat-icon fontIcon="logout"></mat-icon>
+        </button>
+        <button mat-icon-button *ngIf="!isLoggedIn" type="button" (click)="login()">
+          <mat-icon fontIcon="login"></mat-icon>
+        </button>
+      </span>
     </mat-toolbar>
     <app-workspace></app-workspace>
   </mat-sidenav-content>

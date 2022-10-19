@@ -42,9 +42,9 @@ export abstract class EntityListComponent<T extends Resource> {
                         private resourceService: HateoasResourceService,
                         private router: Router,
                         private route: ActivatedRoute,
-                        renderer: any = new EntityElementComponent()) {
+                        renderer?: any) {
 
-    this.renderer = renderer
+    this.renderer = renderer ? renderer : new EntityElementComponent(router)
 
     this.pageSubscription = route.queryParams.subscribe(
       (queryParam: any) => {

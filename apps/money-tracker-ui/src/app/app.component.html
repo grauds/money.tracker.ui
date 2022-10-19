@@ -1,1 +1,3 @@
-<app-header [title]="title" [username]="username"></app-header>
+<app-header *ngIf="userProfile" [title]="title" [userProfile]="userProfile" [isLoggedIn]="isLoggedIn"></app-header>
+
+<app-header *ngIf="!userProfile" [title]="title" [isLoggedIn]="isLoggedIn"></app-header>

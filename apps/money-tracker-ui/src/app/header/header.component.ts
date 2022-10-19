@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
-import { faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { NavigationEnd, Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints, MediaMatcher } from '@angular/cdk/layout';
 import { Observable } from "rxjs";
 import { map, shareReplay } from "rxjs/operators";
+import {KeycloakProfile} from "keycloak-js";
 
 @Component({
   selector: 'app-header',
@@ -24,16 +24,17 @@ export class HeaderComponent implements OnInit {
   private _mobileQueryListener: () => void;
 
   // the header of the application
-  @Input() title: String = ''
+  @Input() title: string = ''
 
-  @Input() username: String = ''
+  @Input() userProfile?: KeycloakProfile
 
-  faLogout = faSignOut;
+  @Input() isLoggedIn?: boolean;
 
   // current route of the application
   currentRoute: String = '';
 
-  constructor(private router: Router, private readonly keycloak: KeycloakService,
+  constructor(private router: Router,
+              private readonly keycloak: KeycloakService,
               changeDetectorRef: ChangeDetectorRef,
               media: MediaMatcher,
               private breakpointObserver: BreakpointObserver) {
@@ -52,11 +53,22 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  logout() {
-    this.keycloak.logout('*').then()
+  public login() {
+    this.keycloak.login();
   }
 
-  userInfo() {
-    return this.username
+  public logout() {
+    this.keycloak.logout();
+  }
+
+  getUserInfo() {
+    if (this.userProfile) {
+      return this.userProfile.firstName
+        + ' ' + this.userProfile.lastName
+        + ' (' + this.userProfile.username + ')'
+    } else {
+      return ''
+    }
+
   }
 }

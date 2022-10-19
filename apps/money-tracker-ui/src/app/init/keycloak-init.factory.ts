@@ -4,19 +4,19 @@ import { environment } from '../../environments/environment';
 export function initializeKeycloak(
   keycloak: KeycloakService
 ) {
-  return () =>
+  return () => {
     keycloak.init({
       config: {
         url: environment.authUrl,
         realm: 'clematis',
-        clientId: 'clematis-money-tracker-ui',
+        clientId: 'clematis-money-tracker-ui'
       },
       initOptions: {
-        onLoad: 'check-sso',
-        checkLoginIframe: false,
+        checkLoginIframe: true,
         silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
       },
       loadUserProfileAtStartUp: true,
       updateMinValidity: 90,
     });
+  }
 }
