@@ -4,6 +4,7 @@ import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoa
 import { AccountBalance, CommodityGroup, ExpenseItem, MoneyTypes } from '@clematis-shared/model';
 import { PagedResourceCollection } from '@lagoshny/ngx-hateoas-client/lib/model/resource/paged-resource-collection';
 
+// todo
 import {environment} from "../../../../apps/money-tracker-ui/src/environments/environment";
 
 @Injectable()
@@ -23,7 +24,7 @@ export class MoneyTrackerService {
           error(e)
         }
       }
-      this._doQuery('/commodityGroups/search/pathById', {
+      this.resourceService.searchCollection(CommodityGroup, 'pathById', {
         params: {
           id: commodityGroupId
         }

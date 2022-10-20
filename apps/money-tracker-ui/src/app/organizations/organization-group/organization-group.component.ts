@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {HateoasResourceService, ResourceCollection} from '@lagoshny/ngx-hateoas-client';
+import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
 import { ActivatedRoute } from '@angular/router';
-import { Organization, OrganizationGroup } from '@clematis-shared/model';
 
-import { EntityComponent } from '../../common/widgets/entity/entity.component';
-import { Utils } from '../../common/utils/utils';
+import { Entity, Organization, OrganizationGroup } from '@clematis-shared/model';
+import { EntityComponent } from '@clematis-shared/shared-components';
 
 @Component({
   selector: 'app-organization-group',
@@ -38,7 +37,7 @@ export class OrganizationGroupComponent extends EntityComponent<OrganizationGrou
     this.entity?.getRelation<OrganizationGroup>('parent')
       .subscribe((parent: OrganizationGroup) => {
         this.parent = parent
-        this.parentLink = Utils.parseResourceUrlToAppUrl(this.parent.getSelfLinkHref())
+        this.parentLink = Entity.getRelativeSelfLinkHref(this.parent)
       })
 
     this.resourceService.searchCollection(OrganizationGroup, 'recursiveByParentId', {

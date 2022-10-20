@@ -24,6 +24,8 @@ import {
   ExpenseItem,
   Organization,
   UnitType,
+  OrganizationGroup,
+  Entity,
 } from '@clematis-shared/model';
 
 import {
@@ -38,8 +40,6 @@ import { AppComponent } from './app.component';
 import { AuthGuard } from './auth/auth.guard';
 import { HeaderComponent } from './header/header.component';
 import { MainComponent } from './main/main.component';
-import { EntityElementComponent } from './common/widgets/entity-element/entity-element.component';
-import { PaginationBarComponent } from './common/widgets/pagination-bar/pagination-bar.component';
 
 // lists
 import { CommoditiesListComponent } from './commodities/commodities-list/commodities-list.component';
@@ -52,8 +52,6 @@ import { CommoditiesGroupsComponent } from './pages/commodities-groups/commoditi
 import { OrganizationsComponent } from './pages/organizations/organizations.component';
 import { ExpensesListComponent } from './pages/expences-list/expenses-list.component';
 import { ExpenseItemRendererComponent } from './pages/expences-list/expense-item-renderer/expense-item-renderer.component';
-import { PageSizeComponent } from './common/widgets/page-size/page-size.component';
-import { SearchComponent } from './common/widgets/search/search.component';
 import { CommodityComponent } from './commodities/commodity/commodity.component';
 import { CommodityGroupComponent } from './commodities/commodity-group/commodity-group.component';
 
@@ -67,6 +65,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MoneyTrackerServiceModule } from '@clematis-shared/money-tracker-service';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { AboutComponent } from './about/about.component';
+import { SharedComponentsModule } from '@clematis-shared/shared-components';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -142,8 +141,6 @@ const mapConfig: YaConfig = {
     AppComponent,
     HeaderComponent,
     MainComponent,
-    EntityElementComponent,
-    PaginationBarComponent,
     CommodityGroupListComponent,
     CommoditiesComponent,
     CommoditiesGroupsComponent,
@@ -152,8 +149,6 @@ const mapConfig: YaConfig = {
     OrganizationsListComponent,
     ExpensesListComponent,
     ExpenseItemRendererComponent,
-    PageSizeComponent,
-    SearchComponent,
     CommodityComponent,
     CommodityGroupComponent,
     AccountBalanceItemComponent,
@@ -187,6 +182,7 @@ const mapConfig: YaConfig = {
     LayoutModule,
     MatPaginatorModule,
     MoneyTrackerServiceModule,
+    SharedComponentsModule
   ],
   providers: [
     {
@@ -210,10 +206,12 @@ export class AppModule {
       },
       useTypes: {
         resources: [
+          Entity,
           CommodityGroup,
           Commodity,
-          ExpenseItem,
+          OrganizationGroup,
           Organization,
+          ExpenseItem,
           UnitType,
         ],
       },

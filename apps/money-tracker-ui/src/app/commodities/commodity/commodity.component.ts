@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
-import { EntityComponent } from '../../common/widgets/entity/entity.component';
-import { Commodity, MoneyType, CommodityGroup, MoneyTypes, ExpenseItem } from '@clematis-shared/model';
-import { Utils } from '../../common/utils/utils';
+import { Commodity, MoneyType, CommodityGroup, MoneyTypes, ExpenseItem, Entity } from '@clematis-shared/model';
+import { EntityComponent } from '@clematis-shared/shared-components';
+import { Utils } from '@clematis-shared/shared-components';
 import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
 
 @Component({
@@ -58,6 +58,8 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
 
   averagePrice: number | undefined;
 
+  path: Array<CommodityGroup> = [];
+
   constructor(resourceService: HateoasResourceService,
               private moneyTrackerService: MoneyTrackerService,
               route: ActivatedRoute) {
@@ -83,9 +85,9 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
     this.entity?.getRelation<CommodityGroup>('parent')
       .subscribe((parent: CommodityGroup) => {
         this.parent = parent
-        this.parentLink = Utils.parseResourceUrlToAppUrl(this.parent.getSelfLinkHref())
+        this.parentLink = Entity.getRelativeSelfLinkHref(this.parent)
         this.moneyTrackerService.getPathForCommodity(Utils.getIdFromSelfUrl(this.parent), (response) => {
-
+          this.path = response.resources
         }, (error) => {
           // todo error handling
         })

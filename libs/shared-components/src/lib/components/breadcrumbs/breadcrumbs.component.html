@@ -1,0 +1,15 @@
+<div class="breadcrumbs">
+
+  <div class="path-divider">/</div>
+
+  <div *ngFor="let item of path" class="path-item">
+
+    <a *ngIf="item.getSelfLinkHref()" [routerLink]="parseResourceUrlToAppUrl(item)" class="active-ctrl">
+      {{ item.name }}
+    </a>
+    <div *ngIf="!item.getSelfLinkHref()">{{ item.name }}</div>
+
+    <div class="path-divider">/</div>
+  </div>
+
+</div>

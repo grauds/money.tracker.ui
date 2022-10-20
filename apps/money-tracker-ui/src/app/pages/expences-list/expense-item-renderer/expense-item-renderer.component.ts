@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ExpenseItem } from '../../../../../../../libs/model/src/model/expense-item';
-import { Commodity } from '../../../../../../../libs/model/src/model/commodity';
-import { Organization } from '../../../../../../../libs/model/src/model/organization';
-import { Utils } from '../../../common/utils/utils';
+import { Entity, ExpenseItem } from '@clematis-shared/model';
+import { Commodity } from '@clematis-shared/model';
+import { Organization } from '@clematis-shared/model';
 
 @Component({
   selector: 'app-expense-item-renderer',
@@ -26,13 +25,13 @@ export class ExpenseItemRendererComponent implements OnInit {
   ngOnInit(): void {
     this.entity.getRelation<Commodity>('commodity')
       .subscribe((commodity: Commodity) => {
-        this.commodity = Utils.parseResourceUrlToAppUrl(commodity.getSelfLinkHref())
+        this.commodity = Entity.getRelativeSelfLinkHref(commodity)
         this.commodityName = commodity.name
       });
 
     this.entity.getRelation<Organization>('tradeplace')
       .subscribe((organization: Organization) => {
-        this.organization = Utils.parseResourceUrlToAppUrl(organization.getSelfLinkHref())
+        this.organization = Entity.getRelativeSelfLinkHref(organization)
         this.organizationName = organization.name
       });
   }

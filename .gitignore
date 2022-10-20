@@ -42,3 +42,5 @@ testem.log
 Thumbs.db
 /money-tracker-ui.iml
 /.vscode/
+
+.angular

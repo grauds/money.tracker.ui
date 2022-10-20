@@ -3,7 +3,7 @@ import { HateoasResourceService, Sort } from '@lagoshny/ngx-hateoas-client';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExpenseItem } from '@clematis-shared/model';
 
-import { EntityListComponent } from '../../common/widgets/entity-list/entity-list.component';
+import { EntityListComponent } from '@clematis-shared/shared-components';
 import { ExpenseItemRendererComponent } from './expense-item-renderer/expense-item-renderer.component';
 
 @Component({

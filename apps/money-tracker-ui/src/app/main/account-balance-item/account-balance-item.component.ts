@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AccountBalance } from '../../../../../../libs/model/src/model/account-balance';
+import { AccountBalance } from '@clematis-shared/model';
 
 @Component({
   selector: 'app-account-balance-item',

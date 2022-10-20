@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { OrganizationGroup } from '@clematis-shared/model';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { EntityListComponent} from '../../common/widgets/entity-list/entity-list.component';
+import { OrganizationGroup } from '@clematis-shared/model';
+import { EntityListComponent} from '@clematis-shared/shared-components';
 
 @Component({
   selector: 'app-organization-group-list',
-  templateUrl: './../../common/widgets/entity-list/entity-list.component.html',
-  styleUrls: ['./../../common/widgets/entity-list/entity-list.component.css']
+  templateUrl: 'organization-group-list.component.html',
+  styleUrls: ['organization-group-list.component.css']
 })
 export class OrganizationGroupListComponent extends EntityListComponent<OrganizationGroup> implements OnInit {
 

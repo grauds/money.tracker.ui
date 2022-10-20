@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
 import { ActivatedRoute } from '@angular/router';
-import { CommodityGroup, Commodity, MoneyTypes } from '@clematis-shared/model';
-import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
 
-import { EntityComponent } from '../../common/widgets/entity/entity.component';
-import { Utils } from '../../common/utils/utils';
+import { CommodityGroup, Commodity, MoneyTypes, Entity } from '@clematis-shared/model';
+import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
+import { EntityComponent } from '@clematis-shared/shared-components';
 
 @Component({
   selector: 'app-commodity-group',
@@ -44,7 +43,7 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup> imp
     this.entity?.getRelation<CommodityGroup>('parent')
       .subscribe((parent: CommodityGroup) => {
         this.parent = parent
-        this.parentLink = Utils.parseResourceUrlToAppUrl(this.parent.getSelfLinkHref())
+        this.parentLink = Entity.getRelativeSelfLinkHref(this.parent)
       })
 
     this.resourceService.searchCollection(CommodityGroup, 'recursiveByParentId', {
