@@ -6,9 +6,10 @@ import { PaginationBarComponent } from './components/pagination-bar/pagination-b
 import { PageSizeComponent } from './components/page-size/page-size.component';
 import { SearchComponent } from './components/search/search.component';
 import { RouterModule } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MatIconModule],
   exports: [
     EntityElementComponent,
     BreadcrumbsComponent
