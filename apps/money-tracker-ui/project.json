@@ -17,13 +17,15 @@
         "main": "apps/money-tracker-ui/src/main.ts",
         "polyfills": "apps/money-tracker-ui/src/polyfills.ts",
         "tsConfig": "apps/money-tracker-ui/tsconfig.app.json",
+        "inlineStyleLanguage": "sass",
         "assets": [
           "apps/money-tracker-ui/src/favicon.ico",
           "apps/money-tracker-ui/src/assets"
         ],
         "styles": [
           "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-          "apps/money-tracker-ui/src/styles.css"
+          "apps/money-tracker-ui/src/styles.css",
+          "apps/money-tracker-ui/src/styles.sass"
         ],
         "scripts": [],
         "allowedCommonJsDependencies": ["keycloak-js"]

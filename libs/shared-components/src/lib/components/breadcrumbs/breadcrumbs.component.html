@@ -1,6 +1,6 @@
 <div class="breadcrumbs">
 
-  <div class="path-divider">/</div>
+  <div class="path-divider"></div>
 
   <div *ngFor="let item of path" class="path-item">
 
@@ -9,7 +9,7 @@
     </a>
     <div *ngIf="!item.getSelfLinkHref()">{{ item.name }}</div>
 
-    <div class="path-divider">/</div>
+    <div class="path-divider">&gt;</div>
   </div>
 
 </div>
