@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { CommodityGroup, Commodity, MoneyTypes, Entity } from '@clematis-shared/model';
 import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
-import {EntityComponent, Utils} from '@clematis-shared/shared-components';
+import { EntityComponent, Utils } from '@clematis-shared/shared-components';
 
 @Component({
   selector: 'app-commodity-group',

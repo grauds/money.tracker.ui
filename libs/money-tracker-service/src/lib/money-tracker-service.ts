@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
-import { AccountBalance, CommodityGroup, ExpenseItem, MoneyTypes } from '@clematis-shared/model';
+import {AccountBalance, CommodityGroup, ExpenseItem, MoneyTypes, OrganizationGroup} from '@clematis-shared/model';
 import { PagedResourceCollection } from '@lagoshny/ngx-hateoas-client/lib/model/resource/paged-resource-collection';
 
 // todo
@@ -27,6 +27,27 @@ export class MoneyTrackerService {
       this.resourceService.searchCollection(CommodityGroup, 'pathById', {
         params: {
           id: commodityGroupId
+        }
+      }).subscribe(observer)
+    }
+
+  }
+
+  getPathForOrganizationGroup(organizationGroupId: string | null,
+                           callback: (arg0: ResourceCollection<OrganizationGroup>) => void,
+                           error: (arg0: Error) => void) {
+
+    if (organizationGroupId) {
+      const observer = {
+        next: (response: any) => {
+          callback(response)
+        }, error: (e: Error) => {
+          error(e)
+        }
+      }
+      this.resourceService.searchCollection(OrganizationGroup, 'pathById', {
+        params: {
+          id: organizationGroupId
         }
       }).subscribe(observer)
     }

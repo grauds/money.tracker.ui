@@ -1,34 +1,29 @@
-  <app-breadcrumbs *ngIf="entity" [path]="path"></app-breadcrumbs>
-  <div class='row' *ngIf="entity">
-    <div class='row'>
-      <div class='col-4 back-area'>
-
-        <div class="jumbotron">
-          <h2 style='margin: 10px'></h2>
-          <h2>
-            {{entity ? entity.name : ''}}
-          </h2>
-          <span style='max-height: 350px; margin: 10px; overflow: auto'>
-            {{entity ? entity.description : ''}}
-          </span>
-          <div>
-            Total: {{totalSum}} RUB
-          </div>
+<app-breadcrumbs *ngIf="entity" [path]="path"></app-breadcrumbs>
+<div *ngIf="entity">
+  <div class='back-area'>
+    <div class="jumbotron">
+      <h2 style='margin: 10px'></h2>
+      <h2>
+        {{entity ? entity.name : ''}}
+      </h2>
+      <span style='max-height: 350px; margin: 10px; overflow: auto'>
+          {{entity ? entity.description : ''}}
+        </span>
+        <div>
+          Total: {{totalSum}} RUB
         </div>
+    </div>
+  </div>
 
+    <div *ngIf="childGroups.length > 0" class='col-4'>
+      <div *ngFor="let a of childGroups">
+        <app-entity-element [entity]="a"></app-entity-element>
       </div>
+    </div>
 
-      <div *ngIf="childGroups.length > 0" class='col-4'>
-        <div *ngFor="let a of childGroups">
-          <app-entity-element [entity]="a"></app-entity-element>
-        </div>
+    <div *ngIf="childCommodities.length > 0" class='col-4'>
+      <div *ngFor="let a of childCommodities">
+        <app-entity-element [entity]="a"></app-entity-element>
       </div>
-
-      <div *ngIf="childCommodities.length > 0" class='col-4'>
-        <div *ngFor="let a of childCommodities">
-          <app-entity-element [entity]="a"></app-entity-element>
-        </div>
-      </div>
-
     </div>
   </div>

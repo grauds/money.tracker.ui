@@ -2,17 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
 import { ActivatedRoute } from '@angular/router';
 
-import { Entity, Organization, OrganizationGroup } from '@clematis-shared/model';
-import { EntityComponent } from '@clematis-shared/shared-components';
+import { CommodityGroup, Entity, Organization, OrganizationGroup } from '@clematis-shared/model';
+import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
+import {EntityComponent, Utils} from '@clematis-shared/shared-components';
 
 @Component({
   selector: 'app-organization-group',
   templateUrl: './organization-group.component.html',
-  styleUrls: ['./organization-group.component.css'],
+  styleUrls: ['./organization-group.component.css']
 })
 export class OrganizationGroupComponent extends EntityComponent<OrganizationGroup> implements OnInit {
 
   currentRate: number = 2;
+
+  loading: boolean = true;
 
   parent: OrganizationGroup | undefined;
 
@@ -22,7 +25,10 @@ export class OrganizationGroupComponent extends EntityComponent<OrganizationGrou
 
   childOrganizations: Organization[] = []
 
+  path: Array<CommodityGroup> = [];
+
   constructor(resourceService: HateoasResourceService,
+              private moneyTrackerService: MoneyTrackerService,
               route: ActivatedRoute) {
     super(OrganizationGroup, resourceService, route);
   }
@@ -57,6 +63,17 @@ export class OrganizationGroupComponent extends EntityComponent<OrganizationGrou
       .subscribe((collection: ResourceCollection<Organization>) => {
         this.childOrganizations = collection.resources;
       });
+
+    if (this.entity) {
+      this.moneyTrackerService.getPathForOrganizationGroup(Utils.getIdFromSelfUrl(this.entity), (response) => {
+        this.path = response.resources
+        if (this.parent) {
+          this.path.push(this.parent)
+        }
+      }, (error) => {
+        // todo error handling
+      })
+    }
 
   }
 }

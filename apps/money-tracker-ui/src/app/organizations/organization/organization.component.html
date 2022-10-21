@@ -1,16 +1,19 @@
-<div>
-  <div class='back-area jumbotron'>
+<app-breadcrumbs *ngIf="entity" [path]="path"></app-breadcrumbs>
+<div *ngIf="entity">
+  <div class='jumbotron'>
     <div>
       <h2 style='margin: 10px'></h2>
       <h2>
         {{entity ? entity.name : 'Not loaded'}}
       </h2>
-      <h6>
-        <a routerLink="{{parentLink}}">{{parent?.name}}</a>
-      </h6>
-    </div>
-    <div>
-
     </div>
   </div>
+
+
+  <div>
+    <ya-map [center]="[55.751952, 37.600739]" [zoom]="12">
+      <ya-placemark [geometry]="[55.751952, 37.600739]"></ya-placemark>
+    </ya-map>
+  </div>
+
 </div>

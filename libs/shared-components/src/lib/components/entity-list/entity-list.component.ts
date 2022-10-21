@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HateoasResourceService, PagedResourceCollection, Resource, Sort } from '@lagoshny/ngx-hateoas-client';
 import { EntityElementComponent } from '../entity-element/entity-element.component';
 import { PageEvent } from '@angular/material/paginator';
-import {Component} from "@angular/core";
 
 export abstract class EntityListComponent<T extends Resource> {
 

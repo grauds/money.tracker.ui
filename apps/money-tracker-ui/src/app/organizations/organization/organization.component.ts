@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 
-import { Entity, Organization, OrganizationGroup } from '@clematis-shared/model';
-import { EntityComponent } from '@clematis-shared/shared-components';
+import {CommodityGroup, Entity, Organization, OrganizationGroup} from '@clematis-shared/model';
+import {EntityComponent, Utils} from '@clematis-shared/shared-components';
+import {MoneyTrackerService} from "@clematis-shared/money-tracker-service";
 
 @Component({
   selector: 'app-organization',
@@ -18,7 +19,10 @@ export class OrganizationComponent extends EntityComponent<Organization> impleme
 
   parentLink: string | undefined;
 
+  path: Array<OrganizationGroup> = [];
+
   constructor(resourceService: HateoasResourceService,
+              private moneyTrackerService: MoneyTrackerService,
               route: ActivatedRoute) {
     super(Organization, resourceService, route)
   }
@@ -34,6 +38,14 @@ export class OrganizationComponent extends EntityComponent<Organization> impleme
       .subscribe((parent: OrganizationGroup) => {
         this.parent = parent
         this.parentLink = Entity.getRelativeSelfLinkHref(this.parent)
+        this.moneyTrackerService.getPathForOrganizationGroup(Utils.getIdFromSelfUrl(this.parent), (response) => {
+          this.path = response.resources
+          if (this.parent) {
+            this.path.push(this.parent)
+          }
+        }, (error) => {
+          // todo error handling
+        })
       })
   }
 }

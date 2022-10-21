@@ -63,7 +63,7 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
   constructor(resourceService: HateoasResourceService,
               private moneyTrackerService: MoneyTrackerService,
               route: ActivatedRoute) {
-    super(Commodity, resourceService, route);
+    super(Commodity, resourceService, route)
   }
 
   ngOnInit(): void {
