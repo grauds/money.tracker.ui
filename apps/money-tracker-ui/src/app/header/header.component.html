@@ -6,10 +6,10 @@
                [opened]="(isHandset$ | async) === false">
     <mat-toolbar>{{title}}</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item
-         routerLinkActive="/"
-         routerLink="/">Home</a>
       <div *ngIf="isLoggedIn">
+        <a mat-list-item
+           routerLinkActive="/main"
+           routerLink="/main">Home</a>
         <a mat-list-item
            routerLinkActive="/commodities"
            routerLink="/commodities">Commodities</a>

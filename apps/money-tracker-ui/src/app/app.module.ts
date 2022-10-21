@@ -73,17 +73,21 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/main',
+    redirectTo: '/about',
   },
   {
     path: 'about',
     pathMatch: 'full',
     component: AboutComponent,
   },
-  { path: 'main', component: MainComponent },
+  {
+    path: 'main',
+    canActivate: [AuthGuard],
+    component: MainComponent
+  },
   {
     path: '',
-    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
     component: WorkspaceComponent,
     children: [
       {

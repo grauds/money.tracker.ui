@@ -1,17 +1,11 @@
-<app-breadcrumbs [path]="path"></app-breadcrumbs>
-<div class='row'>
+<app-breadcrumbs *ngIf="entity" [path]="path"></app-breadcrumbs>
+<div class='row' *ngIf="entity">
   <div class='col-8 back-area'>
     <div>
       <h2 style='margin: 10px'></h2>
       <h2>
         {{entity ? entity.name : 'Not loaded'}}
       </h2>
-      <h6>
-        <a routerLink="{{parentLink}}">{{parent?.name}}</a>
-      </h6>
-    </div>
-    <div>
-
     </div>
   </div>
   <div class="col-4 jumbotron">
@@ -33,7 +27,7 @@
   </div>
 </div>
 
-<div class='row'>
+<div class='row' *ngIf="graph.data[0].x.length > 1">
   <div class='col-12'>
     <plotly-plot [data]="graph.data" [layout]="graph.layout"
                  [style]="{minWidth: '800px', width: '100%', height: '500px'}">
@@ -41,7 +35,7 @@
   </div>
 </div>
 
-<div class='row'>
+<div class='row' *ngIf="graphQty.data[0].x.length > 1">
   <div class='col-12'>
     <plotly-plot [data]="graphQty.data" [layout]="graphQty.layout"
                  [style]="{minWidth: '800px', width: '100%', height: '500px'}">

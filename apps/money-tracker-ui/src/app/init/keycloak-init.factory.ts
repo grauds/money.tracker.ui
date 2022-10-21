@@ -1,4 +1,4 @@
-import { KeycloakService } from 'keycloak-angular';
+import { KeycloakEventType, KeycloakService } from 'keycloak-angular';
 import { environment } from '../../environments/environment';
 
 export function initializeKeycloak(
@@ -12,11 +12,23 @@ export function initializeKeycloak(
         clientId: 'clematis-money-tracker-ui'
       },
       initOptions: {
-        checkLoginIframe: true,
-        silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
+        onLoad: 'check-sso',
+        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
+        checkLoginIframe: false
+      },
+      bearerExcludedUrls: ['/assets', '/clients/public'],
+      shouldUpdateToken: (request) => {
+        return !!request.headers.get('token-update');
       },
       loadUserProfileAtStartUp: true,
-      updateMinValidity: 90,
+      updateMinValidity: 20,
+    });
+    keycloak.keycloakEvents$.subscribe({
+      next: (e) => {
+        if (e.type == KeycloakEventType.OnTokenExpired) {
+          keycloak.updateToken(20);
+        }
+      }
     });
   }
 }

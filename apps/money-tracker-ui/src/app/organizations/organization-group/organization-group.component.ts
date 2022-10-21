@@ -49,7 +49,7 @@ export class OrganizationGroupComponent extends EntityComponent<OrganizationGrou
         this.childGroups = collection.resources;
       });
 
-    this.resourceService.searchCollection(Organization, 'recursiveByParentId', {
+    this.resourceService.searchCollection(Organization, 'recursiveByParentGroupId', {
       params: {
         id: this.id ? this.id : '1'
       }

@@ -32,9 +32,7 @@ export class AppComponent implements OnInit {
     // subscription to other updates
     this.keycloak.keycloakEvents$.subscribe({
       next: (e) => {
-        if (e.type == KeycloakEventType.OnTokenExpired) {
-          this.keycloak.updateToken(20);
-        } else if (e.type == KeycloakEventType.OnAuthSuccess) {
+        if (e.type == KeycloakEventType.OnAuthSuccess) {
           this.isLoggedIn = true
           this.keycloak.loadUserProfile().then(profile => {
             this.userProfile = profile

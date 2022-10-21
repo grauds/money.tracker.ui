@@ -55,7 +55,7 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup> imp
         this.childGroups = collection.resources;
       });
 
-    this.resourceService.searchCollection(Commodity, 'recursiveByParentId', {
+    this.resourceService.searchCollection(Commodity, 'recursiveByParentGroupId', {
       params: {
         id: this.id ? this.id : '1'
       }
@@ -68,7 +68,7 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup> imp
       this.totalSum = response
       this.loading = false
     }, (error) => {
-      // todo error handling
+      this.loading = false
     })
   };
 
