@@ -206,7 +206,9 @@ export class AppModule {
   constructor(hateoasConfig: NgxHateoasClientConfigurationService) {
     hateoasConfig.configure({
       http: {
-        rootUrl: environment.apiUrl,
+        defaultRoute: {
+          rootUrl: environment.apiUrl
+        }
       },
       useTypes: {
         resources: [
