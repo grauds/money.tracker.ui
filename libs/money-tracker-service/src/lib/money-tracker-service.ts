@@ -12,9 +12,9 @@ export class MoneyTrackerService {
 
   constructor(private http: HttpClient, private resourceService: HateoasResourceService) { }
 
-  getPathForCommodity(commodityGroupId: string | null,
-                      callback: (arg0: ResourceCollection<CommodityGroup>) => void,
-                      error: (arg0: Error) => void) {
+  getPathForCommodityGroup(commodityGroupId: string | null,
+                           callback: (arg0: ResourceCollection<CommodityGroup>) => void,
+                           error: (arg0: Error) => void) {
 
     if (commodityGroupId) {
       const observer = {

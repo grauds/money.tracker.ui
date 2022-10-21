@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { CommodityGroup, Commodity, MoneyTypes, Entity } from '@clematis-shared/model';
 import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
-import { EntityComponent } from '@clematis-shared/shared-components';
+import {EntityComponent, Utils} from '@clematis-shared/shared-components';
 
 @Component({
   selector: 'app-commodity-group',
@@ -26,6 +26,8 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup> imp
   childCommodities: Commodity[] = []
 
   totalSum: number | undefined;
+
+  path: Array<CommodityGroup> = [];
 
   constructor(resourceService: HateoasResourceService,
               private moneyTrackerService: MoneyTrackerService,
@@ -63,6 +65,17 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup> imp
       .subscribe((collection: ResourceCollection<Commodity>) => {
         this.childCommodities = collection.resources;
       });
+
+    if (this.entity) {
+      this.moneyTrackerService.getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.entity), (response) => {
+        this.path = response.resources
+        if (this.parent) {
+          this.path.push(this.parent)
+        }
+      }, (error) => {
+        // todo error handling
+      })
+    }
 
     this.moneyTrackerService.getTotalsForCommodityGroup(this.id, MoneyTypes.RUB, (response) => {
       this.totalSum = response
