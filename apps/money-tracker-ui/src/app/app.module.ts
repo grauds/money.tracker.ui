@@ -51,7 +51,6 @@ import { CommoditiesComponent } from './pages/commodities/commodities.component'
 import { CommoditiesGroupsComponent } from './pages/commodities-groups/commodities-groups.component';
 import { OrganizationsComponent } from './pages/organizations/organizations.component';
 import { ExpensesListComponent } from './pages/expences-list/expenses-list.component';
-import { ExpenseItemRendererComponent } from './pages/expences-list/expense-item-renderer/expense-item-renderer.component';
 import { CommodityComponent } from './commodities/commodity/commodity.component';
 import { CommodityGroupComponent } from './commodities/commodity-group/commodity-group.component';
 
@@ -66,6 +65,7 @@ import { MoneyTrackerServiceModule } from '@clematis-shared/money-tracker-servic
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { AboutComponent } from './about/about.component';
 import { SharedComponentsModule } from '@clematis-shared/shared-components';
+import { MatTableModule } from '@angular/material/table';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -152,7 +152,6 @@ const mapConfig: YaConfig = {
     CommoditiesListComponent,
     OrganizationsListComponent,
     ExpensesListComponent,
-    ExpenseItemRendererComponent,
     CommodityComponent,
     CommodityGroupComponent,
     AccountBalanceItemComponent,
@@ -169,7 +168,7 @@ const mapConfig: YaConfig = {
     KeycloakAngularModule,
     RouterModule.forRoot(
       routes,
-      { enableTracing: true } // <-- debugging purposes only
+      {enableTracing: true} // <-- debugging purposes only
     ),
     NgxHateoasClientModule.forRoot(),
     ContentLoaderModule,
@@ -186,7 +185,8 @@ const mapConfig: YaConfig = {
     LayoutModule,
     MatPaginatorModule,
     MoneyTrackerServiceModule,
-    SharedComponentsModule
+    SharedComponentsModule,
+    MatTableModule
   ],
   providers: [
     {

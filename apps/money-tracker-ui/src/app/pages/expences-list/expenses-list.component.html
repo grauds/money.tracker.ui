@@ -42,9 +42,51 @@
                      aria-label="Select page">
       </mat-paginator>
 
-      <div *ngFor="let a of entities">
-        <app-expense-item-renderer [entity]="a"></app-expense-item-renderer>
-      </div>
+      <table mat-table [dataSource]="entities" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="transferdate">
+          <th mat-header-cell *matHeaderCellDef> Transfer Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.transferDate | date:'shortDate'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let element">
+            <a *ngIf="element.commodity && element.commodityLink"
+                      routerLink="{{element.commodityLink}}">
+            {{element.commodity.name}}</a>
+
+            <div *ngIf="element.commodity && !element.commodityLink">
+              {{element.commodity.name}}</div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef> Price </th>
+          <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="qty">
+          <th mat-header-cell *matHeaderCellDef> Qty </th>
+          <td mat-cell *matCellDef="let element"> {{element.qty}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="organizationname">
+          <th mat-header-cell *matHeaderCellDef> Organization </th>
+          <td mat-cell *matCellDef="let element">
+            <a *ngIf="element.tradeplace && element.tradeplaceLink"
+               routerLink="{{element.tradeplaceLink}}">
+              {{element.tradeplace.name}}</a>
+
+            <div *ngIf="element.tradeplace && !element.tradeplaceLink">
+                    {{element.tradeplace.name}}</div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      </table>
 
       <mat-paginator [length]="total"
                      [pageSize]="limit"

@@ -18,4 +18,8 @@ export class ExpenseItem extends Resource {
   tradeplace: Organization | undefined;
 
   transferDate: string = '';
+
+  commodityLink: string | undefined;
+
+  tradeplaceLink: string | undefined;
 }
