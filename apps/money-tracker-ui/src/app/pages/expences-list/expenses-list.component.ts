@@ -26,7 +26,7 @@ export class ExpensesListComponent extends EntityListComponent<ExpenseItem> impl
   }
 
   processData(arr: PagedResourceCollection<ExpenseItem>) {
-    forkJoin(arr.resources.map((expense: ExpenseItem) => {
+     forkJoin(arr.resources.map((expense: ExpenseItem) => {
         return expense.getRelation<Commodity>('commodity')
           .pipe(
             map((commodity: Commodity) => {
@@ -36,19 +36,20 @@ export class ExpensesListComponent extends EntityListComponent<ExpenseItem> impl
             })
           )
       })
-    ).subscribe(value => {arr.resources = value});
+    ).subscribe(value => {
+       forkJoin(value.map((expense: ExpenseItem) => {
+           return expense.getRelation<Organization>('tradeplace')
+             .pipe(
+               map((organization: Organization) => {
+                 expense.tradeplace = organization
+                 expense.tradeplaceLink = Entity.getRelativeSelfLinkHref(organization)
+                 return expense
+               })
+             )
+         })
+       ).subscribe(value => {arr.resources = value});
+     });
 
-    forkJoin(arr.resources.map((expense: ExpenseItem) => {
-        return expense.getRelation<Organization>('tradeplace')
-          .pipe(
-            map((organization: Organization) => {
-              expense.tradeplace = organization
-              expense.tradeplaceLink = Entity.getRelativeSelfLinkHref(organization)
-              return expense
-            })
-          )
-      })
-    ).subscribe(value => {arr.resources = value});
   }
 
   override queryData(): Observable<PagedResourceCollection<ExpenseItem>> {

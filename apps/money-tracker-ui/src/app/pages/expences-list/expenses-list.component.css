@@ -6,3 +6,7 @@
   overflow: hidden;
   direction: ltr;
 }
+
+table {
+  width: 100%
+}
