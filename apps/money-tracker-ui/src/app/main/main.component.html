@@ -1,3 +1,5 @@
-<div *ngFor="let a of accountsBalances">
-  <app-account-balance-item [balance]="a" *ngIf="a.balance != 0"></app-account-balance-item>
-</div>
+<div echarts [options]="optionsRub" class="accounts-chart"></div>
+
+<div echarts [options]="optionsEur" class="accounts-chart"></div>
+
+<div echarts [options]="optionsUsd" class="accounts-chart"></div>

@@ -56,6 +56,8 @@ import { CommodityGroupComponent } from './commodities/commodity-group/commodity
 
 import * as PlotlyJS from 'plotly.js-dist-min';
 import { PlotlyModule } from 'angular-plotly.js';
+import { NgxEchartsModule } from 'ngx-echarts';
+
 import { AccountBalanceItemComponent } from './main/account-balance-item/account-balance-item.component';
 import { OrganizationComponent } from './organizations/organization/organization.component';
 import { OrganizationGroupComponent } from './organizations/organization-group/organization-group.component';
@@ -176,6 +178,9 @@ const mapConfig: YaConfig = {
     FormsModule,
     AngularYandexMapsModule.forRoot(mapConfig),
     PlotlyModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    }),
     BrowserAnimationsModule,
     MatToolbarModule,
     MatSidenavModule,
