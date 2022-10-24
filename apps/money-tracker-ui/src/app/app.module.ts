@@ -58,7 +58,6 @@ import * as PlotlyJS from 'plotly.js-dist-min';
 import { PlotlyModule } from 'angular-plotly.js';
 import { NgxEchartsModule } from 'ngx-echarts';
 
-import { AccountBalanceItemComponent } from './main/account-balance-item/account-balance-item.component';
 import { OrganizationComponent } from './organizations/organization/organization.component';
 import { OrganizationGroupComponent } from './organizations/organization-group/organization-group.component';
 import { OrganizationGroupListComponent } from './organizations/organization-group-list/organization-group-list.component';
@@ -156,7 +155,6 @@ const mapConfig: YaConfig = {
     ExpensesListComponent,
     CommodityComponent,
     CommodityGroupComponent,
-    AccountBalanceItemComponent,
     OrganizationComponent,
     OrganizationGroupComponent,
     OrganizationGroupListComponent,
