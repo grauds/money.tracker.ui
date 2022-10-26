@@ -80,9 +80,11 @@ export class MainComponent implements OnInit {
   private processWaterfall() {
 
     // form unique X ticks
-    this.waterfallX = this.monthlyDeltas.map((monthlyDelta: MonthlyDelta) => {
-      return monthlyDelta.year + '/' + monthlyDelta.month
-    }).filter((value, index, self) => self.indexOf(value) === index)
+    this.waterfallX = this.monthlyDeltas
+      .filter((value: MonthlyDelta) => value.code === 'RUB')
+      .map((monthlyDelta: MonthlyDelta) => {
+        return monthlyDelta.year + '/' + monthlyDelta.month
+      })
 
     let currentBalance = this.lastBalance
     let waterfallIncome: string[] = []
