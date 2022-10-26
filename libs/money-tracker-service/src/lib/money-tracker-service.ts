@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
-import {AccountBalance, CommodityGroup, ExpenseItem, MoneyTypes, OrganizationGroup} from '@clematis-shared/model';
+import { AccountBalance, CommodityGroup, ExpenseItem, MoneyTypes, OrganizationGroup } from '@clematis-shared/model';
 import { PagedResourceCollection } from '@lagoshny/ngx-hateoas-client/lib/model/resource/paged-resource-collection';
 
 // todo

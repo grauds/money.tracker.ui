@@ -25,7 +25,7 @@ import {
   Organization,
   UnitType,
   OrganizationGroup,
-  Entity,
+  Entity, MonthlyDelta,
 } from '@clematis-shared/model';
 
 import {
@@ -67,6 +67,7 @@ import { WorkspaceComponent } from './workspace/workspace.component';
 import { AboutComponent } from './about/about.component';
 import { SharedComponentsModule } from '@clematis-shared/shared-components';
 import { MatTableModule } from '@angular/material/table';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -189,7 +190,8 @@ const mapConfig: YaConfig = {
     MatPaginatorModule,
     MoneyTrackerServiceModule,
     SharedComponentsModule,
-    MatTableModule
+    MatTableModule,
+    MatGridListModule
   ],
   providers: [
     {
@@ -218,6 +220,7 @@ export class AppModule {
           Entity,
           CommodityGroup,
           Commodity,
+          MonthlyDelta,
           OrganizationGroup,
           Organization,
           ExpenseItem,
