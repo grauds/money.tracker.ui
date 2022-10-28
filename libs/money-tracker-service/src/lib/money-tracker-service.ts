@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient} from '@angular/common/http';
+import { catchError, map, Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
 import { AccountBalance, CommodityGroup, ExpenseItem, MoneyTypes, OrganizationGroup } from '@clematis-shared/model';
 import { PagedResourceCollection } from '@lagoshny/ngx-hateoas-client/lib/model/resource/paged-resource-collection';
 
 // todo
 import {environment} from "../../../../apps/money-tracker-ui/src/environments/environment";
+
 
 @Injectable()
 export class MoneyTrackerService {
@@ -150,6 +152,29 @@ export class MoneyTrackerService {
     this.resourceService.getPage<AccountBalance>(AccountBalance, {pageParams: {
         size: 100
       }}).subscribe(observer)
+  }
+
+  getBalance(an: number, mois: number, code: string): Observable<number> {
+
+      return this.http.get<number>(this.getUrl('/monthlyDeltas/search/balance'), {
+        params: {
+          an: an,
+          mois: mois,
+          code: code
+        }
+      }).pipe(
+        map(this.getResult.bind(this)),
+        catchError(() => of(0))
+      )
+
+  }
+
+  private getResult(resp: number): number {
+    return resp
+  }
+
+  private getUrl(url: string) :string {
+    return environment.apiUrl + url
   }
 
   private _doQuery(url: string, options: any) {

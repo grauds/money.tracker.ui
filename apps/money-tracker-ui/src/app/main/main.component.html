@@ -1,19 +1,25 @@
-<mat-paginator [length]="total"
-               [pageSize]="limit"
-               [pageSizeOptions]="[12, 24, 36, 48, 120, 240]"
-               [pageIndex]="n"
-               (page)="setCurrentPage($event)"
-               aria-label="Select page">
-</mat-paginator>
-<div echarts [options]="waterfall" class="waterfall"></div>
+<div *ngIf="isLoggedIn">
+  <mat-paginator [length]="total"
+                 [pageSize]="limit"
+                 [pageSizeOptions]="[12, 24, 36, 48, 120, 240]"
+                 [pageIndex]="n"
+                 (page)="setCurrentPage($event)"
+                 aria-label="Select page">
+  </mat-paginator>
 
-<div echarts [options]="optionsRub" class="accounts-chart"></div>
+  <div echarts [options]="waterfallRub" class="waterfall"></div>
+  <div echarts [options]="waterfallUsd" class="waterfall"></div>
+  <div echarts [options]="waterfallEur" class="waterfall"></div>
 
-<mat-grid-list cols="2">
-  <mat-grid-tile>
-    <div echarts [options]="optionsEur" class="accounts-chart-small"></div>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <div echarts [options]="optionsUsd" class="accounts-chart-small"></div>
-  </mat-grid-tile>
-</mat-grid-list>
+  <div echarts [options]="optionsRub" class="accounts-chart"></div>
+
+  <mat-grid-list cols="2">
+    <mat-grid-tile>
+      <div echarts [options]="optionsEur" class="accounts-chart-small"></div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div echarts [options]="optionsUsd" class="accounts-chart-small"></div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</div>
