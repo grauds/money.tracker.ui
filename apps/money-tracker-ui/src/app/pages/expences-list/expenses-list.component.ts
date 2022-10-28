@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Commodity, Entity, ExpenseItem, Organization} from '@clematis-shared/model';
 
 import {EntityListComponent} from '@clematis-shared/shared-components';
-import {forkJoin, Observable, map, switchMap, of} from 'rxjs';
+import {forkJoin, Observable, map, switchMap, of, catchError} from 'rxjs';
 
 @Component({
   selector: 'app-expenses-list',
@@ -25,39 +25,38 @@ export class ExpensesListComponent extends EntityListComponent<ExpenseItem> impl
     super.onInit()
   }
 
-  processData(arr: PagedResourceCollection<ExpenseItem>) {
-     forkJoin(arr.resources.map((expense: ExpenseItem) => {
-        return expense.getRelation<Commodity>('commodity')
-          .pipe(
-            map((commodity: Commodity) => {
-              expense.commodity = commodity
-              expense.commodityLink = Entity.getRelativeSelfLinkHref(commodity)
-              return expense
-            })
-          )
-      })
-    ).subscribe(value => {
-       forkJoin(value.map((expense: ExpenseItem) => {
-           return expense.getRelation<Organization>('tradeplace')
-             .pipe(
-               map((organization: Organization) => {
-                 expense.tradeplace = organization
-                 expense.tradeplaceLink = Entity.getRelativeSelfLinkHref(organization)
-                 return expense
-               })
-             )
-         })
-       ).subscribe(value => {arr.resources = value});
-     });
-
-  }
-
   override queryData(): Observable<PagedResourceCollection<ExpenseItem>> {
-    let data = super.queryData();
-    return data.pipe(
+    return super.queryData().pipe(
       switchMap((arr: PagedResourceCollection<ExpenseItem>) => {
-        this.processData(arr)
-        return of(arr)
+        return forkJoin(arr.resources.map((expense: ExpenseItem) => {
+          return expense.getRelation<Commodity>('commodity')
+            .pipe(
+              map((commodity: Commodity) => {
+                expense.commodity = commodity
+                expense.commodityLink = Entity.getRelativeSelfLinkHref(commodity)
+                return expense
+              }),
+              catchError(() => of(expense))
+            )
+        })).pipe(
+          switchMap((expenses: ExpenseItem[]) => {
+            return forkJoin(expenses.map((expense: ExpenseItem) => {
+              return expense.getRelation<Organization>('tradeplace')
+                .pipe(
+                  map((organization: Organization) => {
+                    expense.tradeplace = organization
+                    expense.tradeplaceLink = Entity.getRelativeSelfLinkHref(organization)
+                    return expense
+                  })
+                )
+            })).pipe(
+              switchMap((expenses: ExpenseItem[]) => {
+                arr.resources = expenses
+                return of(arr)
+              })
+            )
+          })
+        )
       })
     )
   }
