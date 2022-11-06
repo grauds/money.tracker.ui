@@ -1,12 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
-import { AccountBalance } from '@clematis-shared/model';
+import { Component, OnInit } from '@angular/core';
 import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
 import { MonthlyDelta } from '@clematis-shared/model';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
-import { PagedResourceCollection}  from '@lagoshny/ngx-hateoas-client/lib/model/resource/paged-resource-collection';
+import { PagedResourceCollection }  from '@lagoshny/ngx-hateoas-client/lib/model/resource/paged-resource-collection';
 import { PageEvent } from '@angular/material/paginator';
-import { of, switchMap, tap}  from 'rxjs';
-import {KeycloakService} from "keycloak-angular";
+import { of, switchMap, tap }  from 'rxjs';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-main',
@@ -17,7 +16,6 @@ export class MainComponent implements OnInit {
 
   isLoggedIn?: boolean;
 
-  accountsBalances: AccountBalance[] = []
   monthlyDeltas: MonthlyDelta[] = []
 
   lastBalance: number = 0;
@@ -29,10 +27,6 @@ export class MainComponent implements OnInit {
   total: number = 0;
   limit: number = 12;
   n: number = 0;
-
-  optionsRub: any;
-  optionsEur: any;
-  optionsUsd: any;
 
   error: Error | undefined;
 
@@ -52,23 +46,6 @@ export class MainComponent implements OnInit {
   }
 
   loadData() {
-    this.moneyTrackerService.getAccountsBalance((response) => {
-
-      this.accountsBalances = response.resources
-
-      this.optionsRub = this.getBalancesChart('Roubles', 'RUB');
-      this.optionsUsd = this.getBalancesChart('Dollars', 'USD');
-      this.optionsEur = this.getBalancesChart('Euros', 'EUR');
-
-      this.loadWaterfallChart();
-
-    }, (error) => {
-      this.error = error
-    })
-  }
-
-  private loadWaterfallChart() {
-
     this.resourceService.getPage<MonthlyDelta>(MonthlyDelta, {
       pageParams: {
         page: this.n,
@@ -217,73 +194,12 @@ export class MainComponent implements OnInit {
     }
   }
 
-  private getBalancesChart(name: string, code: string) {
-    return {
-      title: {
-        text: 'Accounts Today in ' + name
-      },
-      legend: {
-        data: [name]
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow'
-        }
-      },
-      grid: {
-        top: 80,
-        bottom: 30
-      },
-      xAxis: {
-        type: 'value',
-        position: 'top',
-        splitLine: {
-          lineStyle: {
-            type: 'dashed'
-          }
-        }
-      },
-      yAxis: {
-        type: 'category',
-        axisLine: {show: false},
-        axisLabel: {show: false},
-        axisTick: {show: true},
-        splitLine: {show: false},
-        data: this.accountsBalances
-          .filter(accountBalance => accountBalance.balance != 0 && accountBalance.code === code)
-          .map(accountBalance => {
-            return accountBalance.name
-          })
-      },
-      series: [
-        {
-          name: name,
-          type: 'bar',
-          stack: 'Total',
-          label: {
-            position: 'right',
-            show: true,
-            formatter: '{c} - {b}'
-          },
-          data: this.accountsBalances
-            .filter(accountBalance => accountBalance.balance != 0 && accountBalance.code === code)
-            .map((accountBalance: AccountBalance) => {
-              return {
-                value: accountBalance.balance
-              }
-            })
-        }
-      ]
-    };
-  }
-
   setCurrentPage($event: PageEvent) {
     this.n = $event.pageIndex
     this.limit = $event.pageSize
     if (this.n === 0) {
       this.lastBalance = 0
     }
-    this.loadWaterfallChart();
+    this.loadData();
   }
 }

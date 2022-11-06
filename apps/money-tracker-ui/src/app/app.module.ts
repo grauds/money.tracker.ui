@@ -25,7 +25,8 @@ import {
   Organization,
   UnitType,
   OrganizationGroup,
-  Entity, MonthlyDelta,
+  Entity,
+  MonthlyDelta,
 } from '@clematis-shared/model';
 
 import {
@@ -68,6 +69,7 @@ import { AboutComponent } from './about/about.component';
 import { SharedComponentsModule } from '@clematis-shared/shared-components';
 import { MatTableModule } from '@angular/material/table';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { AccountsDashboardComponent } from './accounts/accounts-dashboard/accounts-dashboard.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -85,7 +87,7 @@ const routes: Routes = [
   {
     path: 'main',
     canActivate: [AuthGuard],
-    component: MainComponent
+    component: MainComponent,
   },
   {
     path: '',
@@ -93,8 +95,13 @@ const routes: Routes = [
     component: WorkspaceComponent,
     children: [
       {
+        path: 'accounts',
+        component: AccountsDashboardComponent,
+        pathMatch: 'full',
+      },
+      {
         path: 'commodities/:id',
-        component: CommodityComponent
+        component: CommodityComponent,
       },
       {
         path: 'commodities',
@@ -160,7 +167,8 @@ const mapConfig: YaConfig = {
     OrganizationGroupComponent,
     OrganizationGroupListComponent,
     WorkspaceComponent,
-    AboutComponent
+    AboutComponent,
+    AccountsDashboardComponent,
   ],
   imports: [
     HttpClientModule,
@@ -169,7 +177,7 @@ const mapConfig: YaConfig = {
     KeycloakAngularModule,
     RouterModule.forRoot(
       routes,
-      {enableTracing: true} // <-- debugging purposes only
+      { enableTracing: true } // <-- debugging purposes only
     ),
     NgxHateoasClientModule.forRoot(),
     ContentLoaderModule,
@@ -178,7 +186,7 @@ const mapConfig: YaConfig = {
     AngularYandexMapsModule.forRoot(mapConfig),
     PlotlyModule,
     NgxEchartsModule.forRoot({
-      echarts: () => import('echarts')
+      echarts: () => import('echarts'),
     }),
     BrowserAnimationsModule,
     MatToolbarModule,
@@ -191,7 +199,7 @@ const mapConfig: YaConfig = {
     MoneyTrackerServiceModule,
     SharedComponentsModule,
     MatTableModule,
-    MatGridListModule
+    MatGridListModule,
   ],
   providers: [
     {
@@ -212,8 +220,8 @@ export class AppModule {
     hateoasConfig.configure({
       http: {
         defaultRoute: {
-          rootUrl: environment.apiUrl
-        }
+          rootUrl: environment.apiUrl,
+        },
       },
       useTypes: {
         resources: [

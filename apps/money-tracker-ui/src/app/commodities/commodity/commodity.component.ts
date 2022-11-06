@@ -87,7 +87,7 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
         this.parent = parent
         this.parentLink = Entity.getRelativeSelfLinkHref(this.parent)
         this.moneyTrackerService.getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.parent), (response) => {
-          this.path = response.resources
+          this.path = response.resources.reverse()
           if (this.parent) {
             this.path.push(this.parent)
           }

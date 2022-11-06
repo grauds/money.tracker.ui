@@ -68,7 +68,7 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup> imp
 
     if (this.entity) {
       this.moneyTrackerService.getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.entity), (response) => {
-        this.path = response.resources
+        this.path = response.resources.reverse()
         if (this.parent) {
           this.path.push(this.parent)
         }

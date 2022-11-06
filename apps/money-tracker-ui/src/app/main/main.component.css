@@ -4,17 +4,3 @@
   overflow: hidden;
   margin-top: 20px;
 }
-
-.accounts-chart {
-  position: relative;
-  height: 100vh;
-  overflow: hidden;
-  margin-top: 20px;
-}
-
-.accounts-chart-small {
-  position: relative;
-  overflow: hidden;
-  margin-top: 20px;
-  width: 100%;
-}
