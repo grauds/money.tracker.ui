@@ -39,7 +39,7 @@ export abstract class EntityListComponent<T extends Resource> {
   search: string = '';
 
   protected constructor(private type: new () => T,
-                        private resourceService: HateoasResourceService,
+                        protected resourceService: HateoasResourceService,
                         private router: Router,
                         private route: ActivatedRoute,
                         renderer?: any) {

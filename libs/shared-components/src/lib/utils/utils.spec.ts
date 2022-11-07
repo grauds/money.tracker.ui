@@ -1,6 +1,7 @@
 import { Utils } from './utils';
 import { token, url, url2, url3 } from './utils.data';
 import { Commodity } from '@clematis-shared/model';
+import dayjs from "dayjs";
 
 describe('Utils', () => {
   it('should create an instance', () => {
@@ -34,6 +35,11 @@ describe('Utils', () => {
 
   it('should get an id', () => {
     const commodity = new Commodity()
+  })
+
+  it('should parse a date', () => {
+    const date = dayjs('15-06-2019 12:00:00', "DD-MM-YYYY HH:mm:ss")
+    expect(date.isValid()).toBeTruthy()
   })
 
 });

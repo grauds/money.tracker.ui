@@ -70,6 +70,7 @@ import { SharedComponentsModule } from '@clematis-shared/shared-components';
 import { MatTableModule } from '@angular/material/table';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { AccountsDashboardComponent } from './accounts/accounts-dashboard/accounts-dashboard.component';
+import { LastCommoditiesListComponent } from './commodities/last-commodities-list/last-commodities-list.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -111,6 +112,11 @@ const routes: Routes = [
       {
         path: 'commodityGroups',
         component: CommoditiesGroupsComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'lastCommodities',
+        component: LastCommoditiesListComponent,
         pathMatch: 'full',
       },
       {
@@ -169,6 +175,7 @@ const mapConfig: YaConfig = {
     WorkspaceComponent,
     AboutComponent,
     AccountsDashboardComponent,
+    LastCommoditiesListComponent,
   ],
   imports: [
     HttpClientModule,

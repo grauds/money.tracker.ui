@@ -38,6 +38,7 @@
     "echarts": "^5.4.0",
     "keycloak-angular": "^12.1.0",
     "keycloak-js": "^19.0.3",
+    "dayjs": "latest",
     "ngx-echarts": "^14.0.0",
     "node-sass": "^7.0.3",
     "plotly.js-dist-min": "^2.13.3",

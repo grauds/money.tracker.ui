@@ -63,7 +63,7 @@ export class ExpensesListComponent extends EntityListComponent<ExpenseItem> impl
 
   override getSortOption() {
     let ret: Sort = {
-      transferDate: 'ASC'
+      transferDate: 'DESC'
     }
     return ret
   }
