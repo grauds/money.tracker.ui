@@ -4,7 +4,7 @@ import { MonthlyDelta } from '@clematis-shared/model';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 import { PagedResourceCollection }  from '@lagoshny/ngx-hateoas-client/lib/model/resource/paged-resource-collection';
 import { PageEvent } from '@angular/material/paginator';
-import { of, switchMap, tap }  from 'rxjs';
+import { of, switchMap, tap } from 'rxjs';
 import { KeycloakService } from 'keycloak-angular';
 
 @Component({
@@ -50,6 +50,9 @@ export class MainComponent implements OnInit {
       pageParams: {
         page: this.n,
         size: this.limit
+      },
+      sort: {
+        an: "DESC"
       }
     }).subscribe((response: PagedResourceCollection<MonthlyDelta>) => {
 
@@ -133,21 +136,19 @@ export class MainComponent implements OnInit {
                             code: string) {
     return {
       title: {
-        text: 'Accumulated Waterfall Chart in ' + code
+        text: 'Monthly Balance ' + code
       },
       tooltip: {
         trigger: 'axis',
-          axisPointer: {
+        axisPointer: {
           type: 'shadow'
         },
         formatter: function (params: any) {
-          let tar;
-          if (params[1].value !== '-') {
-            tar = params[1];
-          } else {
-            tar = params[0];
-          }
-          return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value;
+          if (params) {
+            return params.map((param: any) => {
+              return param.seriesName + ' : ' + Math.round(param.value * 100) / 100
+            }).join('<br/>')
+          } return 'No params'
         }
       },
       legend: {
@@ -174,7 +175,7 @@ export class MainComponent implements OnInit {
         },
         {
           name: 'Income',
-          type: 'line',
+          type: 'bar',
           label: {
             show: true,
             position: 'top'
@@ -183,7 +184,7 @@ export class MainComponent implements OnInit {
         },
         {
           name: 'Expenses',
-          type: 'line',
+          type: 'bar',
           label: {
             show: true,
             position: 'bottom'

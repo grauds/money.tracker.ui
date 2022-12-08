@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { NavigationEnd, Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints, MediaMatcher } from '@angular/cdk/layout';
@@ -11,7 +11,7 @@ import {KeycloakProfile} from "keycloak-js";
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
   mobileQuery: MediaQueryList;
 
@@ -21,7 +21,7 @@ export class HeaderComponent implements OnInit {
       shareReplay()
     );
 
-  private _mobileQueryListener: () => void;
+  private readonly _mobileQueryListener: () => void;
 
   // the header of the application
   @Input() title: string = ''
@@ -50,8 +50,6 @@ export class HeaderComponent implements OnInit {
       }
     });
   }
-
-  ngOnInit(): void {}
 
   public login() {
     this.keycloak.login();
