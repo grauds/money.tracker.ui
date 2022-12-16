@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
-import { MonthlyDelta } from '@clematis-shared/model';
-import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
-import { PagedResourceCollection }  from '@lagoshny/ngx-hateoas-client/lib/model/resource/paged-resource-collection';
-import { PageEvent } from '@angular/material/paginator';
-import { of, switchMap, tap } from 'rxjs';
-import { KeycloakService } from 'keycloak-angular';
+import {Component, OnInit} from '@angular/core';
+import {MoneyTrackerService} from '@clematis-shared/money-tracker-service';
+import {MoneyTypes, MonthlyDelta} from '@clematis-shared/model';
+import {HateoasResourceService} from '@lagoshny/ngx-hateoas-client';
+import {PagedResourceCollection} from '@lagoshny/ngx-hateoas-client/lib/model/resource/paged-resource-collection';
+import {PageEvent} from '@angular/material/paginator';
+import {of, Subscription, switchMap, tap} from 'rxjs';
+import {KeycloakService} from 'keycloak-angular';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-main',
@@ -18,41 +19,103 @@ export class MainComponent implements OnInit {
 
   monthlyDeltas: MonthlyDelta[] = []
 
-  lastBalance: number = 0;
-  waterfallRub: any;
-  waterfallUsd: any;
-  waterfallEur: any;
+  waterfall: any;
+
   waterfallX: string[] = [];
 
+  // total number of elements
   total: number = 0;
+
+  // number of records per page
   limit: number = 12;
+
+  // current page number counter
   n: number = 0;
+
+  // subscribe for page updates in the address bar
+  pageSubscription: Subscription;
 
   error: Error | undefined;
 
   message: string = '';
 
+  loading = false;
+
+  currency: MoneyTypes = MoneyTypes.RUB;
+
+  currencies = [MoneyTypes.RUB,
+    MoneyTypes.GBP,
+    MoneyTypes.CSZ,
+    MoneyTypes.EUR,
+    MoneyTypes.USD
+  ];
+
 
   constructor(private moneyTrackerService: MoneyTrackerService,
               private resourceService: HateoasResourceService,
-              protected readonly keycloak: KeycloakService) {
+              protected readonly keycloak: KeycloakService,
+              private router: Router,
+              private route: ActivatedRoute) {
+
     this.keycloak.isLoggedIn().then((logged) => {
       this.isLoggedIn = logged
     })
+
+    this.pageSubscription = route.queryParams.subscribe(
+      (queryParam: any) => {
+        const page = Number.parseInt(queryParam['page'], 10)
+        this.n = isNaN(page) ? 0 : page;
+        const size = Number.parseInt(queryParam['size'], 10)
+        this.limit = isNaN(size) ? 12 : size;
+        const currency: String = queryParam['currency']
+        if (currency) {
+          this.currency = MoneyTypes[currency as keyof typeof MoneyTypes]
+        }
+        this.ngOnInit();
+      }
+    );
   }
 
   ngOnInit(): void {
     this.loadData()
   }
 
+  setCurrentPage(event: PageEvent) {
+    this.n = event.pageIndex
+    this.limit = event.pageSize
+    this.updateRoute()
+    this.loadData()
+  }
+
+  updateCurrency($event: MoneyTypes) {
+    this.currency = $event
+    this.updateRoute()
+    this.loadData()
+  }
+
+  updateRoute() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        page: this.n,
+        size: this.limit,
+        currency: this.currency
+      },
+      queryParamsHandling: 'merge',
+      skipLocationChange: false
+    })
+  }
+
   loadData() {
+
     this.resourceService.getPage<MonthlyDelta>(MonthlyDelta, {
       pageParams: {
         page: this.n,
         size: this.limit
       },
       sort: {
-        an: "DESC"
+        'key.an': "DESC",
+        'key.mois': "DESC"
       }
     }).subscribe((response: PagedResourceCollection<MonthlyDelta>) => {
 
@@ -74,12 +137,10 @@ export class MainComponent implements OnInit {
         return monthlyDelta.year + '/' + monthlyDelta.month
       }).filter((value, index, self) => self.indexOf(value) === index)
 
-    this.createWaterfallChart('RUB').subscribe(chart => this.waterfallRub = chart)
-    this.createWaterfallChart('EUR').subscribe(chart => this.waterfallEur = chart)
-    this.createWaterfallChart('USD').subscribe(chart => this.waterfallUsd = chart)
+    this.createWaterfallChart(this.currency).subscribe(chart => this.waterfall = chart)
   }
 
-  private createWaterfallChart(code: string) {
+  private createWaterfallChart(code: MoneyTypes) {
 
     let deltas = this.monthlyDeltas.filter((value: MonthlyDelta) => value.code === code)
     let chart = {};
@@ -91,12 +152,11 @@ export class MainComponent implements OnInit {
         }
         return of(0)
       }),
-      tap((balance: number) => console.log(balance)),
+      tap((balance: number) => console.log('Frame balance: ' + balance)),
       switchMap((balance: number) => {
 
         let currentBalance = balance ? balance : 0
-        let waterfallIncome: string[] = []
-        let waterfallExpenses: string[] = []
+        let waterfallDelta: string[] = []
         let waterfallTotals: string[] = []
 
         // https://github.com/apache/echarts/issues/11885
@@ -106,32 +166,20 @@ export class MainComponent implements OnInit {
 
           if (values.length > 0) {
             let value = values[0]
-            if (value.delta > 0) {
-              waterfallIncome.push(value.delta.toString())
-              waterfallExpenses.push('0')
-            } else if (value.delta < 0) {
-              waterfallIncome.push('0')
-              waterfallExpenses.push(value.delta.toString())
-            } else {
-              waterfallIncome.push('0')
-              waterfallExpenses.push('0')
-            }
-            currentBalance += value.delta
-            waterfallTotals.push(currentBalance.toString())
+            waterfallDelta.push(value.delta.toString())
+            currentBalance -= value.delta
           } else {
-            waterfallIncome.push('0')
-            waterfallExpenses.push('0')
-            waterfallTotals.push(currentBalance.toString())
+            waterfallDelta.push('0')
           }
+          waterfallTotals.push(currentBalance.toString())
 
          })
-         return of(this.getWaterfallChart(waterfallIncome, waterfallExpenses, waterfallTotals, code))
+         return of(this.getWaterfallChart(waterfallDelta, waterfallTotals, code))
       })
     )
   }
 
-  private getWaterfallChart(waterfallIncome: string[],
-                            waterfallExpenses: string[],
+  private getWaterfallChart(waterfallDelta: string[],
                             waterfallTotals: string[],
                             code: string) {
     return {
@@ -152,7 +200,7 @@ export class MainComponent implements OnInit {
         }
       },
       legend: {
-        data: ['Total', 'Expenses', 'Income']
+        data: ['Total', 'Monthly Balance']
       },
       grid: {
         left: '3%',
@@ -174,33 +222,15 @@ export class MainComponent implements OnInit {
           data: waterfallTotals
         },
         {
-          name: 'Income',
+          name: 'Monthly Balance',
           type: 'bar',
           label: {
             show: true,
             position: 'top'
           },
-          data: waterfallIncome
-        },
-        {
-          name: 'Expenses',
-          type: 'bar',
-          label: {
-            show: true,
-            position: 'bottom'
-          },
-          data: waterfallExpenses
+          data: waterfallDelta
         }
       ]
     }
-  }
-
-  setCurrentPage($event: PageEvent) {
-    this.n = $event.pageIndex
-    this.limit = $event.pageSize
-    if (this.n === 0) {
-      this.lastBalance = 0
-    }
-    this.loadData();
   }
 }

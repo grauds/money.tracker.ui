@@ -4,6 +4,7 @@
                [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
                [mode]="(isHandset$ | async) ? 'over' : 'side'"
                [opened]="(isHandset$ | async) === false">
+    <div style="padding: 20px"><img src="assets/clematis.png" alt=""></div>
     <mat-toolbar>{{title}}</mat-toolbar>
     <mat-nav-list>
       <div *ngIf="isLoggedIn">

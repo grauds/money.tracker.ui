@@ -17,6 +17,9 @@ export abstract class EntityListComponent<T extends Resource> {
   // total number of elements
   total: number | undefined;
 
+  // number of records per page
+  limit: number = 10;
+
   // current page number counter
   n: number = 0;
 
@@ -25,9 +28,6 @@ export abstract class EntityListComponent<T extends Resource> {
 
   // error message
   error: string | undefined;
-
-  // number of records per page
-  limit: number = 10;
 
   // loading for the first time
   loading: boolean = true;

@@ -1,4 +1,14 @@
 <div *ngIf="isLoggedIn">
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Available currencies</mat-label>
+      <mat-select [disabled]="this.loading" [value]="currency" (valueChange)="updateCurrency($event)">
+        <mat-option *ngFor="let currency of currencies | keyvalue" [value]="currency.value">
+          {{currency.value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
   <mat-paginator [length]="total"
                  [pageSize]="limit"
                  [pageSizeOptions]="[12, 24, 36, 48, 120, 240]"
@@ -7,8 +17,6 @@
                  aria-label="Select page">
   </mat-paginator>
 
-  <div echarts [options]="waterfallRub" class="waterfall"></div>
-  <div echarts [options]="waterfallUsd" class="waterfall"></div>
-  <div echarts [options]="waterfallEur" class="waterfall"></div>
+  <div echarts [options]="waterfall" class="waterfall"></div>
 
 </div>

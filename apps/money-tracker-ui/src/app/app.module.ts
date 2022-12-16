@@ -71,6 +71,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { AccountsDashboardComponent } from './accounts/accounts-dashboard/accounts-dashboard.component';
 import { LastCommoditiesListComponent } from './commodities/last-commodities-list/last-commodities-list.component';
+import {MatInputModule} from "@angular/material/input";
+import {MatSelectModule} from "@angular/material/select";
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -184,7 +186,7 @@ const mapConfig: YaConfig = {
     KeycloakAngularModule,
     RouterModule.forRoot(
       routes,
-      { enableTracing: true } // <-- debugging purposes only
+      {enableTracing: true} // <-- debugging purposes only
     ),
     NgxHateoasClientModule.forRoot(),
     ContentLoaderModule,
@@ -207,6 +209,8 @@ const mapConfig: YaConfig = {
     SharedComponentsModule,
     MatTableModule,
     MatGridListModule,
+    MatInputModule,
+    MatSelectModule,
   ],
   providers: [
     {
