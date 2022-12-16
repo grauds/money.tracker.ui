@@ -27,7 +27,8 @@
     "build": {
       "dependsOn": [
         "^build"
-      ]
+      ],
+      "inputs": ["production", "^production"]
     },
     "lint": {
       "inputs": [
@@ -35,10 +36,13 @@
         "{workspaceRoot}/.eslintrc.json"
       ]
     },
+    "e2e": {
+      "inputs": ["default", "^production"]
+    },
     "test": {
       "inputs": [
         "default",
-        "^default",
+        "^production",
         "{workspaceRoot}/jest.preset.js"
       ]
     }

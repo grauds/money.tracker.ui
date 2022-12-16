@@ -83,12 +83,14 @@
       }
     },
     "test": {
-      "executor": "@angular-devkit/build-angular:karma",
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/money-tracker-ui"],
       "options": {
         "main": "apps/money-tracker-ui/src/test.ts",
         "polyfills": "apps/money-tracker-ui/src/polyfills.ts",
         "tsConfig": "apps/money-tracker-ui/tsconfig.spec.json",
-        "karmaConfig": "apps/money-tracker-ui/karma.conf.js",
+        "jestConfig": "apps/money-tracker-ui/jest.config.ts",
+        "passWithNoTests": true,
         "assets": [
           "apps/money-tracker-ui/src/favicon.ico",
           "apps/money-tracker-ui/src/assets"
