@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MoneyTrackerService} from '@clematis-shared/money-tracker-service';
 import {MoneyTypes, MonthlyDelta} from '@clematis-shared/model';
-import {HateoasResourceService} from '@lagoshny/ngx-hateoas-client';
-import {PagedResourceCollection} from '@lagoshny/ngx-hateoas-client/lib/model/resource/paged-resource-collection';
+import {HateoasResourceService, PagedResourceCollection, Sort} from '@lagoshny/ngx-hateoas-client';
 import {PageEvent} from '@angular/material/paginator';
 import {of, Subscription, switchMap, tap} from 'rxjs';
 import {KeycloakService} from 'keycloak-angular';
@@ -80,15 +79,16 @@ export class MainComponent implements OnInit {
     this.loadData()
   }
 
-  setCurrentPage(event: PageEvent) {
-    this.n = event.pageIndex
-    this.limit = event.pageSize
+  setCurrentPage(pageIndex: number, pageSize: number) {
+    this.n = pageIndex
+    this.limit = pageSize
     this.updateRoute()
     this.loadData()
   }
 
   updateCurrency($event: MoneyTypes) {
     this.currency = $event
+    this.n = 0
     this.updateRoute()
     this.loadData()
   }
@@ -108,15 +108,20 @@ export class MainComponent implements OnInit {
 
   loadData() {
 
-    this.resourceService.getPage<MonthlyDelta>(MonthlyDelta, {
+    const sort: Sort = {
+      'key.an': "DESC",
+      'key.mois': "DESC"
+    }
+
+    this.resourceService.searchPage<MonthlyDelta>(MonthlyDelta, 'history',{
+      params: {
+        code: this.currency
+      },
       pageParams: {
         page: this.n,
-        size: this.limit
+        size: this.limit,
       },
-      sort: {
-        'key.an': "DESC",
-        'key.mois': "DESC"
-      }
+      sort: sort
     }).subscribe((response: PagedResourceCollection<MonthlyDelta>) => {
 
       this.limit = response.pageSize
@@ -219,7 +224,7 @@ export class MainComponent implements OnInit {
         {
           name: 'Total',
           type: 'line',
-          data: waterfallTotals
+          data: waterfallTotals.reverse()
         },
         {
           name: 'Monthly Balance',
@@ -228,7 +233,7 @@ export class MainComponent implements OnInit {
             show: true,
             position: 'top'
           },
-          data: waterfallDelta
+          data: waterfallDelta.reverse()
         }
       ]
     }

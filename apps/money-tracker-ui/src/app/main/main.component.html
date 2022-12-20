@@ -13,8 +13,9 @@
                  [pageSize]="limit"
                  [pageSizeOptions]="[12, 24, 36, 48, 120, 240]"
                  [pageIndex]="n"
-                 (page)="setCurrentPage($event)"
-                 aria-label="Select page">
+                 (page)="setCurrentPage($event.pageIndex, $event.pageSize)"
+                 aria-label="Select page"
+                 showFirstLastButtons>
   </mat-paginator>
 
   <div echarts [options]="waterfall" class="waterfall"></div>

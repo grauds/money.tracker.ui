@@ -73,6 +73,7 @@ import { AccountsDashboardComponent } from './accounts/accounts-dashboard/accoun
 import { LastCommoditiesListComponent } from './commodities/last-commodities-list/last-commodities-list.component';
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -179,39 +180,40 @@ const mapConfig: YaConfig = {
     AccountsDashboardComponent,
     LastCommoditiesListComponent,
   ],
-  imports: [
-    HttpClientModule,
-    BrowserModule,
-    FontAwesomeModule,
-    KeycloakAngularModule,
-    RouterModule.forRoot(
-      routes,
-      {enableTracing: true} // <-- debugging purposes only
-    ),
-    NgxHateoasClientModule.forRoot(),
-    ContentLoaderModule,
-    SharedModule,
-    FormsModule,
-    AngularYandexMapsModule.forRoot(mapConfig),
-    PlotlyModule,
-    NgxEchartsModule.forRoot({
-      echarts: () => import('echarts'),
-    }),
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatButtonModule,
-    MatListModule,
-    MatIconModule,
-    LayoutModule,
-    MatPaginatorModule,
-    MoneyTrackerServiceModule,
-    SharedComponentsModule,
-    MatTableModule,
-    MatGridListModule,
-    MatInputModule,
-    MatSelectModule,
-  ],
+    imports: [
+        HttpClientModule,
+        BrowserModule,
+        FontAwesomeModule,
+        KeycloakAngularModule,
+        RouterModule.forRoot(
+            routes,
+            {enableTracing: true} // <-- debugging purposes only
+        ),
+        NgxHateoasClientModule.forRoot(),
+        ContentLoaderModule,
+        SharedModule,
+        FormsModule,
+        AngularYandexMapsModule.forRoot(mapConfig),
+        PlotlyModule,
+        NgxEchartsModule.forRoot({
+            echarts: () => import('echarts'),
+        }),
+        BrowserAnimationsModule,
+        MatToolbarModule,
+        MatSidenavModule,
+        MatButtonModule,
+        MatListModule,
+        MatIconModule,
+        LayoutModule,
+        MatPaginatorModule,
+        MoneyTrackerServiceModule,
+        SharedComponentsModule,
+        MatTableModule,
+        MatGridListModule,
+        MatInputModule,
+        MatSelectModule,
+        MatTooltipModule,
+    ],
   providers: [
     {
       provide: KeycloakService,
