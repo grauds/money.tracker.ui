@@ -179,12 +179,13 @@ export class MainComponent implements OnInit {
           waterfallTotals.push(currentBalance.toString())
 
          })
-         return of(this.getWaterfallChart(waterfallDelta, waterfallTotals, code))
+         return of(this.getWaterfallChart(this.waterfallX, waterfallDelta, waterfallTotals, code))
       })
     )
   }
 
-  private getWaterfallChart(waterfallDelta: string[],
+  private getWaterfallChart(waterfallX: string[],
+                            waterfallDelta: string[],
                             waterfallTotals: string[],
                             code: string) {
     return {
@@ -215,7 +216,7 @@ export class MainComponent implements OnInit {
       },
       xAxis: {
         type: 'category',
-          data: this.waterfallX
+          data: waterfallX.reverse()
       },
       yAxis: {
         type: 'value'
