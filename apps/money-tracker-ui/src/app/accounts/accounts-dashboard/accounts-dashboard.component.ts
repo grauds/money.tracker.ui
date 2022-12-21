@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { AccountBalance } from '@clematis-shared/model';
-import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
-import { KeycloakService } from 'keycloak-angular';
+import {Component, OnInit} from '@angular/core';
+import {MoneyTrackerService} from '@clematis-shared/money-tracker-service';
+import {AccountBalance, MoneyTypes} from '@clematis-shared/model';
+import {Subscription} from "rxjs";
+import {HateoasResourceService} from "@lagoshny/ngx-hateoas-client";
+import {KeycloakService} from 'keycloak-angular';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-accounts-dashboard',
@@ -14,42 +17,80 @@ export class AccountsDashboardComponent implements OnInit {
 
   accountsBalances: AccountBalance[] = []
 
-  optionsRub: any;
-  optionsEur: any;
-  optionsUsd: any;
+  options: any;
 
-  error: Error | undefined;
+  // subscribe for page updates in the address bar
+  pageSubscription: Subscription;
+
+  loading = false;
+
+  currency: MoneyTypes = MoneyTypes.RUB;
+
+  currencies = [MoneyTypes.RUB,
+    MoneyTypes.GBP,
+    MoneyTypes.EUR,
+    MoneyTypes.USD
+  ];
 
   constructor(private moneyTrackerService: MoneyTrackerService,
-              protected readonly keycloak: KeycloakService) {
+              private resourceService: HateoasResourceService,
+              protected readonly keycloak: KeycloakService,
+              private router: Router,
+              private route: ActivatedRoute) {
+
     this.keycloak.isLoggedIn().then((logged) => {
       this.isLoggedIn = logged
     })
+
+    this.pageSubscription = route.queryParams.subscribe(
+      (queryParam: any) => {
+        const currency: String = queryParam['currency']
+        if (currency) {
+          this.currency = MoneyTypes[currency as keyof typeof MoneyTypes]
+        }
+        this.ngOnInit();
+      }
+    );
   }
 
   ngOnInit(): void {
     this.loadData()
   }
 
-  loadData() {
+  updateCurrency($event: MoneyTypes) {
+    this.currency = $event
+    this.loadData()
+    this.updateRoute()
+  }
 
-    this.moneyTrackerService.getAccountsBalance((response) => {
-
-      this.accountsBalances = response.resources
-
-      this.optionsRub = this.getBalancesChart('Roubles', 'RUB');
-      this.optionsUsd = this.getBalancesChart('Dollars', 'USD');
-      this.optionsEur = this.getBalancesChart('Euros', 'EUR');
-
-    }, (error) => {
-      this.error = error
+  updateRoute() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        currency: this.currency
+      },
+      queryParamsHandling: 'merge',
+      skipLocationChange: false
     })
   }
 
-  private getBalancesChart(name: string, code: string) {
+  loadData() {
+    this.loading = true
+    this.moneyTrackerService.getAccountsBalance((response) => {
+
+      this.accountsBalances = response.resources
+      this.options = this.getBalancesChart(this.currency);
+      this.loading = false
+
+    }, (error) => {
+      this.loading = false
+    })
+  }
+
+  private getBalancesChart(code: MoneyTypes) {
     return {
       title: {
-        text: 'Accounts Today in ' + name
+        text: 'Accounts Today in ' + code
       },
       tooltip: {
         trigger: 'axis',
@@ -84,7 +125,7 @@ export class AccountsDashboardComponent implements OnInit {
       },
       series: [
         {
-          name: name,
+          name: code,
           type: 'bar',
           stack: 'Total',
           label: {

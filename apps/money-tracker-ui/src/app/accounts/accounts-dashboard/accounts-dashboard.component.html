@@ -1,14 +1,13 @@
 <div *ngIf="isLoggedIn">
+  <mat-form-field appearance="fill">
+    <mat-label>Available currencies</mat-label>
+    <mat-select [disabled]="this.loading" [value]="currency" (valueChange)="updateCurrency($event)">
+      <mat-option *ngFor="let currency of currencies | keyvalue" [value]="currency.value">
+        {{currency.value}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 
-  <div echarts [options]="optionsRub" class="accounts-chart"></div>
-
-  <mat-grid-list cols="2">
-    <mat-grid-tile>
-      <div echarts [options]="optionsEur" class="accounts-chart-small"></div>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <div echarts [options]="optionsUsd" class="accounts-chart-small"></div>
-    </mat-grid-tile>
-  </mat-grid-list>
+  <div echarts [options]="options" class="accounts-chart"></div>
 
 </div>

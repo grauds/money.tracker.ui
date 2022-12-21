@@ -8,6 +8,12 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <h1 class="timeHeader" [hidden]="loading">
+      {{this.startDate}} -> {{this.endDate}}
+    </h1>
+    <h1 class="timeHeader" [hidden]="!loading">
+      Loading...
+    </h1>
   </div>
   <mat-paginator [length]="total"
                  [pageSize]="limit"
@@ -15,6 +21,7 @@
                  [pageIndex]="n"
                  (page)="setCurrentPage($event.pageIndex, $event.pageSize)"
                  aria-label="Select page"
+                 [disabled]="loading"
                  showFirstLastButtons>
   </mat-paginator>
 
