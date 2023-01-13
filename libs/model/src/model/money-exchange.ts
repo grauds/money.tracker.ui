@@ -1,44 +1,39 @@
 import { HateoasResource, Resource } from "@lagoshny/ngx-hateoas-client";
-import { MoneyType, Organization } from "@clematis-shared/model";
+import { MoneyType } from './money-type';
+import { Organization } from './organization';
 
 @HateoasResource('exchange')
 export class MoneyExchange extends Resource {
 
+  exchangedate = ''
 
-  exchangedate: string = ''
+  source = 0
 
+  dest = 0
 
-  source: number = 0
-
-
-  dest: number = 0
-
-
-  usermt: number = 0
-
+  usermt = 0
 
   tradeplace: Organization = new Organization();
 
+  feepercent = 0
 
-  feepercent: number = 0
+  rate = 0
 
-  rate: number = 0
+  sourceamount = 0
 
-  sourceamount: number = 0
-
-  destamount: number = 0
+  destamount = 0
 
   sourcemoneytype: MoneyType = new MoneyType()
 
   destmoneytype: MoneyType = new MoneyType()
 
-  remarks: string = ''
+  remarks = ''
 
-  feecomm: number = 0
+  feecomm = 0
 
-  fee: number = 0
+  fee = 0
 
-  calcfield: number = 0
+  calcfield = 0
 
-  comm: number = 0
+  comm = 0
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Entity } from '@clematis-shared/model';
 
 @Component({
@@ -6,13 +6,10 @@ import { Entity } from '@clematis-shared/model';
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.sass'],
 })
-export class BreadcrumbsComponent implements OnInit {
+export class BreadcrumbsComponent  {
 
   @Input() path: Array<Entity> | null = null
 
-  constructor() {}
-
-  ngOnInit(): void {}
 
   parseResourceUrlToAppUrl(entity: Entity) {
     return Entity.getRelativeSelfLinkHref(entity);

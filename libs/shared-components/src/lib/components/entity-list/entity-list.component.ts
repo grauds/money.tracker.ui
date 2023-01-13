@@ -6,7 +6,7 @@ import { PageEvent } from '@angular/material/paginator';
 
 export abstract class EntityListComponent<T extends Resource> {
 
-  path: string = '';
+  path = '';
 
   // elements page
   entities: T[] = [];
@@ -18,10 +18,10 @@ export abstract class EntityListComponent<T extends Resource> {
   total: number | undefined;
 
   // number of records per page
-  limit: number = 10;
+  limit = 10;
 
   // current page number counter
-  n: number = 0;
+  n = 0;
 
   // subscribe for page updates in the address bar
   pageSubscription: Subscription;
@@ -30,18 +30,18 @@ export abstract class EntityListComponent<T extends Resource> {
   error: string | undefined;
 
   // loading for the first time
-  loading: boolean = true;
+  loading = true;
 
   // loading page - a smaller area to update
-  pageLoading: boolean = false;
+  pageLoading = false;
 
   // search string to filter the list of entities by the names
-  search: string = '';
+  search = '';
 
   protected constructor(private type: new () => T,
                         protected resourceService: HateoasResourceService,
-                        private router: Router,
-                        private route: ActivatedRoute,
+                        protected router: Router,
+                        protected route: ActivatedRoute,
                         renderer?: any) {
 
     this.renderer = renderer ? renderer : new EntityElementComponent(router)
@@ -123,7 +123,7 @@ export abstract class EntityListComponent<T extends Resource> {
   }
 
   getSortOption() {
-    let ret: Sort = {
+    const ret: Sort = {
       name: 'ASC'
     }
     return ret

@@ -48,9 +48,6 @@ import { CommodityGroupListComponent } from './commodities/commodity-group-list/
 import { OrganizationsListComponent } from './organizations/organizations-list/organizations-list.component';
 
 // pages
-import { CommoditiesComponent } from './pages/commodities/commodities.component';
-import { CommoditiesGroupsComponent } from './pages/commodities-groups/commodities-groups.component';
-import { OrganizationsComponent } from './pages/organizations/organizations.component';
 import { ExpensesListComponent } from './pages/expences-list/expenses-list.component';
 import { CommodityComponent } from './commodities/commodity/commodity.component';
 import { CommodityGroupComponent } from './commodities/commodity-group/commodity-group.component';
@@ -71,9 +68,11 @@ import { MatTableModule } from '@angular/material/table';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { AccountsDashboardComponent } from './accounts/accounts-dashboard/accounts-dashboard.component';
 import { LastCommoditiesListComponent } from './commodities/last-commodities-list/last-commodities-list.component';
-import {MatInputModule} from "@angular/material/input";
-import {MatSelectModule} from "@angular/material/select";
-import {MatTooltipModule} from "@angular/material/tooltip";
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ExchangeComponent } from './accounts/exchange/exchange.component';
+import { ExchangeEventElementComponent } from './accounts/exchange-event-element/exchange-event-element.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -109,12 +108,12 @@ const routes: Routes = [
       },
       {
         path: 'commodities',
-        component: CommoditiesComponent,
+        component: CommoditiesListComponent,
         pathMatch: 'full',
       },
       {
         path: 'commodityGroups',
-        component: CommoditiesGroupsComponent,
+        component: CommodityGroupListComponent,
         pathMatch: 'full',
       },
       {
@@ -131,8 +130,12 @@ const routes: Routes = [
         component: ExpensesListComponent,
       },
       {
+        path: 'exchange',
+        component: ExchangeComponent,
+      },
+      {
         path: 'organizations',
-        component: OrganizationsComponent,
+        component: OrganizationsListComponent,
         pathMatch: 'full',
       },
       {
@@ -164,9 +167,6 @@ const mapConfig: YaConfig = {
     HeaderComponent,
     MainComponent,
     CommodityGroupListComponent,
-    CommoditiesComponent,
-    CommoditiesGroupsComponent,
-    OrganizationsComponent,
     CommoditiesListComponent,
     OrganizationsListComponent,
     ExpensesListComponent,
@@ -179,41 +179,43 @@ const mapConfig: YaConfig = {
     AboutComponent,
     AccountsDashboardComponent,
     LastCommoditiesListComponent,
+    ExchangeComponent,
+    ExchangeEventElementComponent,
   ],
-    imports: [
-        HttpClientModule,
-        BrowserModule,
-        FontAwesomeModule,
-        KeycloakAngularModule,
-        RouterModule.forRoot(
-            routes,
-            {enableTracing: true} // <-- debugging purposes only
-        ),
-        NgxHateoasClientModule.forRoot(),
-        ContentLoaderModule,
-        SharedModule,
-        FormsModule,
-        AngularYandexMapsModule.forRoot(mapConfig),
-        PlotlyModule,
-        NgxEchartsModule.forRoot({
-            echarts: () => import('echarts'),
-        }),
-        BrowserAnimationsModule,
-        MatToolbarModule,
-        MatSidenavModule,
-        MatButtonModule,
-        MatListModule,
-        MatIconModule,
-        LayoutModule,
-        MatPaginatorModule,
-        MoneyTrackerServiceModule,
-        SharedComponentsModule,
-        MatTableModule,
-        MatGridListModule,
-        MatInputModule,
-        MatSelectModule,
-        MatTooltipModule,
-    ],
+  imports: [
+    HttpClientModule,
+    BrowserModule,
+    FontAwesomeModule,
+    KeycloakAngularModule,
+    RouterModule.forRoot(
+      routes,
+      { enableTracing: true } // <-- debugging purposes only
+    ),
+    NgxHateoasClientModule.forRoot(),
+    ContentLoaderModule,
+    SharedModule,
+    FormsModule,
+    AngularYandexMapsModule.forRoot(mapConfig),
+    PlotlyModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    }),
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatListModule,
+    MatIconModule,
+    LayoutModule,
+    MatPaginatorModule,
+    MoneyTrackerServiceModule,
+    SharedComponentsModule,
+    MatTableModule,
+    MatGridListModule,
+    MatInputModule,
+    MatSelectModule,
+    MatTooltipModule,
+  ],
   providers: [
     {
       provide: KeycloakService,
