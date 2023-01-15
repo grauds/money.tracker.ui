@@ -5,6 +5,7 @@ import {Subscription} from "rxjs";
 import {HateoasResourceService} from "@lagoshny/ngx-hateoas-client";
 import {KeycloakService} from 'keycloak-angular';
 import {ActivatedRoute, Router} from "@angular/router";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-accounts-dashboard',
@@ -36,7 +37,8 @@ export class AccountsDashboardComponent implements OnInit {
               private resourceService: HateoasResourceService,
               protected readonly keycloak: KeycloakService,
               private router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private title: Title) {
 
     this.keycloak.isLoggedIn().then((logged) => {
       this.isLoggedIn = logged
@@ -55,6 +57,7 @@ export class AccountsDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData()
+    this.title.setTitle('Accounts')
   }
 
   updateCurrency($event: MoneyTypes) {

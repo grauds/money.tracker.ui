@@ -5,6 +5,7 @@ import { Commodity, MoneyType, CommodityGroup, MoneyTypes, ExpenseItem, Entity }
 import { EntityComponent } from '@clematis-shared/shared-components';
 import { Utils } from '@clematis-shared/shared-components';
 import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
+import { Title } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-commodity',
@@ -62,8 +63,9 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
 
   constructor(resourceService: HateoasResourceService,
               private moneyTrackerService: MoneyTrackerService,
-              route: ActivatedRoute) {
-    super(Commodity, resourceService, route)
+              route: ActivatedRoute,
+              title: Title) {
+    super(Commodity, resourceService, route, title)
   }
 
   ngOnInit(): void {
@@ -91,8 +93,6 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
           if (this.parent) {
             this.path.push(this.parent)
           }
-        }, (error) => {
-          // todo error handling
         })
       })
 
@@ -102,12 +102,7 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
       this.moneyTrackerService.getTotalQtyForCommodity(this.id).subscribe((response) => {
         this.totalQty = response
         this.averagePrice = this.totalSum / this.totalQty
-      }, (error) => {
-        // todo error handling
       })
-
-    }, (error) => {
-      // todo error handling
     })
 
     this.moneyTrackerService.getCommodityExpences(this.id).subscribe((response) => {
@@ -124,8 +119,6 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
         this.graphQty.data[0].y.push(expense.qty)
       })
 
-    }, (error) => {
-      // todo error handling
     })
 
   };

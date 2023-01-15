@@ -4,8 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Commodity, Entity, LastCommodity } from '@clematis-shared/model';
 import {EntityListComponent, Utils} from '@clematis-shared/shared-components';
 import { catchError, forkJoin, map, Observable, of, switchMap } from 'rxjs';
+import { Title } from "@angular/platform-browser";
+
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+
 dayjs.extend(customParseFormat);
 
 @Component({
@@ -18,7 +21,7 @@ export class LastCommoditiesListComponent extends EntityListComponent<LastCommod
   displayedColumns: string[] = ['daysAgo', 'transferdate', 'name', 'price', 'qty', 'organizationname'];
 
   constructor(resourceService: HateoasResourceService,
-              router: Router, route: ActivatedRoute) {
+              router: Router, route: ActivatedRoute, private title: Title) {
     super(LastCommodity, resourceService, router, route)
 
     this.path = 'lastExpenseItems'
@@ -26,6 +29,7 @@ export class LastCommoditiesListComponent extends EntityListComponent<LastCommod
 
   ngOnInit(): void {
     super._ngOnInit()
+    this.title.setTitle('Last Commodities')
   }
 
   override queryData(): Observable<PagedResourceCollection<LastCommodity>> {

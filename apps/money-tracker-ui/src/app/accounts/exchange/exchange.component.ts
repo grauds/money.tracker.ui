@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {EntityListComponent} from "@clematis-shared/shared-components";
 import {Observable, of, switchMap} from "rxjs";
 import {MoneyTrackerService} from "@clematis-shared/money-tracker-service";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-exchange',
@@ -36,7 +37,8 @@ export class ExchangeComponent extends EntityListComponent<MoneyExchange> implem
               resourceService: HateoasResourceService,
               protected readonly keycloak: KeycloakService,
               router: Router,
-              route: ActivatedRoute) {
+              route: ActivatedRoute,
+              private title: Title) {
 
     super(MoneyExchange, resourceService, router, route)
 
@@ -75,6 +77,7 @@ export class ExchangeComponent extends EntityListComponent<MoneyExchange> implem
 
   ngOnInit(): void {
     super._ngOnInit()
+    this.title.setTitle('Money Exchange')
   }
 
   override getPage() {

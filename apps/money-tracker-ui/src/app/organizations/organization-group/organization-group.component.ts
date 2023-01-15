@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CommodityGroup, Entity, Organization, OrganizationGroup } from '@clematis-shared/model';
 import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
 import {EntityComponent, Utils} from '@clematis-shared/shared-components';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-organization-group',
@@ -29,8 +30,9 @@ export class OrganizationGroupComponent extends EntityComponent<OrganizationGrou
 
   constructor(resourceService: HateoasResourceService,
               private moneyTrackerService: MoneyTrackerService,
-              route: ActivatedRoute) {
-    super(OrganizationGroup, resourceService, route);
+              route: ActivatedRoute,
+              title: Title) {
+    super(OrganizationGroup, resourceService, route, title);
   }
 
   ngOnInit(): void {

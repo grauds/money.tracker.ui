@@ -1,6 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
 import { Entity } from '@clematis-shared/model';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
+import { Title } from '@angular/platform-browser';
 
 export abstract class EntityComponent<T extends Entity> {
 
@@ -10,7 +11,8 @@ export abstract class EntityComponent<T extends Entity> {
 
   protected constructor(private type: new () => T,
                         protected resourceService: HateoasResourceService,
-                        private route: ActivatedRoute) { }
+                        private route: ActivatedRoute,
+                        private title: Title) { }
 
   onInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')
@@ -28,6 +30,7 @@ export abstract class EntityComponent<T extends Entity> {
 
   setEntity(entity: T) {
     this.entity = entity
+    this.title.setTitle(this.entity.name ? this.entity.name : this.entity.getSelfLinkHref())
   }
 
 }

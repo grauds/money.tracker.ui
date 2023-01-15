@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { OrganizationGroup } from '@clematis-shared/model';
 import { EntityListComponent} from '@clematis-shared/shared-components';
+import { Title } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-organization-group-list',
@@ -12,7 +13,7 @@ import { EntityListComponent} from '@clematis-shared/shared-components';
 })
 export class OrganizationGroupListComponent extends EntityListComponent<OrganizationGroup> implements OnInit {
 
-  constructor(resourceService: HateoasResourceService, router: Router, route: ActivatedRoute) {
+  constructor(resourceService: HateoasResourceService, router: Router, route: ActivatedRoute, private title: Title) {
     super(OrganizationGroup, resourceService, router, route)
 
     this.path = 'organizationGroups'
@@ -20,5 +21,6 @@ export class OrganizationGroupListComponent extends EntityListComponent<Organiza
 
   ngOnInit(): void {
     super._ngOnInit()
+    this.title.setTitle('Ogranization Groups')
   }
 }

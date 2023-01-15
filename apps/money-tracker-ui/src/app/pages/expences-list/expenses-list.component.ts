@@ -5,6 +5,7 @@ import {Commodity, Entity, ExpenseItem, Organization} from '@clematis-shared/mod
 
 import {EntityListComponent} from '@clematis-shared/shared-components';
 import {forkJoin, Observable, map, switchMap, of, catchError} from 'rxjs';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-expenses-list',
@@ -15,7 +16,7 @@ export class ExpensesListComponent extends EntityListComponent<ExpenseItem> impl
 
   displayedColumns: string[] = ['transferdate', 'name', 'price', 'qty', 'organizationname'];
 
-  constructor(resourceService: HateoasResourceService, router: Router, route: ActivatedRoute) {
+  constructor(resourceService: HateoasResourceService, router: Router, route: ActivatedRoute, private title: Title) {
     super(ExpenseItem, resourceService, router, route)
 
     this.path = 'expenses'
@@ -23,6 +24,7 @@ export class ExpensesListComponent extends EntityListComponent<ExpenseItem> impl
 
   ngOnInit(): void {
     super._ngOnInit()
+    this.title.setTitle('Expenses')
   }
 
   override queryData(): Observable<PagedResourceCollection<ExpenseItem>> {

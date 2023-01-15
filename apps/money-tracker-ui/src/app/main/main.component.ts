@@ -5,6 +5,7 @@ import {HateoasResourceService, PagedResourceCollection} from '@lagoshny/ngx-hat
 import {of, Subscription, switchMap, tap} from 'rxjs';
 import {KeycloakService} from 'keycloak-angular';
 import {ActivatedRoute, Router} from "@angular/router";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-main',
@@ -50,7 +51,8 @@ export class MainComponent implements OnInit {
               private resourceService: HateoasResourceService,
               protected readonly keycloak: KeycloakService,
               private router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private title: Title) {
 
     this.keycloak.isLoggedIn().then((logged) => {
       this.isLoggedIn = logged
@@ -73,6 +75,7 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData()
+    this.title.setTitle('Home')
   }
 
   setCurrentPage(pageIndex: number, pageSize: number) {

@@ -3,6 +3,7 @@ import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Commodity } from '@clematis-shared/model';
 import { EntityListComponent } from '@clematis-shared/shared-components';
+import { Title } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-commodities-list',
@@ -11,7 +12,7 @@ import { EntityListComponent } from '@clematis-shared/shared-components';
 })
 export class CommoditiesListComponent extends EntityListComponent<Commodity> implements OnInit {
 
-  constructor(resourceService: HateoasResourceService, router: Router, route: ActivatedRoute) {
+  constructor(resourceService: HateoasResourceService, router: Router, route: ActivatedRoute, private title: Title) {
     super(Commodity, resourceService, router, route)
 
     this.path = 'commodities'
@@ -19,6 +20,7 @@ export class CommoditiesListComponent extends EntityListComponent<Commodity> imp
 
   ngOnInit(): void {
     super._ngOnInit()
+    this.title.setTitle('Commodities')
   }
 
 }
