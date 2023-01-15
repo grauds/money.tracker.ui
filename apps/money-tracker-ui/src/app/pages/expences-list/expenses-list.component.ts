@@ -22,7 +22,7 @@ export class ExpensesListComponent extends EntityListComponent<ExpenseItem> impl
   }
 
   ngOnInit(): void {
-    super.onInit()
+    super._ngOnInit()
   }
 
   override queryData(): Observable<PagedResourceCollection<ExpenseItem>> {

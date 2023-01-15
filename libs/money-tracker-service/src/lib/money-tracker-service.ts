@@ -99,7 +99,7 @@ export class MoneyTrackerService {
   getCommodityExpences(commodityId: string | null): Observable<ResourceCollection<ExpenseItem>> {
 
     if (commodityId) {
-      return this.resourceService.searchCollection(ExpenseItem, 'findByCommodityId', {
+      return this.resourceService.searchCollection(ExpenseItem, 'commodity', {
         params: {
           commodityId: commodityId
         }

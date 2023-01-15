@@ -38,7 +38,8 @@ export class OrganizationComponent extends EntityComponent<Organization> impleme
       .subscribe((parent: OrganizationGroup) => {
         this.parent = parent
         this.parentLink = Entity.getRelativeSelfLinkHref(this.parent)
-        this.moneyTrackerService.getPathForOrganizationGroup(Utils.getIdFromSelfUrl(this.parent), (response) => {
+        this.moneyTrackerService.getPathForOrganizationGroup(Utils.getIdFromSelfUrl(this.parent))
+          .subscribe((response) => {
           this.path = response.resources
           if (this.parent) {
             this.path.push(this.parent)

@@ -65,7 +65,7 @@ export class OrganizationGroupComponent extends EntityComponent<OrganizationGrou
       });
 
     if (this.entity) {
-      this.moneyTrackerService.getPathForOrganizationGroup(Utils.getIdFromSelfUrl(this.entity), (response) => {
+      this.moneyTrackerService.getPathForOrganizationGroup(Utils.getIdFromSelfUrl(this.entity)).subscribe((response) => {
         this.path = response.resources
         if (this.parent) {
           this.path.push(this.parent)

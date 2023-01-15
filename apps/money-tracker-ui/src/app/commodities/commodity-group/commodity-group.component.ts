@@ -67,7 +67,7 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup> imp
       });
 
     if (this.entity) {
-      this.moneyTrackerService.getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.entity), (response) => {
+      this.moneyTrackerService.getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.entity)).subscribe((response) => {
         this.path = response.resources.reverse()
         if (this.parent) {
           this.path.push(this.parent)
@@ -77,7 +77,7 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup> imp
       })
     }
 
-    this.moneyTrackerService.getTotalsForCommodityGroup(this.id, MoneyTypes.RUB, (response) => {
+    this.moneyTrackerService.getTotalsForCommodityGroup(this.id, MoneyTypes.RUB).subscribe((response) => {
       this.totalSum = response
       this.loading = false
     }, (error) => {

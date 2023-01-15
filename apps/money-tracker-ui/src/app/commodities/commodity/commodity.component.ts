@@ -86,7 +86,7 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
       .subscribe((parent: CommodityGroup) => {
         this.parent = parent
         this.parentLink = Entity.getRelativeSelfLinkHref(this.parent)
-        this.moneyTrackerService.getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.parent), (response) => {
+        this.moneyTrackerService.getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.parent)).subscribe((response) => {
           this.path = response.resources.reverse()
           if (this.parent) {
             this.path.push(this.parent)
@@ -96,10 +96,10 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
         })
       })
 
-    this.moneyTrackerService.getTotalsForCommodity(this.id, MoneyTypes.RUB, (response) => {
+    this.moneyTrackerService.getTotalsForCommodity(this.id, MoneyTypes.RUB).subscribe((response) => {
       this.totalSum = response
 
-      this.moneyTrackerService.getTotalQtyForCommodity(this.id, (response) => {
+      this.moneyTrackerService.getTotalQtyForCommodity(this.id).subscribe((response) => {
         this.totalQty = response
         this.averagePrice = this.totalSum / this.totalQty
       }, (error) => {
@@ -110,7 +110,7 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
       // todo error handling
     })
 
-    this.moneyTrackerService.getCommodityExpences(this.id, (response) => {
+    this.moneyTrackerService.getCommodityExpences(this.id).subscribe((response) => {
       this.expenses = response.resources
 
       this.expenses.forEach(expense => {
