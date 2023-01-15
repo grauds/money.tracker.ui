@@ -52,12 +52,11 @@ export abstract class EntityListComponent<T extends Resource> {
         this.n = isNaN(page) ? 0 : page;
         const size = Number.parseInt(queryParam['size'], 10)
         this.limit = isNaN(size) ? 10 : size;
-        this.onInit();
       }
     );
   }
 
-  onInit(): void {
+  _ngOnInit(): void {
     this.loading = this.entities.length <= 0
     this.loadData()
   }
@@ -101,25 +100,33 @@ export abstract class EntityListComponent<T extends Resource> {
 
   queryData(): Observable<PagedResourceCollection<T>>  {
     if (this.search) {
-      return this.resourceService.searchPage<T>(this.type, 'findByNameStarting',{
-        pageParams: {
-          page: this.n,
-          size: this.limit
-        },
-        params: {
-          name: this.search
-        },
-        sort: this.getSortOption()
-      })
+      return this.doSearch()
     } else {
-      return this.resourceService.getPage<T>(this.type, {
-        pageParams: {
-          page: this.n,
-          size: this.limit
-        },
-        sort: this.getSortOption()
-      })
+      return this.getPage();
     }
+  }
+
+  getPage() {
+    return this.resourceService.getPage<T>(this.type, {
+      pageParams: {
+        page: this.n,
+        size: this.limit
+      },
+      sort: this.getSortOption()
+    })
+  }
+
+  doSearch() {
+    return this.resourceService.searchPage<T>(this.type, 'findByNameStarting', {
+      pageParams: {
+        page: this.n,
+        size: this.limit
+      },
+      params: {
+        name: this.search
+      },
+      sort: this.getSortOption()
+    });
   }
 
   getSortOption() {

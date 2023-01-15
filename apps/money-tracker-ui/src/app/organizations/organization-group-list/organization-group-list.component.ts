@@ -19,6 +19,6 @@ export class OrganizationGroupListComponent extends EntityListComponent<Organiza
   }
 
   ngOnInit(): void {
-    super.onInit()
+    super._ngOnInit()
   }
 }

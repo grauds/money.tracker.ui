@@ -18,7 +18,7 @@ export class CommoditiesListComponent extends EntityListComponent<Commodity> imp
   }
 
   ngOnInit(): void {
-    super.onInit()
+    super._ngOnInit()
   }
 
 }

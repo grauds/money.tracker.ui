@@ -25,7 +25,7 @@ export class LastCommoditiesListComponent extends EntityListComponent<LastCommod
   }
 
   ngOnInit(): void {
-    super.onInit()
+    super._ngOnInit()
   }
 
   override queryData(): Observable<PagedResourceCollection<LastCommodity>> {

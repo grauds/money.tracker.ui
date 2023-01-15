@@ -26,7 +26,7 @@
     "@fortawesome/angular-fontawesome": "^0.12.0",
     "@fortawesome/fontawesome-svg-core": "~6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
-    "@lagoshny/ngx-hateoas-client": "^3.3.8",
+    "@lagoshny/ngx-hateoas-client": "^3.5.0",
     "@ngneat/content-loader": "^7.0.0",
     "@nrwl/angular": "^15.2.4",
     "@nrwl/express": "15.3.3",

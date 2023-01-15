@@ -19,7 +19,7 @@ export class OrganizationsListComponent extends EntityListComponent<Organization
   }
 
   ngOnInit(): void {
-    super.onInit()
+    super._ngOnInit()
   }
 
 }

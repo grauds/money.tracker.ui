@@ -27,6 +27,9 @@ import {
   OrganizationGroup,
   Entity,
   MonthlyDelta,
+  AccountBalance,
+  MoneyExchange,
+  MoneyType,
 } from '@clematis-shared/model';
 
 import {
@@ -73,6 +76,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ExchangeComponent } from './accounts/exchange/exchange.component';
 import { ExchangeEventElementComponent } from './accounts/exchange-event-element/exchange-event-element.component';
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -182,40 +186,41 @@ const mapConfig: YaConfig = {
     ExchangeComponent,
     ExchangeEventElementComponent,
   ],
-  imports: [
-    HttpClientModule,
-    BrowserModule,
-    FontAwesomeModule,
-    KeycloakAngularModule,
-    RouterModule.forRoot(
-      routes,
-      { enableTracing: true } // <-- debugging purposes only
-    ),
-    NgxHateoasClientModule.forRoot(),
-    ContentLoaderModule,
-    SharedModule,
-    FormsModule,
-    AngularYandexMapsModule.forRoot(mapConfig),
-    PlotlyModule,
-    NgxEchartsModule.forRoot({
-      echarts: () => import('echarts'),
-    }),
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatButtonModule,
-    MatListModule,
-    MatIconModule,
-    LayoutModule,
-    MatPaginatorModule,
-    MoneyTrackerServiceModule,
-    SharedComponentsModule,
-    MatTableModule,
-    MatGridListModule,
-    MatInputModule,
-    MatSelectModule,
-    MatTooltipModule,
-  ],
+    imports: [
+        HttpClientModule,
+        BrowserModule,
+        FontAwesomeModule,
+        KeycloakAngularModule,
+        RouterModule.forRoot(
+            routes,
+            {enableTracing: true} // <-- debugging purposes only
+        ),
+        NgxHateoasClientModule.forRoot(),
+        ContentLoaderModule,
+        SharedModule,
+        FormsModule,
+        AngularYandexMapsModule.forRoot(mapConfig),
+        PlotlyModule,
+        NgxEchartsModule.forRoot({
+            echarts: () => import('echarts'),
+        }),
+        BrowserAnimationsModule,
+        MatToolbarModule,
+        MatSidenavModule,
+        MatButtonModule,
+        MatListModule,
+        MatIconModule,
+        LayoutModule,
+        MatPaginatorModule,
+        MoneyTrackerServiceModule,
+        SharedComponentsModule,
+        MatTableModule,
+        MatGridListModule,
+        MatInputModule,
+        MatSelectModule,
+        MatTooltipModule,
+        MatButtonToggleModule,
+    ],
   providers: [
     {
       provide: KeycloakService,
@@ -240,9 +245,12 @@ export class AppModule {
       },
       useTypes: {
         resources: [
+          AccountBalance,
           Entity,
           CommodityGroup,
           Commodity,
+          MoneyExchange,
+          MoneyType,
           MonthlyDelta,
           OrganizationGroup,
           Organization,

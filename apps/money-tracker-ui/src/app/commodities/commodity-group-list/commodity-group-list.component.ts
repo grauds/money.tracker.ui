@@ -18,6 +18,6 @@ export class CommodityGroupListComponent extends EntityListComponent<CommodityGr
   }
 
   ngOnInit(): void {
-    super.onInit()
+    super._ngOnInit()
   }
 }

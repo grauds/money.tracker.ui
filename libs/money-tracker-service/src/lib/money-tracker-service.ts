@@ -2,7 +2,13 @@ import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
-import { AccountBalance, CommodityGroup, ExpenseItem, MoneyTypes, OrganizationGroup } from '@clematis-shared/model';
+import {
+  AccountBalance,
+  CommodityGroup,
+  ExpenseItem,
+  MoneyTypes,
+  OrganizationGroup
+} from '@clematis-shared/model';
 import { PagedResourceCollection } from '@lagoshny/ngx-hateoas-client/lib/model/resource/paged-resource-collection';
 
 // todo
@@ -14,130 +20,91 @@ export class MoneyTrackerService {
 
   constructor(private http: HttpClient, private resourceService: HateoasResourceService) { }
 
-  getPathForCommodityGroup(commodityGroupId: string | null,
-                           callback: (arg0: ResourceCollection<CommodityGroup>) => void,
-                           error: (arg0: Error) => void) {
-
+  getPathForCommodityGroup(commodityGroupId: string | null): Observable<ResourceCollection<CommodityGroup>> {
     if (commodityGroupId) {
-      const observer = {
-        next: (response: any) => {
-          callback(response)
-        }, error: (e: Error) => {
-          error(e)
-        }
-      }
-      this.resourceService.searchCollection(CommodityGroup, 'pathById', {
+      return this.resourceService.searchCollection(CommodityGroup, 'pathById', {
         params: {
           id: commodityGroupId
         }
-      }).subscribe(observer)
+      })
     }
-
+    return of(new ResourceCollection<CommodityGroup>())
   }
 
-  getPathForOrganizationGroup(organizationGroupId: string | null,
-                           callback: (arg0: ResourceCollection<OrganizationGroup>) => void,
-                           error: (arg0: Error) => void) {
+  getPathForOrganizationGroup(organizationGroupId: string | null): Observable<ResourceCollection<OrganizationGroup>> {
 
     if (organizationGroupId) {
-      const observer = {
-        next: (response: any) => {
-          callback(response)
-        }, error: (e: Error) => {
-          error(e)
-        }
-      }
-      this.resourceService.searchCollection(OrganizationGroup, 'pathById', {
+      return this.resourceService.searchCollection(OrganizationGroup, 'pathById', {
         params: {
           id: organizationGroupId
         }
-      }).subscribe(observer)
+      })
     }
-
+    return of(new ResourceCollection<OrganizationGroup>())
   }
 
   getTotalsForCommodity(commodityId: string | null,
-                        moneyCode: MoneyTypes,
-                        callback: (arg0: number) => void,
-                        error: (arg0: Error) => void) {
+                        moneyCode: MoneyTypes) {
 
     if (commodityId) {
-      const observer = {
-        next: (response: any) => {
-          callback(response)
-        }, error: (e: Error) => {
-          error(e)
-        }
-      }
-      this._doQuery('/expenseItems/search/sumCommodityExpenses', {
+      this.http.get<number>(this.getUrl('/expenseItems/search/sumCommodityExpenses'), {
         params: {
           commodityId: commodityId,
           moneyCode: moneyCode
         }
-      }).subscribe(observer)
-    }
+      })
+    } return of(0)
   }
 
   getTotalsForCommodityGroup(commodityGroupId: string | null,
-                             moneyCode: MoneyTypes,
-                             callback: (arg0: number) => void,
-                             error: (arg0: Error) => void) {
+                             moneyCode: MoneyTypes): Observable<number> {
 
     if (commodityGroupId) {
-      const observer = {
-        next: (response: any) => {
-          callback(response)
-        }, error: (e: Error) => {
-          error(e)
-        }
-      }
-      this._doQuery('/expenses/search/sumCommodityGroupExpenses', {
+      return this.http.get<number>(this.getUrl('/expenses/search/sumCommodityGroupExpenses'), {
         params: {
           commodityGroupId: commodityGroupId,
           moneyCode: moneyCode
         }
-      }).subscribe(observer)
-    }
+      })
+    } return of(0)
   }
 
-  getTotalQtyForCommodity(commodityId: string | null,
-                          callback: (arg0: number) => void,
-                          error: (arg0: Error) => void) {
+  getTotalQtyForCommodity(commodityId: string | null): Observable<number>  {
 
     if (commodityId) {
-      const observer = {
-        next: (response: any) => {
-          callback(response)
-        }, error: (e: Error) => {
-          error(e)
-        }
-      }
-      this._doQuery('/expenseItems/search/sumCommodityQuantity', {
+      return this.http.get<number>(this.getUrl('/expenseItems/search/sumCommodityQuantity'), {
         params: {
           commodityId: commodityId
         }
-      }).subscribe(observer)
-    }
+      })
+    } return of(0)
   }
 
-  getCommodityExpences(commodityId: string | null,
-                       callback: (arg0: ResourceCollection<ExpenseItem>) => void,
-                       error: (arg0: Error) => void) {
+
+  getTotalsForOrganization(organizationId: string | null,
+                           moneyCode: MoneyTypes): Observable<number> {
+    if (organizationId) {
+      return this.http.get<number>(this.getUrl('/expenseItems/search/sumOrganizationExpenses'), {
+        params: {
+          organizationId: organizationId,
+          moneyCode: moneyCode
+        }
+      }).pipe(
+        map(this.getResult.bind(this)),
+        catchError(() => of(0))
+      )
+    } return of(0)
+  }
+
+  getCommodityExpences(commodityId: string | null): Observable<ResourceCollection<ExpenseItem>> {
 
     if (commodityId) {
-      const observer = {
-        next: (response: any) => {
-          callback(response)
-        }, error: (e: Error) => {
-          error(e)
-        }
-      }
-      this.resourceService.searchCollection(ExpenseItem, 'findByCommodityId', {
+      return this.resourceService.searchCollection(ExpenseItem, 'findByCommodityId', {
         params: {
           commodityId: commodityId
         }
-      }).subscribe(observer)
-    }
+      })
+    } return of(new ResourceCollection<ExpenseItem>())
   }
 
   getAccountsBalance(callback: (arg0: PagedResourceCollection<AccountBalance>) => void,
@@ -169,6 +136,21 @@ export class MoneyTrackerService {
 
   }
 
+  getAverageExchangeRate(source: string, dest: string): Observable<number> {
+
+    return this.http.get<number>(this.getUrl('/exchange/search/average'), {
+      params: {
+        source: source,
+        dest: dest
+      }
+    }).pipe(
+      map(this.getResult.bind(this)),
+      catchError(() => of(0))
+    )
+
+  }
+
+
   private getResult(resp: number): number {
     return resp
   }
@@ -180,4 +162,5 @@ export class MoneyTrackerService {
   private _doQuery(url: string, options: any) {
     return this.http.get<number>(environment.apiUrl + url, options)
   }
+
 }
