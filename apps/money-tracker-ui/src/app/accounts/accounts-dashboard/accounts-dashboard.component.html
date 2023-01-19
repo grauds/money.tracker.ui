@@ -1,4 +1,5 @@
 <div *ngIf="isLoggedIn">
+
   <mat-form-field appearance="fill">
     <mat-label>Available currencies</mat-label>
     <mat-select [disabled]="this.loading" [value]="currency" (valueChange)="updateCurrency($event)">
@@ -8,6 +9,16 @@
     </mat-select>
   </mat-form-field>
 
-  <div echarts [options]="options" class="accounts-chart"></div>
+  <h1 class="totalsHeader" [hidden]="this.loading">
+    {{ this.total | currency: this.currency }}
+  </h1>
+
+  <h1 class="totalsHeader" [hidden]="!(this.loading)">
+    Loading...
+  </h1>
+
+  <div echarts [options]="options" (chartClick)="onChartEvent($event, 'chartClick')" class="accounts-chart">
+
+  </div>
 
 </div>

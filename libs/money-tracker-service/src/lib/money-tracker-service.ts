@@ -9,7 +9,6 @@ import {
   MoneyTypes,
   OrganizationGroup
 } from '@clematis-shared/model';
-import { PagedResourceCollection } from '@lagoshny/ngx-hateoas-client/lib/model/resource/paged-resource-collection';
 
 // todo
 import {environment} from "../../../../apps/money-tracker-ui/src/environments/environment";
@@ -107,18 +106,21 @@ export class MoneyTrackerService {
     } return of(new ResourceCollection<ExpenseItem>())
   }
 
-  getAccountsBalance(callback: (arg0: PagedResourceCollection<AccountBalance>) => void,
-                     error: (arg0: Error) => void) {
-    const observer = {
-      next: (response: PagedResourceCollection<AccountBalance>) => {
-        callback(response)
-      }, error: (e: Error) => {
-        error(e)
+  getAccountsBalanceInCurrency(code: string): Observable<ResourceCollection<AccountBalance>> {
+    return this.resourceService.searchCollection<AccountBalance>(AccountBalance, 'code',
+      {
+        params: {
+          code: code
+        }
+      })
+  }
+
+  getAccountsTotalInCurrency(code: string): Observable<number> {
+    return this.http.get<number>(this.getUrl("/accountsTotals/search/balance"), {
+      params: {
+        code: code
       }
-    }
-    this.resourceService.getPage<AccountBalance>(AccountBalance, {pageParams: {
-        size: 100
-      }}).subscribe(observer)
+    })
   }
 
   getBalance(an: number, mois: number, code: string): Observable<number> {
@@ -157,10 +159,6 @@ export class MoneyTrackerService {
 
   private getUrl(url: string) :string {
     return environment.apiUrl + url
-  }
-
-  private _doQuery(url: string, options: any) {
-    return this.http.get<number>(environment.apiUrl + url, options)
   }
 
 }
