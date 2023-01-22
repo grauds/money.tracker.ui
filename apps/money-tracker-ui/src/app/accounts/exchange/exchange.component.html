@@ -1,5 +1,12 @@
 <div *ngIf="isLoggedIn">
 
+  <h4 *ngIf="this.report" class="header">
+    <span><b>Sold:</b> {{this.report.sourceAmount |currency:this.sourceCurrency}}, </span>
+    <span><b>Bought:</b> {{this.report.destAmount |currency:this.destCurrency}}, </span>
+    <span><b>Average:</b> {{this.report.avgRate | number: '1.6-8'}} , </span>
+    <span><b>Current:</b> {{this.report.curRate | number: '1.6-8'}} </span>
+  </h4>
+
   <mat-form-field appearance="fill">
     <mat-label>Available source currencies</mat-label>
     <mat-select [disabled]="this.loading || this.pageLoading" [value]="sourceCurrency" (valueChange)="updatesSourceCurrency($event)">
@@ -22,8 +29,8 @@
     </mat-select>
   </mat-form-field>
 
-  <h1 class="timeHeader" [hidden]="this.loading || this.pageLoading">
-    {{this.average | currency: this.sourceCurrency}}
+  <h1 class="timeHeader" *ngIf="this.report" [hidden]="this.loading || this.pageLoading">
+    {{this.report.delta | currency: this.sourceCurrency}}
   </h1>
 
   <h1 class="timeHeader" [hidden]="!(this.loading || this.pageLoading)">

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HateoasResourceService, PagedResourceCollection, Sort} from "@lagoshny/ngx-hateoas-client";
 import {KeycloakService} from "keycloak-angular";
-import {MoneyTypes, MoneyExchange} from "@clematis-shared/model";
+import {MoneyExchange, MoneyExchangeReport, MoneyTypes} from "@clematis-shared/model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EntityListComponent} from "@clematis-shared/shared-components";
 import {Observable, of, switchMap} from "rxjs";
@@ -26,12 +26,13 @@ export class ExchangeComponent extends EntityListComponent<MoneyExchange> implem
   currencies = [MoneyTypes.RUB,
     MoneyTypes.GBP,
     MoneyTypes.EUR,
-    MoneyTypes.USD
+    MoneyTypes.USD,
+    MoneyTypes.CZK
   ];
 
   displayedColumns: string[] = ['exchangedate', 'from', 'to', 'sourceamount', 'destamount', 'rate'];
 
-  average?: number;
+  report?: MoneyExchangeReport;
 
   constructor(private moneyTrackerService: MoneyTrackerService,
               resourceService: HateoasResourceService,
@@ -66,9 +67,9 @@ export class ExchangeComponent extends EntityListComponent<MoneyExchange> implem
   override queryData(): Observable<PagedResourceCollection<MoneyExchange>> {
     return super.queryData().pipe(
        switchMap((arr: PagedResourceCollection<MoneyExchange>) => {
-         return this.moneyTrackerService.getAverageExchangeRate(this.destCurrency, this.sourceCurrency)
-           .pipe(switchMap((average: number) => {
-             this.average = average
+         return this.moneyTrackerService.getExchangeReport(this.sourceCurrency, this.destCurrency)
+           .pipe(switchMap((report: MoneyExchangeReport) => {
+             this.report = report
              return of(arr)
            }))
        })
@@ -85,7 +86,7 @@ export class ExchangeComponent extends EntityListComponent<MoneyExchange> implem
   }
 
   override doSearch() {
-    return this.resourceService.searchPage<MoneyExchange>(MoneyExchange, 'findAllForCurrencies', {
+    return this.resourceService.searchPage<MoneyExchange>(MoneyExchange, 'events', {
       pageParams: {
         page: this.n,
         size: this.limit

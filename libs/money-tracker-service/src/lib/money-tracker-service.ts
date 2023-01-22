@@ -7,7 +7,8 @@ import {
   CommodityGroup,
   ExpenseItem,
   MoneyTypes,
-  OrganizationGroup
+  OrganizationGroup,
+  MoneyExchangeReport
 } from '@clematis-shared/model';
 
 // todo
@@ -149,6 +150,17 @@ export class MoneyTrackerService {
       map(this.getResult.bind(this)),
       catchError(() => of(0))
     )
+
+  }
+
+  getExchangeReport(source: string, dest: string): Observable<MoneyExchangeReport> {
+
+    return this.http.get<MoneyExchangeReport>(this.getUrl('/exchange/search/report'), {
+      params: {
+        source: source,
+        dest: dest
+      }
+    })
 
   }
 

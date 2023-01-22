@@ -13,3 +13,5 @@ export { MonthlyDelta } from '../model/monthly-delta'
 export { Organization } from '../model/organization'
 export { OrganizationGroup } from '../model/organization-group'
 export { UnitType } from '../model/unit-type'
+
+export { MoneyExchangeReport } from '../dto/money-exchange-report'
