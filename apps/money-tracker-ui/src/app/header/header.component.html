@@ -4,7 +4,7 @@
                [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
                [mode]="(isHandset$ | async) ? 'over' : 'side'"
                [opened]="(isHandset$ | async) === false">
-    <div style="padding: 20px"><img src="assets/clematis.png" alt=""></div>
+    <div style="padding-left: 30px; padding-right: 30px; padding-top: 15px;"><img src="assets/clematis.png" alt=""></div>
     <mat-toolbar>
       {{title}}
     </mat-toolbar>
@@ -12,35 +12,46 @@
       <div *ngIf="isLoggedIn">
         <a mat-list-item
            routerLinkActive="active-link"
-           routerLink="/main">Home</a>
+           routerLink="/main">
+          <mat-icon fontIcon="home"></mat-icon> Home
+        </a>
         <a mat-list-item
            routerLinkActive="active-link"
-           routerLink="/accounts">Accounts</a>
+           routerLink="/accounts">
+          <mat-icon fontIcon="account_balance"></mat-icon> Accounts</a>
         <a mat-list-item
            routerLinkActive="active-link"
-           routerLink="/exchange">Money Exchange</a>
+           routerLink="/exchange">
+          <mat-icon fontIcon="price_check"></mat-icon> Money Exchange</a>
         <a mat-list-item
            routerLinkActive="active-link"
-           routerLink="/commodities">Commodities</a>
+           routerLink="/commodities">
+          <mat-icon fontIcon="shopping_bag"></mat-icon> Commodities</a>
         <a mat-list-item
            routerLinkActive="active-link"
-           routerLink="/commodityGroups">Commodities Groups</a>
+           routerLink="/commodityGroups">
+          <mat-icon fontIcon="category"></mat-icon> Commodities Groups</a>
         <a mat-list-item
            routerLinkActive="active-link"
-           routerLink="/lastCommodities">Last Commodities</a>
+           routerLink="/lastCommodities">
+          <mat-icon fontIcon="history"></mat-icon> Last Commodities</a>
         <a mat-list-item
            routerLinkActive="active-link"
-           routerLink="/organizations">Organizations</a>
+           routerLink="/organizations">
+          <mat-icon fontIcon="store"></mat-icon> Organizations</a>
         <a mat-list-item
            routerLinkActive="active-link"
-           routerLink="/organizationGroups">Organizations Groups</a>
+           routerLink="/organizationGroups">
+          <mat-icon fontIcon="location_city"></mat-icon> Organizations Groups</a>
         <a mat-list-item
            routerLinkActive="active-link"
-           routerLink="/expenses">Expenses</a>
+           routerLink="/expenses">
+          <mat-icon fontIcon="account_balance_wallet"></mat-icon> Expenses</a>
       </div>
       <a mat-list-item
          routerLinkActive="/about"
-         routerLink="/about">About</a>
+         routerLink="/about">
+        <mat-icon fontIcon="info"></mat-icon> About</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
