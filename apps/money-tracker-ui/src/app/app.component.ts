@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { KeycloakEventType, KeycloakService } from 'keycloak-angular';
-import { KeycloakProfile } from 'keycloak-js';
+import {Component, OnInit} from '@angular/core';
+import {KeycloakEventType, KeycloakService} from 'keycloak-angular';
+import {KeycloakProfile} from 'keycloak-js';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -15,32 +16,29 @@ export class AppComponent implements OnInit {
 
   userProfile: KeycloakProfile | null = null;
 
-  constructor( protected readonly keycloak: KeycloakService ) {}
+  constructor(protected readonly keycloak: KeycloakService,
+               private router: Router, private route: ActivatedRoute) {}
 
-  public async ngOnInit() {
+  ngOnInit() {
 
-    // initialization of a component status
-    this.keycloak.isLoggedIn().then((logged) => {
-      this.isLoggedIn = logged
-      if (logged) {
-        this.keycloak.loadUserProfile().then(profile => {
-          this.userProfile = profile
-        });
-      }
-    })
-
-    // subscription to other updates
+    // subscription to updates
     this.keycloak.keycloakEvents$.subscribe({
-      next: (e) => {
+      next: async (e) => {
         if (e.type == KeycloakEventType.OnAuthSuccess) {
           this.isLoggedIn = true
-          this.keycloak.loadUserProfile().then(profile => {
+          await this.keycloak.loadUserProfile().then(profile => {
             this.userProfile = profile
           });
+          if (this.route.snapshot.queryParams['redirect']) {
+            await this.router.navigate([this.route.snapshot.queryParams['redirect']]);
+          }
         } else if (e.type == KeycloakEventType.OnAuthError
           || e.type == KeycloakEventType.OnAuthLogout) {
           this.isLoggedIn = false
           this.userProfile = null
+          await this.keycloak.login()
+        } else if (e.type === KeycloakEventType.OnReady && !this.isLoggedIn) {
+          await this.keycloak.login()
         }
       }
     });
