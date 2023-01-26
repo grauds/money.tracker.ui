@@ -1,7 +1,8 @@
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import { Entity } from '@clematis-shared/model';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 import { Title } from '@angular/platform-browser';
+import {Subscription} from "rxjs";
 
 export abstract class EntityComponent<T extends Entity> {
 
@@ -9,14 +10,28 @@ export abstract class EntityComponent<T extends Entity> {
 
   id: string | null = null
 
+  // subscribe for page updates in the address bar
+  pageSubscription: Subscription;
+
   protected constructor(private type: new () => T,
                         protected resourceService: HateoasResourceService,
                         private route: ActivatedRoute,
-                        private title: Title) { }
+                        private router: Router,
+                        private title: Title) {
+
+    this.pageSubscription = this.router.events.subscribe((val) => {
+      // see also
+      if (val instanceof NavigationEnd) {
+        this.onInit()
+      }
+    });
+  }
 
   onInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id')
-    this.loadData()
+    if (this.route.snapshot.paramMap.get('id') !== this.id) {
+      this.id = this.route.snapshot.paramMap.get('id')
+      this.loadData()
+    }
   }
 
   loadData = () => {

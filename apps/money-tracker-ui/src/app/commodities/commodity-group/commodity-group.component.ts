@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { CommodityGroup, Commodity, MoneyTypes, Entity } from '@clematis-shared/model';
 import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
-import { EntityComponent, Utils } from '@clematis-shared/shared-components';
+import { EntityComponent } from '@clematis-shared/shared-components';
 import { Title } from "@angular/platform-browser";
+import { Utils } from '@clematis-shared/model';
 
 @Component({
   selector: 'app-commodity-group',
@@ -32,8 +33,9 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup> imp
   constructor(resourceService: HateoasResourceService,
               private moneyTrackerService: MoneyTrackerService,
               route: ActivatedRoute,
+              router: Router,
               title: Title) {
-    super(CommodityGroup, resourceService, route, title);
+    super(CommodityGroup, resourceService, route, router, title);
   }
 
   ngOnInit(): void {
@@ -70,11 +72,6 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup> imp
     if (this.entity) {
       this.moneyTrackerService.getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.entity)).subscribe((response) => {
         this.path = response.resources.reverse()
-        if (this.parent) {
-          this.path.push(this.parent)
-        }
-      }, (error) => {
-        // todo error handling
       })
     }
 

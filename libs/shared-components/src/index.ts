@@ -7,4 +7,3 @@ export { PageSizeComponent } from './lib/components/page-size/page-size.componen
 export { SearchComponent } from './lib/components/search/search.component';
 export { EntityComponent } from './lib/components/entity/entity.component'
 export { EntityListComponent } from './lib/components/entity-list/entity-list.component'
-export { Utils } from './lib/utils/utils'

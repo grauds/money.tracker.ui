@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 import { Entity, Organization, OrganizationGroup } from '@clematis-shared/model';
-import { EntityComponent, Utils } from '@clematis-shared/shared-components';
+import { EntityComponent } from '@clematis-shared/shared-components';
 import { MoneyTrackerService } from "@clematis-shared/money-tracker-service";
 import { Title } from "@angular/platform-browser";
+import { Utils } from '@clematis-shared/model';
 
 @Component({
   selector: 'app-organization',
@@ -24,8 +25,9 @@ export class OrganizationComponent extends EntityComponent<Organization> impleme
   constructor(resourceService: HateoasResourceService,
               private moneyTrackerService: MoneyTrackerService,
               route: ActivatedRoute,
+              router: Router,
               title: Title) {
-    super(Organization, resourceService, route, title)
+    super(Organization, resourceService, route, router, title)
   }
 
   ngOnInit(): void {

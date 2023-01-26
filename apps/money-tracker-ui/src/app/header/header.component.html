@@ -12,29 +12,33 @@
       <div *ngIf="isLoggedIn">
         <a mat-list-item
            routerLinkActive="active-link"
-           routerLink="/main">
-          <mat-icon fontIcon="home"></mat-icon> Home
-        </a>
-        <a mat-list-item
-           routerLinkActive="active-link"
            routerLink="/accounts">
           <mat-icon fontIcon="account_balance"></mat-icon> Accounts</a>
         <a mat-list-item
            routerLinkActive="active-link"
+           routerLink="/main">
+          <mat-icon fontIcon="timeline"></mat-icon> Currencies
+        </a>
+        <a mat-list-item
+           routerLinkActive="active-link"
            routerLink="/exchange">
-          <mat-icon fontIcon="price_check"></mat-icon> Money Exchange</a>
+          <mat-icon fontIcon="currency_exchange"></mat-icon> Currency Exchange</a>
         <a mat-list-item
            routerLinkActive="active-link"
-           routerLink="/commodities">
-          <mat-icon fontIcon="shopping_bag"></mat-icon> Commodities</a>
-        <a mat-list-item
-           routerLinkActive="active-link"
-           routerLink="/commodityGroups">
-          <mat-icon fontIcon="category"></mat-icon> Commodities Groups</a>
+           routerLink="/expenses">
+          <mat-icon fontIcon="barcode_reader"></mat-icon> Expenses</a>
         <a mat-list-item
            routerLinkActive="active-link"
            routerLink="/lastCommodities">
           <mat-icon fontIcon="history"></mat-icon> Last Commodities</a>
+        <a mat-list-item
+           routerLinkActive="active-link"
+           routerLink="/commodities">
+          <mat-icon fontIcon="shop"></mat-icon> Commodities</a>
+        <a mat-list-item
+           routerLinkActive="active-link"
+           routerLink="/commodityGroups">
+          <mat-icon fontIcon="shop_two"></mat-icon> Commodities Groups</a>
         <a mat-list-item
            routerLinkActive="active-link"
            routerLink="/organizations">
@@ -42,11 +46,7 @@
         <a mat-list-item
            routerLinkActive="active-link"
            routerLink="/organizationGroups">
-          <mat-icon fontIcon="location_city"></mat-icon> Organizations Groups</a>
-        <a mat-list-item
-           routerLinkActive="active-link"
-           routerLink="/expenses">
-          <mat-icon fontIcon="account_balance_wallet"></mat-icon> Expenses</a>
+          <mat-icon fontIcon="corporate_fare"></mat-icon> Organizations Groups</a>
       </div>
       <a mat-list-item
          routerLinkActive="/about"

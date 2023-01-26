@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {HateoasResourceService, PagedResourceCollection, Sort} from '@lagoshny/ngx-hateoas-client';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Commodity, Entity, LastCommodity } from '@clematis-shared/model';
-import {EntityListComponent, Utils} from '@clematis-shared/shared-components';
+import {EntityListComponent} from '@clematis-shared/shared-components';
 import { catchError, forkJoin, map, Observable, of, switchMap } from 'rxjs';
 import { Title } from "@angular/platform-browser";
+import { Utils } from '@clematis-shared/model';
 
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';

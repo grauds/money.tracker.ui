@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 import { Commodity, MoneyType, CommodityGroup, MoneyTypes, ExpenseItem, Entity } from '@clematis-shared/model';
 import { EntityComponent } from '@clematis-shared/shared-components';
-import { Utils } from '@clematis-shared/shared-components';
+import { Utils } from '@clematis-shared/model';
 import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
 import { Title } from "@angular/platform-browser";
 
@@ -64,8 +64,9 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
   constructor(resourceService: HateoasResourceService,
               private moneyTrackerService: MoneyTrackerService,
               route: ActivatedRoute,
+              router: Router,
               title: Title) {
-    super(Commodity, resourceService, route, title)
+    super(Commodity, resourceService, route, router, title)
   }
 
   ngOnInit(): void {

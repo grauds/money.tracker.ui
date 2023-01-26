@@ -1,5 +1,5 @@
 import { Resource } from '@lagoshny/ngx-hateoas-client';
-import { Utils } from '@clematis-shared/shared-components';
+import { Utils } from '../utils/utils';
 
 export class Entity extends Resource {
 
