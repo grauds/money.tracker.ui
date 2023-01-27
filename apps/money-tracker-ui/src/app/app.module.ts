@@ -51,7 +51,7 @@ import { CommodityGroupListComponent } from './commodities/commodity-group-list/
 import { OrganizationsListComponent } from './organizations/organizations-list/organizations-list.component';
 
 // pages
-import { ExpensesListComponent } from './pages/expences-list/expenses-list.component';
+import { ExpensesListComponent } from './expenses/expences-list/expenses-list.component';
 import { CommodityComponent } from './commodities/commodity/commodity.component';
 import { CommodityGroupComponent } from './commodities/commodity-group/commodity-group.component';
 
@@ -70,7 +70,7 @@ import { SharedComponentsModule } from '@clematis-shared/shared-components';
 import { MatTableModule } from '@angular/material/table';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { AccountsDashboardComponent } from './accounts/accounts-dashboard/accounts-dashboard.component';
-import { LastCommoditiesListComponent } from './commodities/last-commodities-list/last-commodities-list.component';
+import { LastCommoditiesListComponent } from './expenses/last-commodities-list/last-commodities-list.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';

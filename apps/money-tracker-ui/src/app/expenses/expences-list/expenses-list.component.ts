@@ -10,7 +10,7 @@ import {Title} from "@angular/platform-browser";
 @Component({
   selector: 'app-expenses-list',
   templateUrl: 'expenses-list.component.html',
-  styleUrls: ['expenses-list.component.css']
+  styleUrls: ['expenses-list.component.sass']
 })
 export class ExpensesListComponent extends EntityListComponent<ExpenseItem> implements OnInit {
 
@@ -19,7 +19,6 @@ export class ExpensesListComponent extends EntityListComponent<ExpenseItem> impl
   constructor(resourceService: HateoasResourceService, router: Router, route: ActivatedRoute, private title: Title) {
     super(ExpenseItem, resourceService, router, route)
 
-    this.path = 'expenses'
   }
 
   ngOnInit(): void {
