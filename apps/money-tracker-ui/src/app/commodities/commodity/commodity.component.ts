@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 import { Commodity, MoneyType, CommodityGroup, MoneyTypes, ExpenseItem, Entity } from '@clematis-shared/model';
 import { EntityComponent } from '@clematis-shared/shared-components';
@@ -10,11 +10,9 @@ import { Title } from "@angular/platform-browser";
 @Component({
   selector: 'app-commodity',
   templateUrl: './commodity.component.html',
-  styleUrls: ['./commodity.component.css']
+  styleUrls: ['./commodity.component.sass']
 })
 export class CommodityComponent extends EntityComponent<Commodity> implements OnInit {
-
-  currentRate: number = 2;
 
   defaultPrice: number | undefined = 0;
 
@@ -45,16 +43,6 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
       type: 'scatter'
     }],
     layout: {autosize: true, title: 'Money Spent'},
-  };
-
-  graphQty: any = {
-    data: [{
-      x: [],
-      y: [],
-      name: 'Quantity',
-      type: 'scatter'
-    }],
-    layout: {autosize: true, title: 'Quantity Bought'},
   };
 
   averagePrice: number | undefined;
@@ -115,9 +103,6 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
 
         this.graph.data[1].x.push(expense.transferDate)
         this.graph.data[1].y.push(expense.price)
-
-        this.graphQty.data[0].x.push(expense.transferDate)
-        this.graphQty.data[0].y.push(expense.qty)
       })
 
     })

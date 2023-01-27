@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommodityGroup, Commodity, MoneyTypes, Entity } from '@clematis-shared/model';
 import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
 import { EntityComponent } from '@clematis-shared/shared-components';

@@ -17,6 +17,8 @@ export class LastCommodity extends Entity {
 
   qty: number = 0;
 
+  unit: string | undefined;
+
   price: number = 0;
 
   currency: string | undefined;

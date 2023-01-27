@@ -15,8 +15,6 @@ export class OrganizationsListComponent extends EntityListComponent<Organization
 
   constructor(resourceService: HateoasResourceService, router: Router, route: ActivatedRoute, private title: Title) {
     super(Organization, resourceService, router, route)
-
-    this.path = 'organizations'
   }
 
   ngOnInit(): void {

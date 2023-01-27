@@ -59,9 +59,6 @@ export class ExchangeComponent extends EntityListComponent<MoneyExchange> implem
         }
       }
     );
-
-    this.path = 'exchange'
-
   }
 
   override queryData(): Observable<PagedResourceCollection<MoneyExchange>> {

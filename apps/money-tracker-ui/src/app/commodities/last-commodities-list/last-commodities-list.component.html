@@ -52,7 +52,7 @@
       </ng-container>
 
       <ng-container matColumnDef="transferdate">
-        <th mat-header-cell *matHeaderCellDef> Transfer Date </th>
+        <th mat-header-cell *matHeaderCellDef> Date </th>
         <td mat-cell *matCellDef="let element"> {{element.transactionDate | date:'shortDate' }} </td>
       </ng-container>
 
@@ -70,12 +70,12 @@
 
       <ng-container matColumnDef="price">
         <th mat-header-cell *matHeaderCellDef> Price </th>
-        <td mat-cell *matCellDef="let element"> {{element.price | number:'1.0-2'}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.price | currency:element.currency}} </td>
       </ng-container>
 
       <ng-container matColumnDef="qty">
         <th mat-header-cell *matHeaderCellDef> Qty </th>
-        <td mat-cell *matCellDef="let element"> {{element.qty | number:'1.0-2'}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.qty | number:'1.0-2'}} {{ element.unit }} </td>
       </ng-container>
 
       <ng-container matColumnDef="organizationname">

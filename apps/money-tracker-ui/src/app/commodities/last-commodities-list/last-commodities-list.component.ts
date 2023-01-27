@@ -24,8 +24,6 @@ export class LastCommoditiesListComponent extends EntityListComponent<LastCommod
   constructor(resourceService: HateoasResourceService,
               router: Router, route: ActivatedRoute, private title: Title) {
     super(LastCommodity, resourceService, router, route)
-
-    this.path = 'lastExpenseItems'
   }
 
   ngOnInit(): void {
@@ -66,7 +64,7 @@ export class LastCommoditiesListComponent extends EntityListComponent<LastCommod
 
   override getSortOption() {
     let ret: Sort = {
-      daysAgo: 'DESC'
+      daysAgo: 'ASC'
     }
     return ret
   }

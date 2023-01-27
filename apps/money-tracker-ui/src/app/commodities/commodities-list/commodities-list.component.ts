@@ -14,8 +14,6 @@ export class CommoditiesListComponent extends EntityListComponent<Commodity> imp
 
   constructor(resourceService: HateoasResourceService, router: Router, route: ActivatedRoute, private title: Title) {
     super(Commodity, resourceService, router, route)
-
-    this.path = 'commodities'
   }
 
   ngOnInit(): void {

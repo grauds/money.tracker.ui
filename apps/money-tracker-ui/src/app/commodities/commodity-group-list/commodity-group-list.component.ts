@@ -15,7 +15,6 @@ export class CommodityGroupListComponent extends EntityListComponent<CommodityGr
   constructor(resourceService: HateoasResourceService, router: Router, route: ActivatedRoute, private title: Title) {
     super(CommodityGroup, resourceService, router, route)
 
-    this.path = 'commodityGroups'
   }
 
   ngOnInit(): void {

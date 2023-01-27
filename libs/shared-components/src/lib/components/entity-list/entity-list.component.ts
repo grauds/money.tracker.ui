@@ -6,8 +6,6 @@ import { PageEvent } from '@angular/material/paginator';
 
 export abstract class EntityListComponent<T extends Resource> {
 
-  path = '';
-
   // elements page
   entities: T[] = [];
 
