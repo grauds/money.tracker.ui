@@ -7,8 +7,6 @@ export class LastCommodity extends Entity {
 
   transactionDate: Date | undefined;
 
-  commId: number = 0;
-
   commodity: Commodity | undefined;
 
   commodityLink: string | undefined;

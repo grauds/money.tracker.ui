@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {HateoasResourceService, PagedResourceCollection, Sort} from '@lagoshny/ngx-hateoas-client';
+import { HateoasResourceService, PagedResourceCollection, Sort } from '@lagoshny/ngx-hateoas-client';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Commodity, Entity, LastCommodity } from '@clematis-shared/model';
-import {EntityListComponent} from '@clematis-shared/shared-components';
+import { EntityListComponent } from '@clematis-shared/shared-components';
 import { catchError, forkJoin, map, Observable, of, switchMap } from 'rxjs';
 import { Title } from "@angular/platform-browser";
 import { Utils } from '@clematis-shared/model';
@@ -35,7 +35,7 @@ export class LastCommoditiesListComponent extends EntityListComponent<LastCommod
     return super.queryData().pipe(
       switchMap((arr: PagedResourceCollection<LastCommodity>) => {
         return forkJoin(arr.resources.map((lastCommodity: LastCommodity) => {
-          return this.resourceService.getResource<Commodity>(Commodity, lastCommodity.commId)
+          return lastCommodity.getRelation<Commodity>('commodity')
             .pipe(
               map((commodity: Commodity) => {
                 lastCommodity.commodity = commodity
