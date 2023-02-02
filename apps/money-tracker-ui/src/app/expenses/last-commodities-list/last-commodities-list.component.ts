@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HateoasResourceService, PagedResourceCollection, Sort } from '@lagoshny/ngx-hateoas-client';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Commodity, Entity, LastCommodity } from '@clematis-shared/model';
+import { Entity, LastCommodity } from '@clematis-shared/model';
 import { EntityListComponent } from '@clematis-shared/shared-components';
-import { catchError, forkJoin, map, Observable, of, switchMap } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { Title } from "@angular/platform-browser";
 import { Utils } from '@clematis-shared/model';
 
@@ -15,7 +15,7 @@ dayjs.extend(customParseFormat);
 @Component({
   selector: 'app-last-commodities-list',
   templateUrl: 'last-commodities-list.component.html',
-  styleUrls: ['last-commodities-list.component.css'],
+  styleUrls: ['last-commodities-list.component.sass'],
 })
 export class LastCommoditiesListComponent extends EntityListComponent<LastCommodity> implements OnInit {
 
@@ -34,26 +34,19 @@ export class LastCommoditiesListComponent extends EntityListComponent<LastCommod
   override queryData(): Observable<PagedResourceCollection<LastCommodity>> {
     return super.queryData().pipe(
       switchMap((arr: PagedResourceCollection<LastCommodity>) => {
-        return forkJoin(arr.resources.map((lastCommodity: LastCommodity) => {
-          return lastCommodity.getRelation<Commodity>('commodity')
-            .pipe(
-              map((commodity: Commodity) => {
-                lastCommodity.commodity = commodity
-                lastCommodity.commodityLink = Entity.getRelativeSelfLinkHref(commodity)
-                return lastCommodity
-              }),
-              map(() => {
-                lastCommodity.transactionDate = dayjs(lastCommodity.transactionDate, "DD-MM-YYYY HH:mm:ss", true).toDate();
-                return lastCommodity
-              }),
-              catchError(() => of(lastCommodity))
-            )
-        })).pipe(
-          switchMap((expenses: LastCommodity[]) => {
-            arr.resources = expenses
-            return of(arr)
-          })
-        )
+        arr.resources = arr.resources.map((lastCommodity: LastCommodity) => {
+          if (lastCommodity.commodity) {
+            lastCommodity.commodityLink
+              = Entity.getRelativeLinkHref(Utils.removeProjection(lastCommodity.commodity.getSelfLinkHref()))
+          }
+          if (lastCommodity.organization) {
+            lastCommodity.organizationLink
+              = Entity.getRelativeLinkHref(Utils.removeProjection(lastCommodity.organization.getSelfLinkHref()))
+          }
+          lastCommodity.transactionDate = dayjs(lastCommodity.transactionDate, "DD-MM-YYYY HH:mm:ss", true).toDate();
+          return lastCommodity
+        })
+        return of(arr);
       })
     )
   }

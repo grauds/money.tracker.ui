@@ -6,6 +6,14 @@ export class Entity extends Resource {
   name: string | undefined;
 
   static getRelativeSelfLinkHref(resource: Resource): string {
-    return Utils.parseResourceUrlToAppUrl(resource.getSelfLinkHref());
+    if (resource) {
+      return Utils.parseResourceUrlToAppUrl(resource.getSelfLinkHref());
+    } else return ''
+  }
+
+  static getRelativeLinkHref(resource: string): string {
+    if (resource) {
+      return Utils.parseResourceUrlToAppUrl(resource);
+    } else return ''
   }
 }

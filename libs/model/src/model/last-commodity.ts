@@ -1,15 +1,22 @@
-import { HateoasResource } from '@lagoshny/ngx-hateoas-client';
+import {HateoasResource, ProjectionRel} from '@lagoshny/ngx-hateoas-client';
 import { Entity } from './entity';
-import { Commodity } from './commodity';
+import { Organization } from './organization';
+import { CommodityLink } from './commodity-link';
+import { Commodity } from "./commodity";
 
 @HateoasResource('lastExpenseItems')
 export class LastCommodity extends Entity {
 
   transactionDate: Date | undefined;
 
-  commodity: Commodity | undefined;
+  @ProjectionRel(Commodity)
+  commodity: CommodityLink | undefined;
 
   commodityLink: string | undefined;
+
+  organization: Organization | undefined;
+
+  organizationLink: string | undefined;
 
   daysAgo: number = 0;
 

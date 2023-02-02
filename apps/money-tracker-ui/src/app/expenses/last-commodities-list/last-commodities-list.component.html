@@ -81,7 +81,12 @@
       <ng-container matColumnDef="organizationname">
         <th mat-header-cell *matHeaderCellDef> Organization </th>
         <td mat-cell *matCellDef="let element">
-          <div *ngIf="element.org">{{element.org}}</div>
+          <a *ngIf="element.organization && element.organizationLink"
+             routerLink="{{element.organizationLink}}">
+            {{element.organization.name}}</a>
+
+          <div *ngIf="element.organization && !element.organizationLink">
+            {{element.organization.name}}</div>
         </td>
       </ng-container>
 
