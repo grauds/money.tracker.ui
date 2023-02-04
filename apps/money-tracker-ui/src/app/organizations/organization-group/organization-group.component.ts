@@ -4,14 +4,17 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import { CommodityGroup, Entity, Organization, OrganizationGroup } from '@clematis-shared/model';
 import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
-import {EntityComponent} from '@clematis-shared/shared-components';
+import {EntityComponent, OrganizationsService} from '@clematis-shared/shared-components';
 import {Title} from "@angular/platform-browser";
 import { Utils } from '@clematis-shared/model';
 
 @Component({
   selector: 'app-organization-group',
   templateUrl: './organization-group.component.html',
-  styleUrls: ['./organization-group.component.css']
+  styleUrls: ['./organization-group.component.css'],
+  providers: [
+    { provide: 'searchService', useClass: OrganizationsService }
+  ]
 })
 export class OrganizationGroupComponent extends EntityComponent<OrganizationGroup> implements OnInit {
 

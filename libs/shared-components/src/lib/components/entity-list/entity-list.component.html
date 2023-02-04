@@ -1,0 +1,53 @@
+<div *ngIf="error">
+  <div class="alert alert-danger">
+    {{error}}
+  </div>
+</div>
+
+<div *ngIf="!error">
+
+  <div *ngIf="!loading">
+    <div class="container">
+
+      <mat-paginator [length]="total"
+                     [pageSize]="limit"
+                     [pageSizeOptions]="[5, 10, 25, 100]"
+                     [pageIndex]="n"
+                     (page)="setCurrentPage($event)"
+                     [showFirstLastButtons]="true"
+                     aria-label="Select page">
+      </mat-paginator>
+
+      <!-- custom list -->
+      <div *ngIf="resultItemTemplate">
+        <div *ngIf="!table">
+          <div *ngFor="let a of entities">
+            <ng-container *ngTemplateOutlet="resultItemTemplate; context:{a}"></ng-container>
+          </div>
+        </div>
+        <div *ngIf="table">
+          <ng-container *ngTemplateOutlet="resultItemTemplate; context:{entities}"></ng-container>
+        </div>
+      </div>
+
+      <!-- fallback to simple list -->
+      <div *ngIf="!resultItemTemplate">
+        <div *ngFor="let a of entities">
+          <app-entity-element [entity]="a"></app-entity-element>
+        </div>
+      </div>
+
+      <mat-paginator [length]="total"
+                     [pageSize]="limit"
+                     [pageSizeOptions]="[5, 10, 25, 100]"
+                     [pageIndex]="n"
+                     (page)="setCurrentPage($event)"
+                     [showFirstLastButtons]="true"
+                     aria-label="Select page">
+      </mat-paginator>
+
+    </div>
+
+  </div>
+
+</div>

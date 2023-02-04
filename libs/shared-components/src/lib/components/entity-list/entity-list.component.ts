@@ -1,16 +1,26 @@
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HateoasResourceService, PagedResourceCollection, Resource, Sort } from '@lagoshny/ngx-hateoas-client';
-import { EntityElementComponent } from '../entity-element/entity-element.component';
+import { PagedResourceCollection, Resource, Sort } from '@lagoshny/ngx-hateoas-client';
 import { PageEvent } from '@angular/material/paginator';
+import { SearchService } from "../../service/search.service";
+import { Component, Inject, Input, OnInit, TemplateRef } from "@angular/core";
 
-export abstract class EntityListComponent<T extends Resource> {
+@Component({
+  selector: 'app-entity-list',
+  templateUrl: './entity-list.component.html',
+  styleUrls: ['./entity-list.component.sass']
+})
+export class EntityListComponent<T extends Resource> implements OnInit {
+
+  @Input() resultItemTemplate: TemplateRef<any> | undefined;
+
+  @Input() table: boolean = false;
+
+  // subscribe for page updates in the address bar
+  pageSubscription: Subscription;
 
   // elements page
   entities: T[] = [];
-
-  // entity renderer
-  renderer: EntityElementComponent;
 
   // total number of elements
   total: number | undefined;
@@ -21,28 +31,18 @@ export abstract class EntityListComponent<T extends Resource> {
   // current page number counter
   n = 0;
 
-  // subscribe for page updates in the address bar
-  pageSubscription: Subscription;
-
-  // error message
-  error: string | undefined;
-
   // loading for the first time
   loading = true;
 
   // loading page - a smaller area to update
   pageLoading = false;
 
-  // search string to filter the list of entities by the names
-  search = '';
+  // error message
+  error: string | undefined;
 
-  protected constructor(private type: new () => T,
-                        protected resourceService: HateoasResourceService,
-                        protected router: Router,
-                        protected route: ActivatedRoute,
-                        renderer?: any) {
-
-    this.renderer = renderer ? renderer : new EntityElementComponent(router)
+  public constructor(@Inject("searchService") private readonly searchService: SearchService<T>,
+                     protected router: Router,
+                     protected route: ActivatedRoute) {
 
     this.pageSubscription = route.queryParams.subscribe(
       (queryParam: any) => {
@@ -54,7 +54,7 @@ export abstract class EntityListComponent<T extends Resource> {
     );
   }
 
-  _ngOnInit(): void {
+  ngOnInit(): void {
     this.loading = this.entities.length <= 0
     this.loadData()
   }
@@ -66,24 +66,17 @@ export abstract class EntityListComponent<T extends Resource> {
     this.loadData()
   }
 
-  setSearchString($event: string) {
-    this.search = $event
-    this.loadData()
-  }
-
   updateRoute() {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: {
-        page: this.n,
-        size: this.limit
-      },
+      queryParams: this.getPageParams(),
       queryParamsHandling: 'merge',
       skipLocationChange: false
     })
   }
 
   loadData(): Subscription {
+
     this.pageLoading = true
     const subscriber = (page: PagedResourceCollection<T>) => {
       this.entities = page.resources;
@@ -97,41 +90,34 @@ export abstract class EntityListComponent<T extends Resource> {
   }
 
   queryData(): Observable<PagedResourceCollection<T>>  {
-    if (this.search) {
-      return this.doSearch()
-    } else {
-      return this.getPage();
-    }
+    return this.searchService.searchPage({
+      pageParams: this.getPageParams(),
+      sort: this.getSort(),
+      useCache: this.getUseCache(),
+      ...this.getQueryArguments()
+    }, this.getQueryName())
   }
 
-  getPage() {
-    return this.resourceService.getPage<T>(this.type, {
-      pageParams: {
-        page: this.n,
-        size: this.limit
-      },
-      sort: this.getSortOption()
-    })
+  getPageParams() {
+    return {
+      page: this.n,
+      size: this.limit
+    };
   }
 
-  doSearch() {
-    return this.resourceService.searchPage<T>(this.type, 'findByNameStarting', {
-      pageParams: {
-        page: this.n,
-        size: this.limit
-      },
-      params: {
-        name: this.search
-      },
-      sort: this.getSortOption()
-    });
+  getQueryArguments(): any {}
+
+  getQueryName(): string | null {
+    return null;
   }
 
-  getSortOption() {
-    const ret: Sort = {
+  getSort(): Sort {
+    return {
       name: 'ASC'
     }
-    return ret
   }
 
+  getUseCache(): boolean {
+    return true
+  }
 }

@@ -1,24 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { EntityListComponent} from '@clematis-shared/shared-components';
-import { CommodityGroup } from '@clematis-shared/model';
-import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from "@angular/platform-browser";
+import {
+  CommodityGroupsService
+} from "@clematis-shared/shared-components";
 
 @Component({
   selector: 'app-commodity-group-list',
   templateUrl: 'commodity-group-list.component.html',
-  styleUrls: ['commodity-group-list.component.css']
+  styleUrls: ['commodity-group-list.component.css'],
+  providers: [
+    { provide: 'searchService', useClass: CommodityGroupsService }
+  ]
 })
-export class CommodityGroupListComponent extends EntityListComponent<CommodityGroup> implements OnInit {
+export class CommodityGroupListComponent implements OnInit {
 
-  constructor(resourceService: HateoasResourceService, router: Router, route: ActivatedRoute, private title: Title) {
-    super(CommodityGroup, resourceService, router, route)
-
-  }
+  constructor(private title: Title) {}
 
   ngOnInit(): void {
-    super._ngOnInit()
     this.title.setTitle('Commodity Groups')
   }
 }

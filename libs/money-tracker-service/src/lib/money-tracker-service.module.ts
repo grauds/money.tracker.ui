@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MoneyTrackerService } from './money-tracker-service';
+import { MoneyTrackerService } from './service/money-tracker-service';
 
 @NgModule({
   declarations: [],

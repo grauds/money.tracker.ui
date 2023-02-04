@@ -12,7 +12,7 @@ import {
 } from '@clematis-shared/model';
 
 // todo
-import {environment} from "../../../../apps/money-tracker-ui/src/environments/environment";
+import {environment} from "../../../../../apps/money-tracker-ui/src/environments/environment";
 
 
 @Injectable()
@@ -107,6 +107,19 @@ export class MoneyTrackerService {
     } return of(new ResourceCollection<ExpenseItem>())
   }
 
+  getOrganizationExpences(organizationId: string | null): Observable<ResourceCollection<ExpenseItem>> {
+
+    if (organizationId) {
+      return this.resourceService.searchPage(ExpenseItem, 'tradeplace', {
+        params: {
+          tradeplaceId: organizationId
+        }
+      })
+    } return of(new ResourceCollection<ExpenseItem>())
+  }
+
+
+
   getAccountsBalanceInCurrency(code: string): Observable<ResourceCollection<AccountBalance>> {
     return this.resourceService.searchCollection<AccountBalance>(AccountBalance, 'code',
       {
@@ -153,16 +166,6 @@ export class MoneyTrackerService {
 
   }
 
-  getExchangeReport(source: string, dest: string): Observable<MoneyExchangeReport> {
-
-    return this.http.get<MoneyExchangeReport>(this.getUrl('/exchange/search/report'), {
-      params: {
-        source: source,
-        dest: dest
-      }
-    })
-
-  }
 
 
   private getResult(resp: number): number {

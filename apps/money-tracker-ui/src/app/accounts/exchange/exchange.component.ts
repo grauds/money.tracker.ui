@@ -1,19 +1,21 @@
-import {Component, OnInit} from '@angular/core';
-import {HateoasResourceService, PagedResourceCollection, Sort} from "@lagoshny/ngx-hateoas-client";
-import {KeycloakService} from "keycloak-angular";
-import {MoneyExchange, MoneyExchangeReport, MoneyTypes} from "@clematis-shared/model";
-import {ActivatedRoute, Router} from "@angular/router";
-import {EntityListComponent} from "@clematis-shared/shared-components";
-import {Observable, of, switchMap} from "rxjs";
-import {MoneyTrackerService} from "@clematis-shared/money-tracker-service";
-import {Title} from "@angular/platform-browser";
+import { Component, OnInit } from '@angular/core';
+import { Sort } from "@lagoshny/ngx-hateoas-client";
+import { KeycloakService } from "keycloak-angular";
+import { MoneyExchangeReport, MoneyTypes } from "@clematis-shared/model";
+import { ActivatedRoute, Router } from "@angular/router";
+import { MoneyTrackerService } from "@clematis-shared/money-tracker-service";
+import { Title } from "@angular/platform-browser";
+import { MoneyExchangeService } from "@clematis-shared/shared-components";
 
 @Component({
   selector: 'app-exchange',
   templateUrl: './exchange.component.html',
   styleUrls: ['./exchange.component.sass'],
+  providers: [
+    { provide: 'searchService', useClass: MoneyExchangeService }
+  ]
 })
-export class ExchangeComponent extends EntityListComponent<MoneyExchange> implements OnInit {
+export class ExchangeComponent implements OnInit {
 
   isLoggedIn: boolean = false;
 
@@ -35,13 +37,10 @@ export class ExchangeComponent extends EntityListComponent<MoneyExchange> implem
   report?: MoneyExchangeReport;
 
   constructor(private moneyTrackerService: MoneyTrackerService,
-              resourceService: HateoasResourceService,
               protected readonly keycloak: KeycloakService,
-              router: Router,
-              route: ActivatedRoute,
+              private router: Router,
+              private route: ActivatedRoute,
               private title: Title) {
-
-    super(MoneyExchange, resourceService, router, route)
 
     this.keycloak.isLoggedIn().then((logged) => {
       this.isLoggedIn = logged
@@ -61,39 +60,8 @@ export class ExchangeComponent extends EntityListComponent<MoneyExchange> implem
     );
   }
 
-  override queryData(): Observable<PagedResourceCollection<MoneyExchange>> {
-    return super.queryData().pipe(
-       switchMap((arr: PagedResourceCollection<MoneyExchange>) => {
-         return this.moneyTrackerService.getExchangeReport(this.sourceCurrency, this.destCurrency)
-           .pipe(switchMap((report: MoneyExchangeReport) => {
-             this.report = report
-             return of(arr)
-           }))
-       })
-    )
-  }
-
   ngOnInit(): void {
-    super._ngOnInit()
     this.title.setTitle('Money Exchange')
-  }
-
-  override getPage() {
-    return this.doSearch()
-  }
-
-  override doSearch() {
-    return this.resourceService.searchPage<MoneyExchange>(MoneyExchange, 'events', {
-      pageParams: {
-        page: this.n,
-        size: this.limit
-      },
-      params: {
-        source: this.sourceCurrency,
-        dest: this.destCurrency
-      },
-      sort: this.getSortOption()
-    });
   }
 
   getSourceCurrencies() {
@@ -120,22 +88,34 @@ export class ExchangeComponent extends EntityListComponent<MoneyExchange> implem
     this.updateRoute()
   }
 
-  override updateRoute() {
+  updateRoute() {
 
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        source: this.sourceCurrency,
-        dest: this.destCurrency,
         page: this.n,
-        size: this.limit
+        size: this.limit,
+        ...this.getQueryArguments()
       },
       queryParamsHandling: 'merge',
       skipLocationChange: false
     })
   }
 
-  override getSortOption() {
+  override getQueryName(): string | null {
+    return 'events';
+  }
+
+  override getQueryArguments(): any {
+    return {
+      params: {
+        source: this.sourceCurrency,
+        dest: this.destCurrency
+      }
+    };
+  }
+
+  override getSort() {
     let ret: Sort = {
       exchangeDate: 'DESC'
     }
