@@ -2,7 +2,6 @@
   "version": 2,
   "projects": {
     "model": "libs/model",
-    "money-tracker-service": "libs/money-tracker-service",
     "money-tracker-ui": "apps/money-tracker-ui",
     "shared-components": "libs/shared-components"
   }

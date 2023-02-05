@@ -9,6 +9,8 @@ import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { EntityListComponent } from './components/entity-list/entity-list.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+
+import { AccountsService } from "./service/accounts.service";
 import { OrganizationsService } from './service/organizations.service';
 import { CommoditiesService } from './service/commodities.service';
 import { CommodityGroupsService } from './service/commodity-groups.service';
@@ -30,6 +32,7 @@ import { MoneyExchangeService } from "./service/money-exchange.service";
     SearchComponent
   ],
   providers: [
+    AccountsService,
     OrganizationsService,
     CommoditiesService,
     CommodityGroupsService,

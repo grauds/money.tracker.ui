@@ -3,7 +3,7 @@
 
     <div style="padding-top: 5px; padding-bottom: 5px;">
 
-      <div><a routerLink="{{entityLink}}">{{entity.name}}</a></div>
+      <div><a routerLink="{{entityLink}}">{{entity ? entity.name : entityLink}}</a></div>
 
     </div>
 

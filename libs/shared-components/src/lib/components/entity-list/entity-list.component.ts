@@ -1,20 +1,21 @@
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PagedResourceCollection, Resource, Sort } from '@lagoshny/ngx-hateoas-client';
+import { PagedResourceCollection, Sort } from '@lagoshny/ngx-hateoas-client';
 import { PageEvent } from '@angular/material/paginator';
 import { SearchService } from "../../service/search.service";
-import { Component, Inject, Input, OnInit, TemplateRef } from "@angular/core";
+import {Component, EventEmitter, Inject, Input, OnInit, Output, TemplateRef} from "@angular/core";
+import { Entity } from "@clematis-shared/model";
 
 @Component({
   selector: 'app-entity-list',
   templateUrl: './entity-list.component.html',
   styleUrls: ['./entity-list.component.sass']
 })
-export class EntityListComponent<T extends Resource> implements OnInit {
+export class EntityListComponent<T extends Entity> implements OnInit {
 
   @Input() resultItemTemplate: TemplateRef<any> | undefined;
 
-  @Input() table: boolean = false;
+  @Input() table = false;
 
   // subscribe for page updates in the address bar
   pageSubscription: Subscription;
@@ -31,10 +32,13 @@ export class EntityListComponent<T extends Resource> implements OnInit {
   // current page number counter
   n = 0;
 
-  // loading for the first time
-  loading = true;
+  @Output() loading$ = new EventEmitter<boolean>();
+
+  loading = false;
 
   // loading page - a smaller area to update
+  @Output() pageLoading$ = new EventEmitter<boolean>();
+
   pageLoading = false;
 
   // error message
@@ -52,10 +56,18 @@ export class EntityListComponent<T extends Resource> implements OnInit {
         this.limit = isNaN(size) ? 10 : size;
       }
     );
+
+    this.loading$.subscribe((flag: boolean) => {
+      this.loading = flag
+    })
+
+    this.pageLoading$.subscribe((flag: boolean) => {
+      this.pageLoading = flag
+    })
   }
 
   ngOnInit(): void {
-    this.loading = this.entities.length <= 0
+    this.loading$.next(this.entities.length <= 0)
     this.loadData()
   }
 
@@ -77,11 +89,11 @@ export class EntityListComponent<T extends Resource> implements OnInit {
 
   loadData(): Subscription {
 
-    this.pageLoading = true
+    this.pageLoading$.next(true)
     const subscriber = (page: PagedResourceCollection<T>) => {
       this.entities = page.resources;
-      this.loading = false;
-      this.pageLoading = false;
+      this.loading$.next(false);
+      this.pageLoading$.next(false);
       this.total = page.totalElements;
       this.limit = page.pageSize;
     }
@@ -90,12 +102,21 @@ export class EntityListComponent<T extends Resource> implements OnInit {
   }
 
   queryData(): Observable<PagedResourceCollection<T>>  {
-    return this.searchService.searchPage({
-      pageParams: this.getPageParams(),
-      sort: this.getSort(),
-      useCache: this.getUseCache(),
-      ...this.getQueryArguments()
-    }, this.getQueryName())
+    if (this.getQueryName()) {
+      return this.searchService.searchPage({
+        pageParams: this.getPageParams(),
+        sort: this.getSort(),
+        useCache: this.getUseCache(),
+        ...this.getQueryArguments()
+      }, this.getQueryName())
+    } else {
+      return this.searchService.getPage({
+        pageParams: this.getPageParams(),
+        sort: this.getSort(),
+        useCache: this.getUseCache(),
+        ...this.getQueryArguments()
+      })
+    }
   }
 
   getPageParams() {
@@ -105,7 +126,9 @@ export class EntityListComponent<T extends Resource> implements OnInit {
     };
   }
 
-  getQueryArguments(): any {}
+  getQueryArguments(): object {
+    return {}
+  }
 
   getQueryName(): string | null {
     return null;

@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommodityGroup, Commodity, MoneyTypes, Entity } from '@clematis-shared/model';
-import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
-import { EntityComponent } from '@clematis-shared/shared-components';
+import { CommodityGroupsService, EntityComponent } from '@clematis-shared/shared-components';
 import { Title } from "@angular/platform-browser";
 import { Utils } from '@clematis-shared/model';
 
@@ -13,8 +12,6 @@ import { Utils } from '@clematis-shared/model';
   styleUrls: ['./commodity-group.component.css']
 })
 export class CommodityGroupComponent extends EntityComponent<CommodityGroup> implements OnInit {
-
-  currentRate: number = 2;
 
   loading: boolean = true;
 
@@ -31,7 +28,7 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup> imp
   path: Array<CommodityGroup> = [];
 
   constructor(resourceService: HateoasResourceService,
-              private moneyTrackerService: MoneyTrackerService,
+              private commodityGroupService:CommodityGroupsService,
               route: ActivatedRoute,
               router: Router,
               title: Title) {
@@ -70,15 +67,13 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup> imp
       });
 
     if (this.entity) {
-      this.moneyTrackerService.getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.entity)).subscribe((response) => {
+      this.commodityGroupService.getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.entity)).subscribe((response) => {
         this.path = response.resources.reverse()
       })
     }
 
-    this.moneyTrackerService.getTotalsForCommodityGroup(this.id, MoneyTypes.RUB).subscribe((response) => {
+    this.commodityGroupService.getTotalsForCommodityGroup(this.id, MoneyTypes.RUB).subscribe((response) => {
       this.totalSum = response
-      this.loading = false
-    }, (error) => {
       this.loading = false
     })
   };

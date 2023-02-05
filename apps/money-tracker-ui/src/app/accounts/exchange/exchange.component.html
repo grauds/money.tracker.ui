@@ -37,19 +37,7 @@
     Loading...
   </h1>
 
-  <div *ngIf="!error">
-
-    <div *ngIf="!loading">
-      <div class="container">
-
-        <mat-paginator [length]="total"
-                       [pageSize]="limit"
-                       [pageSizeOptions]="[5, 10, 25, 100]"
-                       [pageIndex]="n"
-                       (page)="setCurrentPage($event)"
-                       [showFirstLastButtons]="true"
-                       aria-label="Select page">
-        </mat-paginator>
+  <ng-template #exchangeTable let-entities="entities">
 
         <table mat-table [dataSource]="entities">
 
@@ -88,20 +76,11 @@
 
         </table>
 
-        <mat-paginator [length]="total"
-                       [pageSize]="limit"
-                       [pageSizeOptions]="[5, 10, 25, 100]"
-                       [pageIndex]="n"
-                       (page)="setCurrentPage($event)"
-                       [showFirstLastButtons]="true"
-                       aria-label="Select page">
-        </mat-paginator>
+  </ng-template>
 
-      </div>
-
-    </div>
-
-  </div>
-
+  <app-entity-list [resultItemTemplate]="exchangeTable"
+                   (loading$)="setLoading($event)"
+                   (pageLoading$)="setPageLoading($event)"
+  ></app-entity-list>
 
 </div>

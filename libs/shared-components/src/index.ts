@@ -8,8 +8,8 @@ export { SearchComponent } from './lib/components/search/search.component';
 export { EntityComponent } from './lib/components/entity/entity.component'
 export { EntityListComponent } from './lib/components/entity-list/entity-list.component'
 
+export { AccountsService } from './lib/service/accounts.service'
 export { SearchService } from './lib/service/search.service'
-export { HateoasService } from './lib/service/hateoas.service'
 export { OrganizationsService } from './lib/service/organizations.service'
 export { CommoditiesService } from './lib/service/commodities.service'
 export { CommodityGroupsService } from './lib/service/commodity-groups.service'

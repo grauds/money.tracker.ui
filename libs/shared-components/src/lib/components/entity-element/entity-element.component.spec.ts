@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EntityElementComponent } from './entity-element.component';
+import { Resource } from "@lagoshny/ngx-hateoas-client";
 
 describe('EntityElementComponent', () => {
-  let component: EntityElementComponent;
-  let fixture: ComponentFixture<EntityElementComponent>;
+  let component: EntityElementComponent<Resource>;
+  let fixture: ComponentFixture<EntityElementComponent<Resource>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

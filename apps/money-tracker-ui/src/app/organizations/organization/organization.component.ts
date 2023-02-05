@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 import { Entity, ExpenseItem, MoneyTypes, Organization, OrganizationGroup } from '@clematis-shared/model';
-import { EntityComponent } from '@clematis-shared/shared-components';
-import { MoneyTrackerService } from "@clematis-shared/money-tracker-service";
+import {
+  EntityComponent,
+  ExpenseItemsService,
+  OrganizationGroupsService,
+  OrganizationsService
+} from '@clematis-shared/shared-components';
 import { Title } from "@angular/platform-browser";
 import { Utils } from '@clematis-shared/model';
 
@@ -40,7 +44,9 @@ export class OrganizationComponent extends EntityComponent<Organization> impleme
   };
 
   constructor(resourceService: HateoasResourceService,
-              private moneyTrackerService: MoneyTrackerService,
+              private expenseItemsService: ExpenseItemsService,
+              private organizationsService: OrganizationsService,
+              private organizationGroupsService: OrganizationGroupsService,
               route: ActivatedRoute,
               router: Router,
               title: Title) {
@@ -58,7 +64,7 @@ export class OrganizationComponent extends EntityComponent<Organization> impleme
       .subscribe((parent: OrganizationGroup) => {
         this.parent = parent
         this.parentLink = Entity.getRelativeSelfLinkHref(this.parent)
-        this.moneyTrackerService.getPathForOrganizationGroup(Utils.getIdFromSelfUrl(this.parent)).subscribe((response) => {
+        this.organizationGroupsService.getPathForOrganizationGroup(Utils.getIdFromSelfUrl(this.parent)).subscribe((response) => {
           this.path = response.resources.reverse()
           if (this.parent) {
             this.path.push(this.parent)
@@ -66,11 +72,11 @@ export class OrganizationComponent extends EntityComponent<Organization> impleme
         })
       })
 
-    this.moneyTrackerService.getTotalsForOrganization(this.id, MoneyTypes.RUB).subscribe((response) => {
+    this.organizationsService.getTotalsForOrganization(this.id, MoneyTypes.RUB).subscribe((response) => {
       this.totalSum = response
     })
 
-    this.moneyTrackerService.getOrganizationExpences(this.id).subscribe((response) => {
+    this.expenseItemsService.getOrganizationExpences(this.id).subscribe((response) => {
       this.expenses = response.resources
 
       this.expenses.forEach(expense => {

@@ -3,9 +3,9 @@ import { Sort } from "@lagoshny/ngx-hateoas-client";
 import { KeycloakService } from "keycloak-angular";
 import { MoneyExchangeReport, MoneyTypes } from "@clematis-shared/model";
 import { ActivatedRoute, Router } from "@angular/router";
-import { MoneyTrackerService } from "@clematis-shared/money-tracker-service";
 import { Title } from "@angular/platform-browser";
 import { MoneyExchangeService } from "@clematis-shared/shared-components";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-exchange',
@@ -17,9 +17,16 @@ import { MoneyExchangeService } from "@clematis-shared/shared-components";
 })
 export class ExchangeComponent implements OnInit {
 
+  // subscribe for page updates in the address bar
+  pageSubscription: Subscription;
+
   isLoggedIn: boolean = false;
 
   options: any;
+
+  loading: boolean = false;
+
+  pageLoading: boolean = false;
 
   sourceCurrency: MoneyTypes = MoneyTypes.RUB;
 
@@ -36,8 +43,7 @@ export class ExchangeComponent implements OnInit {
 
   report?: MoneyExchangeReport;
 
-  constructor(private moneyTrackerService: MoneyTrackerService,
-              protected readonly keycloak: KeycloakService,
+  constructor(protected readonly keycloak: KeycloakService,
               private router: Router,
               private route: ActivatedRoute,
               private title: Title) {
@@ -78,13 +84,11 @@ export class ExchangeComponent implements OnInit {
 
   updatesSourceCurrency($event: MoneyTypes) {
     this.sourceCurrency = $event
-    this.loadData()
     this.updateRoute()
   }
 
   updatesDestCurrency($event: MoneyTypes) {
     this.destCurrency = $event
-    this.loadData()
     this.updateRoute()
   }
 
@@ -93,8 +97,6 @@ export class ExchangeComponent implements OnInit {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        page: this.n,
-        size: this.limit,
         ...this.getQueryArguments()
       },
       queryParamsHandling: 'merge',
@@ -102,11 +104,11 @@ export class ExchangeComponent implements OnInit {
     })
   }
 
-  override getQueryName(): string | null {
+  getQueryName(): string | null {
     return 'events';
   }
 
-  override getQueryArguments(): any {
+  getQueryArguments(): any {
     return {
       params: {
         source: this.sourceCurrency,
@@ -115,7 +117,7 @@ export class ExchangeComponent implements OnInit {
     };
   }
 
-  override getSort() {
+  getSort() {
     let ret: Sort = {
       exchangeDate: 'DESC'
     }
@@ -126,7 +128,15 @@ export class ExchangeComponent implements OnInit {
     const swap = this.sourceCurrency
     this.sourceCurrency = this.destCurrency
     this.destCurrency = swap
-    this.loadData()
     this.updateRoute()
   }
+
+  setLoading($event: boolean) {
+    this.loading = $event
+  }
+
+  setPageLoading($event: boolean) {
+    this.pageLoading = $event
+  }
+
 }
