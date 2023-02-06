@@ -19,9 +19,10 @@ import { ExpenseItemsService } from './service/expense-items.service';
 import { MatTableModule } from "@angular/material/table";
 import { LastCommodityService } from "./service/last-commodity.service";
 import { MoneyExchangeService } from "./service/money-exchange.service";
+import {ContentLoaderModule} from "@ngneat/content-loader";
 
 @NgModule({
-  imports: [CommonModule, RouterModule, MatIconModule, MatPaginatorModule, MatTableModule],
+  imports: [CommonModule, RouterModule, MatIconModule, MatPaginatorModule, MatTableModule, ContentLoaderModule],
   exports: [EntityElementComponent, BreadcrumbsComponent, EntityListComponent],
   declarations: [
     EntityListComponent,

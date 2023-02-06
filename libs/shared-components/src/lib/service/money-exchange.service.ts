@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from "rxjs";
+import {Observable, of, switchMap} from "rxjs";
 import { SearchService } from './search.service';
-import { MoneyExchange, MoneyExchangeReport } from "@clematis-shared/model";
+import {Entity, LastCommodity, MoneyExchange, MoneyExchangeReport} from "@clematis-shared/model";
 import { PagedGetOption } from "@lagoshny/ngx-hateoas-client/lib/model/declarations";
 import { HateoasResourceService, PagedResourceCollection } from "@lagoshny/ngx-hateoas-client";
 import { HttpClient } from "@angular/common/http";

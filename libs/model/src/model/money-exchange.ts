@@ -9,7 +9,11 @@ export class MoneyExchange extends Resource {
 
   source = 0
 
+  sourceLink: string | undefined;
+
   dest = 0
+
+  destLink: string | undefined;
 
   usermt = 0
 

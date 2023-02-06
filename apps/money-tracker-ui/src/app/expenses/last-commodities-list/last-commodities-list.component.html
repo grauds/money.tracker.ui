@@ -8,7 +8,7 @@
 
       <ng-container matColumnDef="transferdate">
         <th mat-header-cell *matHeaderCellDef> Date </th>
-        <td mat-cell *matCellDef="let element"> {{element.transactionDate | date:'shortDate' }} </td>
+        <td mat-cell *matCellDef="let element"> {{element.transactionDate | date: 'fullDate' }} </td>
       </ng-container>
 
       <ng-container matColumnDef="name">
@@ -51,4 +51,4 @@
     </table>
 </ng-template>
 
-<app-entity-list [resultItemTemplate]="lastExpensesTable"></app-entity-list>
+<app-entity-list [resultItemTemplate]="lastExpensesTable" [table]="true"></app-entity-list>

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Commodity, Entity, ExpenseItem, Organization } from "@clematis-shared/model";
+import { Entity, ExpenseItem } from "@clematis-shared/model";
 import { PagedGetOption } from "@lagoshny/ngx-hateoas-client/lib/model/declarations";
 import {
   HateoasResourceService,
   PagedResourceCollection,
   ResourceCollection
 } from "@lagoshny/ngx-hateoas-client";
-import { catchError, forkJoin, map, Observable, of, switchMap } from "rxjs";
+import { Observable, of, switchMap } from "rxjs";
 import { SearchService } from './search.service';
 import { HttpClient } from "@angular/common/http";
 
@@ -21,42 +21,25 @@ export class ExpenseItemsService extends SearchService<ExpenseItem> {
     Observable<PagedResourceCollection<ExpenseItem>> {
 
     return this.hateoasService.searchPage<ExpenseItem>(ExpenseItem, queryName, options).pipe(
-      switchMap((arr: PagedResourceCollection<ExpenseItem>) => {
-        return forkJoin(arr.resources.map((expense: ExpenseItem) => {
-          return expense.getRelation<Commodity>('commodity')
-            .pipe(
-              map((commodity: Commodity) => {
-                expense.commodity = commodity
-                expense.commodityLink = Entity.getRelativeSelfLinkHref(commodity)
-                return expense
-              }),
-              catchError(() => of(expense))
-            )
-        })).pipe(
-          switchMap((expenses: ExpenseItem[]) => {
-            return forkJoin(expenses.map((expense: ExpenseItem) => {
-              return expense.getRelation<Organization>('tradeplace')
-                .pipe(
-                  map((organization: Organization) => {
-                    expense.tradeplace = organization
-                    expense.tradeplaceLink = Entity.getRelativeSelfLinkHref(organization)
-                    return expense
-                  })
-                )
-            })).pipe(
-              switchMap((expenses: ExpenseItem[]) => {
-                arr.resources = expenses
-                return of(arr)
-              })
-            )
-          })
-        )
-      })
+      this.postprocess()
     )
   }
 
   getPage(options: PagedGetOption | undefined): Observable<PagedResourceCollection<ExpenseItem>> {
-    return this.hateoasService.getPage<ExpenseItem>(ExpenseItem, options);
+    return this.hateoasService.getPage<ExpenseItem>(ExpenseItem, options).pipe(
+      this.postprocess()
+    )
+  }
+
+  postprocess() {
+    return switchMap((arr: PagedResourceCollection<ExpenseItem>) => {
+      arr.resources = arr.resources.map((expense: ExpenseItem) => {
+        expense.commodityLink = Entity.getRelativeSelfLinkHref(expense.commodity)
+        expense.tradeplaceLink = Entity.getRelativeSelfLinkHref(expense.tradeplace)
+        return expense
+      })
+      return of(arr)
+    });
   }
 
   getCommodityExpences(commodityId: string | null): Observable<ResourceCollection<ExpenseItem>> {

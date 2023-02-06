@@ -43,17 +43,31 @@
 
           <ng-container matColumnDef="exchangedate">
             <th mat-header-cell *matHeaderCellDef> Exchange Date </th>
-            <td mat-cell *matCellDef="let element"> {{element.exchangeDate | date:'shortDate'}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.exchangeDate | date:'fullDate'}} </td>
           </ng-container>
 
           <ng-container matColumnDef="from">
             <th mat-header-cell *matHeaderCellDef> From </th>
-            <td mat-cell *matCellDef="let element"></td>
+            <td mat-cell *matCellDef="let element">
+              <a *ngIf="element.source && element.sourceLink"
+                 routerLink="{{element.sourceLink}}">
+                {{element.source.name}}</a>
+
+              <div *ngIf="element.source && !element.sourceLink">
+                {{element.source.name}}</div>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="to">
             <th mat-header-cell *matHeaderCellDef> To </th>
-            <td mat-cell *matCellDef="let element"></td>
+            <td mat-cell *matCellDef="let element">
+              <a *ngIf="element.dest && element.destLink"
+                 routerLink="{{element.destLink}}">
+                {{element.dest.name}}</a>
+
+              <div *ngIf="element.dest && !element.destLink">
+                {{element.dest.name}}</div>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="sourceamount">
@@ -79,6 +93,7 @@
   </ng-template>
 
   <app-entity-list [resultItemTemplate]="exchangeTable"
+                   [table]="true"
                    (loading$)="setLoading($event)"
                    (pageLoading$)="setPageLoading($event)"
   ></app-entity-list>
