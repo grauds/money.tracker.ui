@@ -6,7 +6,7 @@
 
 <div *ngIf="!error">
 
-  <content-loader class="ph-item" *ngIf="loading">
+  <content-loader class="ph-item" *ngIf="pageLoading">
     <svg:rect x="0" y="0" rx="3" ry="3" width="450" height="10" />
     <svg:rect x="20" y="20" rx="3" ry="3" width="220" height="10" />
     <svg:rect x="20" y="40" rx="3" ry="3" width="170" height="10" />
@@ -32,7 +32,8 @@
     <svg:rect x="20" y="340" rx="3" ry="3" width="80" height="10" />
   </content-loader>
 
-  <div *ngIf="!loading">
+  <div *ngIf="!pageLoading">
+
     <div class="container">
 
       <mat-paginator [length]="total"

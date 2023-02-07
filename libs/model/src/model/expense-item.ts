@@ -1,9 +1,10 @@
-import { HateoasResource, Resource } from '@lagoshny/ngx-hateoas-client';
+import { HateoasResource } from '@lagoshny/ngx-hateoas-client';
 import { Commodity } from './commodity';
 import { Organization } from './organization';
+import { Entity } from "./entity";
 
 @HateoasResource('expenseItems')
-export class ExpenseItem extends Resource {
+export class ExpenseItem extends Entity {
 
   qty: number = 0;
 

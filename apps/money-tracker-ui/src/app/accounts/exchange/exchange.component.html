@@ -94,6 +94,9 @@
 
   <app-entity-list [resultItemTemplate]="exchangeTable"
                    [table]="true"
+                   [queryArguments]="getQueryArguments()"
+                   [queryName]="getQueryName()"
+                   [sort]="getSort()"
                    (loading$)="setLoading($event)"
                    (pageLoading$)="setPageLoading($event)"
   ></app-entity-list>

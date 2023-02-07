@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Sort } from "@lagoshny/ngx-hateoas-client";
 import { KeycloakService } from "keycloak-angular";
-import { MoneyExchangeReport, MoneyTypes } from "@clematis-shared/model";
+import { MoneyExchange, MoneyExchangeReport, MoneyTypes } from "@clematis-shared/model";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
-import { MoneyExchangeService } from "@clematis-shared/shared-components";
+import { EntityListComponent, MoneyExchangeService } from "@clematis-shared/shared-components";
 import { Subscription } from "rxjs";
 
 @Component({
@@ -42,6 +42,8 @@ export class ExchangeComponent implements OnInit {
   displayedColumns: string[] = ['exchangedate', 'from', 'to', 'sourceamount', 'destamount', 'rate'];
 
   report?: MoneyExchangeReport;
+
+  @ViewChild(EntityListComponent) entityList!: EntityListComponent<MoneyExchange>;
 
   constructor(protected readonly keycloak: KeycloakService,
               private router: Router,
@@ -102,6 +104,9 @@ export class ExchangeComponent implements OnInit {
       queryParamsHandling: 'merge',
       skipLocationChange: false
     })
+
+    this.entityList.loading$.next(true)
+    this.entityList.searchRequest$.next(this.getQueryArguments())
   }
 
   getQueryName(): string | null {
@@ -110,10 +115,8 @@ export class ExchangeComponent implements OnInit {
 
   getQueryArguments(): any {
     return {
-      params: {
-        source: this.sourceCurrency,
-        dest: this.destCurrency
-      }
+      source: this.sourceCurrency,
+      dest: this.destCurrency
     };
   }
 

@@ -1,9 +1,9 @@
-import { Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PagedResourceCollection, Sort } from '@lagoshny/ngx-hateoas-client';
+import { PagedResourceCollection, RequestParam, Sort } from '@lagoshny/ngx-hateoas-client';
 import { PageEvent } from '@angular/material/paginator';
 import { SearchService } from "../../service/search.service";
-import {Component, EventEmitter, Inject, Input, OnInit, Output, TemplateRef} from "@angular/core";
+import { Component, EventEmitter, Inject, Input, OnInit, Output, TemplateRef } from "@angular/core";
 import { Entity } from "@clematis-shared/model";
 
 @Component({
@@ -17,11 +17,23 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
   @Input() table = false;
 
+  @Input() queryArguments: RequestParam = {};
+
+  searchRequest$ = new BehaviorSubject<RequestParam>(this.queryArguments)
+
+  @Input() queryName: string | null = null;
+
+  @Input() sort: Sort = {
+    name: 'ASC'
+  }
+
   // subscribe for page updates in the address bar
   pageSubscription: Subscription;
 
   // elements page
-  entities: T[] = [];
+  entities: T[] | null = [];
+
+  entities$ = new BehaviorSubject<Array<T> | null>(null)
 
   // total number of elements
   total: number | undefined;
@@ -64,10 +76,15 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     this.pageLoading$.subscribe((flag: boolean) => {
       this.pageLoading = flag
     })
+
+    this.entities$.subscribe((entities: T[] | null) => {
+      this.entities = entities
+    })
   }
 
   ngOnInit(): void {
-    this.loading$.next(this.entities.length <= 0)
+    this.pageLoading$.next(true)
+    this.handleSearchRequests()
     this.loadData()
   }
 
@@ -87,36 +104,50 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     })
   }
 
-  loadData(): Subscription {
-
-    this.pageLoading$.next(true)
-    const subscriber = (page: PagedResourceCollection<T>) => {
-      this.entities = page.resources;
-      this.loading$.next(false);
-      this.pageLoading$.next(false);
-      this.total = page.totalElements;
-      this.limit = page.pageSize;
-    }
-
-    return this.queryData().subscribe(subscriber)
+  private handleSearchRequests() {
+    this.searchRequest$
+      .pipe(
+      //tap(this.searchRequestWasStarted.bind(this)),
+        tap(() => {
+          this.searchService.setProcessingStatusDescription("search")
+        }),
+        switchMap((state: RequestParam) =>
+          this.queryName
+            ? this.searchService.searchPage({
+              pageParams: this.getPageParams(),
+              sort: this.getSort(),
+              useCache: this.getUseCache(),
+              params: state
+            }, this.queryName)
+            : this.searchService.getPage({
+              pageParams: this.getPageParams(),
+              sort: this.getSort(),
+              useCache: this.getUseCache(),
+              ...state
+            })),
+      //switchMap(this.executePostProcessing.bind(this)),
+      )
+      .subscribe({
+        next: this.processSearchRequestResult.bind(this),
+        error: (err: Error) => this.entities$.error(err),
+        complete: () => this.entities$.complete()
+      })
   }
 
-  queryData(): Observable<PagedResourceCollection<T>>  {
-    if (this.getQueryName()) {
-      return this.searchService.searchPage({
-        pageParams: this.getPageParams(),
-        sort: this.getSort(),
-        useCache: this.getUseCache(),
-        ...this.getQueryArguments()
-      }, this.getQueryName())
-    } else {
-      return this.searchService.getPage({
-        pageParams: this.getPageParams(),
-        sort: this.getSort(),
-        useCache: this.getUseCache(),
-        ...this.getQueryArguments()
-      })
-    }
+  private processSearchRequestResult(page: PagedResourceCollection<T>): void {
+
+    this.total = page.totalElements;
+    this.limit = page.pageSize;
+
+    this.loading$.next(false);
+    this.pageLoading$.next(false);
+    this.entities$.next(page.resources)
+
+  }
+
+  loadData() {
+    this.loading$.next(true)
+    this.searchRequest$.next(this.queryArguments)
   }
 
   getPageParams() {
@@ -126,18 +157,8 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     };
   }
 
-  getQueryArguments(): object {
-    return {}
-  }
-
-  getQueryName(): string | null {
-    return null;
-  }
-
   getSort(): Sort {
-    return {
-      name: 'ASC'
-    }
+    return this.sort
   }
 
   getUseCache(): boolean {
