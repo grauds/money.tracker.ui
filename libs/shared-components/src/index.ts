@@ -7,6 +7,7 @@ export { PageSizeComponent } from './lib/components/page-size/page-size.componen
 export { SearchComponent } from './lib/components/search/search.component';
 export { EntityComponent } from './lib/components/entity/entity.component'
 export { EntityListComponent } from './lib/components/entity-list/entity-list.component'
+export { SearchPostProcessingHandler } from './lib/service/search.service'
 
 export { AccountsService } from './lib/service/accounts.service'
 export { SearchService } from './lib/service/search.service'

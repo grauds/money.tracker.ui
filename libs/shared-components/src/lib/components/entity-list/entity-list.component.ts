@@ -1,4 +1,4 @@
-import { BehaviorSubject, Subscription, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PagedResourceCollection, RequestParam, Sort } from '@lagoshny/ngx-hateoas-client';
 import { PageEvent } from '@angular/material/paginator';
@@ -125,7 +125,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
               useCache: this.getUseCache(),
               ...state
             })),
-      //switchMap(this.executePostProcessing.bind(this)),
+        switchMap(this.executePostProcessing.bind(this)),
       )
       .subscribe({
         next: this.processSearchRequestResult.bind(this),
@@ -143,6 +143,15 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     this.pageLoading$.next(false);
     this.entities$.next(page.resources)
 
+  }
+
+  private executePostProcessing(searchResult: PagedResourceCollection<T>): Observable<PagedResourceCollection<T>> {
+    const handler = this.searchService.getPostProcessingStream()
+    if (handler) {
+      this.searchService.setProcessingStatusDescription("post processing")
+      return handler(searchResult)
+    }
+    return of(searchResult)
   }
 
   loadData() {

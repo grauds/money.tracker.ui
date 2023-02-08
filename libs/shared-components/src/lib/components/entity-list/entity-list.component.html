@@ -36,7 +36,8 @@
 
     <div class="container">
 
-      <mat-paginator [length]="total"
+      <mat-paginator *ngIf="entities && entities.length > 0"
+                     [length]="total"
                      [pageSize]="limit"
                      [pageSizeOptions]="[5, 10, 25, 100]"
                      [pageIndex]="n"
@@ -64,7 +65,8 @@
         </div>
       </div>
 
-      <mat-paginator [length]="total"
+      <mat-paginator *ngIf="entities && entities.length > 0"
+                     [length]="total"
                      [pageSize]="limit"
                      [pageSizeOptions]="[5, 10, 25, 100]"
                      [pageIndex]="n"

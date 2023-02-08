@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {Observable, of, switchMap} from "rxjs";
+import { Observable } from "rxjs";
 import { SearchService } from './search.service';
-import {Entity, LastCommodity, MoneyExchange, MoneyExchangeReport} from "@clematis-shared/model";
+import { MoneyExchange, MoneyExchangeReport } from "@clematis-shared/model";
 import { PagedGetOption } from "@lagoshny/ngx-hateoas-client/lib/model/declarations";
 import { HateoasResourceService, PagedResourceCollection } from "@lagoshny/ngx-hateoas-client";
 import { HttpClient } from "@angular/common/http";
@@ -22,6 +22,7 @@ export class MoneyExchangeService extends SearchService<MoneyExchange> {
   getPage(options: PagedGetOption | undefined): Observable<PagedResourceCollection<MoneyExchange>> {
     return this.hateoasService.getPage<MoneyExchange>(MoneyExchange, options);
   }
+
 
   getExchangeReport(source: string, dest: string): Observable<MoneyExchangeReport> {
 

@@ -1,11 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Sort } from "@lagoshny/ngx-hateoas-client";
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { PagedResourceCollection, Sort } from "@lagoshny/ngx-hateoas-client";
 import { KeycloakService } from "keycloak-angular";
 import { MoneyExchange, MoneyExchangeReport, MoneyTypes } from "@clematis-shared/model";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
-import { EntityListComponent, MoneyExchangeService } from "@clematis-shared/shared-components";
-import { Subscription } from "rxjs";
+import { EntityListComponent,
+  MoneyExchangeService,
+  SearchPostProcessingHandler
+} from "@clematis-shared/shared-components";
+import { Observable, of, Subscription, switchMap, tap } from "rxjs";
 
 @Component({
   selector: 'app-exchange',
@@ -45,10 +48,16 @@ export class ExchangeComponent implements OnInit {
 
   @ViewChild(EntityListComponent) entityList!: EntityListComponent<MoneyExchange>;
 
+  postProcessingStream?: SearchPostProcessingHandler<MoneyExchange>
+
+  // average rate
+  average: number = 0;
+
   constructor(protected readonly keycloak: KeycloakService,
               private router: Router,
               private route: ActivatedRoute,
-              private title: Title) {
+              private title: Title,
+              @Inject("searchService") private moneyExchangeService: MoneyExchangeService) {
 
     this.keycloak.isLoggedIn().then((logged) => {
       this.isLoggedIn = logged
@@ -66,6 +75,8 @@ export class ExchangeComponent implements OnInit {
         }
       }
     );
+
+    this.moneyExchangeService.setPostProcessingStream(this.postProcessingHandler)
   }
 
   ngOnInit(): void {
@@ -140,6 +151,22 @@ export class ExchangeComponent implements OnInit {
 
   setPageLoading($event: boolean) {
     this.pageLoading = $event
+  }
+
+  postProcessingHandler = (res: PagedResourceCollection<MoneyExchange>):
+    Observable<PagedResourceCollection<MoneyExchange>> => {
+
+    return of(res).pipe(
+      tap(() => this.moneyExchangeService.setProcessingStatusDescription("loading exchange report")),
+      switchMap((res: PagedResourceCollection<MoneyExchange>) => {
+        return this.moneyExchangeService.getExchangeReport(this.sourceCurrency, this.destCurrency)
+          .pipe(switchMap((report: MoneyExchangeReport) => {
+              this.report = report
+              return of(res)
+            })
+          )
+      })
+    )
   }
 
 }

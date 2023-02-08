@@ -4,9 +4,14 @@ import { PagedGetOption } from "@lagoshny/ngx-hateoas-client/lib/model/declarati
 
 import { environment } from "../../../../../apps/money-tracker-ui/src/environments/environment";
 
+export type SearchPostProcessingHandler<T extends Resource>
+  = (res: PagedResourceCollection<T>) => Observable<PagedResourceCollection<T>>;
+
 export abstract class SearchService<T extends Resource> {
 
   private statusDescription$ = new BehaviorSubject<string>("search")
+
+  private searchPostProcessingHandler: SearchPostProcessingHandler<T> | null = null
 
   abstract searchPage(options?: PagedGetOption, queryName?: string | null)
                                             : Observable<PagedResourceCollection<T>>
@@ -23,5 +28,13 @@ export abstract class SearchService<T extends Resource> {
 
   getUrl(url: string) :string {
     return environment.apiUrl + url
+  }
+
+  getPostProcessingStream(): SearchPostProcessingHandler<T> | null {
+    return this.searchPostProcessingHandler
+  }
+
+  setPostProcessingStream(handler: SearchPostProcessingHandler<T>): void {
+    this.searchPostProcessingHandler = handler
   }
 }

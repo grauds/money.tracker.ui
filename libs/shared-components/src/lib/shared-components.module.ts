@@ -19,7 +19,7 @@ import { ExpenseItemsService } from './service/expense-items.service';
 import { MatTableModule } from "@angular/material/table";
 import { LastCommodityService } from "./service/last-commodity.service";
 import { MoneyExchangeService } from "./service/money-exchange.service";
-import {ContentLoaderModule} from "@ngneat/content-loader";
+import { ContentLoaderModule } from "@ngneat/content-loader";
 
 @NgModule({
   imports: [CommonModule, RouterModule, MatIconModule, MatPaginatorModule, MatTableModule, ContentLoaderModule],
@@ -30,7 +30,7 @@ import {ContentLoaderModule} from "@ngneat/content-loader";
     EntityElementComponent,
     PaginationBarComponent,
     PageSizeComponent,
-    SearchComponent
+    SearchComponent,
   ],
   providers: [
     AccountsService,
@@ -40,7 +40,7 @@ import {ContentLoaderModule} from "@ngneat/content-loader";
     OrganizationGroupsService,
     ExpenseItemsService,
     LastCommodityService,
-    MoneyExchangeService
+    MoneyExchangeService,
   ],
 })
 export class SharedComponentsModule {}

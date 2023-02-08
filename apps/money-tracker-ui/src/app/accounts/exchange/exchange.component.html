@@ -1,10 +1,14 @@
 <div *ngIf="isLoggedIn">
 
-  <h4 *ngIf="this.report" class="header">
-    <span><b>Sold:</b> {{this.report.sourceAmount |currency:this.sourceCurrency}}, </span>
-    <span><b>Bought:</b> {{this.report.destAmount |currency:this.destCurrency}}, </span>
-    <span><b>Average:</b> {{this.report.avgRate | number: '1.6-8'}} , </span>
+  <h4 *ngIf="this.report" class="header" [hidden]="this.loading || this.pageLoading">
+    <span><b>Sold:</b> {{(this.report.sourceAmount ? this.report.sourceAmount : 0) | currency:this.sourceCurrency}}, </span>
+    <span><b>Bought:</b> {{(this.report.destAmount ? this.report.destAmount : 0) | currency:this.destCurrency}}, </span>
+    <span><b>Average:</b> {{(this.report.avgRate ? this.report.avgRate : 0) | number: '1.6-8'}} , </span>
     <span><b>Current:</b> {{this.report.curRate | number: '1.6-8'}} </span>
+  </h4>
+
+  <h4 *ngIf="this.report" class="header" [hidden]="!(this.loading || this.pageLoading)">
+    <span><b>Loading...</b></span>
   </h4>
 
   <mat-form-field appearance="fill">
