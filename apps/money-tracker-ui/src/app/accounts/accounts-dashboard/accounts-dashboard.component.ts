@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {MoneyTrackerService} from '@clematis-shared/money-tracker-service';
-import {AccountBalance, MoneyTypes} from '@clematis-shared/model';
-import {Subscription} from "rxjs";
-import {HateoasResourceService, ResourceCollection} from "@lagoshny/ngx-hateoas-client";
-import {KeycloakService} from 'keycloak-angular';
-import {ActivatedRoute, Router} from "@angular/router";
-import {Title} from "@angular/platform-browser";
+import { Component, OnInit } from '@angular/core';
+import { AccountBalance, MoneyTypes } from '@clematis-shared/model';
+import { Subscription } from "rxjs";
+import { HateoasResourceService, ResourceCollection } from "@lagoshny/ngx-hateoas-client";
+import { KeycloakService } from 'keycloak-angular';
+import { ActivatedRoute, Router } from "@angular/router";
+import { Title } from "@angular/platform-browser";
+import { AccountsService } from "@clematis-shared/shared-components";
 
 @Component({
   selector: 'app-accounts-dashboard',
@@ -36,7 +36,7 @@ export class AccountsDashboardComponent implements OnInit {
 
   total: number = 0;
 
-  constructor(private moneyTrackerService: MoneyTrackerService,
+  constructor(private accountsService: AccountsService,
               private resourceService: HateoasResourceService,
               protected readonly keycloak: KeycloakService,
               private router: Router,
@@ -85,11 +85,11 @@ export class AccountsDashboardComponent implements OnInit {
 
   loadData() {
     this.loading = true
-    this.moneyTrackerService.getAccountsBalanceInCurrency(this.currency)
+    this.accountsService.getAccountsBalanceInCurrency(this.currency)
       .subscribe((response: ResourceCollection<AccountBalance>) => {
             this.accountsBalances = response.resources
             this.options = this.getBalancesChart(this.currency);
-            this.moneyTrackerService.getAccountsTotalInCurrency(this.currency).subscribe(
+            this.accountsService.getAccountsTotalInCurrency(this.currency).subscribe(
               (total: number) => {
                 this.total = total
                 this.loading = false

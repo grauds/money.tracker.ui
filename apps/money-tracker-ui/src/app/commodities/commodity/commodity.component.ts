@@ -2,9 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 import { Commodity, MoneyType, CommodityGroup, MoneyTypes, ExpenseItem, Entity } from '@clematis-shared/model';
-import { EntityComponent } from '@clematis-shared/shared-components';
+import {
+  CommoditiesService,
+  CommodityGroupsService,
+  EntityComponent,
+  ExpenseItemsService
+} from '@clematis-shared/shared-components';
 import { Utils } from '@clematis-shared/model';
-import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
 import { Title } from "@angular/platform-browser";
 
 @Component({
@@ -14,8 +18,6 @@ import { Title } from "@angular/platform-browser";
 })
 export class CommodityComponent extends EntityComponent<Commodity> implements OnInit {
 
-  defaultPrice: number | undefined = 0;
-
   defaultUnit: string | undefined;
 
   defaultMoneyType: MoneyType | undefined;
@@ -24,9 +26,9 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
 
   parentLink: string | undefined;
 
-  totalSum: number = 0;
+  path: Array<CommodityGroup> = [];
 
-  totalQty: number | undefined;
+  totalSum: number = 0;
 
   expenses: ExpenseItem[] = [];
 
@@ -47,10 +49,12 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
 
   averagePrice: number | undefined;
 
-  path: Array<CommodityGroup> = [];
+  totalQty: number | undefined;
 
   constructor(resourceService: HateoasResourceService,
-              private moneyTrackerService: MoneyTrackerService,
+              private commodityService: CommoditiesService,
+              private commodityGroupService: CommodityGroupsService,
+              private expenseItemsService: ExpenseItemsService,
               route: ActivatedRoute,
               router: Router,
               title: Title) {
@@ -61,23 +65,19 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
     this.onInit()
   }
 
-
   override setEntity(entity: Commodity) {
     super.setEntity(entity)
 
-    this.defaultPrice = this.entity?.defaultPrice
     this.defaultUnit = this.entity?.unittype?.shortName
 
-    this.entity?.getRelation<MoneyType>('defaultMoneyType')
-      .subscribe((defaultMoneyType: MoneyType) => {
+    this.entity?.getRelation<MoneyType>('defaultMoneyType').subscribe((defaultMoneyType: MoneyType) => {
         this.defaultMoneyType = defaultMoneyType
       })
 
-    this.entity?.getRelation<CommodityGroup>('parent')
-      .subscribe((parent: CommodityGroup) => {
+    this.entity?.getRelation<CommodityGroup>('parent').subscribe((parent: CommodityGroup) => {
         this.parent = parent
         this.parentLink = Entity.getRelativeSelfLinkHref(this.parent)
-        this.moneyTrackerService.getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.parent)).subscribe((response) => {
+      this.commodityGroupService.getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.parent)).subscribe((response) => {
           this.path = response.resources.reverse()
           if (this.parent) {
             this.path.push(this.parent)
@@ -85,16 +85,16 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
         })
       })
 
-    this.moneyTrackerService.getTotalsForCommodity(this.id, MoneyTypes.RUB).subscribe((response) => {
+    this.commodityService.getTotalsForCommodity(this.id, MoneyTypes.RUB).subscribe((response) => {
       this.totalSum = response
 
-      this.moneyTrackerService.getTotalQtyForCommodity(this.id).subscribe((response) => {
+      this.commodityService.getTotalQtyForCommodity(this.id).subscribe((response) => {
         this.totalQty = response
         this.averagePrice = this.totalSum / this.totalQty
       })
     })
 
-    this.moneyTrackerService.getCommodityExpences(this.id).subscribe((response) => {
+    this.expenseItemsService.getCommodityExpences(this.id).subscribe((response) => {
       this.expenses = response.resources
 
       this.expenses.forEach(expense => {
@@ -106,6 +106,5 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
       })
 
     })
-
-  };
+  }
 }

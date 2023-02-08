@@ -1,16 +1,39 @@
-import { Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HateoasResourceService, PagedResourceCollection, Resource, Sort } from '@lagoshny/ngx-hateoas-client';
-import { EntityElementComponent } from '../entity-element/entity-element.component';
+import { PagedResourceCollection, RequestParam, Sort } from '@lagoshny/ngx-hateoas-client';
 import { PageEvent } from '@angular/material/paginator';
+import { SearchService } from "../../service/search.service";
+import { Component, EventEmitter, Inject, Input, OnInit, Output, TemplateRef } from "@angular/core";
+import { Entity } from "@clematis-shared/model";
 
-export abstract class EntityListComponent<T extends Resource> {
+@Component({
+  selector: 'app-entity-list',
+  templateUrl: './entity-list.component.html',
+  styleUrls: ['./entity-list.component.sass']
+})
+export class EntityListComponent<T extends Entity> implements OnInit {
+
+  @Input() resultItemTemplate: TemplateRef<any> | undefined;
+
+  @Input() table = false;
+
+  @Input() queryArguments: RequestParam = {};
+
+  searchRequest$ = new BehaviorSubject<RequestParam>(this.queryArguments)
+
+  @Input() queryName: string | null = null;
+
+  @Input() sort: Sort = {
+    name: 'ASC'
+  }
+
+  // subscribe for page updates in the address bar
+  pageSubscription: Subscription;
 
   // elements page
-  entities: T[] = [];
+  entities: T[] | null = [];
 
-  // entity renderer
-  renderer: EntityElementComponent;
+  entities$ = new BehaviorSubject<Array<T> | null>(null)
 
   // total number of elements
   total: number | undefined;
@@ -21,28 +44,21 @@ export abstract class EntityListComponent<T extends Resource> {
   // current page number counter
   n = 0;
 
-  // subscribe for page updates in the address bar
-  pageSubscription: Subscription;
+  @Output() loading$ = new EventEmitter<boolean>();
+
+  loading = false;
+
+  // loading page - a smaller area to update
+  @Output() pageLoading$ = new EventEmitter<boolean>();
+
+  pageLoading = false;
 
   // error message
   error: string | undefined;
 
-  // loading for the first time
-  loading = true;
-
-  // loading page - a smaller area to update
-  pageLoading = false;
-
-  // search string to filter the list of entities by the names
-  search = '';
-
-  protected constructor(private type: new () => T,
-                        protected resourceService: HateoasResourceService,
-                        protected router: Router,
-                        protected route: ActivatedRoute,
-                        renderer?: any) {
-
-    this.renderer = renderer ? renderer : new EntityElementComponent(router)
+  public constructor(@Inject("searchService") private readonly searchService: SearchService<T>,
+                     protected router: Router,
+                     protected route: ActivatedRoute) {
 
     this.pageSubscription = route.queryParams.subscribe(
       (queryParam: any) => {
@@ -52,10 +68,23 @@ export abstract class EntityListComponent<T extends Resource> {
         this.limit = isNaN(size) ? 10 : size;
       }
     );
+
+    this.loading$.subscribe((flag: boolean) => {
+      this.loading = flag
+    })
+
+    this.pageLoading$.subscribe((flag: boolean) => {
+      this.pageLoading = flag
+    })
+
+    this.entities$.subscribe((entities: T[] | null) => {
+      this.entities = entities
+    })
   }
 
-  _ngOnInit(): void {
-    this.loading = this.entities.length <= 0
+  ngOnInit(): void {
+    this.pageLoading$.next(true)
+    this.handleSearchRequests()
     this.loadData()
   }
 
@@ -66,72 +95,82 @@ export abstract class EntityListComponent<T extends Resource> {
     this.loadData()
   }
 
-  setSearchString($event: string) {
-    this.search = $event
-    this.loadData()
-  }
-
   updateRoute() {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: {
-        page: this.n,
-        size: this.limit
-      },
+      queryParams: this.getPageParams(),
       queryParamsHandling: 'merge',
       skipLocationChange: false
     })
   }
 
-  loadData(): Subscription {
-    this.pageLoading = true
-    const subscriber = (page: PagedResourceCollection<T>) => {
-      this.entities = page.resources;
-      this.loading = false;
-      this.pageLoading = false;
-      this.total = page.totalElements;
-      this.limit = page.pageSize;
+  private handleSearchRequests() {
+    this.searchRequest$
+      .pipe(
+      //tap(this.searchRequestWasStarted.bind(this)),
+        tap(() => {
+          this.searchService.setProcessingStatusDescription("search")
+        }),
+        switchMap((state: RequestParam) =>
+          this.queryName
+            ? this.searchService.searchPage({
+              pageParams: this.getPageParams(),
+              sort: this.getSort(),
+              useCache: this.getUseCache(),
+              params: state
+            }, this.queryName)
+            : this.searchService.getPage({
+              pageParams: this.getPageParams(),
+              sort: this.getSort(),
+              useCache: this.getUseCache(),
+              ...state
+            })),
+        switchMap(this.executePostProcessing.bind(this)),
+      )
+      .subscribe({
+        next: this.processSearchRequestResult.bind(this),
+        error: (err: Error) => this.entities$.error(err),
+        complete: () => this.entities$.complete()
+      })
+  }
+
+  private processSearchRequestResult(page: PagedResourceCollection<T>): void {
+
+    this.total = page.totalElements;
+    this.limit = page.pageSize;
+
+    this.loading$.next(false);
+    this.pageLoading$.next(false);
+    this.entities$.next(page.resources)
+
+  }
+
+  private executePostProcessing(searchResult: PagedResourceCollection<T>): Observable<PagedResourceCollection<T>> {
+    const handler = this.searchService.getPostProcessingStream()
+    if (handler) {
+      this.searchService.setProcessingStatusDescription("post processing")
+      return handler(searchResult)
     }
-
-    return this.queryData().subscribe(subscriber)
+    return of(searchResult)
   }
 
-  queryData(): Observable<PagedResourceCollection<T>>  {
-    if (this.search) {
-      return this.doSearch()
-    } else {
-      return this.getPage();
-    }
+  loadData() {
+    this.loading$.next(true)
+    this.searchRequest$.next(this.queryArguments)
   }
 
-  getPage() {
-    return this.resourceService.getPage<T>(this.type, {
-      pageParams: {
-        page: this.n,
-        size: this.limit
-      },
-      sort: this.getSortOption()
-    })
+  getPageParams() {
+    return {
+      page: this.n,
+      size: this.limit
+    };
   }
 
-  doSearch() {
-    return this.resourceService.searchPage<T>(this.type, 'findByNameStarting', {
-      pageParams: {
-        page: this.n,
-        size: this.limit
-      },
-      params: {
-        name: this.search
-      },
-      sort: this.getSortOption()
-    });
+  getSort(): Sort {
+    return this.sort
   }
 
-  getSortOption() {
-    const ret: Sort = {
-      name: 'ASC'
-    }
-    return ret
+  getUseCache(): boolean {
+    return true
   }
-
 }

@@ -1,4 +1,4 @@
-import {HateoasResource, ProjectionRel} from '@lagoshny/ngx-hateoas-client';
+import { HateoasResource, ProjectionRel } from '@lagoshny/ngx-hateoas-client';
 import { Entity } from './entity';
 import { Organization } from './organization';
 import { CommodityLink } from './commodity-link';

@@ -1,15 +1,20 @@
-import { HateoasResource, Resource } from "@lagoshny/ngx-hateoas-client";
+import { HateoasResource } from "@lagoshny/ngx-hateoas-client";
 import { MoneyType } from './money-type';
 import { Organization } from './organization';
+import { Entity } from "./entity";
 
 @HateoasResource('exchange')
-export class MoneyExchange extends Resource {
+export class MoneyExchange extends Entity {
 
   exchangedate = ''
 
   source = 0
 
+  sourceLink: string | undefined;
+
   dest = 0
+
+  destLink: string | undefined;
 
   usermt = 0
 

@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {MoneyTrackerService} from '@clematis-shared/money-tracker-service';
-import {MoneyTypes, MonthlyDelta} from '@clematis-shared/model';
-import {HateoasResourceService, PagedResourceCollection} from '@lagoshny/ngx-hateoas-client';
-import {of, Subscription, switchMap, tap} from 'rxjs';
-import {KeycloakService} from 'keycloak-angular';
-import {ActivatedRoute, Router} from "@angular/router";
-import {Title} from "@angular/platform-browser";
+import { Component, OnInit } from '@angular/core';
+import { AccountsService } from "@clematis-shared/shared-components";
+import { MoneyTypes, MonthlyDelta } from '@clematis-shared/model';
+import { HateoasResourceService, PagedResourceCollection } from '@lagoshny/ngx-hateoas-client';
+import { of, Subscription, switchMap, tap } from 'rxjs';
+import { KeycloakService } from 'keycloak-angular';
+import { ActivatedRoute, Router } from "@angular/router";
+import { Title } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-main',
@@ -47,7 +47,7 @@ export class MainComponent implements OnInit {
   endDate: string = '';
 
 
-  constructor(private moneyTrackerService: MoneyTrackerService,
+  constructor(private accountsService: AccountsService,
               private resourceService: HateoasResourceService,
               protected readonly keycloak: KeycloakService,
               private router: Router,
@@ -166,7 +166,7 @@ export class MainComponent implements OnInit {
         // the starting value for the graph fragment
         if (resources.length > 0) {
           console.log('Frame balance: ' + monthlyDeltas[0].year + ' ' + monthlyDeltas[0].month)
-          return this.moneyTrackerService.getBalance(monthlyDeltas[0].year, monthlyDeltas[0].month, code)
+          return this.accountsService.getBalance(monthlyDeltas[0].year, monthlyDeltas[0].month, code)
         }
 
         return of(0)

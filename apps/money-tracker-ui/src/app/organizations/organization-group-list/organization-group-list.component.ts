@@ -1,24 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
-import { ActivatedRoute, Router } from '@angular/router';
-
-import { OrganizationGroup } from '@clematis-shared/model';
-import { EntityListComponent} from '@clematis-shared/shared-components';
 import { Title } from "@angular/platform-browser";
+import { OrganizationGroupsService } from "@clematis-shared/shared-components";
 
 @Component({
   selector: 'app-organization-group-list',
   templateUrl: 'organization-group-list.component.html',
-  styleUrls: ['organization-group-list.component.css']
+  styleUrls: ['organization-group-list.component.css'],
+  providers: [
+    { provide: 'searchService', useClass: OrganizationGroupsService }
+  ]
 })
-export class OrganizationGroupListComponent extends EntityListComponent<OrganizationGroup> implements OnInit {
+export class OrganizationGroupListComponent implements OnInit {
 
-  constructor(resourceService: HateoasResourceService, router: Router, route: ActivatedRoute, private title: Title) {
-    super(OrganizationGroup, resourceService, router, route)
-  }
+  constructor(private title: Title) {}
 
   ngOnInit(): void {
-    super._ngOnInit()
-    this.title.setTitle('Ogranization Groups')
+    this.title.setTitle('Organization Groups')
   }
+
 }

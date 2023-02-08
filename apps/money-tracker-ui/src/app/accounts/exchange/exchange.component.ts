@@ -1,23 +1,35 @@
-import {Component, OnInit} from '@angular/core';
-import {HateoasResourceService, PagedResourceCollection, Sort} from "@lagoshny/ngx-hateoas-client";
-import {KeycloakService} from "keycloak-angular";
-import {MoneyExchange, MoneyExchangeReport, MoneyTypes} from "@clematis-shared/model";
-import {ActivatedRoute, Router} from "@angular/router";
-import {EntityListComponent} from "@clematis-shared/shared-components";
-import {Observable, of, switchMap} from "rxjs";
-import {MoneyTrackerService} from "@clematis-shared/money-tracker-service";
-import {Title} from "@angular/platform-browser";
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { PagedResourceCollection, Sort } from "@lagoshny/ngx-hateoas-client";
+import { KeycloakService } from "keycloak-angular";
+import { MoneyExchange, MoneyExchangeReport, MoneyTypes } from "@clematis-shared/model";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Title } from "@angular/platform-browser";
+import { EntityListComponent,
+  MoneyExchangeService,
+  SearchPostProcessingHandler
+} from "@clematis-shared/shared-components";
+import { Observable, of, Subscription, switchMap, tap } from "rxjs";
 
 @Component({
   selector: 'app-exchange',
   templateUrl: './exchange.component.html',
   styleUrls: ['./exchange.component.sass'],
+  providers: [
+    { provide: 'searchService', useClass: MoneyExchangeService }
+  ]
 })
-export class ExchangeComponent extends EntityListComponent<MoneyExchange> implements OnInit {
+export class ExchangeComponent implements OnInit {
+
+  // subscribe for page updates in the address bar
+  pageSubscription: Subscription;
 
   isLoggedIn: boolean = false;
 
   options: any;
+
+  loading: boolean = false;
+
+  pageLoading: boolean = false;
 
   sourceCurrency: MoneyTypes = MoneyTypes.RUB;
 
@@ -34,14 +46,18 @@ export class ExchangeComponent extends EntityListComponent<MoneyExchange> implem
 
   report?: MoneyExchangeReport;
 
-  constructor(private moneyTrackerService: MoneyTrackerService,
-              resourceService: HateoasResourceService,
-              protected readonly keycloak: KeycloakService,
-              router: Router,
-              route: ActivatedRoute,
-              private title: Title) {
+  @ViewChild(EntityListComponent) entityList!: EntityListComponent<MoneyExchange>;
 
-    super(MoneyExchange, resourceService, router, route)
+  postProcessingStream?: SearchPostProcessingHandler<MoneyExchange>
+
+  // average rate
+  average: number = 0;
+
+  constructor(protected readonly keycloak: KeycloakService,
+              private router: Router,
+              private route: ActivatedRoute,
+              private title: Title,
+              @Inject("searchService") private moneyExchangeService: MoneyExchangeService) {
 
     this.keycloak.isLoggedIn().then((logged) => {
       this.isLoggedIn = logged
@@ -59,41 +75,12 @@ export class ExchangeComponent extends EntityListComponent<MoneyExchange> implem
         }
       }
     );
-  }
 
-  override queryData(): Observable<PagedResourceCollection<MoneyExchange>> {
-    return super.queryData().pipe(
-       switchMap((arr: PagedResourceCollection<MoneyExchange>) => {
-         return this.moneyTrackerService.getExchangeReport(this.sourceCurrency, this.destCurrency)
-           .pipe(switchMap((report: MoneyExchangeReport) => {
-             this.report = report
-             return of(arr)
-           }))
-       })
-    )
+    this.moneyExchangeService.setPostProcessingStream(this.postProcessingHandler)
   }
 
   ngOnInit(): void {
-    super._ngOnInit()
     this.title.setTitle('Money Exchange')
-  }
-
-  override getPage() {
-    return this.doSearch()
-  }
-
-  override doSearch() {
-    return this.resourceService.searchPage<MoneyExchange>(MoneyExchange, 'events', {
-      pageParams: {
-        page: this.n,
-        size: this.limit
-      },
-      params: {
-        source: this.sourceCurrency,
-        dest: this.destCurrency
-      },
-      sort: this.getSortOption()
-    });
   }
 
   getSourceCurrencies() {
@@ -110,32 +97,41 @@ export class ExchangeComponent extends EntityListComponent<MoneyExchange> implem
 
   updatesSourceCurrency($event: MoneyTypes) {
     this.sourceCurrency = $event
-    this.loadData()
     this.updateRoute()
   }
 
   updatesDestCurrency($event: MoneyTypes) {
     this.destCurrency = $event
-    this.loadData()
     this.updateRoute()
   }
 
-  override updateRoute() {
+  updateRoute() {
 
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        source: this.sourceCurrency,
-        dest: this.destCurrency,
-        page: this.n,
-        size: this.limit
+        ...this.getQueryArguments()
       },
       queryParamsHandling: 'merge',
       skipLocationChange: false
     })
+
+    this.entityList.loading$.next(true)
+    this.entityList.searchRequest$.next(this.getQueryArguments())
   }
 
-  override getSortOption() {
+  getQueryName(): string | null {
+    return 'events';
+  }
+
+  getQueryArguments(): any {
+    return {
+      source: this.sourceCurrency,
+      dest: this.destCurrency
+    };
+  }
+
+  getSort() {
     let ret: Sort = {
       exchangeDate: 'DESC'
     }
@@ -146,7 +142,31 @@ export class ExchangeComponent extends EntityListComponent<MoneyExchange> implem
     const swap = this.sourceCurrency
     this.sourceCurrency = this.destCurrency
     this.destCurrency = swap
-    this.loadData()
     this.updateRoute()
   }
+
+  setLoading($event: boolean) {
+    this.loading = $event
+  }
+
+  setPageLoading($event: boolean) {
+    this.pageLoading = $event
+  }
+
+  postProcessingHandler = (res: PagedResourceCollection<MoneyExchange>):
+    Observable<PagedResourceCollection<MoneyExchange>> => {
+
+    return of(res).pipe(
+      tap(() => this.moneyExchangeService.setProcessingStatusDescription("loading exchange report")),
+      switchMap((res: PagedResourceCollection<MoneyExchange>) => {
+        return this.moneyExchangeService.getExchangeReport(this.sourceCurrency, this.destCurrency)
+          .pipe(switchMap((report: MoneyExchangeReport) => {
+              this.report = report
+              return of(res)
+            })
+          )
+      })
+    )
+  }
+
 }

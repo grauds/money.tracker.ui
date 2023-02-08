@@ -8,16 +8,13 @@
       </h2>
     </div>
     <div>
-      Default Price: {{defaultPrice}} {{defaultMoneyType?.code}} / {{defaultUnit}}
-    </div>
-    <div>
-      Average Price: {{averagePrice | number}} {{defaultMoneyType?.code}} / {{defaultUnit}}
+      Average Price: {{averagePrice | currency: defaultMoneyType?.code}} / {{defaultUnit}}
     </div>
     <div>
       Quantity: {{totalQty}} {{defaultUnit}}
     </div>
     <div>
-      Cost: {{totalSum}} {{defaultMoneyType?.code}}
+      Total: {{totalSum | currency: defaultMoneyType?.code}}
     </div>
     <div style='max-height: 350px; margin: 10px; overflow: auto'>
       {{entity ? entity.description : ''}}

@@ -63,7 +63,6 @@ import { OrganizationComponent } from './organizations/organization/organization
 import { OrganizationGroupComponent } from './organizations/organization-group/organization-group.component';
 import { OrganizationGroupListComponent } from './organizations/organization-group-list/organization-group-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MoneyTrackerServiceModule } from '@clematis-shared/money-tracker-service';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { AboutComponent } from './about/about.component';
 import { SharedComponentsModule } from '@clematis-shared/shared-components';
@@ -212,7 +211,6 @@ const mapConfig: YaConfig = {
         MatIconModule,
         LayoutModule,
         MatPaginatorModule,
-        MoneyTrackerServiceModule,
         SharedComponentsModule,
         MatTableModule,
         MatGridListModule,

@@ -1,0 +1,82 @@
+<div *ngIf="error">
+  <div class="alert alert-danger">
+    {{error}}
+  </div>
+</div>
+
+<div *ngIf="!error">
+
+  <content-loader class="ph-item" *ngIf="pageLoading">
+    <svg:rect x="0" y="0" rx="3" ry="3" width="450" height="10" />
+    <svg:rect x="20" y="20" rx="3" ry="3" width="220" height="10" />
+    <svg:rect x="20" y="40" rx="3" ry="3" width="170" height="10" />
+
+    <svg:rect x="20" y="60" rx="3" ry="3" width="250" height="10" />
+    <svg:rect x="20" y="80" rx="3" ry="3" width="200" height="10" />
+    <svg:rect x="20" y="100" rx="3" ry="3" width="80" height="10" />
+
+    <svg:rect x="0" y="120" rx="3" ry="3" width="450" height="10" />
+    <svg:rect x="20" y="140" rx="3" ry="3" width="200" height="10" />
+    <svg:rect x="20" y="160" rx="3" ry="3" width="80" height="10" />
+
+    <svg:rect x="20" y="180" rx="3" ry="3" width="250" height="10" />
+    <svg:rect x="20" y="200" rx="3" ry="3" width="200" height="10" />
+    <svg:rect x="20" y="220" rx="3" ry="3" width="80" height="10" />
+
+    <svg:rect x="20" y="240" rx="3" ry="3" width="250" height="10" />
+    <svg:rect x="20" y="260" rx="3" ry="3" width="200" height="10" />
+    <svg:rect x="20" y="280" rx="3" ry="3" width="80" height="10" />
+
+    <svg:rect x="0"  y="300" rx="3" ry="3" width="450" height="10" />
+    <svg:rect x="20" y="320" rx="3" ry="3" width="200" height="10" />
+    <svg:rect x="20" y="340" rx="3" ry="3" width="80" height="10" />
+  </content-loader>
+
+  <div *ngIf="!pageLoading">
+
+    <div class="container">
+
+      <mat-paginator *ngIf="entities && entities.length > 0"
+                     [length]="total"
+                     [pageSize]="limit"
+                     [pageSizeOptions]="[5, 10, 25, 100]"
+                     [pageIndex]="n"
+                     (page)="setCurrentPage($event)"
+                     [showFirstLastButtons]="true"
+                     aria-label="Select page">
+      </mat-paginator>
+
+      <!-- custom list -->
+      <div *ngIf="resultItemTemplate">
+        <div *ngIf="!table">
+          <div *ngFor="let a of entities">
+            <ng-container *ngTemplateOutlet="resultItemTemplate; context:{a}"></ng-container>
+          </div>
+        </div>
+        <div *ngIf="table">
+          <ng-container *ngTemplateOutlet="resultItemTemplate; context:{entities}"></ng-container>
+        </div>
+      </div>
+
+      <!-- fallback to simple list -->
+      <div *ngIf="!resultItemTemplate">
+        <div *ngFor="let a of entities">
+          <app-entity-element [entity]="a"></app-entity-element>
+        </div>
+      </div>
+
+      <mat-paginator *ngIf="entities && entities.length > 0"
+                     [length]="total"
+                     [pageSize]="limit"
+                     [pageSizeOptions]="[5, 10, 25, 100]"
+                     [pageIndex]="n"
+                     (page)="setCurrentPage($event)"
+                     [showFirstLastButtons]="true"
+                     aria-label="Select page">
+      </mat-paginator>
+
+    </div>
+
+  </div>
+
+</div>

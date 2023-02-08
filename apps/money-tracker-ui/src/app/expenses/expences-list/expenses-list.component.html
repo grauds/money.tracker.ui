@@ -1,103 +1,50 @@
-<div class="row" *ngIf="error">
-  <div class="col-sm-12 alert alert-danger">
-    {{error}}
-  </div>
-</div>
+<ng-template #expensesTable let-entities="entities">
+  <table mat-table [dataSource]="entities">
 
-<content-loader class="ph-item" *ngIf="loading">
-  <svg:rect x="0" y="0" rx="3" ry="3" width="450" height="10" />
-  <svg:rect x="20" y="20" rx="3" ry="3" width="220" height="10" />
-  <svg:rect x="20" y="40" rx="3" ry="3" width="170" height="10" />
+    <ng-container matColumnDef="transferdate">
+      <th mat-header-cell *matHeaderCellDef> Transfer Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.transferDate | date:'fullDate'}} </td>
+    </ng-container>
 
-  <svg:rect x="20" y="60" rx="3" ry="3" width="250" height="10" />
-  <svg:rect x="20" y="80" rx="3" ry="3" width="200" height="10" />
-  <svg:rect x="20" y="100" rx="3" ry="3" width="80" height="10" />
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element">
+        <a *ngIf="element.commodity && element.commodityLink"
+                  routerLink="{{element.commodityLink}}">
+        {{element.commodity.name}}</a>
 
-  <svg:rect x="0" y="120" rx="3" ry="3" width="450" height="10" />
-  <svg:rect x="20" y="140" rx="3" ry="3" width="200" height="10" />
-  <svg:rect x="20" y="160" rx="3" ry="3" width="80" height="10" />
+        <div *ngIf="element.commodity && !element.commodityLink">
+          {{element.commodity.name}}</div>
+      </td>
+    </ng-container>
 
-  <svg:rect x="20" y="180" rx="3" ry="3" width="250" height="10" />
-  <svg:rect x="20" y="200" rx="3" ry="3" width="200" height="10" />
-  <svg:rect x="20" y="220" rx="3" ry="3" width="80" height="10" />
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef> Price </th>
+      <td mat-cell *matCellDef="let element"> {{element.price | currency: element.expense.moneyType?.code}} </td>
+    </ng-container>
 
-  <svg:rect x="20" y="240" rx="3" ry="3" width="250" height="10" />
-  <svg:rect x="20" y="260" rx="3" ry="3" width="200" height="10" />
-  <svg:rect x="20" y="280" rx="3" ry="3" width="80" height="10" />
+    <ng-container matColumnDef="qty">
+      <th mat-header-cell *matHeaderCellDef> Qty </th>
+      <td mat-cell *matCellDef="let element"> {{element.qty | number:'1.0-2'}}
+        {{ element.commodity?.unittype?.shortName }} </td>
+    </ng-container>
 
-  <svg:rect x="0"  y="300" rx="3" ry="3" width="450" height="10" />
-  <svg:rect x="20" y="320" rx="3" ry="3" width="200" height="10" />
-  <svg:rect x="20" y="340" rx="3" ry="3" width="80" height="10" />
-</content-loader>
+    <ng-container matColumnDef="organizationname">
+      <th mat-header-cell *matHeaderCellDef> Organization </th>
+      <td mat-cell *matCellDef="let element">
+        <a *ngIf="element.tradeplace && element.tradeplaceLink"
+           routerLink="{{element.tradeplaceLink}}">
+          {{element.tradeplace.name}}</a>
 
-<div *ngIf="!error">
+        <div *ngIf="element.tradeplace && !element.tradeplaceLink">
+                {{element.tradeplace.name}}</div>
+      </td>
+    </ng-container>
 
-  <div class="container" *ngIf="!loading">
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-      <mat-paginator [length]="total"
-                     [pageSize]="limit"
-                     [pageSizeOptions]="[5, 10, 25, 100]"
-                     [pageIndex]="n"
-                     (page)="setCurrentPage($event)"
-                     [showFirstLastButtons]="true"
-                     aria-label="Select page">
-      </mat-paginator>
+  </table>
+</ng-template>
 
-      <table mat-table [dataSource]="entities">
-
-        <ng-container matColumnDef="transferdate">
-          <th mat-header-cell *matHeaderCellDef> Transfer Date </th>
-          <td mat-cell *matCellDef="let element"> {{element.transferDate | date:'shortDate'}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Name </th>
-          <td mat-cell *matCellDef="let element">
-            <a *ngIf="element.commodity && element.commodityLink"
-                      routerLink="{{element.commodityLink}}">
-            {{element.commodity.name}}</a>
-
-            <div *ngIf="element.commodity && !element.commodityLink">
-              {{element.commodity.name}}</div>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="price">
-          <th mat-header-cell *matHeaderCellDef> Price </th>
-          <td mat-cell *matCellDef="let element"> {{element.price}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="qty">
-          <th mat-header-cell *matHeaderCellDef> Qty </th>
-          <td mat-cell *matCellDef="let element"> {{element.qty}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="organizationname">
-          <th mat-header-cell *matHeaderCellDef> Organization </th>
-          <td mat-cell *matCellDef="let element">
-            <a *ngIf="element.tradeplace && element.tradeplaceLink"
-               routerLink="{{element.tradeplaceLink}}">
-              {{element.tradeplace.name}}</a>
-
-            <div *ngIf="element.tradeplace && !element.tradeplaceLink">
-                    {{element.tradeplace.name}}</div>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-      </table>
-
-      <mat-paginator [length]="total"
-                     [pageSize]="limit"
-                     [pageSizeOptions]="[5, 10, 25, 100]"
-                     [pageIndex]="n"
-                     (page)="setCurrentPage($event)"
-                     [showFirstLastButtons]="true"
-                     aria-label="Select page">
-      </mat-paginator>
-
-  </div>
-
-</div>
+<app-entity-list [resultItemTemplate]="expensesTable" [table]="true"></app-entity-list>

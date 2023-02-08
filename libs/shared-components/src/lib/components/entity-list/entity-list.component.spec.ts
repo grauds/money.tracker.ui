@@ -1,21 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EntityElementComponent } from './entity-element.component';
+import { EntityListComponent } from './entity-list.component';
 import { Resource } from "@lagoshny/ngx-hateoas-client";
 
-describe('EntityElementComponent', () => {
-  let component: EntityElementComponent<Resource>;
-  let fixture: ComponentFixture<EntityElementComponent<Resource>>;
+describe('EntityListComponent', () => {
+  let component: EntityListComponent<Resource>;
+  let fixture: ComponentFixture<EntityListComponent<Resource>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EntityElementComponent ]
+      declarations: [ EntityListComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EntityElementComponent);
+    fixture = TestBed.createComponent(EntityListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

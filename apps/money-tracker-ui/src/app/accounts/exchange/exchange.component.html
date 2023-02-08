@@ -1,10 +1,14 @@
 <div *ngIf="isLoggedIn">
 
-  <h4 *ngIf="this.report" class="header">
-    <span><b>Sold:</b> {{this.report.sourceAmount |currency:this.sourceCurrency}}, </span>
-    <span><b>Bought:</b> {{this.report.destAmount |currency:this.destCurrency}}, </span>
-    <span><b>Average:</b> {{this.report.avgRate | number: '1.6-8'}} , </span>
+  <h4 *ngIf="this.report" class="header" [hidden]="this.loading || this.pageLoading">
+    <span><b>Sold:</b> {{(this.report.sourceAmount ? this.report.sourceAmount : 0) | currency:this.sourceCurrency}}, </span>
+    <span><b>Bought:</b> {{(this.report.destAmount ? this.report.destAmount : 0) | currency:this.destCurrency}}, </span>
+    <span><b>Average:</b> {{(this.report.avgRate ? this.report.avgRate : 0) | number: '1.6-8'}} , </span>
     <span><b>Current:</b> {{this.report.curRate | number: '1.6-8'}} </span>
+  </h4>
+
+  <h4 *ngIf="this.report" class="header" [hidden]="!(this.loading || this.pageLoading)">
+    <span><b>Loading...</b></span>
   </h4>
 
   <mat-form-field appearance="fill">
@@ -37,35 +41,37 @@
     Loading...
   </h1>
 
-  <div *ngIf="!error">
-
-    <div *ngIf="!loading">
-      <div class="container">
-
-        <mat-paginator [length]="total"
-                       [pageSize]="limit"
-                       [pageSizeOptions]="[5, 10, 25, 100]"
-                       [pageIndex]="n"
-                       (page)="setCurrentPage($event)"
-                       [showFirstLastButtons]="true"
-                       aria-label="Select page">
-        </mat-paginator>
+  <ng-template #exchangeTable let-entities="entities">
 
         <table mat-table [dataSource]="entities">
 
           <ng-container matColumnDef="exchangedate">
             <th mat-header-cell *matHeaderCellDef> Exchange Date </th>
-            <td mat-cell *matCellDef="let element"> {{element.exchangeDate | date:'shortDate'}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.exchangeDate | date:'fullDate'}} </td>
           </ng-container>
 
           <ng-container matColumnDef="from">
             <th mat-header-cell *matHeaderCellDef> From </th>
-            <td mat-cell *matCellDef="let element"></td>
+            <td mat-cell *matCellDef="let element">
+              <a *ngIf="element.source && element.sourceLink"
+                 routerLink="{{element.sourceLink}}">
+                {{element.source.name}}</a>
+
+              <div *ngIf="element.source && !element.sourceLink">
+                {{element.source.name}}</div>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="to">
             <th mat-header-cell *matHeaderCellDef> To </th>
-            <td mat-cell *matCellDef="let element"></td>
+            <td mat-cell *matCellDef="let element">
+              <a *ngIf="element.dest && element.destLink"
+                 routerLink="{{element.destLink}}">
+                {{element.dest.name}}</a>
+
+              <div *ngIf="element.dest && !element.destLink">
+                {{element.dest.name}}</div>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="sourceamount">
@@ -88,20 +94,15 @@
 
         </table>
 
-        <mat-paginator [length]="total"
-                       [pageSize]="limit"
-                       [pageSizeOptions]="[5, 10, 25, 100]"
-                       [pageIndex]="n"
-                       (page)="setCurrentPage($event)"
-                       [showFirstLastButtons]="true"
-                       aria-label="Select page">
-        </mat-paginator>
+  </ng-template>
 
-      </div>
-
-    </div>
-
-  </div>
-
+  <app-entity-list [resultItemTemplate]="exchangeTable"
+                   [table]="true"
+                   [queryArguments]="getQueryArguments()"
+                   [queryName]="getQueryName()"
+                   [sort]="getSort()"
+                   (loading$)="setLoading($event)"
+                   (pageLoading$)="setPageLoading($event)"
+  ></app-entity-list>
 
 </div>

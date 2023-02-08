@@ -5,9 +5,9 @@ export class Entity extends Resource {
 
   name: string | undefined;
 
-  static getRelativeSelfLinkHref(resource: Resource): string {
+  static getRelativeSelfLinkHref<T extends Resource>(resource: T | undefined): string {
     if (resource) {
-      return Utils.parseResourceUrlToAppUrl(resource.getSelfLinkHref());
+      return Utils.parseResourceUrlToAppUrl(Utils.removeProjection(resource.getSelfLinkHref()));
     } else return ''
   }
 

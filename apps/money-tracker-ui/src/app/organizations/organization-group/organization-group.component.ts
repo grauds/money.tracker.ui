@@ -1,21 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { CommodityGroup, Entity, Organization, OrganizationGroup } from '@clematis-shared/model';
-import { MoneyTrackerService } from '@clematis-shared/money-tracker-service';
-import {EntityComponent} from '@clematis-shared/shared-components';
-import {Title} from "@angular/platform-browser";
+import { EntityComponent,
+  OrganizationGroupsService,
+  OrganizationsService
+} from '@clematis-shared/shared-components';
+
+import { Title } from "@angular/platform-browser";
 import { Utils } from '@clematis-shared/model';
 
 @Component({
   selector: 'app-organization-group',
   templateUrl: './organization-group.component.html',
-  styleUrls: ['./organization-group.component.css']
+  styleUrls: ['./organization-group.component.css'],
+  providers: [
+    { provide: 'searchService', useClass: OrganizationsService }
+  ]
 })
 export class OrganizationGroupComponent extends EntityComponent<OrganizationGroup> implements OnInit {
-
-  currentRate: number = 2;
 
   loading: boolean = true;
 
@@ -30,7 +34,7 @@ export class OrganizationGroupComponent extends EntityComponent<OrganizationGrou
   path: Array<CommodityGroup> = [];
 
   constructor(resourceService: HateoasResourceService,
-              private moneyTrackerService: MoneyTrackerService,
+              private organizationGroupsService: OrganizationGroupsService,
               route: ActivatedRoute,
               router: Router,
               title: Title) {
@@ -69,7 +73,7 @@ export class OrganizationGroupComponent extends EntityComponent<OrganizationGrou
       });
 
     if (this.entity) {
-      this.moneyTrackerService.getPathForOrganizationGroup(Utils.getIdFromSelfUrl(this.entity)).subscribe((response) => {
+      this.organizationGroupsService.getPathForOrganizationGroup(Utils.getIdFromSelfUrl(this.entity)).subscribe((response) => {
         this.path = response.resources
       })
     }
