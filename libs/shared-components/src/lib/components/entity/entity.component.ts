@@ -8,7 +8,7 @@ export abstract class EntityComponent<T extends Entity> {
 
   entity: T | undefined;
 
-  id: string | null = null
+  id: string = ''
 
   // subscribe for page updates in the address bar
   pageSubscription: Subscription;
@@ -28,8 +28,9 @@ export abstract class EntityComponent<T extends Entity> {
   }
 
   onInit(): void {
-    if (this.route.snapshot.paramMap.get('id') !== this.id) {
-      this.id = this.route.snapshot.paramMap.get('id')
+    let id = this.route.snapshot.paramMap.get('id')
+    if (id !== this.id) {
+      this.id = id ? id : ''
       this.loadData()
     }
   }

@@ -33,7 +33,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
   // elements page
   entities: T[] | null = [];
 
-  entities$ = new BehaviorSubject<Array<T> | null>(null)
+  @Output() entities$ = new EventEmitter<T[]>();
 
   // total number of elements
   total: number | undefined;
@@ -142,7 +142,6 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     this.loading$.next(false);
     this.pageLoading$.next(false);
     this.entities$.next(page.resources)
-
   }
 
   private executePostProcessing(searchResult: PagedResourceCollection<T>): Observable<PagedResourceCollection<T>> {

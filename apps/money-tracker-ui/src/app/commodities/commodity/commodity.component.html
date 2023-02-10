@@ -30,9 +30,52 @@
   </div>
 </div>
 
-<div class='row'>
-  <div class='col-12'>
-  </div>
-</div>
+<ng-template #expensesTable let-entities="entities">
+  <table mat-table [dataSource]="entities">
+
+    <ng-container matColumnDef="transferdate">
+      <th mat-header-cell *matHeaderCellDef> Transfer Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.transferDate | date:'fullDate'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef> Price </th>
+      <td mat-cell *matCellDef="let element"> {{element.price | currency: element.expense.moneyType?.code}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="qty">
+      <th mat-header-cell *matHeaderCellDef> Qty </th>
+      <td mat-cell *matCellDef="let element"> {{element.qty | number:'1.0-2'}}
+        {{ element.commodity?.unittype?.shortName }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="organizationname">
+      <th mat-header-cell *matHeaderCellDef> Organization </th>
+      <td mat-cell *matCellDef="let element">
+        <a *ngIf="element.tradeplace && element.tradeplaceLink"
+           routerLink="{{element.tradeplaceLink}}">
+          {{element.tradeplace.name}}</a>
+
+        <div *ngIf="element.tradeplace && !element.tradeplaceLink">
+          {{element.tradeplace.name}}</div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+</ng-template>
+
+<app-entity-list
+  [resultItemTemplate]="expensesTable"
+  [table]="true"
+  [queryArguments]="getQueryArguments()"
+  [queryName]="'commodity'"
+  (loading$)="setLoading($event)"
+  (pageLoading$)="setPageLoading($event)"
+  (entities$)="setEntities($event)"
+></app-entity-list>
+
 
 

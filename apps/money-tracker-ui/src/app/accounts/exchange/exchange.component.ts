@@ -4,9 +4,9 @@ import { KeycloakService } from "keycloak-angular";
 import { MoneyExchange, MoneyExchangeReport, MoneyTypes } from "@clematis-shared/model";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
-import { EntityListComponent,
-  MoneyExchangeService,
-  SearchPostProcessingHandler
+import {
+  EntityListComponent,
+  MoneyExchangeService
 } from "@clematis-shared/shared-components";
 import { Observable, of, Subscription, switchMap, tap } from "rxjs";
 
@@ -47,11 +47,6 @@ export class ExchangeComponent implements OnInit {
   report?: MoneyExchangeReport;
 
   @ViewChild(EntityListComponent) entityList!: EntityListComponent<MoneyExchange>;
-
-  postProcessingStream?: SearchPostProcessingHandler<MoneyExchange>
-
-  // average rate
-  average: number = 0;
 
   constructor(protected readonly keycloak: KeycloakService,
               private router: Router,

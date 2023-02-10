@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
-import { Commodity, MoneyType, CommodityGroup, MoneyTypes, ExpenseItem, Entity } from '@clematis-shared/model';
+import {HateoasResourceService, RequestParam} from '@lagoshny/ngx-hateoas-client';
+import {
+  Commodity,
+  MoneyType,
+  CommodityGroup,
+  MoneyTypes,
+  ExpenseItem,
+  Entity
+} from '@clematis-shared/model';
 import {
   CommoditiesService,
   CommodityGroupsService,
@@ -14,9 +21,14 @@ import { Title } from "@angular/platform-browser";
 @Component({
   selector: 'app-commodity',
   templateUrl: './commodity.component.html',
-  styleUrls: ['./commodity.component.sass']
+  styleUrls: ['./commodity.component.sass'],
+  providers: [
+    { provide: 'searchService', useClass: ExpenseItemsService }
+  ]
 })
 export class CommodityComponent extends EntityComponent<Commodity> implements OnInit {
+
+  displayedColumns: string[] = ['transferdate', 'price', 'qty', 'organizationname'];
 
   defaultUnit: string | undefined;
 
@@ -32,17 +44,21 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
 
   expenses: ExpenseItem[] = [];
 
+  loading: boolean = false;
+
+  pageLoading: boolean = false;
+
   graph: any = {
     data: [{
       x: [],
       y: [],
       name: 'Total Sum',
-      type: 'scatter'
+      type: 'bar'
     }, {
       x: [],
       y: [],
       name: 'Price',
-      type: 'scatter'
+      type: 'line'
     }],
     layout: {autosize: true, title: 'Money Spent'},
   };
@@ -93,18 +109,37 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
         this.averagePrice = this.totalSum / this.totalQty
       })
     })
+  }
 
-    this.expenseItemsService.getCommodityExpences(this.id).subscribe((response) => {
-      this.expenses = response.resources
+  setPageLoading($event: boolean) {
+    this.pageLoading = $event
+  }
 
-      this.expenses.forEach(expense => {
-        this.graph.data[0].x.push(expense.transferDate)
-        this.graph.data[0].y.push(expense.total)
+  setLoading($event: boolean) {
+    this.loading = $event
+  }
 
-        this.graph.data[1].x.push(expense.transferDate)
-        this.graph.data[1].y.push(expense.price)
-      })
+  getQueryArguments(): RequestParam {
+    return {
+        commodityId: this.id ? this.id : ''
+      }
+  }
 
+  setEntities($event: ExpenseItem[]) {
+    this.expenses = $event
+
+    this.graph.data[0].x = []
+    this.graph.data[0].y = []
+
+    this.graph.data[1].x = []
+    this.graph.data[1].y = []
+
+    this.expenses.forEach(expense => {
+      this.graph.data[0].x.push(expense.transferDate)
+      this.graph.data[0].y.push(expense.total)
+
+      this.graph.data[1].x.push(expense.transferDate)
+      this.graph.data[1].y.push(expense.price)
     })
   }
 }

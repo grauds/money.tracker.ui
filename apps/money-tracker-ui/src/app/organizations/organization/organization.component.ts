@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
+import { HateoasResourceService, RequestParam } from '@lagoshny/ngx-hateoas-client';
 import { Entity, ExpenseItem, MoneyTypes, Organization, OrganizationGroup } from '@clematis-shared/model';
 import {
   EntityComponent,
@@ -14,9 +14,14 @@ import { Utils } from '@clematis-shared/model';
 @Component({
   selector: 'app-organization',
   templateUrl: './organization.component.html',
-  styleUrls: ['./organization.component.css'],
+  styleUrls: ['./organization.component.sass'],
+  providers: [
+    { provide: 'searchService', useClass: ExpenseItemsService }
+  ]
 })
 export class OrganizationComponent extends EntityComponent<Organization> implements OnInit {
+
+  displayedColumns: string[] = ['transferdate', 'name', 'price', 'qty'];
 
   parent: OrganizationGroup | undefined;
 
@@ -28,17 +33,21 @@ export class OrganizationComponent extends EntityComponent<Organization> impleme
 
   expenses: ExpenseItem[] = [];
 
+  loading: boolean = false;
+
+  pageLoading: boolean = false;
+
   graph: any = {
     data: [{
       x: [],
       y: [],
       name: 'Total Sum',
-      type: 'scatter'
+      type: 'bar'
     }, {
       x: [],
       y: [],
       name: 'Price',
-      type: 'scatter'
+      type: 'bar'
     }],
     layout: {autosize: true, title: 'Money Spent'},
   };
@@ -75,18 +84,37 @@ export class OrganizationComponent extends EntityComponent<Organization> impleme
     this.organizationsService.getTotalsForOrganization(this.id, MoneyTypes.RUB).subscribe((response) => {
       this.totalSum = response
     })
+  }
 
-    this.expenseItemsService.getOrganizationExpences(this.id).subscribe((response) => {
-      this.expenses = response.resources
+  setPageLoading($event: boolean) {
+    this.pageLoading = $event
+  }
 
-      this.expenses.forEach(expense => {
-        this.graph.data[0].x.push(expense.transferDate)
-        this.graph.data[0].y.push(expense.total)
+  setLoading($event: boolean) {
+    this.loading = $event
+  }
 
-        this.graph.data[1].x.push(expense.transferDate)
-        this.graph.data[1].y.push(expense.price)
-      })
+  getQueryArguments(): RequestParam {
+    return {
+      tradeplaceId: this.id ? this.id : ''
+    }
+  }
 
+  setEntities($event: ExpenseItem[]) {
+    this.expenses = $event
+
+    this.graph.data[0].x = []
+    this.graph.data[0].y = []
+
+    this.graph.data[1].x = []
+    this.graph.data[1].y = []
+
+    this.expenses.forEach(expense => {
+      this.graph.data[0].x.push(expense.transferDate)
+      this.graph.data[0].y.push(expense.total)
+
+      this.graph.data[1].x.push(expense.transferDate)
+      this.graph.data[1].y.push(expense.price)
     })
   }
 }

@@ -66,10 +66,6 @@
       </button>
       <span *ngIf="isHandset$ | async">{{title}}</span>
       <span class="header-spacer"></span>
-      <mat-form-field appearance="outline">
-        <mat-icon class="mat-icon-dash" matPrefix>search</mat-icon>
-        <input type="search" matInput placeholder="Search" />
-      </mat-form-field>
       <span class="navbar-username" *ngIf="isLoggedIn && !(isHandset$ | async)">
         {{getUserInfo()}}
       </span>

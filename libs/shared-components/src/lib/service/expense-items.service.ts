@@ -42,18 +42,18 @@ export class ExpenseItemsService extends SearchService<ExpenseItem> {
     });
   }
 
-  getCommodityExpences(commodityId: string | null): Observable<ResourceCollection<ExpenseItem>> {
+  getCommodityExpences(commodityId: string): Observable<ResourceCollection<ExpenseItem>> {
 
     if (commodityId) {
-      return this.hateoasService.searchPage<ExpenseItem>(ExpenseItem,'commodity', {
+      return this.searchPage({
         params: {
           commodityId: commodityId
         }
-      })
+      }, 'commodity')
     } return of(new ResourceCollection<ExpenseItem>())
   }
 
-  getOrganizationExpences(organizationId: string | null)
+  getOrganizationExpences(organizationId: string)
     : Observable<ResourceCollection<ExpenseItem>> {
 
     if (organizationId) {
