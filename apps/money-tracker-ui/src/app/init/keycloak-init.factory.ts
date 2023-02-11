@@ -1,13 +1,14 @@
 import { KeycloakEventType, KeycloakService } from 'keycloak-angular';
-import { environment } from '../../environments/environment';
+import { EnvironmentService } from "@clematis-shared/shared-components";
 
 export function initializeKeycloak(
-  keycloak: KeycloakService
+  keycloak: KeycloakService,
+  environment: EnvironmentService
 ) {
   return () => {
     keycloak.init({
       config: {
-        url: environment.authUrl,
+        url: environment.getValue('authUrl'),
         realm: 'clematis',
         clientId: 'clematis-money-tracker-ui'
       },

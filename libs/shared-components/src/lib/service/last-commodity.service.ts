@@ -4,13 +4,16 @@ import { Entity, LastCommodity } from "@clematis-shared/model";
 import { PagedGetOption } from "@lagoshny/ngx-hateoas-client/lib/model/declarations";
 import { HateoasResourceService, PagedResourceCollection } from "@lagoshny/ngx-hateoas-client";
 import { SearchService } from './search.service';
+import { EnvironmentService } from "./environment.service";
 
 @Injectable()
 export class LastCommodityService extends SearchService<LastCommodity> {
 
-  constructor(private hateoasService: HateoasResourceService) {
-    super();
+  constructor(private hateoasService: HateoasResourceService,
+              override environmentService: EnvironmentService) {
+    super(environmentService);
   }
+
 
   searchPage(options: PagedGetOption | undefined, queryName: string):
     Observable<PagedResourceCollection<LastCommodity>> {

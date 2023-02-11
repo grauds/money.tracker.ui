@@ -1,10 +1,9 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { APP_INITIALIZER, Inject, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
-import { MockedKeycloakService } from './auth/mocked-keycloak.service';
 import { initializeKeycloak } from './init/keycloak-init.factory';
 import { ContentLoaderModule } from '@ngneat/content-loader';
 import { FormsModule } from '@angular/forms';
@@ -36,7 +35,6 @@ import {
   NgxHateoasClientConfigurationService,
   NgxHateoasClientModule,
 } from '@lagoshny/ngx-hateoas-client';
-import { environment } from '../environments/environment';
 
 import { SharedModule } from '../shared/shared.module';
 
@@ -65,7 +63,7 @@ import { OrganizationGroupListComponent } from './organizations/organization-gro
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { AboutComponent } from './about/about.component';
-import { SharedComponentsModule } from '@clematis-shared/shared-components';
+import { ENVIRONMENT, EnvironmentService, SharedComponentsModule } from '@clematis-shared/shared-components';
 import { MatTableModule } from '@angular/material/table';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { AccountsDashboardComponent } from './accounts/accounts-dashboard/accounts-dashboard.component';
@@ -76,6 +74,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ExchangeComponent } from './accounts/exchange/exchange.component';
 import { ExchangeEventElementComponent } from './accounts/exchange-event-element/exchange-event-element.component';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { environment } from "../environments/environment";
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -185,60 +184,62 @@ const mapConfig: YaConfig = {
     ExchangeComponent,
     ExchangeEventElementComponent,
   ],
-    imports: [
-        HttpClientModule,
-        BrowserModule,
-        FontAwesomeModule,
-        KeycloakAngularModule,
-        RouterModule.forRoot(
-            routes,
-            {enableTracing: true} // <-- debugging purposes only
-        ),
-        NgxHateoasClientModule.forRoot(),
-        ContentLoaderModule,
-        SharedModule,
-        FormsModule,
-        AngularYandexMapsModule.forRoot(mapConfig),
-        PlotlyModule,
-        NgxEchartsModule.forRoot({
-            echarts: () => import('echarts'),
-        }),
-        BrowserAnimationsModule,
-        MatToolbarModule,
-        MatSidenavModule,
-        MatButtonModule,
-        MatListModule,
-        MatIconModule,
-        LayoutModule,
-        MatPaginatorModule,
-        SharedComponentsModule,
-        MatTableModule,
-        MatGridListModule,
-        MatInputModule,
-        MatSelectModule,
-        MatTooltipModule,
-        MatButtonToggleModule,
-    ],
-  providers: [
-    {
+  imports: [
+      HttpClientModule,
+      BrowserModule,
+      FontAwesomeModule,
+      KeycloakAngularModule,
+      RouterModule.forRoot(
+          routes,
+          {enableTracing: true} // <-- debugging purposes only
+      ),
+      NgxHateoasClientModule.forRoot(),
+      ContentLoaderModule,
+      SharedModule,
+      FormsModule,
+      AngularYandexMapsModule.forRoot(mapConfig),
+      PlotlyModule,
+      NgxEchartsModule.forRoot({
+          echarts: () => import('echarts'),
+      }),
+      BrowserAnimationsModule,
+      MatToolbarModule,
+      MatSidenavModule,
+      MatButtonModule,
+      MatListModule,
+      MatIconModule,
+      LayoutModule,
+      MatPaginatorModule,
+      SharedComponentsModule,
+      MatTableModule,
+      MatGridListModule,
+      MatInputModule,
+      MatSelectModule,
+      MatTooltipModule,
+      MatButtonToggleModule,
+  ],
+  providers: [{
       provide: KeycloakService,
       useClass: KeycloakService,
-    },
-    {
+    }, {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
-      deps: [KeycloakService],
-    },
+      deps: [KeycloakService, EnvironmentService],
+    }, {
+      provide: ENVIRONMENT,
+      useValue: environment
+    }
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(hateoasConfig: NgxHateoasClientConfigurationService) {
+  constructor(hateoasConfig: NgxHateoasClientConfigurationService,
+              environmentService: EnvironmentService) {
     hateoasConfig.configure({
       http: {
         defaultRoute: {
-          rootUrl: environment.apiUrl,
+          rootUrl: environmentService.getValue('apiUrl')
         },
       },
       useTypes: {

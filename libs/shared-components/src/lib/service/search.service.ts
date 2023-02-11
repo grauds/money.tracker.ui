@@ -1,8 +1,7 @@
 import { BehaviorSubject, Observable } from "rxjs";
 import { PagedResourceCollection, Resource } from "@lagoshny/ngx-hateoas-client";
 import { PagedGetOption } from "@lagoshny/ngx-hateoas-client/lib/model/declarations";
-
-import { environment } from "../../../../../apps/money-tracker-ui/src/environments/environment";
+import { EnvironmentService } from "./environment.service";
 
 export type SearchPostProcessingHandler<T extends Resource>
   = (res: PagedResourceCollection<T>) => Observable<PagedResourceCollection<T>>;
@@ -12,6 +11,12 @@ export abstract class SearchService<T extends Resource> {
   private statusDescription$ = new BehaviorSubject<string>("search")
 
   private searchPostProcessingHandler: SearchPostProcessingHandler<T> | null = null
+
+  environmentService: EnvironmentService;
+
+  protected constructor(environmentService: EnvironmentService) {
+    this.environmentService = environmentService;
+  }
 
   abstract searchPage(options?: PagedGetOption, queryName?: string | null)
                                             : Observable<PagedResourceCollection<T>>
@@ -27,7 +32,7 @@ export abstract class SearchService<T extends Resource> {
   }
 
   getUrl(url: string) :string {
-    return environment.apiUrl + url
+    return this.environmentService.getValue('apiUrl') + url
   }
 
   getPostProcessingStream(): SearchPostProcessingHandler<T> | null {

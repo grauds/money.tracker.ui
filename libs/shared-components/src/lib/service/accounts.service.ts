@@ -8,12 +8,15 @@ import { HateoasResourceService,
   ResourceCollection
 } from "@lagoshny/ngx-hateoas-client";
 import { SearchService } from './search.service';
+import { EnvironmentService } from "./environment.service";
 
 @Injectable()
 export class AccountsService extends SearchService<AccountBalance> {
 
-  constructor(private http: HttpClient, private hateoasService: HateoasResourceService) {
-    super();
+  constructor(private http: HttpClient,
+              private hateoasService: HateoasResourceService,
+              override environmentService: EnvironmentService) {
+    super(environmentService);
   }
 
   searchPage(options: PagedGetOption | undefined, queryName: string):

@@ -2,11 +2,16 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
-  production: false,
-  //apiUrl: 'http://192.168.1.2:18085/api',
-  apiUrl: 'http://localhost:8080/api',
-  authUrl: 'http://192.168.1.2:8083/auth/',
+import { EnvironmentInterface } from "@clematis-shared/shared-components";
+
+export const environment: EnvironmentInterface = {
+
+  apiUrl: "",
+
+  authUrl: "",
+
+  production: false
+
 };
 
 /*

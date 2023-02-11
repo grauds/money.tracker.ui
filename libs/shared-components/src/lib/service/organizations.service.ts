@@ -6,12 +6,15 @@ import { HateoasResourceService, PagedResourceCollection } from "@lagoshny/ngx-h
 
 import { SearchService } from './search.service';
 import { HttpClient } from "@angular/common/http";
+import {EnvironmentService} from "./environment.service";
 
 @Injectable()
 export class OrganizationsService extends SearchService<Organization> {
 
-  constructor(private http: HttpClient, private hateoasService: HateoasResourceService) {
-    super();
+  constructor(private http: HttpClient,
+              private hateoasService: HateoasResourceService,
+              override environmentService: EnvironmentService) {
+    super(environmentService);
   }
 
   searchPage(options: PagedGetOption | undefined, queryName: string):

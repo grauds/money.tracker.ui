@@ -2,7 +2,7 @@
 import { EnvironmentInterface } from "@clematis-shared/shared-components";
 
 export const environment: EnvironmentInterface = {
-  production: false,
-  apiUrl: 'http://localhost:8080/api',
-  authUrl: 'http://localhost:8083/auth/'
+  production: true,
+  apiUrl: 'http://money-tracker-api/api',
+  authUrl: 'http://auth-api/auth/'
 };

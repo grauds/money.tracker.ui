@@ -5,13 +5,17 @@ import { MoneyExchange, MoneyExchangeReport } from "@clematis-shared/model";
 import { PagedGetOption } from "@lagoshny/ngx-hateoas-client/lib/model/declarations";
 import { HateoasResourceService, PagedResourceCollection } from "@lagoshny/ngx-hateoas-client";
 import { HttpClient } from "@angular/common/http";
+import { EnvironmentService } from "./environment.service";
 
 @Injectable()
 export class MoneyExchangeService extends SearchService<MoneyExchange> {
 
-  constructor(private http: HttpClient, private hateoasService: HateoasResourceService) {
-    super();
+  constructor(private http: HttpClient,
+              private hateoasService: HateoasResourceService,
+              override environmentService: EnvironmentService) {
+    super(environmentService);
   }
+
 
   searchPage(options: PagedGetOption | undefined, queryName: string):
     Observable<PagedResourceCollection<MoneyExchange>> {

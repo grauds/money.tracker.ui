@@ -9,13 +9,17 @@ import {
 import { Observable, of, switchMap } from "rxjs";
 import { SearchService } from './search.service';
 import { HttpClient } from "@angular/common/http";
+import { EnvironmentService } from "./environment.service";
 
 @Injectable()
 export class ExpenseItemsService extends SearchService<ExpenseItem> {
 
-  constructor(private http: HttpClient, private hateoasService: HateoasResourceService) {
-    super();
+  constructor(private http: HttpClient,
+              private hateoasService: HateoasResourceService,
+              override environmentService: EnvironmentService) {
+    super(environmentService);
   }
+
 
   searchPage(options: PagedGetOption | undefined, queryName: string):
     Observable<PagedResourceCollection<ExpenseItem>> {
