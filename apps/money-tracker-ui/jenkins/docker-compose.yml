@@ -8,5 +8,21 @@ services:
       - "18081:80"
     volumes:
       - ./nginx-default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - clematis
     restart: unless-stopped
 
+  money-tracker-ui-demo:
+    container_name: clematis-money-tracker-ui
+    image: money.tracker.ui:latest
+    ports:
+      - "18082:80"
+    volumes:
+      - ./nginx-demo.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - clematis
+    restart: unless-stopped
+
+networks:
+  clematis:
+    driver: bridge

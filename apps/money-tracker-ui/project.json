@@ -32,6 +32,21 @@
         "allowedCommonJsDependencies": ["keycloak-js"]
       },
       "configurations": {
+        "default": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "5mb",
+              "maximumError": "15mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
         "demo": {
           "budgets": [
             {
@@ -124,11 +139,14 @@
           "namedChunks": true
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "default"
     },
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
+        "default": {
+          "browserTarget": "money-tracker-ui:build:default"
+        },
         "demo": {
           "browserTarget": "money-tracker-ui:build:demo"
         },
