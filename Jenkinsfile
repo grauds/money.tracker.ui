@@ -39,6 +39,7 @@ pipeline {
            cd ./apps/money-tracker-ui/jenkins
            docker compose stop
            docker stop clematis-money-tracker-ui || true && docker rm clematis-money-tracker-ui || true
+           docker stop clematis-money-tracker-ui-demo || true && docker rm clematis-money-tracker-ui-demo || true
            docker compose build
            docker compose up -d
         '''

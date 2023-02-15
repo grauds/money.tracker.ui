@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
 
   money-tracker-ui-demo:
-    container_name: clematis-money-tracker-ui
+    container_name: clematis-money-tracker-ui-demo
     image: money.tracker.ui:latest
     ports:
       - "18082:80"
