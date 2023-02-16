@@ -101,12 +101,15 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
         })
       })
 
-    this.commodityService.getTotalsForCommodity(this.id, MoneyTypes.RUB).subscribe((response) => {
-      this.totalSum = response
+    this.commodityService.getTotalQtyForCommodity(this.id).subscribe((response) => {
+      this.totalQty = response
 
-      this.commodityService.getTotalQtyForCommodity(this.id).subscribe((response) => {
-        this.totalQty = response
-        this.averagePrice = this.totalSum / this.totalQty
+      this.commodityService.getTotalsForCommodity(this.id, MoneyTypes.RUB).subscribe((response) => {
+        this.totalSum = response
+
+        if (this.totalQty) {
+          this.averagePrice = this.totalSum / this.totalQty
+        }
       })
     })
   }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AccountsService } from "@clematis-shared/shared-components";
 import { MoneyTypes, MonthlyDelta } from '@clematis-shared/model';
 import { HateoasResourceService, PagedResourceCollection } from '@lagoshny/ngx-hateoas-client';
-import { of, Subscription, switchMap, tap } from 'rxjs';
+import { catchError, of, Subscription, switchMap, tap } from "rxjs";
 import { KeycloakService } from 'keycloak-angular';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
@@ -74,21 +74,18 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadData()
-    this.title.setTitle('Home')
+    this.loadData(this.currency)
+    this.title.setTitle('Currencies')
   }
 
   setCurrentPage(pageIndex: number, pageSize: number) {
     this.n = pageIndex
     this.limit = pageSize
-    this.loadData()
-    this.updateRoute()
+    this.updateCurrencyOrPage(this.currency)
   }
 
-  updateCurrency($event: MoneyTypes) {
-    this.currency = $event
-    this.n = undefined
-    this.loadData()
+  updateCurrencyOrPage($event: MoneyTypes) {
+    this.loadData($event)
     this.updateRoute()
   }
 
@@ -105,9 +102,9 @@ export class MainComponent implements OnInit {
     })
   }
 
-  loadData() {
+  loadData(code: MoneyTypes) {
     this.loading = true
-    this.createWaterfallChart(this.currency).subscribe(chart => this.waterfall = chart)
+    this.createWaterfallChart(code).subscribe(chart => this.waterfall = chart)
   }
 
   private createWaterfallChart(code: MoneyTypes) {
@@ -122,7 +119,7 @@ export class MainComponent implements OnInit {
       switchMap(() => {
         return this.resourceService.searchPage<MonthlyDelta>(MonthlyDelta, 'history', {
           params: {
-            code: this.currency
+            code: code
           },
           pageParams: {
             page: 0,
@@ -138,7 +135,7 @@ export class MainComponent implements OnInit {
 
         return this.resourceService.searchPage<MonthlyDelta>(MonthlyDelta, 'history', {
           params: {
-            code: this.currency
+            code: code
           },
           pageParams: {
             page: n,
@@ -147,11 +144,8 @@ export class MainComponent implements OnInit {
         })
       }),
       switchMap((response: PagedResourceCollection<MonthlyDelta>) => {
-
         this.n = response.pageNumber
-
         return of(response.resources)
-
       }),
       switchMap((resources: MonthlyDelta[]) => {
 
@@ -194,6 +188,10 @@ export class MainComponent implements OnInit {
 
         })
         return of(this.getWaterfallChart(waterfallX, waterfallDelta, waterfallTotals, code))
+      }),
+      catchError((err: Error) => {
+        this.loading = false
+        throw err
       })
     )
   }
@@ -201,11 +199,14 @@ export class MainComponent implements OnInit {
   private getWaterfallChart(waterfallX: string[],
                             waterfallDelta: string[],
                             waterfallTotals: string[],
-                            code: string) {
+                            code: MoneyTypes) {
 
     this.startDate = waterfallX[0]
     this.endDate = waterfallX[waterfallX.length - 1]
     this.loading = false
+
+    this.currency = code
+    this.n = undefined
 
     return {
       title: {

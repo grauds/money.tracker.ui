@@ -69,46 +69,18 @@
           "outputHashing": "all"
         },
         "uat": {
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "5mb",
-              "maximumError": "15mb"
-            },
-            {
-              "type": "anyComponentStyle",
-              "maximumWarning": "2kb",
-              "maximumError": "4kb"
-            }
-          ],
           "fileReplacements": [
             {
               "replace": "apps/money-tracker-ui/src/environments/environment.ts",
               "with": "apps/money-tracker-ui/src/environments/environment.uat.ts"
             }
           ],
-          "outputHashing": "all"
-        },
-        "ycloud": {
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "5mb",
-              "maximumError": "15mb"
-            },
-            {
-              "type": "anyComponentStyle",
-              "maximumWarning": "2kb",
-              "maximumError": "4kb"
-            }
-          ],
-          "fileReplacements": [
-            {
-              "replace": "apps/money-tracker-ui/src/environments/environment.ts",
-              "with": "apps/money-tracker-ui/src/environments/environment.ycloud.ts"
-            }
-          ],
-          "outputHashing": "all"
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
         },
         "local": {
           "fileReplacements": [
@@ -156,9 +128,6 @@
         },
         "uat": {
           "browserTarget": "money-tracker-ui:build:uat"
-        },
-        "ycloud": {
-          "browserTarget": "money-tracker-ui:build:ycloud"
         },
         "development": {
           "browserTarget": "money-tracker-ui:build:development"

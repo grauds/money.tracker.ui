@@ -30,7 +30,7 @@ export class CommoditiesService extends SearchService<Commodity> {
                         moneyCode: MoneyTypes) {
 
     if (commodityId) {
-      this.http.get<number>(this.getUrl('/expenseItems/search/sumCommodityExpenses'), {
+      return this.http.get<number>(this.getUrl('/expenseItems/search/sumCommodityExpenses'), {
         params: {
           commodityId: commodityId,
           moneyCode: moneyCode

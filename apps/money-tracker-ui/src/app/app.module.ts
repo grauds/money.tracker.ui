@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, Inject, NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
@@ -35,8 +35,6 @@ import {
   NgxHateoasClientConfigurationService,
   NgxHateoasClientModule,
 } from '@lagoshny/ngx-hateoas-client';
-
-import { SharedModule } from '../shared/shared.module';
 
 import { AppComponent } from './app.component';
 import { AuthGuard } from './auth/auth.guard';
@@ -182,7 +180,7 @@ const mapConfig: YaConfig = {
     AccountsDashboardComponent,
     LastCommoditiesListComponent,
     ExchangeComponent,
-    ExchangeEventElementComponent,
+    ExchangeEventElementComponent
   ],
   imports: [
       HttpClientModule,
@@ -195,7 +193,6 @@ const mapConfig: YaConfig = {
       ),
       NgxHateoasClientModule.forRoot(),
       ContentLoaderModule,
-      SharedModule,
       FormsModule,
       AngularYandexMapsModule.forRoot(mapConfig),
       PlotlyModule,

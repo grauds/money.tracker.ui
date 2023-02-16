@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from "@angular/core";
 import { CommonModule } from '@angular/common';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 import { EntityElementComponent } from './components/entity-element/entity-element.component';
@@ -20,10 +20,30 @@ import { MatTableModule } from "@angular/material/table";
 import { LastCommodityService } from "./service/last-commodity.service";
 import { MoneyExchangeService } from "./service/money-exchange.service";
 import { ContentLoaderModule } from "@ngneat/content-loader";
+import { ErrorDialogComponent } from "./components/error-dialog/error-dialog.component";
+import { ErrorDialogService } from "./error/error-dialog.service";
+import { GlobalErrorHandler } from "./error/global-error-handler";
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { ErrorHandlerInterceptor } from "./error/error-handler.interceptor";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatButtonModule } from "@angular/material/button";
 
 @NgModule({
-  imports: [CommonModule, RouterModule, MatIconModule, MatPaginatorModule, MatTableModule, ContentLoaderModule],
-  exports: [EntityElementComponent, BreadcrumbsComponent, EntityListComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatIconModule,
+    MatPaginatorModule,
+    MatTableModule,
+    ContentLoaderModule,
+    MatDialogModule,
+    MatButtonModule
+  ],
+  exports: [
+    EntityElementComponent,
+    BreadcrumbsComponent,
+    EntityListComponent
+  ],
   declarations: [
     EntityListComponent,
     BreadcrumbsComponent,
@@ -31,6 +51,7 @@ import { ContentLoaderModule } from "@ngneat/content-loader";
     PaginationBarComponent,
     PageSizeComponent,
     SearchComponent,
+    ErrorDialogComponent
   ],
   providers: [
     AccountsService,
@@ -41,6 +62,16 @@ import { ContentLoaderModule } from "@ngneat/content-loader";
     ExpenseItemsService,
     LastCommodityService,
     MoneyExchangeService,
+    ErrorDialogService,
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorHandlerInterceptor,
+      multi: true,
+    }
   ],
 })
 export class SharedComponentsModule {}

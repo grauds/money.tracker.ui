@@ -13,12 +13,11 @@ export class GlobalErrorHandler implements ErrorHandler {
 
     this.zone.run(() =>
       this.errorDialogService.open(
-      error?.message || 'Undefined client error',
-        error?.status || ''
-      )
+        error?.message || "Undefined client error",
+        error?.status || "")
     );
 
-    console.error('🍅', error);
+    console.error('Throw at you 🍅', error);
   }
 
 }
