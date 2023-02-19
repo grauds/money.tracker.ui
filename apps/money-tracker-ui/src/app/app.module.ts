@@ -78,6 +78,7 @@ import { ExchangeEventElementComponent } from './accounts/exchange-event-element
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { environment } from '../environments/environment';
 import { InOutListComponent } from './expenses/in-out-list/in-out-list.component';
+import { BalanceComponent } from './expenses/balance/balance.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -96,6 +97,11 @@ const routes: Routes = [
     path: 'main',
     canActivate: [AuthGuard],
     component: MainComponent,
+  },
+  {
+    path: 'balance',
+    canActivate: [AuthGuard],
+    component: BalanceComponent,
   },
   {
     path: '',
@@ -191,6 +197,7 @@ const mapConfig: YaConfig = {
     ExchangeComponent,
     ExchangeEventElementComponent,
     InOutListComponent,
+    BalanceComponent,
   ],
   imports: [
     HttpClientModule,
