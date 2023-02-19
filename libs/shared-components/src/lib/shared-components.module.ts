@@ -27,6 +27,7 @@ import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { ErrorHandlerInterceptor } from "./error/error-handler.interceptor";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatButtonModule } from "@angular/material/button";
+import { InOutService } from "./service/in-out.service";
 
 @NgModule({
   imports: [
@@ -60,6 +61,7 @@ import { MatButtonModule } from "@angular/material/button";
     CommodityGroupsService,
     OrganizationGroupsService,
     ExpenseItemsService,
+    InOutService,
     LastCommodityService,
     MoneyExchangeService,
     ErrorDialogService,

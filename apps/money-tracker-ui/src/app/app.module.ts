@@ -61,7 +61,11 @@ import { OrganizationGroupListComponent } from './organizations/organization-gro
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { AboutComponent } from './about/about.component';
-import { ENVIRONMENT, EnvironmentService, SharedComponentsModule } from '@clematis-shared/shared-components';
+import {
+  ENVIRONMENT,
+  EnvironmentService,
+  SharedComponentsModule,
+} from '@clematis-shared/shared-components';
 import { MatTableModule } from '@angular/material/table';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { AccountsDashboardComponent } from './accounts/accounts-dashboard/accounts-dashboard.component';
@@ -71,8 +75,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ExchangeComponent } from './accounts/exchange/exchange.component';
 import { ExchangeEventElementComponent } from './accounts/exchange-event-element/exchange-event-element.component';
-import { MatButtonToggleModule } from "@angular/material/button-toggle";
-import { environment } from "../environments/environment";
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { environment } from '../environments/environment';
+import { InOutListComponent } from './expenses/in-out-list/in-out-list.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -130,6 +135,10 @@ const routes: Routes = [
         component: ExpensesListComponent,
       },
       {
+        path: 'inOut',
+        component: InOutListComponent,
+      },
+      {
         path: 'exchange',
         component: ExchangeComponent,
       },
@@ -180,63 +189,69 @@ const mapConfig: YaConfig = {
     AccountsDashboardComponent,
     LastCommoditiesListComponent,
     ExchangeComponent,
-    ExchangeEventElementComponent
+    ExchangeEventElementComponent,
+    InOutListComponent,
   ],
   imports: [
-      HttpClientModule,
-      BrowserModule,
-      FontAwesomeModule,
-      KeycloakAngularModule,
-      RouterModule.forRoot(
-          routes,
-          {enableTracing: true} // <-- debugging purposes only
-      ),
-      NgxHateoasClientModule.forRoot(),
-      ContentLoaderModule,
-      FormsModule,
-      AngularYandexMapsModule.forRoot(mapConfig),
-      PlotlyModule,
-      NgxEchartsModule.forRoot({
-          echarts: () => import('echarts'),
-      }),
-      BrowserAnimationsModule,
-      MatToolbarModule,
-      MatSidenavModule,
-      MatButtonModule,
-      MatListModule,
-      MatIconModule,
-      LayoutModule,
-      MatPaginatorModule,
-      SharedComponentsModule,
-      MatTableModule,
-      MatGridListModule,
-      MatInputModule,
-      MatSelectModule,
-      MatTooltipModule,
-      MatButtonToggleModule,
+    HttpClientModule,
+    BrowserModule,
+    FontAwesomeModule,
+    KeycloakAngularModule,
+    RouterModule.forRoot(
+      routes,
+      { enableTracing: true } // <-- debugging purposes only
+    ),
+    NgxHateoasClientModule.forRoot(),
+    ContentLoaderModule,
+    FormsModule,
+    AngularYandexMapsModule.forRoot(mapConfig),
+    PlotlyModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    }),
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatListModule,
+    MatIconModule,
+    LayoutModule,
+    MatPaginatorModule,
+    SharedComponentsModule,
+    MatTableModule,
+    MatGridListModule,
+    MatInputModule,
+    MatSelectModule,
+    MatTooltipModule,
+    MatButtonToggleModule,
   ],
-  providers: [{
+  providers: [
+    {
       provide: KeycloakService,
       useClass: KeycloakService,
-    }, {
+    },
+    {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
       deps: [KeycloakService, EnvironmentService],
-    }, {
+    },
+    {
       provide: ENVIRONMENT,
-      useValue: environment
-    }
+      useValue: environment,
+    },
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(hateoasConfig: NgxHateoasClientConfigurationService,
-              environmentService: EnvironmentService) {
+  constructor(
+    hateoasConfig: NgxHateoasClientConfigurationService,
+    environmentService: EnvironmentService
+  ) {
     hateoasConfig.configure({
       http: {
         defaultRoute: {
-          rootUrl: environmentService.getValue('apiUrl')
+          rootUrl: environmentService.getValue('apiUrl'),
         },
       },
       useTypes: {

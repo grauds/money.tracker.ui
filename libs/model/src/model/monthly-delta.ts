@@ -4,11 +4,11 @@ import {HateoasResource, Resource} from "@lagoshny/ngx-hateoas-client";
 @HateoasResource('monthlyDeltas')
 export class MonthlyDelta extends Resource {
 
-  code: string = '';
+  code = '';
 
-  year: number = 0;
+  year = 0;
 
-  month: number = 0;
+  month = 0;
 
-  delta: number = 0;
+  delta = 0;
 }

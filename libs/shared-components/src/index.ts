@@ -19,5 +19,6 @@ export { CommoditiesService } from './lib/service/commodities.service'
 export { CommodityGroupsService } from './lib/service/commodity-groups.service'
 export { OrganizationGroupsService } from './lib/service/organization-groups.service'
 export { ExpenseItemsService } from './lib/service/expense-items.service'
+export { InOutService } from "./lib/service/in-out.service";
 export { LastCommodityService } from "./lib/service/last-commodity.service";
 export { MoneyExchangeService } from "./lib/service/money-exchange.service";

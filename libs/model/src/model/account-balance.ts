@@ -4,8 +4,8 @@ import { Entity } from './entity';
 @HateoasResource('accountsTotals')
 export class AccountBalance extends Entity {
 
-  balance: number = 0;
+  balance = 0;
 
-  code: string = '';
+  code = '';
 
 }

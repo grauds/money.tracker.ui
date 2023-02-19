@@ -6,19 +6,19 @@ import { Entity } from "./entity";
 @HateoasResource('expenseItems')
 export class ExpenseItem extends Entity {
 
-  qty: number = 0;
+  qty = 0;
 
-  price: number = 0;
+  price = 0;
 
-  remarks: string = '';
+  remarks = '';
 
   commodity: Commodity | undefined;
 
-  total: number = 0;
+  total = 0;
 
   tradeplace: Organization | undefined;
 
-  transferDate: string = '';
+  transferDate = '';
 
   commodityLink: string | undefined;
 
