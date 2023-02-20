@@ -104,10 +104,10 @@ export class BalanceComponent implements OnInit {
 
   loadData(code: MoneyTypes) {
     this.loading = true
-    this.createWaterfallChart(code).subscribe(chart => this.waterfall = chart)
+    this.createChart(code).subscribe(chart => this.waterfall = chart)
   }
 
-  private createWaterfallChart(code: MoneyTypes) {
+  private createChart(code: MoneyTypes) {
 
     let chart = {};
 
@@ -187,7 +187,7 @@ export class BalanceComponent implements OnInit {
           waterfallTotals.push(currentBalance.toString())
 
         })
-        return of(this.getWaterfallChart(waterfallX, waterfallDelta, waterfallTotals, code))
+        return of(this.buildChart(waterfallX, waterfallDelta, waterfallTotals, code))
       }),
       catchError((err: Error) => {
         this.loading = false
@@ -196,17 +196,16 @@ export class BalanceComponent implements OnInit {
     )
   }
 
-  private getWaterfallChart(waterfallX: string[],
-                            waterfallDelta: string[],
-                            waterfallTotals: string[],
-                            code: MoneyTypes) {
+  private buildChart(waterfallX: string[],
+                      waterfallDelta: string[],
+                      waterfallTotals: string[],
+                      code: MoneyTypes) {
 
     this.startDate = waterfallX[0]
     this.endDate = waterfallX[waterfallX.length - 1]
     this.loading = false
 
     this.currency = code
-    this.n = undefined
 
     return {
       title: {

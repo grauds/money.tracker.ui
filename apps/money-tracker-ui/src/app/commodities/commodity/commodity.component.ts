@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {HateoasResourceService, RequestParam} from '@lagoshny/ngx-hateoas-client';
+import { HateoasResourceService, RequestParam } from '@lagoshny/ngx-hateoas-client';
 import {
   Commodity,
   MoneyType,
@@ -48,24 +48,12 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
 
   pageLoading: boolean = false;
 
-  graph: any = {
-    data: [{
-      x: [],
-      y: [],
-      name: 'Total Sum',
-      type: 'bar'
-    }, {
-      x: [],
-      y: [],
-      name: 'Price',
-      type: 'line'
-    }],
-    layout: {autosize: true, title: 'Money Spent'},
-  };
 
   averagePrice: number | undefined;
 
   totalQty: number | undefined;
+
+  option: any = {  };
 
   constructor(resourceService: HateoasResourceService,
               private commodityService: CommoditiesService,
@@ -130,19 +118,51 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
 
   setEntities($event: ExpenseItem[]) {
     this.expenses = $event
+    this.option = this.getData()
+  }
 
-    this.graph.data[0].x = []
-    this.graph.data[0].y = []
+  getData() {
+    return {
 
-    this.graph.data[1].x = []
-    this.graph.data[1].y = []
-
-    this.expenses.forEach(expense => {
-      this.graph.data[0].x.push(expense.transferDate)
-      this.graph.data[0].y.push(expense.total)
-
-      this.graph.data[1].x.push(expense.transferDate)
-      this.graph.data[1].y.push(expense.price)
-    })
+      tooltip: {
+        trigger: 'axis',
+          axisPointer: {
+          type: 'shadow'
+        },
+        formatter: function (params: any) {
+          if (params) {
+            return params.map((param: any) => {
+              return param.seriesName + ' : ' + Math.round(param.value * 100) / 100
+            }).join('<br/>')
+          }
+          return 'No params'
+        }
+      },
+      xAxis: {
+        type: 'category',
+        data: this.expenses.map(expense => {
+          return expense.transferDate
+        })
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          name: 'Total',
+          data: this.expenses.map(expense => {
+            return expense.qty * expense.price
+          }),
+          type: 'line'
+        },
+        {
+          name: 'Price',
+          data: this.expenses.map(expense => {
+            return expense.price
+          }),
+          type: 'line'
+        }
+      ]
+    };
   }
 }
