@@ -9,17 +9,18 @@
     </mat-select>
   </mat-form-field>
 
-  <h1 class="totalsHeader" [hidden]="this.loading">
+  <div class="rubber totalsHeader" [hidden]="this.loading">
     {{ this.total | currency: this.currency }}
-  </h1>
+  </div>
 
-  <h1 class="totalsHeader" [hidden]="!(this.loading)">
+  <div class="rubber totalsHeader" [hidden]="!(this.loading)">
     Loading...
-  </h1>
+  </div>
 
   <div echarts
        [options]="options"
        (chartClick)="onChartEvent($event, 'chartClick')"
+       [loading]="loading"
        class="accounts-chart">
   </div>
 

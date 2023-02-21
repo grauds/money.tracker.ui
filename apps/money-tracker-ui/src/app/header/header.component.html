@@ -1,9 +1,9 @@
 <!-- Toolbar -->
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport
-               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-               [mode]="(isHandset$ | async) ? 'over' : 'side'"
-               [opened]="(isHandset$ | async) === false">
+               [attr.role]="(isFullLayout$ | async) ? 'navigation': 'dialog' "
+               [mode]="(isFullLayout$ | async) ? 'side' : 'over' "
+               [opened]="(isFullLayout$ | async) === true">
     <div style="padding-left: 30px; padding-right: 30px; padding-top: 15px;"><img src="assets/clematis.png" alt=""></div>
     <mat-toolbar>
       {{title}}
@@ -65,12 +65,12 @@
         aria-label="Toggle sidenav"
         mat-icon-button
         (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
+        *ngIf="!(isFullLayout$ | async)">
         <mat-icon fontIcon="menu"></mat-icon>
       </button>
-      <span *ngIf="isHandset$ | async">{{title}}</span>
+      <span *ngIf="!(isFullLayout$ | async)">{{title}}</span>
       <span class="header-spacer"></span>
-      <span class="navbar-username" *ngIf="isLoggedIn && !(isHandset$ | async)">
+      <span class="navbar-username" *ngIf="isLoggedIn && (isFullLayout$ | async)">
         {{getUserInfo()}}
       </span>
       <span class="navbar-brand" style="border-left: 2px solid white; font-size: 20px;">

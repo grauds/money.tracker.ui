@@ -11,35 +11,37 @@
     <span><b>Loading...</b></span>
   </h4>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Available source currencies</mat-label>
-    <mat-select [disabled]="this.loading || this.pageLoading" [value]="sourceCurrency" (valueChange)="updatesSourceCurrency($event)">
-      <mat-option *ngFor="let currency of getSourceCurrencies() | keyvalue" [value]="currency.value">
-        {{currency.value}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Available source currencies</mat-label>
+      <mat-select [disabled]="this.loading || this.pageLoading" [value]="sourceCurrency" (valueChange)="updatesSourceCurrency($event)">
+        <mat-option *ngFor="let currency of getSourceCurrencies() | keyvalue" [value]="currency.value">
+          {{currency.value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <mat-button-toggle (change)="swapCurrencies()">
-    <mat-icon>swap_horiz</mat-icon>
-  </mat-button-toggle>
+    <mat-button-toggle (change)="swapCurrencies()">
+      <mat-icon>swap_horiz</mat-icon>
+    </mat-button-toggle>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Available destination currencies</mat-label>
-    <mat-select [disabled]="this.loading || this.pageLoading" [value]="destCurrency" (valueChange)="updatesDestCurrency($event)">
-      <mat-option *ngFor="let currency of getDestCurrencies() | keyvalue" [value]="currency.value">
-        {{currency.value}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Available destination currencies</mat-label>
+      <mat-select [disabled]="this.loading || this.pageLoading" [value]="destCurrency" (valueChange)="updatesDestCurrency($event)">
+        <mat-option *ngFor="let currency of getDestCurrencies() | keyvalue" [value]="currency.value">
+          {{currency.value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <h1 class="timeHeader" *ngIf="this.report" [hidden]="this.loading || this.pageLoading">
-    {{this.report.delta | currency: this.sourceCurrency}}
-  </h1>
+    <div class="rubber timeHeader" *ngIf="this.report" [hidden]="this.loading || this.pageLoading">
+      {{this.report.delta | currency: this.sourceCurrency}}
+    </div>
 
-  <h1 class="timeHeader" [hidden]="!(this.loading || this.pageLoading)">
-    Loading...
-  </h1>
+    <div class="rubber timeHeader" [hidden]="!(this.loading || this.pageLoading)">
+      Loading...
+    </div>
+  </div>
 
   <ng-template #exchangeTable let-entities="entities">
 

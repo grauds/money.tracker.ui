@@ -51,8 +51,6 @@ import { ExpensesListComponent } from './expenses/expences-list/expenses-list.co
 import { CommodityComponent } from './commodities/commodity/commodity.component';
 import { CommodityGroupComponent } from './commodities/commodity-group/commodity-group.component';
 
-import * as PlotlyJS from 'plotly.js-dist-min';
-import { PlotlyModule } from 'angular-plotly.js';
 import { NgxEchartsModule } from 'ngx-echarts';
 
 import { OrganizationComponent } from './organizations/organization/organization.component';
@@ -79,8 +77,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { environment } from '../environments/environment';
 import { InOutListComponent } from './expenses/in-out-list/in-out-list.component';
 import { BalanceComponent } from './expenses/balance/balance.component';
-
-PlotlyModule.plotlyjs = PlotlyJS;
 
 const routes: Routes = [
   {
@@ -212,7 +208,6 @@ const mapConfig: YaConfig = {
     ContentLoaderModule,
     FormsModule,
     AngularYandexMapsModule.forRoot(mapConfig),
-    PlotlyModule,
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
     }),

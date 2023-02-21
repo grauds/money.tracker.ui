@@ -15,8 +15,9 @@ import {
   EntityComponent,
   ExpenseItemsService
 } from '@clematis-shared/shared-components';
-import { Utils } from '@clematis-shared/model';
 import { Title } from "@angular/platform-browser";
+import { Utils } from '@clematis-shared/model';
+import { formatDate } from "@angular/common";
 
 @Component({
   selector: 'app-commodity',
@@ -48,7 +49,6 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
 
   pageLoading: boolean = false;
 
-
   averagePrice: number | undefined;
 
   totalQty: number | undefined;
@@ -56,9 +56,9 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
   option: any = {  };
 
   constructor(resourceService: HateoasResourceService,
+              private expenseItemsService: ExpenseItemsService,
               private commodityService: CommoditiesService,
               private commodityGroupService: CommodityGroupsService,
-              private expenseItemsService: ExpenseItemsService,
               route: ActivatedRoute,
               router: Router,
               title: Title) {
@@ -141,7 +141,7 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
       xAxis: {
         type: 'category',
         data: this.expenses.map(expense => {
-          return expense.transferDate
+          return formatDate(expense.transferDate, 'shortDate', navigator.language)
         })
       },
       yAxis: {

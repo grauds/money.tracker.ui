@@ -1,25 +1,44 @@
 <div *ngIf="isLoggedIn">
 
-  <mat-form-field appearance="fill">
-    <mat-label>Available currencies</mat-label>
-    <mat-select [disabled]="this.loading" [value]="currency" (valueChange)="updateCurrency($event)">
-      <mat-option *ngFor="let currency of currencies | keyvalue" [value]="currency.value">
-        {{currency.value}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <div>
 
-  <h1 class="totalsHeader" [hidden]="this.loading">
-    {{ this.total | currency: this.currency }}
-  </h1>
+    <mat-form-field appearance="fill">
+      <mat-label>Available currencies</mat-label>
+      <mat-select [disabled]="this.loading" [value]="currency" (valueChange)="updateCurrency($event)">
+        <mat-option *ngFor="let currency of currencies | keyvalue" [value]="currency.value">
+          {{currency.value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <h1 class="totalsHeader" [hidden]="!(this.loading)">
-    Loading...
-  </h1>
+    <mat-form-field appearance="fill">
+      <mat-label>Category</mat-label>
+      <mat-select [disabled]="this.loading" [value]="sign" (valueChange)="updateCategory($event)">
+        <mat-option [value]="true">
+          Profit
+        </mat-option>
+        <mat-option [value]="false">
+          Loss
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <span [class]="(isFullLayout$ | async) ? 'rubber totalsHeader' : 'rubber totalsHeaderHandset'" [hidden]="this.loading">
+      {{ this.total | currency: this.currency }}
+    </span>
+
+    <span [class]="(isFullLayout$ | async) ? 'rubber totalsHeader' : 'rubber totalsHeaderHandset'" [hidden]="!(this.loading)">
+      Loading...
+    </span>
+
+  </div>
+
 
   <div echarts
        [options]="options"
+       (chartInit)="onChartInit($event)"
        (chartClick)="onChartEvent($event, 'chartClick')"
+       [loading]="loading"
        class="reselling-chart">
   </div>
 

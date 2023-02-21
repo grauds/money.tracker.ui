@@ -24,7 +24,7 @@
 
 <div class='row' *ngIf="option.xAxis?.data?.length > 1">
   <div class='col-12'>
-    <div echarts [options]="option"></div>
+    <div echarts [options]="option" [loading]="loading"></div>
   </div>
 </div>
 

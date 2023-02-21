@@ -7,6 +7,9 @@
         {{entity ? entity.name : 'Not loaded'}}
       </h2>
     </div>
+    <div>
+      Total: {{totalSum | currency: 'RUB'}} <!-- hard coded currency, as well as in the query -->
+    </div>
   </div>
 
 
@@ -17,11 +20,9 @@
   </div>
 </div>
 
-<div class='row' *ngIf="graph.data[0].x.length > 1">
+<div class='row' *ngIf="option.xAxis?.data?.length > 1">
   <div class='col-12'>
-    <plotly-plot [data]="graph.data" [layout]="graph.layout"
-                 [style]="{minWidth: '800px', width: '100%', height: '500px'}">
-    </plotly-plot>
+    <div echarts [options]="option" [loading]="loading"></div>
   </div>
 </div>
 

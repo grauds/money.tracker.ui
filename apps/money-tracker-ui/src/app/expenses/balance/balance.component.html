@@ -8,12 +8,12 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <h1 class="timeHeader" [hidden]="loading">
+    <div class="rubber timeHeader" [hidden]="loading">
       {{this.startDate}} -> {{this.endDate}}
-    </h1>
-    <h1 class="timeHeader" [hidden]="!loading">
+    </div>
+    <div class="rubber timeHeader" [hidden]="!loading">
       Loading...
-    </h1>
+    </div>
   </div>
   <mat-paginator [length]="total"
                  [pageSize]="limit"
@@ -25,6 +25,6 @@
                  showFirstLastButtons>
   </mat-paginator>
 
-  <div echarts [options]="waterfall" class="waterfall"></div>
+  <div echarts [options]="waterfall" class="waterfall" [loading]="loading"></div>
 
 </div>

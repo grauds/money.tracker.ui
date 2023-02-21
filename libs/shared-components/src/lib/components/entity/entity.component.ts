@@ -1,8 +1,8 @@
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Entity } from '@clematis-shared/model';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 import { Title } from '@angular/platform-browser';
-import {Subscription} from "rxjs";
+import { Subscription } from "rxjs";
 
 export abstract class EntityComponent<T extends Entity> {
 

@@ -10,6 +10,7 @@ import {
 } from '@clematis-shared/shared-components';
 import { Title } from "@angular/platform-browser";
 import { Utils } from '@clematis-shared/model';
+import { formatDate } from "@angular/common";
 
 @Component({
   selector: 'app-organization',
@@ -37,20 +38,7 @@ export class OrganizationComponent extends EntityComponent<Organization> impleme
 
   pageLoading: boolean = false;
 
-  graph: any = {
-    data: [{
-      x: [],
-      y: [],
-      name: 'Total Sum',
-      type: 'bar'
-    }, {
-      x: [],
-      y: [],
-      name: 'Price',
-      type: 'bar'
-    }],
-    layout: {autosize: true, title: 'Money Spent'},
-  };
+  option: any = {  };
 
   constructor(resourceService: HateoasResourceService,
               private expenseItemsService: ExpenseItemsService,
@@ -102,19 +90,51 @@ export class OrganizationComponent extends EntityComponent<Organization> impleme
 
   setEntities($event: ExpenseItem[]) {
     this.expenses = $event
+    this.option = this.getData()
+  }
 
-    this.graph.data[0].x = []
-    this.graph.data[0].y = []
+  getData() {
+    return {
 
-    this.graph.data[1].x = []
-    this.graph.data[1].y = []
-
-    this.expenses.forEach(expense => {
-      this.graph.data[0].x.push(expense.transferDate)
-      this.graph.data[0].y.push(expense.total)
-
-      this.graph.data[1].x.push(expense.transferDate)
-      this.graph.data[1].y.push(expense.price)
-    })
+      tooltip: {
+        trigger: 'axis',
+          axisPointer: {
+          type: 'shadow'
+        },
+        formatter: function (params: any) {
+          if (params) {
+            return params.map((param: any) => {
+              return param.seriesName + ' : ' + Math.round(param.value * 100) / 100
+            }).join('<br/>')
+          }
+          return 'No params'
+        }
+      },
+      xAxis: {
+        type: 'category',
+        data: this.expenses.map(expense => {
+          return formatDate(expense.transferDate, 'shortDate', navigator.language)
+        })
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          name: 'Total',
+          data: this.expenses.map(expense => {
+            return expense.qty * expense.price
+          }),
+          type: 'line'
+        },
+        {
+          name: 'Price',
+          data: this.expenses.map(expense => {
+            return expense.price
+          }),
+          type: 'line'
+        }
+      ]
+    };
   }
 }

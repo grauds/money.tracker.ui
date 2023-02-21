@@ -1,10 +1,10 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { NavigationEnd, Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints, MediaMatcher } from '@angular/cdk/layout';
 import { Observable } from "rxjs";
 import { map, shareReplay } from "rxjs/operators";
-import {KeycloakProfile} from "keycloak-js";
+import { KeycloakProfile } from "keycloak-js";
 
 @Component({
   selector: 'app-header',
@@ -13,15 +13,18 @@ import {KeycloakProfile} from "keycloak-js";
 })
 export class HeaderComponent {
 
-  mobileQuery: MediaQueryList;
-
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  isFullLayout$: Observable<boolean> = this.breakpointObserver.observe(
+    [
+      Breakpoints.Medium,
+      Breakpoints.Large,
+      Breakpoints.XLarge,
+      Breakpoints.TabletLandscape,
+      Breakpoints.WebLandscape
+    ])
     .pipe(
       map(result => result.matches),
       shareReplay()
     );
-
-  private readonly _mobileQueryListener: () => void;
 
   // the header of the application
   @Input() title: string = ''
@@ -35,13 +38,8 @@ export class HeaderComponent {
 
   constructor(private router: Router,
               private readonly keycloak: KeycloakService,
-              changeDetectorRef: ChangeDetectorRef,
               media: MediaMatcher,
               private breakpointObserver: BreakpointObserver) {
-
-    this.mobileQuery = media.matchMedia('(max-width: 800px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addEventListener("change", this._mobileQueryListener);
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
