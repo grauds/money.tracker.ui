@@ -1,4 +1,6 @@
-import { Resource } from '@lagoshny/ngx-hateoas-client';
+import { Resource } from "@lagoshny/ngx-hateoas-client";
+import { Params } from "@angular/router";
+import { HttpParams } from "@angular/common/http";
 
 export class Utils {
 
@@ -10,6 +12,33 @@ export class Utils {
     } else {
       return token;
     }
+  }
+
+  static moveQueryParametersFromRedirectUrl(routeParams: Params): HttpParams {
+    let params: HttpParams = new HttpParams()
+    params = params.appendAll(routeParams)
+      .set('redirect', routeParams['redirect']?.substring(0, routeParams['redirect'].indexOf('?')))
+
+    const otherParams = routeParams['redirect']?.substring(routeParams['redirect'].indexOf('?') + 1)
+    if (otherParams.indexOf('&') !== -1) {
+      otherParams.split('&').forEach((pair: string) => {
+        const param: string[] = pair.split('=')
+        params = params.set(param[0], param[1])
+      })
+    } else {
+      const param: string[] = otherParams.split('=')
+      params = params.set(param[0], param[1])
+    }
+    return params
+  }
+
+  static parseRedirectParameters(routeParams: HttpParams): Params {
+    const params: HttpParams = routeParams.delete('redirect')
+    const queryParams: Params = {};
+    params.keys().forEach((key) => {
+      queryParams[key] = params.get(key);
+    });
+    return queryParams
   }
 
   static removeProjection(url: string): string {

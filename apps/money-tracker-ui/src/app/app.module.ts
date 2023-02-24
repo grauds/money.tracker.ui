@@ -77,6 +77,9 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { environment } from '../environments/environment';
 import { InOutListComponent } from './expenses/in-out-list/in-out-list.component';
 import { BalanceComponent } from './expenses/balance/balance.component';
+import {
+  PageNotFoundComponent
+} from "../../../../libs/shared-components/src/lib/components/page-not-found/page-not-found.component";
 
 const routes: Routes = [
   {
@@ -164,7 +167,7 @@ const routes: Routes = [
       },
     ],
   },
-  { path: '**', redirectTo: '' },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 const mapConfig: YaConfig = {

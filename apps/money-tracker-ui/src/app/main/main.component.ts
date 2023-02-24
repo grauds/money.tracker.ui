@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountsService } from "@clematis-shared/shared-components";
-import { MoneyTypes, MonthlyDelta } from '@clematis-shared/model';
-import { HateoasResourceService, PagedResourceCollection } from '@lagoshny/ngx-hateoas-client';
-import { catchError, of, Subscription, switchMap, tap } from "rxjs";
+import { MoneyTypes } from '@clematis-shared/model';
+import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
+import { Subscription } from "rxjs";
 import { KeycloakService } from 'keycloak-angular';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
@@ -15,8 +14,6 @@ import { Title } from "@angular/platform-browser";
 export class MainComponent implements OnInit {
 
   isLoggedIn?: boolean;
-
-  waterfall: any;
 
   // total number of elements
   total: number = 0;
@@ -42,13 +39,7 @@ export class MainComponent implements OnInit {
     MoneyTypes.USD
   ];
 
-  startDate: string = '';
-
-  endDate: string = '';
-
-
-  constructor(private accountsService: AccountsService,
-              private resourceService: HateoasResourceService,
+  constructor(private resourceService: HateoasResourceService,
               protected readonly keycloak: KeycloakService,
               private router: Router,
               private route: ActivatedRoute,
@@ -74,19 +65,12 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadData(this.currency)
     this.title.setTitle('Currencies')
   }
 
   setCurrentPage(pageIndex: number, pageSize: number) {
     this.n = pageIndex
     this.limit = pageSize
-    this.updateCurrencyOrPage(this.currency)
-  }
-
-  updateCurrencyOrPage($event: MoneyTypes) {
-    this.loadData($event)
-    this.updateRoute()
   }
 
   updateRoute() {
@@ -100,164 +84,5 @@ export class MainComponent implements OnInit {
       queryParamsHandling: 'merge',
       skipLocationChange: false
     })
-  }
-
-  loadData(code: MoneyTypes) {
-    this.loading = true
-    this.createWaterfallChart(code).subscribe(chart => this.waterfall = chart)
-  }
-
-  private createWaterfallChart(code: MoneyTypes) {
-
-    let chart = {};
-
-    // form unique X ticks
-    let waterfallX: string[] = []
-    let monthlyDeltas: MonthlyDelta[] = []
-
-    return of(chart).pipe(
-      switchMap(() => {
-        return this.resourceService.searchPage<MonthlyDelta>(MonthlyDelta, 'history', {
-          params: {
-            code: code
-          },
-          pageParams: {
-            page: 0,
-            size: this.limit,
-          }
-        })
-      }),
-      switchMap((response: PagedResourceCollection<MonthlyDelta>) => {
-
-        this.limit = response.pageSize
-        this.total = response.totalElements
-        let n = (this.n !== undefined) ? this.n : (response.totalPages - 1)
-
-        return this.resourceService.searchPage<MonthlyDelta>(MonthlyDelta, 'history', {
-          params: {
-            code: code
-          },
-          pageParams: {
-            page: n,
-            size: this.limit,
-          }
-        })
-      }),
-      switchMap((response: PagedResourceCollection<MonthlyDelta>) => {
-        this.n = response.pageNumber
-        return of(response.resources)
-      }),
-      switchMap((resources: MonthlyDelta[]) => {
-
-        // filter out any other currencies
-        monthlyDeltas = resources.filter((value: MonthlyDelta) => value.code === code)
-
-        // form unique ticks
-        waterfallX = resources.map((monthlyDelta: MonthlyDelta) => {
-          return monthlyDelta.year + '/' + monthlyDelta.month
-        }).filter((value, index, self) => self.indexOf(value) === index)
-
-        // the starting value for the graph fragment
-        if (resources.length > 0) {
-          console.log('Frame balance: ' + monthlyDeltas[0].year + ' ' + monthlyDeltas[0].month)
-          return this.accountsService.getBalance(monthlyDeltas[0].year, monthlyDeltas[0].month, code)
-        }
-
-        return of(0)
-      }),
-      tap((balance: number) => console.log('Frame balance: ' + balance)),
-      switchMap((balance: number) => {
-
-        let currentBalance = balance ? balance : 0
-        let waterfallDelta: string[] = []
-        let waterfallTotals: string[] = []
-
-        // https://github.com/apache/echarts/issues/11885
-        waterfallX.forEach((tick: String) => {
-
-          let values = monthlyDeltas.filter((delta) => (delta.year + '/' + delta.month) === tick)
-
-          if (values.length > 0) {
-            let value = values[0]
-            waterfallDelta.push(value.delta.toString())
-            currentBalance += value.delta
-          } else {
-            waterfallDelta.push('0')
-          }
-          waterfallTotals.push(currentBalance.toString())
-
-        })
-        return of(this.getWaterfallChart(waterfallX, waterfallDelta, waterfallTotals, code))
-      }),
-      catchError((err: Error) => {
-        this.loading = false
-        throw err
-      })
-    )
-  }
-
-  private getWaterfallChart(waterfallX: string[],
-                            waterfallDelta: string[],
-                            waterfallTotals: string[],
-                            code: MoneyTypes) {
-
-    this.startDate = waterfallX[0]
-    this.endDate = waterfallX[waterfallX.length - 1]
-    this.loading = false
-
-    this.currency = code
-    this.n = undefined
-
-    return {
-      title: {
-        text: 'Monthly Balance ' + code
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow'
-        },
-        formatter: function (params: any) {
-          if (params) {
-            return params.map((param: any) => {
-              return param.seriesName + ' : ' + Math.round(param.value * 100) / 100
-            }).join('<br/>')
-          }
-          return 'No params'
-        }
-      },
-      legend: {
-        data: ['Total', 'Monthly Balance']
-      },
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-      },
-      xAxis: {
-        type: 'category',
-        data: waterfallX
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: [
-        {
-          name: 'Total',
-          type: 'line',
-          data: waterfallTotals
-        },
-        {
-          name: 'Monthly Balance',
-          type: 'bar',
-          label: {
-            show: true,
-            position: 'top'
-          },
-          data: waterfallDelta
-        }
-      ]
-    }
   }
 }

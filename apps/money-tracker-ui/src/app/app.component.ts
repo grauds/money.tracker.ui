@@ -1,7 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {KeycloakEventType, KeycloakService} from 'keycloak-angular';
-import {KeycloakProfile} from 'keycloak-js';
-import {ActivatedRoute, Router} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { KeycloakEventType, KeycloakService } from 'keycloak-angular';
+import { KeycloakProfile } from 'keycloak-js';
+import { ActivatedRoute, Router } from "@angular/router";
+import { Utils } from "@clematis-shared/model";
+import { HttpParams } from "@angular/common/http";
 
 @Component({
   selector: 'app-root',
@@ -17,7 +19,8 @@ export class AppComponent implements OnInit {
   userProfile: KeycloakProfile | null = null;
 
   constructor(protected readonly keycloak: KeycloakService,
-               private router: Router, private route: ActivatedRoute) {}
+              private router: Router,
+              private route: ActivatedRoute) {}
 
   ngOnInit() {
 
@@ -30,7 +33,11 @@ export class AppComponent implements OnInit {
             this.userProfile = profile
           });
           if (this.route.snapshot.queryParams['redirect']) {
-            await this.router.navigate([this.route.snapshot.queryParams['redirect']]);
+            const params: HttpParams = Utils.moveQueryParametersFromRedirectUrl(this.route.snapshot.queryParams)
+            await this.router.navigate(
+              [params.get('redirect')],
+              { queryParams: Utils.parseRedirectParameters(params)}
+            );
           }
         } else if (e.type == KeycloakEventType.OnAuthError
           || e.type == KeycloakEventType.OnAuthLogout) {

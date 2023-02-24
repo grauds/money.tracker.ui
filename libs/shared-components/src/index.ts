@@ -3,6 +3,8 @@ export * from './lib/shared-components.module';
 export { EnvironmentService, ENVIRONMENT } from './lib/service/environment.service';
 export { EnvironmentInterface } from './lib/service/environment-interface'
 
+export {} from './lib/components/page-not-found'
+
 export { BreadcrumbsComponent } from './lib/components/breadcrumbs/breadcrumbs.component';
 export { EntityElementComponent } from './lib/components/entity-element/entity-element.component';
 export { PaginationBarComponent } from './lib/components/pagination-bar/pagination-bar.component';
