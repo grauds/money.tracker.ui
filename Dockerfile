@@ -10,7 +10,7 @@ RUN npm install -g @angular/cli
 RUN npm install -g nx
 RUN npm install -g @nrwl/cli
 
-COPY .eslintrc.json angular.json decorate-angular-cli.js jest.config.ts jest.preset.js nx.json \
+COPY .eslintrc.json decorate-angular-cli.js jest.config.ts jest.preset.js nx.json \
      package.json package-lock.json tsconfig.base.json ./
 
 COPY apps apps
