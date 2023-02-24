@@ -15,19 +15,26 @@ export class Utils {
   }
 
   static moveQueryParametersFromRedirectUrl(routeParams: Params): HttpParams {
-    let params: HttpParams = new HttpParams()
-    params = params.appendAll(routeParams)
-      .set('redirect', routeParams['redirect']?.substring(0, routeParams['redirect'].indexOf('?')))
 
-    const otherParams = routeParams['redirect']?.substring(routeParams['redirect'].indexOf('?') + 1)
-    if (otherParams.indexOf('&') !== -1) {
-      otherParams.split('&').forEach((pair: string) => {
-        const param: string[] = pair.split('=')
+    let params: HttpParams = new HttpParams()
+    const indexOfQuotationMark = routeParams['redirect'].indexOf('?')
+    const hasOtherParameters = indexOfQuotationMark !== -1
+    params = params.appendAll(routeParams)
+
+    if (hasOtherParameters) {
+      // fix the redirect part
+      params.set('redirect', routeParams['redirect']?.substring(0, indexOfQuotationMark))
+      // parse the extra query parameter(s)
+      const otherParams = routeParams['redirect']?.substring(indexOfQuotationMark + 1)
+      if (otherParams.indexOf('&') !== -1) {
+        otherParams.split('&').forEach((pair: string) => {
+          const param: string[] = pair.split('=')
+          params = params.set(param[0], param[1])
+        })
+      } else {
+        const param: string[] = otherParams.split('=')
         params = params.set(param[0], param[1])
-      })
-    } else {
-      const param: string[] = otherParams.split('=')
-      params = params.set(param[0], param[1])
+      }
     }
     return params
   }
@@ -63,7 +70,7 @@ export class Utils {
 
   static getFormattedStringFromDays(numberOfDays: number): string {
 
-    let inTheFuture = numberOfDays < 0;
+    const inTheFuture = numberOfDays < 0;
     numberOfDays = Math.abs(numberOfDays)
 
     const years = Math.floor(numberOfDays / 365);
