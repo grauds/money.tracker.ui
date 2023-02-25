@@ -78,7 +78,11 @@ export class InOutListComponent implements OnInit {
         this.echartsInstance.setOption(this.options)
       }
     }
-    this.mobileQuery.addEventListener("change", this._mobileQueryListener);
+    if (this.mobileQuery?.addEventListener) {
+      this.mobileQuery.addEventListener("change", this._mobileQueryListener);
+    } else {
+      this.mobileQuery.addListener(this._mobileQueryListener);
+    }
 
     this.keycloak.isLoggedIn().then((logged) => {
       this.isLoggedIn = logged

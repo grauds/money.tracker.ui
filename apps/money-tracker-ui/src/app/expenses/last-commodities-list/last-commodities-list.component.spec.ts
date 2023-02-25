@@ -8,7 +8,7 @@ describe('LastCommoditiesListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LastCommoditiesListComponent],
+      declarations: [LastCommoditiesListComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(LastCommoditiesListComponent);

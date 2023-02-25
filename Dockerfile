@@ -18,6 +18,7 @@ COPY libs libs
 
 RUN npm install
 
+RUN nx test
 RUN nx run money-tracker-ui:build:production --verbose
 
 # ------------------------------------------------------------------------------

@@ -3,11 +3,6 @@ import { Title } from "@angular/platform-browser";
 import { Utils } from '@clematis-shared/model';
 import { LastCommodityService } from "@clematis-shared/shared-components";
 
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-
-dayjs.extend(customParseFormat);
-
 @Component({
   selector: 'app-last-commodities-list',
   templateUrl: 'last-commodities-list.component.html',

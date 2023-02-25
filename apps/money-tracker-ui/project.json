@@ -145,7 +145,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/money-tracker-ui"],
       "options": {
-        "main": "apps/money-tracker-ui/src/test.ts",
+        "main": "apps/money-tracker-ui/src/test-setup.ts",
         "polyfills": "apps/money-tracker-ui/src/polyfills.ts",
         "tsConfig": "apps/money-tracker-ui/tsconfig.spec.json",
         "jestConfig": "apps/money-tracker-ui/jest.config.ts",
