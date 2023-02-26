@@ -1,12 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 
 import { OrganizationsService } from './organizations.service';
+import { HttpClient, HttpHandler } from "@angular/common/http";
 
 describe('OrganizationsService', () => {
   let service: OrganizationsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [OrganizationsService, HttpClient, HttpHandler]
+    });
     service = TestBed.inject(OrganizationsService);
   });
 

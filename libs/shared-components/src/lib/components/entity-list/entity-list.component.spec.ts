@@ -1,15 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EntityListComponent } from './entity-list.component';
-import { Resource } from "@lagoshny/ngx-hateoas-client";
+import { Entity } from "@clematis-shared/model";
+import { ActivatedRoute, convertToParamMap } from "@angular/router";
+import { of } from "rxjs";
 
 describe('EntityListComponent', () => {
-  let component: EntityListComponent<Resource>;
-  let fixture: ComponentFixture<EntityListComponent<Resource>>;
+  let component: EntityListComponent<Entity>;
+  let fixture: ComponentFixture<EntityListComponent<Entity>>;
+
+  const fakeActivatedRoute = {
+    queryParams: of({}),
+    snapshot: {
+      paramMap: convertToParamMap({ })
+    }
+  } as ActivatedRoute;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EntityListComponent ]
+      declarations: [ EntityListComponent ],
+      providers: [
+        { provide: "searchService", useValue: {} },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }
+      ]
     })
     .compileComponents();
   });
