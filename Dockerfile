@@ -19,7 +19,15 @@ COPY libs libs
 RUN npm install
 
 RUN nx run money-tracker-ui:build:production --verbose
-RUN nx test --codeCoverage
+RUN nx run test --codeCoverage
+
+# ------------------------------------------------------------------------------
+# COPY COVERAGE STAGE (after build)
+# ------------------------------------------------------------------------------
+
+FROM node:16-alpine
+
+COPY --from=build-image  ./coverage .
 
 # ------------------------------------------------------------------------------
 # RUNTIME STAGE (deployment)
@@ -46,8 +54,6 @@ ARG APP_ROOT=/var/www/$APP_NAME
 RUN mkdir -p $APP_ROOT
 COPY --from=0 $SOURCE_PATH $APP_ROOT
 COPY ./apps/$APP_NAME/jenkins/nginx-default.conf /etc/nginx/conf.d/default.conf
-
-COPY --from=build-image ./coverage .
 
 RUN ls -l $APP_ROOT
 
