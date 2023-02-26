@@ -25,8 +25,7 @@ RUN nx run test --codeCoverage
 # COPY COVERAGE STAGE (after build)
 # ------------------------------------------------------------------------------
 
-FROM node:16-alpine
-
+FROM build-image as test-out
 COPY --from=build-image  ./coverage .
 
 # ------------------------------------------------------------------------------

@@ -29,6 +29,7 @@ pipeline {
       steps {
         sh '''
            docker build . -t money.tracker.ui -f Dockerfile
+           docker build  --output "type=local,dest=${WORKSPACE}/coverage"  --target test-out .
         '''
         publishCoverage adapters: [cobertura('./coverage/apps/money-tracker-ui/coverage-final.json')]
       }
