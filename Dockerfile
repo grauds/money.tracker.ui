@@ -18,8 +18,8 @@ COPY libs libs
 
 RUN npm install
 
-RUN nx run money-tracker-ui:build:production --verbose
-RUN nx run test --codeCoverage
+RUN nx run money-tracker-ui:build:production
+RUN nx run-many --target=test --all --coverage
 
 # ------------------------------------------------------------------------------
 # COPY COVERAGE STAGE (after build)
