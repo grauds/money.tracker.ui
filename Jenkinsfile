@@ -30,6 +30,7 @@ pipeline {
         sh '''
            docker build . -t money.tracker.ui -f Dockerfile
         '''
+        publishCoverage adapters: [cobertura('./coverage/apps/money-tracker-ui/coverage-final.json')]
       }
     }
 
