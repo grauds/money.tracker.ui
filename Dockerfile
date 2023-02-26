@@ -25,7 +25,7 @@ RUN nx run test --codeCoverage
 # COPY COVERAGE STAGE (after build)
 # ------------------------------------------------------------------------------
 
-FROM build-image as test-out
+FROM scratch as test-out
 COPY --from=build-image  ./coverage .
 
 # ------------------------------------------------------------------------------
