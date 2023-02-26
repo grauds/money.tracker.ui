@@ -26,7 +26,7 @@ RUN nx run test --codeCoverage
 # ------------------------------------------------------------------------------
 
 FROM scratch as test-out
-COPY --from=build-image  ./coverage .
+COPY --from=build-image  /opt/software/coverage .
 
 # ------------------------------------------------------------------------------
 # RUNTIME STAGE (deployment)
