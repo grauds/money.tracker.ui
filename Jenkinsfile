@@ -29,10 +29,17 @@ pipeline {
       steps {
         sh '''
            docker build . -t money.tracker.ui -f Dockerfile
-           export DOCKER_BUILDKIT=1
-           docker build  --output "type=local,dest=${WORKSPACE}/coverage" --target test-out .
         '''
-        publishCoverage adapters: [cobertura('./coverage/apps/money-tracker-ui/coverage-final.json')]
+      }
+    }
+
+    stage('Publish tests') {
+      steps {
+        sh '''
+           export DOCKER_BUILDKIT=1
+           docker build --output "type=local,dest=${WORKSPACE}/coverage" --target test-out .
+        '''
+        publishCoverage adapters: [cobertura(mergeToOneReport: true, path: './coverage/**/*.*')]
       }
     }
 
