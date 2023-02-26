@@ -18,8 +18,10 @@ COPY libs libs
 
 RUN npm install
 
-RUN nx test --codeCoverage
 RUN nx run money-tracker-ui:build:production --verbose
+RUN nx test --codeCoverage
+
+COPY --from=build ./coverage .
 
 # ------------------------------------------------------------------------------
 # RUNTIME STAGE (deployment)
