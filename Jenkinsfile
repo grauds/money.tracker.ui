@@ -38,6 +38,7 @@ pipeline {
         sh '''
            export DOCKER_BUILDKIT=1
            docker build --output "type=local,dest=${WORKSPACE}/coverage" --target test-out .
+           ls -l ./coverage
         '''
         publishCoverage adapters: [cobertura(mergeToOneReport: true, path: './coverage/**/*.*')]
       }
