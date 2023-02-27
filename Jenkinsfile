@@ -40,7 +40,7 @@ pipeline {
            docker build --output "type=local,dest=${WORKSPACE}/coverage" --target test-out .
            ls -l ./coverage
         '''
-        publishCoverage adapters: [cobertura(mergeToOneReport: true, path: './coverage/**/*.*')]
+        publishCoverage adapters: [istanbulCoberturaAdapter(mergeToOneReport: true, path: 'coverage/**/cobertura-coverage.xml')], sourceFileResolver: sourceFiles('STORE_LAST_BUILD')
       }
     }
 
