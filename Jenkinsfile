@@ -44,6 +44,18 @@ pipeline {
       }
     }
 
+    stage ('Dependency-Check') {
+        steps {
+            dependencyCheck additionalArguments: '''
+                -o "./"
+                -s "./"
+                -f "ALL"
+                --prettyPrint''', odcInstallation: 'Dependency Checker'
+
+            dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+        }
+    }
+
     stage("Build and start docker compose services") {
       steps {
         sh '''
