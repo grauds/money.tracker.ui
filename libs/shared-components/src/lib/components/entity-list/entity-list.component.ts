@@ -5,6 +5,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { SearchService } from "../../service/search.service";
 import { Component, EventEmitter, Inject, Input, OnInit, Output, TemplateRef } from "@angular/core";
 import { Entity } from "@clematis-shared/model";
+import { PageParam } from "@lagoshny/ngx-hateoas-client/lib/model/declarations";
 
 @Component({
   selector: 'app-entity-list',
@@ -158,7 +159,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     this.searchRequest$.next(this.queryArguments)
   }
 
-  getPageParams() {
+  getPageParams(): PageParam {
     return {
       page: this.n,
       size: this.limit

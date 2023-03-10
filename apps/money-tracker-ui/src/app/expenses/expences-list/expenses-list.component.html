@@ -47,4 +47,9 @@
   </table>
 </ng-template>
 
-<app-entity-list [resultItemTemplate]="expensesTable" [table]="true"></app-entity-list>
+<app-entity-list [resultItemTemplate]="expensesTable"
+                 [table]="true"
+                 [sort]="{transferdate: 'DESC'}"
+>
+
+</app-entity-list>

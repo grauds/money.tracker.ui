@@ -75,7 +75,7 @@ export class BalanceComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData(this.currency)
-    this.title.setTitle('Currencies')
+    this.title.setTitle('Balance Monthly')
   }
 
   setCurrentPage(pageIndex: number, pageSize: number) {
