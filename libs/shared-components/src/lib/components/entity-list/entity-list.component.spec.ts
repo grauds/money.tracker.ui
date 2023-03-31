@@ -20,7 +20,11 @@ describe('EntityListComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ EntityListComponent ],
       providers: [
-        { provide: "searchService", useValue: {} },
+        { provide: "searchService", useValue: {
+            getStatusDescription() {
+
+            }
+          } },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ]
     })
