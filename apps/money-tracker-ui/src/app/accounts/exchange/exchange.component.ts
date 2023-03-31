@@ -27,9 +27,9 @@ export class ExchangeComponent implements OnInit {
 
   options: any;
 
-  loading: boolean = false;
+  loading = false
 
-  pageLoading: boolean = false;
+  pageLoading = false
 
   sourceCurrency: MoneyTypes = MoneyTypes.RUB;
 
@@ -75,7 +75,7 @@ export class ExchangeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title.setTitle('Money Exchange')
+    this.title.setTitle('Currency Exchange')
   }
 
   getSourceCurrencies() {
@@ -90,13 +90,22 @@ export class ExchangeComponent implements OnInit {
     })
   }
 
+  swapCurrencies() {
+    const swap = this.sourceCurrency
+    this.sourceCurrency = this.destCurrency
+    this.destCurrency = swap
+    this.updateRoute()
+  }
+
   updatesSourceCurrency($event: MoneyTypes) {
     this.sourceCurrency = $event
+    this.entityList.n = 0
     this.updateRoute()
   }
 
   updatesDestCurrency($event: MoneyTypes) {
     this.destCurrency = $event
+    this.entityList.n = 0
     this.updateRoute()
   }
 
@@ -111,11 +120,11 @@ export class ExchangeComponent implements OnInit {
       skipLocationChange: false
     })
 
-    this.entityList.loading$.next(true)
+    this.entityList.pageLoading$.next(true)
     this.entityList.searchRequest$.next(this.getQueryArguments())
   }
 
-  getQueryName(): string | null {
+  getQueryName(): string {
     return 'events';
   }
 
@@ -128,16 +137,9 @@ export class ExchangeComponent implements OnInit {
 
   getSort() {
     let ret: Sort = {
-      exchangeDate: 'DESC'
+      exchangedate: 'DESC'
     }
     return ret
-  }
-
-  swapCurrencies() {
-    const swap = this.sourceCurrency
-    this.sourceCurrency = this.destCurrency
-    this.destCurrency = swap
-    this.updateRoute()
   }
 
   setLoading($event: boolean) {

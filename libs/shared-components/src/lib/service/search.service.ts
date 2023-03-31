@@ -14,6 +14,8 @@ export abstract class SearchService<T extends Resource> {
 
   environmentService: EnvironmentService;
 
+  private _pageLoading: boolean = false
+
   protected constructor(environmentService: EnvironmentService) {
     this.environmentService = environmentService;
   }
@@ -41,5 +43,13 @@ export abstract class SearchService<T extends Resource> {
 
   setPostProcessingStream(handler: SearchPostProcessingHandler<T>): void {
     this.searchPostProcessingHandler = handler
+  }
+
+  get pageLoading(): boolean {
+    return this._pageLoading;
+  }
+
+  set pageLoading(value: boolean) {
+    this._pageLoading = value;
   }
 }

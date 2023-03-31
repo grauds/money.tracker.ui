@@ -29,7 +29,7 @@
           "apps/money-tracker-ui/src/styles.sass"
         ],
         "scripts": [],
-        "allowedCommonJsDependencies": ["keycloak-js"]
+        "allowedCommonJsDependencies": ["keycloak-js", "base64-js", "js-sha256"]
       },
       "configurations": {
         "default": {

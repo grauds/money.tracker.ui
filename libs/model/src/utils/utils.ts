@@ -23,19 +23,20 @@ export class Utils {
 
     if (hasOtherParameters) {
       // fix the redirect part
-      params.set('redirect', routeParams['redirect']?.substring(0, indexOfQuotationMark))
+      params = params.set('redirect', routeParams['redirect']?.substring(0, indexOfQuotationMark))
       // parse the extra query parameter(s)
       const otherParams = routeParams['redirect']?.substring(indexOfQuotationMark + 1)
       if (otherParams.indexOf('&') !== -1) {
         otherParams.split('&').forEach((pair: string) => {
           const param: string[] = pair.split('=')
-          params = params.set(param[0], param[1])
+          params = params.append(param[0], param[1])
         })
       } else {
         const param: string[] = otherParams.split('=')
-        params = params.set(param[0], param[1])
+        params = params.append(param[0], param[1])
       }
     }
+
     return params
   }
 

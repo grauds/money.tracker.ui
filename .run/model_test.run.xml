@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="model:test" type="js.build_tools.nx">
+    <node-interpreter value="project" />
+    <nxfile value="$PROJECT_DIR$/nx.json" />
+    <tasks>
+      <task value="model:test" />
+    </tasks>
+    <arguments value="--codeCoverage" />
+    <envs />
+    <method v="2" />
+  </configuration>
+</component>

@@ -1,5 +1,6 @@
 import { Utils } from './utils';
 import { token, url, url2, url3 } from './utils.data';
+import { HttpParams } from "@angular/common/http";
 
 describe('Utils', () => {
   it('should create an instance', () => {
@@ -31,4 +32,18 @@ describe('Utils', () => {
     expect(parsed).toEqual('/commodities/52/http:/192.168.1.2:18085/commodityGroups/1')
   });
 
+  it('should restore redirect after keycloak correctly', () => {
+    const params: HttpParams = Utils.moveQueryParametersFromRedirectUrl({
+      "redirect": "/expenses?page=1",
+      "size": "10",
+      "sort": "transferdate,DESC"
+    })
+
+    expect(params.get('redirect')).toEqual('/expenses')
+    expect(params.get('size')).toEqual('10')
+    expect(params.get('sort')).toEqual('transferdate,DESC')
+    expect(params.get('page')).toEqual('1')
+  })
+
 });
+

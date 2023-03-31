@@ -29,6 +29,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { InOutService } from './service/in-out.service';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     ContentLoaderModule,
     MatDialogModule,
     MatButtonModule,
+    MatProgressSpinnerModule
   ],
   exports: [EntityElementComponent, BreadcrumbsComponent, EntityListComponent],
   declarations: [

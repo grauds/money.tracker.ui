@@ -1,12 +1,25 @@
+<ng-template #filter>
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput (blur)="entityList.setFilter($event)"
+           id="name"
+           [value]="entityList.filter.get('name')"
+           placeholder="Filter by commodity"
+           #input>
+  </mat-form-field>
+</ng-template>
+
 <ng-template #expensesTable let-entities="entities">
-  <table mat-table [dataSource]="entities">
+
+  <table mat-table matSort matSortActive="transferdate" matSortDirection="desc"
+         (matSortChange)="entityList.setSort($event)" [dataSource]="entities">
 
     <ng-container matColumnDef="transferdate">
-      <th mat-header-cell *matHeaderCellDef> Transfer Date </th>
+      <th mat-header-cell mat-sort-header="transferdate" *matHeaderCellDef> Transfer Date </th>
       <td mat-cell *matCellDef="let element"> {{element.transferDate | date:'fullDate'}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="name">
+    <ng-container matColumnDef="commodity.name">
       <th mat-header-cell *matHeaderCellDef> Name </th>
       <td mat-cell *matCellDef="let element">
         <a *ngIf="element.commodity && element.commodityLink"
@@ -19,7 +32,7 @@
     </ng-container>
 
     <ng-container matColumnDef="price">
-      <th mat-header-cell *matHeaderCellDef> Price </th>
+      <th mat-header-cell mat-sort-header="price" *matHeaderCellDef> Price </th>
       <td mat-cell *matCellDef="let element"> {{element.price | currency: element.expense.moneyType?.code}} </td>
     </ng-container>
 
@@ -49,7 +62,7 @@
 
 <app-entity-list [resultItemTemplate]="expensesTable"
                  [table]="true"
-                 [sort]="{transferdate: 'DESC'}"
+                 [sort]="getSort()"
+                 [filterTemplate]="filter"
 >
-
 </app-entity-list>

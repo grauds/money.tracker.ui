@@ -59,27 +59,28 @@ import { OrganizationGroupListComponent } from './organizations/organization-gro
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { AboutComponent } from './about/about.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSortModule } from "@angular/material/sort";
+
 import {
   ENVIRONMENT,
   EnvironmentService,
   SharedComponentsModule,
+  PageNotFoundComponent
 } from '@clematis-shared/shared-components';
-import { MatTableModule } from '@angular/material/table';
-import { MatGridListModule } from '@angular/material/grid-list';
+
 import { AccountsDashboardComponent } from './accounts/accounts-dashboard/accounts-dashboard.component';
 import { LastCommoditiesListComponent } from './expenses/last-commodities-list/last-commodities-list.component';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { ExchangeComponent } from './accounts/exchange/exchange.component';
 import { ExchangeEventElementComponent } from './accounts/exchange-event-element/exchange-event-element.component';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { environment } from '../environments/environment';
 import { InOutListComponent } from './expenses/in-out-list/in-out-list.component';
 import { BalanceComponent } from './expenses/balance/balance.component';
-import {
-  PageNotFoundComponent
-} from "../../../../libs/shared-components/src/lib/components/page-not-found/page-not-found.component";
 
 const routes: Routes = [
   {
@@ -212,7 +213,7 @@ const mapConfig: YaConfig = {
     FormsModule,
     AngularYandexMapsModule.forRoot(mapConfig),
     NgxEchartsModule.forRoot({
-      echarts: () => import('echarts'),
+      echarts: () => import("echarts")
     }),
     BrowserAnimationsModule,
     MatToolbarModule,
@@ -229,6 +230,7 @@ const mapConfig: YaConfig = {
     MatSelectModule,
     MatTooltipModule,
     MatButtonToggleModule,
+    MatSortModule
   ],
   providers: [
     {

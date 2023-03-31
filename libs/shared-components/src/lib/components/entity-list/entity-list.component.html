@@ -6,7 +6,7 @@
 
 <div *ngIf="!error">
 
-  <content-loader class="ph-item" *ngIf="pageLoading">
+  <content-loader class="ph-item" *ngIf="(pageLoading$ | async)">
     <svg:rect x="0" y="0" rx="3" ry="3" width="450" height="10" />
     <svg:rect x="20" y="20" rx="3" ry="3" width="220" height="10" />
     <svg:rect x="20" y="40" rx="3" ry="3" width="170" height="10" />
@@ -32,49 +32,58 @@
     <svg:rect x="20" y="340" rx="3" ry="3" width="80" height="10" />
   </content-loader>
 
-  <div *ngIf="!pageLoading">
+  <div *ngIf="!(pageLoading$ | async) && entities && entities.length > 0">
 
-    <div class="container">
+    <div class="container search-results">
 
-      <mat-paginator *ngIf="entities && entities.length > 0"
-                     [length]="total"
+      <div *ngIf="filterTemplate">
+        <ng-container *ngTemplateOutlet="filterTemplate"></ng-container>
+      </div>
+
+      <mat-paginator [length]="total"
                      [pageSize]="limit"
                      [pageSizeOptions]="[5, 10, 25, 100]"
                      [pageIndex]="n"
                      (page)="setCurrentPage($event)"
                      [showFirstLastButtons]="true"
+                     [disabled]="loading$ | async"
                      aria-label="Select page">
       </mat-paginator>
 
-      <!-- custom list -->
-      <div *ngIf="resultItemTemplate">
-        <div *ngIf="!table">
-          <div *ngFor="let a of entities">
-            <ng-container *ngTemplateOutlet="resultItemTemplate; context:{a}"></ng-container>
+      <div class="area">
+        <!-- custom list -->
+        <div *ngIf="resultItemTemplate">
+          <div *ngIf="!table">
+            <div *ngFor="let a of entities">
+              <ng-container *ngTemplateOutlet="resultItemTemplate; context:{a}"></ng-container>
+            </div>
+          </div>
+          <div *ngIf="table">
+            <ng-container *ngTemplateOutlet="resultItemTemplate; context:{entities}"></ng-container>
           </div>
         </div>
-        <div *ngIf="table">
-          <ng-container *ngTemplateOutlet="resultItemTemplate; context:{entities}"></ng-container>
+        <!-- fallback to simple list -->
+        <div *ngIf="!resultItemTemplate">
+          <div *ngFor="let a of entities">
+            <app-entity-element [entity]="a"></app-entity-element>
+          </div>
+        </div>
+        <!-- loading veil -->
+        <div *ngIf="loading$ | async" class="processing-indicator">
+          <div><mat-spinner diameter="33"></mat-spinner></div>
+          <div class="pt-5 text-black text-center">{{ statusDescription$ | async }} ...</div>
         </div>
       </div>
 
-      <!-- fallback to simple list -->
-      <div *ngIf="!resultItemTemplate">
-        <div *ngFor="let a of entities">
-          <app-entity-element [entity]="a"></app-entity-element>
-        </div>
-      </div>
-
-      <mat-paginator *ngIf="entities && entities.length > 0"
-                     [length]="total"
+      <mat-paginator [length]="total"
                      [pageSize]="limit"
                      [pageSizeOptions]="[5, 10, 25, 100]"
                      [pageIndex]="n"
                      (page)="setCurrentPage($event)"
                      [showFirstLastButtons]="true"
+                     [disabled]="loading$ | async"
                      aria-label="Select page">
       </mat-paginator>
-
     </div>
 
   </div>

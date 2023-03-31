@@ -1,11 +1,12 @@
-import { BehaviorSubject, Observable, of, Subscription, switchMap, tap } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PagedResourceCollection, RequestParam, Sort } from '@lagoshny/ngx-hateoas-client';
-import { PageEvent } from '@angular/material/paginator';
-import { SearchService } from "../../service/search.service";
+import { BehaviorSubject, Observable, of, Subscription, switchMap, tap } from "rxjs";
 import { Component, EventEmitter, Inject, Input, OnInit, Output, TemplateRef } from "@angular/core";
+import { ActivatedRoute, NavigationExtras, Params, Router } from "@angular/router";
+import { PageEvent } from '@angular/material/paginator';
+import { Sort } from "@angular/material/sort";
 import { Entity } from "@clematis-shared/model";
+import { PagedResourceCollection, RequestParam, Sort as RestSort, SortOrder } from "@lagoshny/ngx-hateoas-client";
 import { PageParam } from "@lagoshny/ngx-hateoas-client/lib/model/declarations";
+import { SearchService } from "../../service/search.service";
 
 @Component({
   selector: 'app-entity-list',
@@ -16,27 +17,26 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
   @Input() resultItemTemplate: TemplateRef<any> | undefined;
 
+  @Input() filterTemplate: TemplateRef<any>  | undefined;
+
   @Input() table = false;
-
-  @Input() queryArguments: RequestParam = {};
-
-  searchRequest$ = new BehaviorSubject<RequestParam>(this.queryArguments)
 
   @Input() queryName: string | null = null;
 
-  @Input() sort: Sort = {
-    name: 'ASC'
-  }
+  @Input() queryArguments: RequestParam = {};
 
-  // subscribe for page updates in the address bar
-  pageSubscription: Subscription;
+  @Input() sort: RestSort | null = null
 
-  // elements page
+  @Input() queryParamsMode: "merge" | "preserve" | "" | null = "";
+
+  filter: Map<string, string> = new Map<string, string>();
+
+  statusDescription$: Observable<string> | undefined
+
+  searchRequest$ = new BehaviorSubject<RequestParam>(this.queryArguments)
+
   entities: T[] | null = [];
 
-  @Output() entities$ = new EventEmitter<T[]>();
-
-  // total number of elements
   total: number | undefined;
 
   // number of records per page
@@ -45,14 +45,15 @@ export class EntityListComponent<T extends Entity> implements OnInit {
   // current page number counter
   n = 0;
 
-  @Output() loading$ = new EventEmitter<boolean>();
+  @Output() entities$ = new EventEmitter<T[]>();
 
-  loading = false;
-
-  // loading page - a smaller area to update
   @Output() pageLoading$ = new EventEmitter<boolean>();
 
-  pageLoading = false;
+  // loading page - a smaller area to update
+  @Output() loading$ = new EventEmitter<boolean>();
+
+  // subscribe for page updates in the address bar
+  pageSubscription: Subscription;
 
   // error message
   error: string | undefined;
@@ -62,50 +63,51 @@ export class EntityListComponent<T extends Entity> implements OnInit {
                      protected route: ActivatedRoute) {
 
     this.pageSubscription = route.queryParams.subscribe(
-      (queryParam: any) => {
-        const page = Number.parseInt(queryParam['page'], 10)
+      (queryParams: Params) => {
+
+        // parse page, limit and sort information
+        const page: number = Number.parseInt(queryParams['page'], 10)
         this.n = isNaN(page) ? 0 : page;
-        const size = Number.parseInt(queryParam['size'], 10)
+
+        const size: number = Number.parseInt(queryParams['size'], 10)
         this.limit = isNaN(size) ? 10 : size;
+
+        const sort: string = queryParams['sort']
+        if (sort) {
+          const s: string[] = sort.split(',')
+          if (s.length === 2) {
+            this.sort = { [s[0]] : s[1] as SortOrder }
+          }
+        }
+
+        // add the rest of the url search parameters as filters
+        Object.keys(queryParams).forEach((k) => {
+          if (k !== 'page' && k !== 'size' && k !== 'sort') {
+            this.filter.set(k, queryParams[k])
+          }
+        })
       }
     );
-
-    this.loading$.subscribe((flag: boolean) => {
-      this.loading = flag
-    })
-
-    this.pageLoading$.subscribe((flag: boolean) => {
-      this.pageLoading = flag
-    })
 
     this.entities$.subscribe((entities: T[] | null) => {
       this.entities = entities
     })
+
+    this.subscribeToSearchRequests()
   }
 
   ngOnInit(): void {
+    this.statusDescription$ = this.searchService.getStatusDescription()
     this.pageLoading$.next(true)
-    this.handleSearchRequests()
     this.loadData()
   }
 
-  setCurrentPage(event: PageEvent) {
-    this.n = event.pageIndex
-    this.limit = event.pageSize
-    this.updateRoute()
-    this.loadData()
+  loadData() {
+    this.loading$.next(true)
+    this.searchRequest$.next({...this.queryArguments, ...this.getFilterParams()})
   }
 
-  updateRoute() {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: this.getPageParams(),
-      queryParamsHandling: 'merge',
-      skipLocationChange: false
-    })
-  }
-
-  private handleSearchRequests() {
+  private subscribeToSearchRequests() {
     this.searchRequest$
       .pipe(
       //tap(this.searchRequestWasStarted.bind(this)),
@@ -124,18 +126,18 @@ export class EntityListComponent<T extends Entity> implements OnInit {
               pageParams: this.getPageParams(),
               sort: this.getSort(),
               useCache: this.getUseCache(),
-              ...state
+              params: state
             })),
         switchMap(this.executePostProcessing.bind(this)),
       )
       .subscribe({
-        next: this.processSearchRequestResult.bind(this),
+        next: this.broadcastResults.bind(this),
         error: (err: Error) => this.entities$.error(err),
         complete: () => this.entities$.complete()
       })
   }
 
-  private processSearchRequestResult(page: PagedResourceCollection<T>): void {
+  private broadcastResults(page: PagedResourceCollection<T>): void {
 
     this.total = page.totalElements;
     this.limit = page.pageSize;
@@ -154,9 +156,27 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     return of(searchResult)
   }
 
-  loadData() {
-    this.loading$.next(true)
-    this.searchRequest$.next(this.queryArguments)
+  updateRoute() {
+    this.router.navigate([], this.getRouteParameters())
+  }
+
+  getRouteParameters(): NavigationExtras {
+    let queryParams: Params = this.getPageParams()
+
+    if (this.getSort()) {
+      queryParams = { ...queryParams, ...this.getSortParams()}
+    }
+
+    if (this.getFilter()) {
+      queryParams = { ...queryParams, ...this.getFilterParams()}
+    }
+
+    return {
+      relativeTo: this.route,
+      queryParams: queryParams,
+      queryParamsHandling: this.queryParamsMode,
+      skipLocationChange: false
+    }
   }
 
   getPageParams(): PageParam {
@@ -166,8 +186,59 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     };
   }
 
-  getSort(): Sort {
-    return this.sort
+  getSortParams(): Params | null {
+    if (this.sort !== null) {
+      return {
+        sort: Object.keys(this.sort).map((k) => {
+          return [k, this.sort !== null ? this.sort[k] : '']
+        }).join(",")
+      }
+    }
+    return null
+  }
+
+  getFilterParams(): Params | null {
+    if (this.filter !== null) {
+      const queryParams: Params = {};
+      this.filter.forEach((value, key) => {
+        queryParams[key] = value;
+      });
+      return queryParams
+    }
+
+    return null
+  }
+
+  getSort(): RestSort {
+    return this.sort ? this.sort : {};
+  }
+
+  getFilter(): Map<string, string> {
+    return this.filter ? this.filter : new Map<string, string>();
+  }
+
+  setCurrentPage(event: PageEvent) {
+    this.n = event.pageIndex
+    this.limit = event.pageSize
+    this.updateRoute()
+    this.loadData()
+  }
+
+  setSort(sort: Sort) {
+    if (sort && sort.direction) {
+      this.sort = {
+        [sort.active]: sort.direction.toUpperCase() as SortOrder
+      }
+    } else {
+      this.sort = null
+    }
+    this.updateRoute()
+    this.loadData()
+  }
+
+  setFilter(event: Event) {
+    let element = event.target as HTMLInputElement
+    this.filter.set(element.id, element.value)
   }
 
   getUseCache(): boolean {
