@@ -1,9 +1,10 @@
 <ng-template #filter>
   <mat-form-field>
     <mat-label>Name</mat-label>
-    <input matInput (blur)="entityList.setFilter($event)"
+    <input matInput
            id="name"
-           [value]="entityList.filter.get('name')"
+           (blur)="setNameFilter($event)"
+           [value]="getNameFilter()"
            placeholder="Filter by commodity"
            #input>
   </mat-form-field>
@@ -64,5 +65,6 @@
                  [table]="true"
                  [sort]="getSort()"
                  [filterTemplate]="filter"
+                 (filter$)="setFilter($event)"
 >
 </app-entity-list>

@@ -52,6 +52,8 @@ export class EntityListComponent<T extends Entity> implements OnInit {
   // loading page - a smaller area to update
   @Output() loading$ = new EventEmitter<boolean>();
 
+  @Output() filter$ = new EventEmitter<Map<string, string>>();
+
   // subscribe for page updates in the address bar
   pageSubscription: Subscription;
 
@@ -94,11 +96,15 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     })
 
     this.subscribeToSearchRequests()
+
   }
 
   ngOnInit(): void {
+
+    this.filter$.next(this.filter)
     this.statusDescription$ = this.searchService.getStatusDescription()
     this.pageLoading$.next(true)
+
     this.loadData()
   }
 
@@ -144,7 +150,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
     this.loading$.next(false);
     this.pageLoading$.next(false);
-    this.entities$.next(page.resources)
+    this.entities$.next(page.resources);
   }
 
   private executePostProcessing(searchResult: PagedResourceCollection<T>): Observable<PagedResourceCollection<T>> {
@@ -238,7 +244,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
   setFilter(event: Event) {
     let element = event.target as HTMLInputElement
-    this.filter.set(element.id, element.value)
+    this.filter$.next(this.filter.set(element.id, element.value))
   }
 
   getUseCache(): boolean {

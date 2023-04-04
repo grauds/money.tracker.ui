@@ -18,17 +18,29 @@ export class ExpensesListComponent implements OnInit {
 
   @ViewChild(EntityListComponent) entityList!: EntityListComponent<ExpenseItem>;
 
+  nameFilter: string | undefined = '';
+
   constructor(private title: Title) {}
 
   ngOnInit(): void {
     this.title.setTitle('Expenses')
   }
 
-  getSort() {
-    let ret: Sort = {
+  getSort(): Sort {
+    return {
       transferdate: 'DESC'
     }
-    return ret
   }
 
+  getNameFilter(): string {
+    return this.nameFilter !== undefined ? this.nameFilter : ''
+  }
+
+  setFilter($event: Map<string, string>) {
+    this.nameFilter = $event.get('name');
+  }
+
+  setNameFilter($event: FocusEvent) {
+    this.entityList.setFilter($event)
+  }
 }

@@ -1,13 +1,10 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from "@angular/core";
 import { PagedResourceCollection, Sort } from "@lagoshny/ngx-hateoas-client";
 import { KeycloakService } from "keycloak-angular";
 import { MoneyExchange, MoneyExchangeReport, MoneyTypes } from "@clematis-shared/model";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
-import {
-  EntityListComponent,
-  MoneyExchangeService
-} from "@clematis-shared/shared-components";
+import { EntityListComponent, MoneyExchangeService } from "@clematis-shared/shared-components";
 import { Observable, of, Subscription, switchMap, tap } from "rxjs";
 
 @Component({
@@ -135,11 +132,10 @@ export class ExchangeComponent implements OnInit {
     };
   }
 
-  getSort() {
-    let ret: Sort = {
+  getSort(): Sort {
+    return {
       exchangedate: 'DESC'
     }
-    return ret
   }
 
   setLoading($event: boolean) {
