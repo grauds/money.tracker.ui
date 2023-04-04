@@ -81,6 +81,8 @@ import { ExchangeEventElementComponent } from './accounts/exchange-event-element
 import { environment } from '../environments/environment';
 import { InOutListComponent } from './expenses/in-out-list/in-out-list.component';
 import { BalanceComponent } from './expenses/balance/balance.component';
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatMomentDateModule } from "@angular/material-moment-adapter";
 
 const routes: Routes = [
   {
@@ -230,7 +232,9 @@ const mapConfig: YaConfig = {
     MatSelectModule,
     MatTooltipModule,
     MatButtonToggleModule,
-    MatSortModule
+    MatSortModule,
+    MatDatepickerModule,
+    MatMomentDateModule
   ],
   providers: [
     {

@@ -242,12 +242,17 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     this.loadData()
   }
 
-  setFilter(event: Event) {
-    let element = event.target as HTMLInputElement
-    this.filter$.next(this.filter.set(element.id, element.value))
+  setFilter(id : string,  value : string) {
+    this.filter$.next(this.filter.set(id, value))
   }
 
   getUseCache(): boolean {
     return true
+  }
+
+  removeFilter(id: string) {
+    if (this.filter.delete(id)) {
+      this.filter$.next(this.filter)
+    }
   }
 }
