@@ -4,7 +4,7 @@
     <input matInput
            id="name"
            (blur)="setNameFilter($event)"
-           [value]="name"
+           [value]="name.value"
            placeholder="Filter by commodity">
     <mat-hint>Starts with...</mat-hint>
   </mat-form-field>

@@ -117,7 +117,7 @@ export class ExchangeComponent implements OnInit {
       skipLocationChange: false
     })
 
-    this.entityList.pageLoading$.next(true)
+    this.entityList.loading$.next(true)
     this.entityList.searchRequest$.next(this.getQueryArguments())
   }
 

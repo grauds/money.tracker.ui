@@ -21,7 +21,7 @@ export class ExpensesListComponent implements OnInit {
 
   @ViewChild(EntityListComponent) entityList!: EntityListComponent<ExpenseItem>;
 
-  name: string | undefined = '';
+  name: FormControl<string | null> = new FormControl('');
 
   startDate: FormControl<Date> = new FormControl();
 
@@ -40,7 +40,7 @@ export class ExpensesListComponent implements OnInit {
   }
 
   setFilter($event: Map<string, string>) {
-    this.name = $event.get('name');
+    this.name.setValue($event.get('name')!);
     if ($event.get('startDate')) {
       this.startDate.setValue(moment($event.get('startDate'), 'YYYY-MM-DD').toDate());
     } else {

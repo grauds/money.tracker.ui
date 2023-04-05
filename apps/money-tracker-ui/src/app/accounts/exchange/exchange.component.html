@@ -11,7 +11,7 @@
     <span><b>Loading...</b></span>
   </h4>
 
-  <div *ngIf="this.report" [hidden]="pageLoading">
+  <div *ngIf="this.report">
     <mat-form-field appearance="fill">
       <mat-label>Available source currencies</mat-label>
       <mat-select [disabled]="loading" [value]="sourceCurrency" (valueChange)="updatesSourceCurrency($event)">
