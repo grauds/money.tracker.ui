@@ -6,7 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { initializeKeycloak } from './init/keycloak-init.factory';
 import { ContentLoaderModule } from '@ngneat/content-loader';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AngularYandexMapsModule, YaConfig } from 'angular8-yandex-maps';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -234,7 +234,8 @@ const mapConfig: YaConfig = {
     MatButtonToggleModule,
     MatSortModule,
     MatDatepickerModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    ReactiveFormsModule
   ],
   providers: [
     {

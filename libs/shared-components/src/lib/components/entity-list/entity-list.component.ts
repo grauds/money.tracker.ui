@@ -226,8 +226,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
   setCurrentPage(event: PageEvent) {
     this.n = event.pageIndex
     this.limit = event.pageSize
-    this.updateRoute()
-    this.loadData()
+    this.startLoadingData()
   }
 
   setSort(sort: Sort) {
@@ -238,6 +237,10 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     } else {
       this.sort = null
     }
+    this.startLoadingData()
+  }
+
+  startLoadingData() {
     this.updateRoute()
     this.loadData()
   }

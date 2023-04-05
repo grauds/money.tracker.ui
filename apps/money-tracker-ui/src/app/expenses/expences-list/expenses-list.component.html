@@ -1,10 +1,9 @@
 <ng-template #filter>
   <mat-form-field>
     <mat-label>Name</mat-label>
-    <input matInput
-           id="name"
-           (blur)="setNameFilter($event)"
-           [value]="name.value"
+    <input matInput id="name" (blur)="setNameFilter($event)"
+           [formControl]="name"
+           type="text"
            placeholder="Filter by commodity">
     <mat-hint>Starts with...</mat-hint>
   </mat-form-field>
@@ -14,8 +13,8 @@
       [comparisonStart]="getStartDate()"
       [comparisonEnd]="getEndDate()"
     >
-      <input matStartDate placeholder="Start date" (dateChange)="setStartDate($event)" [value]="startDate.value">
-      <input matEndDate placeholder="End date" (dateChange)="setEndDate($event)" [value]="endDate.value">
+      <input matStartDate placeholder="Start date" (dateChange)="setStartDate($event)" [formControl]="startDate">
+      <input matEndDate placeholder="End date" (dateChange)="setEndDate($event)" [formControl]="endDate">
     </mat-date-range-input>
     <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
@@ -84,5 +83,6 @@
                  [sort]="getSort()"
                  [filterTemplate]="filter"
                  (filter$)="setFilter($event)"
+                 [queryName]="getQueryName()"
 >
 </app-entity-list>

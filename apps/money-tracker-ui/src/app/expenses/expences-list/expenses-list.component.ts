@@ -21,7 +21,7 @@ export class ExpensesListComponent implements OnInit {
 
   @ViewChild(EntityListComponent) entityList!: EntityListComponent<ExpenseItem>;
 
-  name: FormControl<string | null> = new FormControl('');
+  name = new FormControl('');
 
   startDate: FormControl<Date> = new FormControl();
 
@@ -37,6 +37,10 @@ export class ExpensesListComponent implements OnInit {
     return {
       transferdate: 'DESC'
     }
+  }
+
+  getQueryName(): string {
+    return 'filtered';
   }
 
   setFilter($event: Map<string, string>) {

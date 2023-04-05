@@ -32,13 +32,17 @@
     <svg:rect x="20" y="340" rx="3" ry="3" width="80" height="10" />
   </content-loader>
 
-  <div *ngIf="!(pageLoading$ | async) && entities && entities.length > 0">
+  <div *ngIf="!(pageLoading$ | async)">
 
-    <div class="container search-results">
+    <div *ngIf="filterTemplate">
+      <ng-container *ngTemplateOutlet="filterTemplate"></ng-container>
+      <mat-button-toggle (change)="startLoadingData()">
+        <mat-icon>search</mat-icon>
+      </mat-button-toggle>
+    </div>
 
-      <div *ngIf="filterTemplate">
-        <ng-container *ngTemplateOutlet="filterTemplate"></ng-container>
-      </div>
+    <div class="container search-results" *ngIf="entities && entities.length > 0">
+
 
       <mat-paginator [length]="total"
                      [pageSize]="limit"
