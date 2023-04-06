@@ -13,16 +13,12 @@
     <div *ngIf="filterTemplate" class="container filter">
       <ng-container *ngTemplateOutlet="filterTemplate"></ng-container>
       <div class="filterButtons">
-        <span class="filterButton">
-          <mat-button-toggle (change)="startLoadingData()">
-            <mat-icon>search</mat-icon>
-          </mat-button-toggle>
-        </span>
-        <span class="filterButton">
-          <mat-button-toggle (change)="clearFilters()">
-            <mat-icon>clear</mat-icon>
-          </mat-button-toggle>
-        </span>
+        <button mat-icon-button (change)="startLoadingData()">
+          <mat-icon>search</mat-icon>
+        </button>
+        <button mat-icon-button (change)="clearFilters()">
+          <mat-icon>clear</mat-icon>
+        </button>
       </div>
     </div>
 
