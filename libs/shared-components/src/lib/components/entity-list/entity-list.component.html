@@ -1,3 +1,7 @@
+<mat-progress-bar
+  *ngIf="loading" color="accent" mode="indeterminate">
+</mat-progress-bar>
+
 <div *ngIf="error">
   <div class="alert alert-danger">
     {{error}}
@@ -6,43 +10,23 @@
 
 <div *ngIf="!error">
 
-  <content-loader class="ph-item" *ngIf="(pageLoading$ | async)">
-    <svg:rect x="0" y="0" rx="3" ry="3" width="450" height="10" />
-    <svg:rect x="20" y="20" rx="3" ry="3" width="220" height="10" />
-    <svg:rect x="20" y="40" rx="3" ry="3" width="170" height="10" />
-
-    <svg:rect x="20" y="60" rx="3" ry="3" width="250" height="10" />
-    <svg:rect x="20" y="80" rx="3" ry="3" width="200" height="10" />
-    <svg:rect x="20" y="100" rx="3" ry="3" width="80" height="10" />
-
-    <svg:rect x="0" y="120" rx="3" ry="3" width="450" height="10" />
-    <svg:rect x="20" y="140" rx="3" ry="3" width="200" height="10" />
-    <svg:rect x="20" y="160" rx="3" ry="3" width="80" height="10" />
-
-    <svg:rect x="20" y="180" rx="3" ry="3" width="250" height="10" />
-    <svg:rect x="20" y="200" rx="3" ry="3" width="200" height="10" />
-    <svg:rect x="20" y="220" rx="3" ry="3" width="80" height="10" />
-
-    <svg:rect x="20" y="240" rx="3" ry="3" width="250" height="10" />
-    <svg:rect x="20" y="260" rx="3" ry="3" width="200" height="10" />
-    <svg:rect x="20" y="280" rx="3" ry="3" width="80" height="10" />
-
-    <svg:rect x="0"  y="300" rx="3" ry="3" width="450" height="10" />
-    <svg:rect x="20" y="320" rx="3" ry="3" width="200" height="10" />
-    <svg:rect x="20" y="340" rx="3" ry="3" width="80" height="10" />
-  </content-loader>
-
-  <div *ngIf="!(pageLoading$ | async)">
-
-    <div *ngIf="filterTemplate">
+    <div *ngIf="filterTemplate" class="container filter">
       <ng-container *ngTemplateOutlet="filterTemplate"></ng-container>
-      <mat-button-toggle (change)="startLoadingData()">
-        <mat-icon>search</mat-icon>
-      </mat-button-toggle>
+      <div class="filterButtons">
+        <span class="filterButton">
+          <mat-button-toggle (change)="startLoadingData()">
+            <mat-icon>search</mat-icon>
+          </mat-button-toggle>
+        </span>
+        <span class="filterButton">
+          <mat-button-toggle (change)="clearFilters()">
+            <mat-icon>clear</mat-icon>
+          </mat-button-toggle>
+        </span>
+      </div>
     </div>
 
-    <div class="container search-results" *ngIf="entities && entities.length > 0">
-
+    <div *ngIf="(entities && entities.length > 0)" class="container search-results">
 
       <mat-paginator [length]="total"
                      [pageSize]="limit"
@@ -50,7 +34,7 @@
                      [pageIndex]="n"
                      (page)="setCurrentPage($event)"
                      [showFirstLastButtons]="true"
-                     [disabled]="loading$ | async"
+                     [disabled]="loading"
                      aria-label="Select page">
       </mat-paginator>
 
@@ -73,7 +57,7 @@
           </div>
         </div>
         <!-- loading veil -->
-        <div *ngIf="loading$ | async" class="processing-indicator">
+        <div *ngIf="loading" class="processing-indicator">
           <div><mat-spinner diameter="33"></mat-spinner></div>
           <div class="pt-5 text-black text-center">{{ statusDescription$ | async }} ...</div>
         </div>
@@ -85,11 +69,9 @@
                      [pageIndex]="n"
                      (page)="setCurrentPage($event)"
                      [showFirstLastButtons]="true"
-                     [disabled]="loading$ | async"
+                     [disabled]="loading"
                      aria-label="Select page">
       </mat-paginator>
     </div>
-
-  </div>
 
 </div>

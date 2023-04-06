@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { KeycloakEventType, KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile } from 'keycloak-js';
-import { ActivatedRoute, Router } from "@angular/router";
+import {
+  ActivatedRoute,
+  Router
+} from "@angular/router";
 import { Utils } from "@clematis-shared/model";
 import { HttpParams } from "@angular/common/http";
 
@@ -18,9 +21,11 @@ export class AppComponent implements OnInit {
 
   userProfile: KeycloakProfile | null = null;
 
+  loading = false;
+
   constructor(protected readonly keycloak: KeycloakService,
               private router: Router,
-              private route: ActivatedRoute) {}
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
 

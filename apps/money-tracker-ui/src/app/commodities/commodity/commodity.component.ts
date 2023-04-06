@@ -47,8 +47,6 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
 
   loading: boolean = false;
 
-  pageLoading: boolean = false;
-
   averagePrice: number | undefined;
 
   totalQty: number | undefined;
@@ -100,10 +98,6 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
         }
       })
     })
-  }
-
-  setPageLoading($event: boolean) {
-    this.pageLoading = $event
   }
 
   setLoading($event: boolean) {

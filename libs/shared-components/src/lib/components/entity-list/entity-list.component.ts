@@ -47,10 +47,10 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
   @Output() entities$ = new EventEmitter<T[]>();
 
-  @Output() pageLoading$ = new EventEmitter<boolean>();
-
   // loading page - a smaller area to update
   @Output() loading$ = new EventEmitter<boolean>();
+
+  loading: boolean = false;
 
   @Output() filter$ = new EventEmitter<Map<string, string>>();
 
@@ -95,6 +95,10 @@ export class EntityListComponent<T extends Entity> implements OnInit {
       this.entities = entities
     })
 
+    this.loading$.subscribe((value:boolean) => {
+      this.loading = value
+    })
+
     this.subscribeToSearchRequests()
 
   }
@@ -103,7 +107,6 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
     this.filter$.next(this.filter)
     this.statusDescription$ = this.searchService.getStatusDescription()
-    this.pageLoading$.next(true)
 
     this.loadData()
   }
@@ -121,7 +124,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
           this.searchService.setProcessingStatusDescription("search")
         }),
         switchMap((state: RequestParam) =>
-          this.queryName
+            (this.queryName && Object.keys(state).length !== 0 )
             ? this.searchService.searchPage({
               pageParams: this.getPageParams(),
               sort: this.getSort(),
@@ -131,15 +134,19 @@ export class EntityListComponent<T extends Entity> implements OnInit {
             : this.searchService.getPage({
               pageParams: this.getPageParams(),
               sort: this.getSort(),
-              useCache: this.getUseCache(),
-              params: state
+              useCache: this.getUseCache()
             })),
         switchMap(this.executePostProcessing.bind(this)),
       )
       .subscribe({
         next: this.broadcastResults.bind(this),
-        error: (err: Error) => this.entities$.error(err),
-        complete: () => this.entities$.complete()
+        error: (err: Error) => {
+          this.error = err.message
+          this.entities$.error(err)
+        },
+        complete: () => {
+          this.entities$.complete()
+        }
       })
   }
 
@@ -148,8 +155,8 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     this.total = page.totalElements;
     this.limit = page.pageSize;
 
+    this.error = undefined
     this.loading$.next(false);
-    this.pageLoading$.next(false);
     this.entities$.next(page.resources);
   }
 
@@ -257,5 +264,11 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     if (this.filter.delete(id)) {
       this.filter$.next(this.filter)
     }
+  }
+
+  clearFilters() {
+    this.filter = new Map<string, string>
+    this.filter$.next(this.filter)
+    this.startLoadingData()
   }
 }

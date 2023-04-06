@@ -31,6 +31,7 @@ import { InOutService } from './service/in-out.service';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
     MatDialogModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatProgressBarModule
   ],
   exports: [EntityElementComponent, BreadcrumbsComponent, EntityListComponent],
   declarations: [

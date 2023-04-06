@@ -142,10 +142,6 @@ export class ExchangeComponent implements OnInit {
     this.loading = $event
   }
 
-  setPageLoading($event: boolean) {
-    this.pageLoading = $event
-  }
-
   postProcessingHandler = (res: PagedResourceCollection<MoneyExchange>):
     Observable<PagedResourceCollection<MoneyExchange>> => {
 

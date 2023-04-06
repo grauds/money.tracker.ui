@@ -83,6 +83,7 @@ import { InOutListComponent } from './expenses/in-out-list/in-out-list.component
 import { BalanceComponent } from './expenses/balance/balance.component';
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 
 const routes: Routes = [
   {
@@ -235,7 +236,8 @@ const mapConfig: YaConfig = {
     MatSortModule,
     MatDatepickerModule,
     MatMomentDateModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatProgressBarModule
   ],
   providers: [
     {

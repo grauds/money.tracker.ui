@@ -36,8 +36,6 @@ export class OrganizationComponent extends EntityComponent<Organization> impleme
 
   loading: boolean = false;
 
-  pageLoading: boolean = false;
-
   option: any = {  };
 
   constructor(resourceService: HateoasResourceService,
@@ -72,10 +70,6 @@ export class OrganizationComponent extends EntityComponent<Organization> impleme
     this.organizationsService.getTotalsForOrganization(this.id, MoneyTypes.RUB).subscribe((response) => {
       this.totalSum = response
     })
-  }
-
-  setPageLoading($event: boolean) {
-    this.pageLoading = $event
   }
 
   setLoading($event: boolean) {

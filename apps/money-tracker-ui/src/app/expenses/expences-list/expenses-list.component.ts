@@ -21,7 +21,7 @@ export class ExpensesListComponent implements OnInit {
 
   @ViewChild(EntityListComponent) entityList!: EntityListComponent<ExpenseItem>;
 
-  name = new FormControl('');
+  name = new FormControl();
 
   startDate: FormControl<Date> = new FormControl();
 
@@ -39,12 +39,14 @@ export class ExpensesListComponent implements OnInit {
     }
   }
 
-  getQueryName(): string {
+  getQueryName(): string | null {
     return 'filtered';
   }
 
   setFilter($event: Map<string, string>) {
-    this.name.setValue($event.get('name')!);
+
+    this.name.setValue($event.get('name'));
+
     if ($event.get('startDate')) {
       this.startDate.setValue(moment($event.get('startDate'), 'YYYY-MM-DD').toDate());
     } else {
@@ -58,9 +60,13 @@ export class ExpensesListComponent implements OnInit {
     }
   }
 
-  setNameFilter($event: FocusEvent) {
+  setNameFilter($event: Event) {
     let element = $event.target as HTMLInputElement
-    this.entityList.setFilter(element.id, element.value)
+    if (element.value) {
+      this.entityList.setFilter(element.id, element.value)
+    } else {
+      this.entityList.removeFilter(element.id)
+    }
   }
 
   setStartDate($event: MatDatepickerInputEvent<Date>) {
