@@ -32,6 +32,11 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatOptionModule } from "@angular/material/core";
+import { MatSelectModule } from "@angular/material/select";
+import { ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   imports: [
@@ -45,9 +50,19 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
     MatButtonModule,
     MatProgressSpinnerModule,
     MatButtonToggleModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatOptionModule,
+    MatSelectModule,
+    ReactiveFormsModule
   ],
-  exports: [EntityElementComponent, BreadcrumbsComponent, EntityListComponent],
+  exports: [
+    EntityElementComponent,
+    BreadcrumbsComponent,
+    EntityListComponent,
+    SearchComponent
+  ],
   declarations: [
     EntityListComponent,
     BreadcrumbsComponent,

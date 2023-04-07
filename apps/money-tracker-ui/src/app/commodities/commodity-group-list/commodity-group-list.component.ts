@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import {
   CommodityGroupsService
@@ -7,7 +7,7 @@ import {
 @Component({
   selector: 'app-commodity-group-list',
   templateUrl: 'commodity-group-list.component.html',
-  styleUrls: ['commodity-group-list.component.css'],
+  styleUrls: ['commodity-group-list.component.sass'],
   providers: [
     { provide: 'searchService', useClass: CommodityGroupsService }
   ]
@@ -19,4 +19,5 @@ export class CommodityGroupListComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle('Commodity Groups')
   }
+
 }

@@ -14,7 +14,7 @@ import { Utils } from '@clematis-shared/model';
 @Component({
   selector: 'app-organization-group',
   templateUrl: './organization-group.component.html',
-  styleUrls: ['./organization-group.component.css'],
+  styleUrls: ['./organization-group.component.sass'],
   providers: [
     { provide: 'searchService', useClass: OrganizationsService }
   ]

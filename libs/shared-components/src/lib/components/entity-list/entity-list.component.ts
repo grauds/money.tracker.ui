@@ -50,7 +50,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
   // loading page - a smaller area to update
   @Output() loading$ = new EventEmitter<boolean>();
 
-  loading: boolean = false;
+  loading = false;
 
   @Output() filter$ = new EventEmitter<Map<string, string>>();
 

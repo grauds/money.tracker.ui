@@ -1,16 +1,27 @@
-<div class="row">
-  <div class="mb-2 d-flex flex-nowrap px-2">
-    <input #s
-           type="string"
-           inputmode="numeric"
-           class="form-control custom-pages-input"
-           id="searchInput"
-           [value]="searchText"
-           (keyup.enter)="search(s.value)"
-           (blur)="search(s.value)"
-           (change)="search(s.value)"
-           aria-labelledby="searchInputLabel searchDescription"
-           style="width: 100%"
-    />
-  </div>
-</div>
+<ng-template #filter>
+  <mat-form-field appearance="fill">
+    <mat-label>Find by name</mat-label>
+    <mat-select [disabled]="this.loading" [value]="mode" (valueChange)="updateSearchMode($event)">
+      <mat-option *ngFor="let mode of modes | keyvalue" [value]="mode.value">
+        {{mode.value}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Text</mat-label>
+    <input matInput id="name"
+           (change)="setNameFilter($event)"
+           [formControl]="name"
+           type="text"
+           placeholder="to find in name">
+    <mat-hint>Start typing, Enter to search</mat-hint>
+  </mat-form-field>
+</ng-template>
+
+<app-entity-list
+  (loading$)="setLoading($event)"
+  [filterTemplate]="filter"
+  (filter$)="setFilter($event)"
+  [queryName]="getQueryName()"
+  [sort]="getSort()"
+></app-entity-list>

@@ -5,7 +5,7 @@ import { OrganizationGroupsService } from "@clematis-shared/shared-components";
 @Component({
   selector: 'app-organization-group-list',
   templateUrl: 'organization-group-list.component.html',
-  styleUrls: ['organization-group-list.component.css'],
+  styleUrls: ['organization-group-list.component.sass'],
   providers: [
     { provide: 'searchService', useClass: OrganizationGroupsService }
   ]
