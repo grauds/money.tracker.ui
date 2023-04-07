@@ -4,11 +4,15 @@ import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 import { Title } from '@angular/platform-browser';
 import { Subscription } from "rxjs";
 
+/**
+ * Basic component for a REST resource which parsers URLs like /entities/[id]
+ * and loads the resource on initialisation.
+ */
 export abstract class EntityComponent<T extends Entity> {
 
   entity: T | undefined;
 
-  id: string = ''
+  id = ''
 
   // subscribe for page updates in the address bar
   pageSubscription: Subscription;
@@ -28,7 +32,7 @@ export abstract class EntityComponent<T extends Entity> {
   }
 
   onInit(): void {
-    let id = this.route.snapshot.paramMap.get('id')
+    const id = this.route.snapshot.paramMap.get('id')
     if (id !== this.id) {
       this.id = id ? id : ''
       this.loadData()

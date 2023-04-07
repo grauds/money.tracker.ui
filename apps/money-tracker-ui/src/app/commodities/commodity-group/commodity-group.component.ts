@@ -9,7 +9,7 @@ import { Utils } from '@clematis-shared/model';
 @Component({
   selector: 'app-commodity-group',
   templateUrl: './commodity-group.component.html',
-  styleUrls: ['./commodity-group.component.css']
+  styleUrls: ['./commodity-group.component.sass']
 })
 export class CommodityGroupComponent extends EntityComponent<CommodityGroup> implements OnInit {
 

@@ -1,13 +1,4 @@
 <ng-template #filter>
-  <mat-form-field>
-    <mat-label>Name</mat-label>
-    <input matInput id="name"
-           (change)="setNameFilter($event)"
-           [formControl]="name"
-           type="text"
-           placeholder="Filter by commodity">
-    <mat-hint>Starts with...</mat-hint>
-  </mat-form-field>
   <mat-form-field appearance="fill" class="example-form-field">
     <mat-label>Enter a date range</mat-label>
     <mat-date-range-input [rangePicker]="$any(rangePicker)"

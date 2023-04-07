@@ -4,7 +4,7 @@ import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.compo
 import { EntityElementComponent } from './components/entity-element/entity-element.component';
 import { PaginationBarComponent } from './components/pagination-bar/pagination-bar.component';
 import { PageSizeComponent } from './components/page-size/page-size.component';
-import { SearchComponent } from './components/search/search.component';
+import { EntityListFilteredComponent } from './components/entity-list-filtered/entity-list-filtered.component';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { EntityListComponent } from './components/entity-list/entity-list.component';
@@ -61,7 +61,7 @@ import { ReactiveFormsModule } from "@angular/forms";
     EntityElementComponent,
     BreadcrumbsComponent,
     EntityListComponent,
-    SearchComponent
+    EntityListFilteredComponent
   ],
   declarations: [
     EntityListComponent,
@@ -69,7 +69,7 @@ import { ReactiveFormsModule } from "@angular/forms";
     EntityElementComponent,
     PaginationBarComponent,
     PageSizeComponent,
-    SearchComponent,
+    EntityListFilteredComponent,
     ErrorDialogComponent,
     PageNotFoundComponent,
   ],

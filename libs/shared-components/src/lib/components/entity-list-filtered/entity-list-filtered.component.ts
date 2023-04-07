@@ -1,4 +1,4 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component, Input, TemplateRef, ViewChild } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { Entity, SearchStringMode } from "@clematis-shared/model";
 import { EntityListComponent } from "../entity-list/entity-list.component";
@@ -6,10 +6,14 @@ import { Sort } from "@lagoshny/ngx-hateoas-client";
 
 @Component({
   selector: 'app-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.sass']
+  templateUrl: './entity-list-filtered.component.html',
+  styleUrls: ['./entity-list-filtered.component.sass']
 })
-export class SearchComponent<T extends Entity> {
+export class EntityListFilteredComponent<T extends Entity> {
+
+  @Input() resultItemTemplate: TemplateRef<any> | undefined;
+
+  @Input() table = false;
 
   name: FormControl = new FormControl();
 

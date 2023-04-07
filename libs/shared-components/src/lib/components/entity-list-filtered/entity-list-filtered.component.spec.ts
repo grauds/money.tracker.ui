@@ -1,21 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SearchComponent } from './search.component';
+import { EntityListFilteredComponent } from './entity-list-filtered.component';
 import { Entity } from "@clematis-shared/model";
 
 describe('SearchComponent', () => {
-  let component: SearchComponent<Entity>;
-  let fixture: ComponentFixture<SearchComponent<Entity>>;
+  let component: EntityListFilteredComponent<Entity>;
+  let fixture: ComponentFixture<EntityListFilteredComponent<Entity>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SearchComponent ]
+      declarations: [ EntityListFilteredComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SearchComponent);
+    fixture = TestBed.createComponent(EntityListFilteredComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

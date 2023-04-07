@@ -20,8 +20,10 @@
 
 <app-entity-list
   (loading$)="setLoading($event)"
-  [filterTemplate]="filter"
   (filter$)="setFilter($event)"
+  [resultItemTemplate]="resultItemTemplate"
+  [filterTemplate]="filter"
   [queryName]="getQueryName()"
   [sort]="getSort()"
+  [table]="table"
 ></app-entity-list>
