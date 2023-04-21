@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { SearchService } from './search.service';
-import { CommodityGroup, MoneyTypes } from "@clematis-shared/model";
+import { CommodityGroup } from "@clematis-shared/model";
 import { PagedGetOption } from "@lagoshny/ngx-hateoas-client/lib/model/declarations";
-import { Observable, of } from "rxjs";
+import { Observable } from "rxjs";
 import { HateoasResourceService,
-  PagedResourceCollection,
-  ResourceCollection
+  PagedResourceCollection
 } from "@lagoshny/ngx-hateoas-client";
 import { HttpClient } from "@angular/common/http";
 import { EnvironmentService } from "./environment.service";
@@ -27,32 +26,6 @@ export class CommodityGroupsService extends SearchService<CommodityGroup> {
 
   getPage(options: PagedGetOption | undefined): Observable<PagedResourceCollection<CommodityGroup>> {
     return this.hateoasService.getPage<CommodityGroup>(CommodityGroup, options);
-  }
-
-  getPathForCommodityGroup(commodityGroupId: string | null):
-    Observable<ResourceCollection<CommodityGroup>> {
-
-    if (commodityGroupId) {
-      return this.hateoasService.searchCollection<CommodityGroup>(CommodityGroup,'pathById', {
-        params: {
-          id: commodityGroupId
-        }
-      })
-    }
-    return of(new ResourceCollection<CommodityGroup>())
-  }
-
-  getTotalsForCommodityGroup(commodityGroupId: string | null,
-                             moneyCode: MoneyTypes): Observable<number> {
-
-    if (commodityGroupId) {
-      return this.http.get<number>(this.getUrl('/expenses/search/sumCommodityGroupExpenses'), {
-        params: {
-          commodityGroupId: commodityGroupId,
-          moneyCode: moneyCode
-        }
-      })
-    } return of(0)
   }
 
 }

@@ -15,16 +15,12 @@
     </div>
   </div>
 
-  <div *ngIf="childGroups.length > 0" class='col-4'>
-    <div *ngFor="let a of childGroups">
-      <app-entity-element [entity]="a"></app-entity-element>
-    </div>
-  </div>
+  <app-entity-list
+    [queryArguments]="getQueryArguments()"
+    [queryName]="'recursiveWithCommoditiesByParentId'"
+    (loading$)="setLoading($event)"
+    (entities$)="setEntities($event)"
+  ></app-entity-list>
 
-  <div *ngIf="childCommodities.length > 0" class='col-4'>
-    <div *ngFor="let a of childCommodities">
-      <app-entity-element [entity]="a"></app-entity-element>
-    </div>
-  </div>
 
 </div>

@@ -22,7 +22,7 @@ describe('EntityListComponent', () => {
       providers: [
         { provide: "searchService", useValue: {
             getStatusDescription() {
-
+              return 'test'
             }
           } },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }

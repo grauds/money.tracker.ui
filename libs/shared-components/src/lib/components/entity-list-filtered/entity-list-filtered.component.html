@@ -19,11 +19,11 @@
 </ng-template>
 
 <app-entity-list
+  [resultItemTemplate]="resultItemTemplate"
+  [table]="table"
+  [filterTemplate]="filter"
+  [sort]="getSort()"
+  [queryName]="getQueryName()"
   (loading$)="setLoading($event)"
   (filter$)="setFilter($event)"
-  [resultItemTemplate]="resultItemTemplate"
-  [filterTemplate]="filter"
-  [queryName]="getQueryName()"
-  [sort]="getSort()"
-  [table]="table"
 ></app-entity-list>

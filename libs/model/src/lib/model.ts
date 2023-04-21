@@ -17,4 +17,5 @@ export { UnitType } from '../model/unit-type'
 
 export { MoneyExchangeReport } from '../dto/money-exchange-report'
 
-export { SearchStringMode } from '../model/search-string-mode'
+export { SearchRequest } from '../dto/search-request'
+export { SearchStringMode } from '../dto/search-string-mode'

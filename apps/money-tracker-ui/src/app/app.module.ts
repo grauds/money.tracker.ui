@@ -208,8 +208,7 @@ const mapConfig: YaConfig = {
     FontAwesomeModule,
     KeycloakAngularModule,
     RouterModule.forRoot(
-      routes,
-      { enableTracing: true } // <-- debugging purposes only
+      routes
     ),
     NgxHateoasClientModule.forRoot(),
     ContentLoaderModule,
