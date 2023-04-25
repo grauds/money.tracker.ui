@@ -14,7 +14,7 @@ export abstract class SearchService<T extends Resource> {
 
   environmentService: EnvironmentService;
 
-  private _pageLoading: boolean = false
+  private _pageLoading = false
 
   protected constructor(environmentService: EnvironmentService) {
     this.environmentService = environmentService;

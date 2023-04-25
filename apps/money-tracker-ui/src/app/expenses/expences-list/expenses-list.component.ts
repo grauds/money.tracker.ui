@@ -38,7 +38,7 @@ export class ExpensesListComponent implements OnInit {
   }
 
   getQueryName(): string | null {
-    return 'filtered';
+    return (this.startDate.value && this.endDate.value) ? 'filtered' : null;
   }
 
   setFilter($event: Map<string, string>) {
@@ -53,15 +53,6 @@ export class ExpensesListComponent implements OnInit {
       this.endDate.setValue(moment($event.get('endDate'), 'YYYY-MM-DD').toDate());
     } else {
       this.endDate.reset()
-    }
-  }
-
-  setNameFilter($event: Event) {
-    let element = $event.target as HTMLInputElement
-    if (element.value) {
-      this.entityList.setFilter(element.id, element.value)
-    } else {
-      this.entityList.removeFilter(element.id)
     }
   }
 

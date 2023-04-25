@@ -68,8 +68,10 @@
 <app-entity-list
   [resultItemTemplate]="expensesTable"
   [table]="true"
-  [queryArguments]="getQueryArguments()"
-  [queryName]="'commodity'"
+  [searchRequest]="{
+        queryArguments: getQueryArguments(),
+        queryName: 'commodity'
+    }"
   (loading$)="setLoading($event)"
   (entities$)="setEntities($event)"
 ></app-entity-list>

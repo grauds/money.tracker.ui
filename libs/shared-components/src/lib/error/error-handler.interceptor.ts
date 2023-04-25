@@ -23,12 +23,12 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
      return next.handle(request).pipe(
        map((event: HttpEvent<any>) => {
          if (event instanceof HttpResponse) {
-           console.log('event--->>>', event);
+           //console.log('event--->>>', event);
          }
          return event;
        }),
        catchError((error: HttpErrorResponse) => {
-         let data = {
+         const data = {
            reason: error && error.error && error.error.reason ? error.error.reason : error.message,
            status: error.status
          };

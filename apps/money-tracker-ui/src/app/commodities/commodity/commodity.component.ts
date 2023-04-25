@@ -11,10 +11,10 @@ import {
 } from '@clematis-shared/model';
 import {
   CommoditiesService,
-  CommodityGroupsService,
+  CommodityGroupService,
   EntityComponent,
   ExpenseItemsService
-} from '@clematis-shared/shared-components';
+} from "@clematis-shared/shared-components";
 import { Title } from "@angular/platform-browser";
 import { Utils } from '@clematis-shared/model';
 import { formatDate } from "@angular/common";
@@ -56,7 +56,7 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
   constructor(resourceService: HateoasResourceService,
               private expenseItemsService: ExpenseItemsService,
               private commodityService: CommoditiesService,
-              private commodityGroupService: CommodityGroupsService,
+              private commodityGroupService: CommodityGroupService,
               route: ActivatedRoute,
               router: Router,
               title: Title) {

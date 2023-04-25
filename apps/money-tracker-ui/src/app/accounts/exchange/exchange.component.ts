@@ -56,6 +56,7 @@ export class ExchangeComponent implements OnInit {
     })
 
     this.pageSubscription = route.queryParams.subscribe(
+
       (queryParam: any) => {
         const sourceCurrency: String = queryParam['source']
         if (sourceCurrency) {
@@ -117,12 +118,7 @@ export class ExchangeComponent implements OnInit {
       skipLocationChange: false
     })
 
-    this.entityList.loading$.next(true)
-    this.entityList.searchRequest$.next(this.getQueryArguments())
-  }
-
-  getQueryName(): string {
-    return 'events';
+    this.entityList.loadData()
   }
 
   getQueryArguments(): any {
