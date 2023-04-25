@@ -2,7 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CommodityComponent } from './commodity.component';
 import { HttpClient, HttpHandler } from "@angular/common/http";
-import { CommoditiesService, CommodityGroupsService, ExpenseItemsService } from "@clematis-shared/shared-components";
+import {
+  CommoditiesService,
+  CommodityGroupService,
+  CommodityGroupsService,
+  ExpenseItemsService
+} from "@clematis-shared/shared-components";
 import { ActivatedRoute, convertToParamMap } from "@angular/router";
 import { of } from "rxjs";
 
@@ -25,6 +30,7 @@ describe('CommodityComponent', () => {
         HttpHandler,
         ExpenseItemsService,
         CommoditiesService,
+        CommodityGroupService,
         CommodityGroupsService,
         {provide: ActivatedRoute, useValue: fakeActivatedRoute}
       ]

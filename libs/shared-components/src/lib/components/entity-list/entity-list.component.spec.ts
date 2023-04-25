@@ -24,7 +24,8 @@ describe('EntityListComponent', () => {
             getStatusDescription() {
               return 'test'
             }
-          } },
+          }
+        },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ]
     })
