@@ -121,10 +121,6 @@ export class ExchangeComponent implements OnInit {
     this.entityList.loadData()
   }
 
-  getQueryName(): string {
-    return 'events';
-  }
-
   getQueryArguments(): any {
     return {
       source: this.sourceCurrency,

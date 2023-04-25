@@ -4,7 +4,7 @@ import { ActivatedRoute, NavigationExtras, Params, Router } from "@angular/route
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from "@angular/material/sort";
 import { Entity, SearchRequest } from "@clematis-shared/model";
-import { PagedResourceCollection, RequestParam, Sort as RestSort, SortOrder } from "@lagoshny/ngx-hateoas-client";
+import { PagedResourceCollection, Sort as RestSort, SortOrder } from "@lagoshny/ngx-hateoas-client";
 import { PageParam } from "@lagoshny/ngx-hateoas-client/lib/model/declarations";
 import { SearchService } from "../../service/search.service";
 
@@ -23,9 +23,8 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
   @Input() sort: RestSort | null = null
 
-  @Input() queryParamsMode: "merge" | "preserve" | "" | null = "";
+  @Input() queryParamsMode: "merge" | "preserve" | "" | null = "merge";
 
-  // subscribe for page updates in the address bar
   pageSubscription: Subscription;
 
   @Output() filter$: EventEmitter<Map<string, string>> = new EventEmitter<Map<string, string>>();
@@ -34,7 +33,10 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
   @Output() statusDescription$: Observable<string> | undefined
 
-  searchRequest$: EventEmitter<SearchRequest> = new EventEmitter<SearchRequest>();
+  searchRequest$: EventEmitter<SearchRequest | undefined>
+    = new EventEmitter<SearchRequest | undefined>();
+
+  @Input() searchRequest?: SearchRequest;
 
   total: number | undefined;
 
@@ -73,6 +75,13 @@ export class EntityListComponent<T extends Entity> implements OnInit {
             this.sort = { [s[0]] : s[1] as SortOrder }
           }
         }
+
+        // add the rest of the url search parameters as filters
+        Object.keys(queryParams).forEach((k) => {
+          if (k !== 'page' && k !== 'size' && k !== 'sort') {
+            this.filter.set(k, queryParams[k])
+          }
+        })
       }
     );
 
@@ -93,32 +102,42 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
   loadData() {
     this.loading$.next(true)
-    this.searchRequest$.next({...this.queryArguments, ...this.getFilterParams()})
+    this.searchRequest$.next(this.searchRequest)
+  }
+
+  refreshData(searchRequest?: SearchRequest) {
+    this.n = 0
+    this.searchRequest = searchRequest
+    this.updateRoute()
+    this.loadData()
   }
 
   private subscribeToSearchRequests() {
 
-    const params = {
-      pageParams: this.getPageParams(),
-      sort: this.getSort(),
-      useCache: this.getUseCache()
-    }
-
     this.searchRequest$
       .pipe(
-      //tap(this.searchRequestWasStarted.bind(this)),
         tap(() => {
           this.searchService.setProcessingStatusDescription("search")
         }),
-        switchMap((request: SearchRequest) => {
-          console.log("Using query name " + this.queryName);
-          console.log("Using query params " + JSON.stringify(request));
-          return (request.queryName) ?
+        switchMap((searchRequest: SearchRequest | undefined) => {
+
+          const params = {
+            pageParams: this.getPageParams(),
+            sort: this.getSort(),
+            useCache: this.getUseCache()
+          }
+
+          return (searchRequest && searchRequest.queryName) ?
             this.searchService.searchPage(
-              {...params, params: request.queryArguments},
-              this.queryName
-            )
-            : this.searchService.getPage(params)
+              {...params, params: {
+                          ...searchRequest.queryArguments,
+                          ...this.getFilterParams(),
+                          ...searchRequest.filterParams
+                      }
+              },
+              searchRequest.queryName
+            ) :
+            this.searchService.getPage(params)
         }),
         switchMap(this.executePostProcessing.bind(this)),
       )
@@ -186,7 +205,8 @@ export class EntityListComponent<T extends Entity> implements OnInit {
   setCurrentPage(event: PageEvent) {
     this.n = event.pageIndex
     this.limit = event.pageSize
-    this.updateRouteAndLoadData()
+    this.updateRoute()
+    this.loadData()
   }
 
   getSort(): RestSort {
@@ -212,7 +232,8 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     } else {
       this.sort = null
     }
-    this.updateRouteAndLoadData()
+    this.updateRoute()
+    this.loadData()
   }
 
   getFilter(): Map<string, string> {
@@ -230,12 +251,12 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     return null
   }
 
-  submitAction() {
-    this.filter$.next(this.filter)
-  }
-
-  setFilter(id : string,  value : string) {
-    this.filter$.next(this.filter.set(id, value))
+  setFilter(id? : string,  value? : string) {
+    if (id && value) {
+      this.filter$.next(this.filter.set(id, value))
+    } else {
+      this.filter$.next(this.filter)
+    }
   }
 
   removeFilter(id: string) {
@@ -244,18 +265,9 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     }
   }
 
-  clearFilters() {
+  clearFilter() {
     this.filter = new Map<string, string>
     this.filter$.next(this.filter)
-  }
-
-  clearFiltersAction() {
-    this.clearFilters()
-  }
-
-  updateRouteAndLoadData() {
-    this.updateRoute()
-    this.loadData()
   }
 
   getUseCache(): boolean {

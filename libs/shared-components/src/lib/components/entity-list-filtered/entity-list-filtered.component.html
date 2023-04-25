@@ -1,7 +1,10 @@
 <ng-template #filter>
   <mat-form-field appearance="fill">
     <mat-label>Find by name</mat-label>
-    <mat-select [disabled]="this.loading" [value]="mode" (valueChange)="updateSearchMode($event)">
+    <mat-select [disabled]="this.loading"
+                (selectionChange)="setFilterMode($event)"
+                [formControl]="mode"
+                (valueChange)="updateSearchMode($event)">
       <mat-option *ngFor="let mode of modes | keyvalue" [value]="mode.value">
         {{mode.value}}
       </mat-option>
@@ -10,7 +13,7 @@
   <mat-form-field>
     <mat-label>Text</mat-label>
     <input matInput id="name"
-           (change)="setNameFilter($event)"
+           (change)="setFilterAction($event)"
            [formControl]="name"
            type="text"
            placeholder="to find in name">
@@ -23,7 +26,6 @@
   [table]="table"
   [filterTemplate]="filter"
   [sort]="getSort()"
-  [queryName]="getQueryName()"
   (loading$)="setLoading($event)"
   (filter$)="setFilter($event)"
 ></app-entity-list>

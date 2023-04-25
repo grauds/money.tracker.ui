@@ -6,4 +6,6 @@ export class SearchRequest {
 
   queryArguments: RequestParam = {}
 
+  filterParams?: RequestParam = {};
+
 }

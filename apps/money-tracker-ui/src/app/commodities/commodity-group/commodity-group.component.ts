@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HateoasResourceService, RequestParam } from "@lagoshny/ngx-hateoas-client";
+import { HateoasResourceService, RequestParam, Sort } from "@lagoshny/ngx-hateoas-client";
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommodityGroup, MoneyTypes, Entity, ExpenseItem } from "@clematis-shared/model";
-import { CommodityGroupService,
+import {
+  CommodityGroupService,
   EntityComponent
 } from "@clematis-shared/shared-components";
 import { Title } from "@angular/platform-browser";
@@ -67,15 +68,23 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup>
       })
 
     if (this.entity) {
-      this.commodityGroupService.getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.entity)).subscribe((response) => {
+      this.commodityGroupService.getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.entity))
+        .subscribe((response) => {
         this.path = response.resources.reverse()
       })
     }
 
-    this.commodityGroupService.getTotalsForCommodityGroup(this.id, MoneyTypes.RUB).subscribe((response) => {
+    this.commodityGroupService.getTotalsForCommodityGroup(this.id, MoneyTypes.RUB)
+      .subscribe((response) => {
       this.totalSum = response
       this.loading = false
     })
   };
+
+  getSort(): Sort {
+    return {
+      name: 'ASC'
+    }
+  }
 
 }

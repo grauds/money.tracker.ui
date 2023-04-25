@@ -97,8 +97,10 @@
 
   <app-entity-list [resultItemTemplate]="exchangeTable"
                    [table]="true"
-                   [queryArguments]="getQueryArguments()"
-                   [queryName]="getQueryName()"
+                   [searchRequest]="{
+                        queryArguments: getQueryArguments(),
+                        queryName: 'events'
+                    }"
                    [sort]="getSort()"
                    (loading$)="setLoading($event)"
   ></app-entity-list>

@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { CommodityGroup, MoneyTypes } from "@clematis-shared/model";
 import { HttpClient } from "@angular/common/http";
-import { HateoasResourceService, PagedResourceCollection, ResourceCollection } from "@lagoshny/ngx-hateoas-client";
+import {
+  HateoasResourceService,
+  PagedResourceCollection,
+  ResourceCollection
+} from "@lagoshny/ngx-hateoas-client";
 
 import { SearchService } from './search.service';
 import { EnvironmentService } from './environment.service';

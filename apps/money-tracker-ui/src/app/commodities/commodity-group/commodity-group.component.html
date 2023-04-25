@@ -16,10 +16,13 @@
   </div>
 
   <app-entity-list
-    [queryArguments]="getQueryArguments()"
-    [queryName]="'recursiveWithCommoditiesByParentId'"
+    [searchRequest]="{
+        queryArguments: getQueryArguments(),
+        queryName: 'recursiveWithCommoditiesByParentId'
+    }"
     (loading$)="setLoading($event)"
     (entities$)="setEntities($event)"
+    [sort]="getSort()"
   ></app-entity-list>
 
 

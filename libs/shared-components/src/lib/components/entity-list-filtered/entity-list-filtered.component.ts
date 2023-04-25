@@ -1,18 +1,21 @@
-import { Component, Inject, Input, TemplateRef, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, Inject, Input, TemplateRef, ViewChild } from "@angular/core";
+import { ActivatedRoute, NavigationExtras, Params, Router } from "@angular/router";
 import { FormControl } from "@angular/forms";
+import { Subscription } from "rxjs";
+
+import { Sort } from "@lagoshny/ngx-hateoas-client";
+
 import { Entity, SearchStringMode } from "@clematis-shared/model";
 import { EntityListComponent } from "../entity-list/entity-list.component";
-import { Sort } from "@lagoshny/ngx-hateoas-client";
 import { SearchService } from "../../service/search.service";
-import { ActivatedRoute, Params, Router } from "@angular/router";
-import { Subscription } from "rxjs";
+import { MatSelectChange } from "@angular/material/select";
 
 @Component({
   selector: 'app-search',
   templateUrl: './entity-list-filtered.component.html',
   styleUrls: ['./entity-list-filtered.component.sass']
 })
-export class EntityListFilteredComponent<T extends Entity> {
+export class EntityListFilteredComponent<T extends Entity> implements AfterViewInit {
 
   @ViewChild(EntityListComponent) entityList!: EntityListComponent<T>;
 
@@ -20,12 +23,15 @@ export class EntityListFilteredComponent<T extends Entity> {
 
   @Input() table = false;
 
+  @Input() queryParamsMode: "merge" | "preserve" | "" | null = "merge";
+
   // subscribe for page updates in the address bar
   pageSubscription: Subscription;
 
   name: FormControl = new FormControl();
 
-  mode: SearchStringMode = SearchStringMode.Starting;
+  mode: FormControl<SearchStringMode | null>
+    = new FormControl<SearchStringMode>(SearchStringMode.Starting);
 
   modes: SearchStringMode[] = [
     SearchStringMode.Starting,
@@ -41,30 +47,86 @@ export class EntityListFilteredComponent<T extends Entity> {
 
     this.pageSubscription = route.queryParams.subscribe(
       (queryParams: Params) => {
-        this.name.setValue(queryParams['name']);
+
+        const name = queryParams['name']
+        if (name) {
+          this.name.setValue(name);
+        }
+
+        const mode = queryParams['mode']
+        if (mode) {
+          this.mode.setValue(mode);
+        }
       }
     )
   }
 
-  getQueryName() {
-    console.log("Get query name " + (this.name.value ? ('findByName' + this.mode) : null));
-    return this.name.value ? ('findByName' + this.mode) : null;
+  ngAfterViewInit(): void {
+    if (this.name.value) {
+      this.entityList.setFilter('name', this.name.value)
+    }
+  }
+
+  updateRoute() {
+    this.router.navigate([], this.getRouteParameters())
+  }
+
+  getRouteParameters(): NavigationExtras {
+    let queryParams: Params = {}
+
+    if (this.name.value) {
+      queryParams = { ...queryParams, ...{
+          name: this.name.value
+        }
+      }
+    }
+
+    if (this.mode.value) {
+      queryParams = { ...queryParams, ...{
+          mode: this.mode.value
+        }
+      }
+    }
+
+    return {
+      relativeTo: this.route,
+      queryParams: queryParams,
+      queryParamsHandling: this.queryParamsMode,
+      skipLocationChange: false
+    }
   }
 
   setFilter($event: Map<string, string>) {
     this.name.setValue($event.get('name'));
-    console.log("Set filter " + this.name.value);
-    this.entityList.updateRouteAndLoadData()
+    this.refresh();
   }
 
-  setNameFilter($event: Event) {
+  setFilterAction($event: Event) {
     const element = $event.target as HTMLInputElement
     if (element.value) {
       this.entityList.setFilter(element.id, element.value)
     } else {
       this.entityList.removeFilter(element.id)
     }
-    this.entityList.updateRouteAndLoadData()
+    this.refresh();
+  }
+
+  setFilterMode($event: MatSelectChange) {
+    if ($event.value) {
+      this.mode.setValue($event.value as SearchStringMode)
+    }
+    this.updateRoute();
+    this.refresh();
+  }
+
+  private refresh() {
+    this.entityList.refreshData({
+      queryName: (this.name.value ? ("findByName" + this.mode.value) : null),
+      queryArguments: {},
+      filterParams: this.name.value ? {
+        name: this.name.value
+      } : {}
+    });
   }
 
   setLoading($event: boolean) {
@@ -72,7 +134,7 @@ export class EntityListFilteredComponent<T extends Entity> {
   }
 
   updateSearchMode($event: SearchStringMode) {
-    this.mode = $event
+    this.mode.setValue($event)
   }
 
   getSort(): Sort {
