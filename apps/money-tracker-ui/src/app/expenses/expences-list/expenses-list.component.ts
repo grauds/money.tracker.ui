@@ -54,6 +54,11 @@ export class ExpensesListComponent implements OnInit {
     } else {
       this.endDate.reset()
     }
+
+    this.entityList.refreshData({
+      queryArguments: {},
+      queryName: this.getQueryName()
+    })
   }
 
   setStartDate($event: MatDatepickerInputEvent<Date>) {

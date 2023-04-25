@@ -72,6 +72,10 @@
 
 <app-entity-list [resultItemTemplate]="expensesTable"
                  [table]="true"
+                 [searchRequest]="{
+                        queryArguments: {},
+                        queryName: getQueryName()
+                    }"
                  [sort]="getSort()"
                  [filterTemplate]="filter"
                  (filter$)="setFilter($event)"
