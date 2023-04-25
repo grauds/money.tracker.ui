@@ -1,12 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { HateoasResourceService, ResourceCollection } from '@lagoshny/ngx-hateoas-client';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import {
+  HateoasResourceService,
+  RequestParam,
+  Sort
+} from "@lagoshny/ngx-hateoas-client";
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { CommodityGroup, Entity, Organization, OrganizationGroup } from '@clematis-shared/model';
-import { EntityComponent,
-  OrganizationGroupsService,
-  OrganizationsService
-} from '@clematis-shared/shared-components';
+import {
+  CommodityGroup,
+  Entity,
+  OrganizationGroup
+} from "@clematis-shared/model";
+
+import {
+  EntityComponent, EntityListComponent,
+  OrganizationGroupsService
+} from "@clematis-shared/shared-components";
 
 import { Title } from "@angular/platform-browser";
 import { Utils } from '@clematis-shared/model';
@@ -16,20 +25,21 @@ import { Utils } from '@clematis-shared/model';
   templateUrl: './organization-group.component.html',
   styleUrls: ['./organization-group.component.sass'],
   providers: [
-    { provide: 'searchService', useClass: OrganizationsService }
+    { provide: 'searchService', useClass: OrganizationGroupsService }
   ]
 })
 export class OrganizationGroupComponent extends EntityComponent<OrganizationGroup> implements OnInit {
 
-  loading: boolean = true;
+
+  @ViewChild(EntityListComponent) entityList!: EntityListComponent<OrganizationGroup>;
+
+  loading: boolean = false;
 
   parent: OrganizationGroup | undefined;
 
   parentLink: string | undefined;
 
-  childGroups: OrganizationGroup[] = []
-
-  childOrganizations: Organization[] = []
+  children: OrganizationGroup[] = []
 
   path: Array<CommodityGroup> = [];
 
@@ -42,11 +52,31 @@ export class OrganizationGroupComponent extends EntityComponent<OrganizationGrou
   }
 
   ngOnInit(): void {
+    this.loading = true
     this.onInit()
+  }
+
+  setLoading($event: boolean) {
+    this.loading = $event
+  }
+
+  getQueryArguments(): RequestParam {
+    return {
+      id: this.id ? this.id : ''
+    }
+  }
+
+  setEntities($event: OrganizationGroup[]) {
+    this.children = $event
   }
 
   override setEntity(entity: OrganizationGroup) {
     super.setEntity(entity)
+
+    this.entityList?.refreshData({
+      queryArguments: this.getQueryArguments(),
+      queryName: 'recursiveByParentId'
+    })
 
     this.entity?.getRelation<OrganizationGroup>('parent')
       .subscribe((parent: OrganizationGroup) => {
@@ -54,29 +84,17 @@ export class OrganizationGroupComponent extends EntityComponent<OrganizationGrou
         this.parentLink = Entity.getRelativeSelfLinkHref(this.parent)
       })
 
-    this.resourceService.searchCollection(OrganizationGroup, 'recursiveByParentId', {
-      params: {
-        id: this.id ? this.id : '1'
-      }
-    })
-      .subscribe((collection: ResourceCollection<OrganizationGroup>) => {
-        this.childGroups = collection.resources;
-      });
-
-    this.resourceService.searchCollection(Organization, 'recursiveByParentGroupId', {
-      params: {
-        id: this.id ? this.id : '1'
-      }
-    })
-      .subscribe((collection: ResourceCollection<Organization>) => {
-        this.childOrganizations = collection.resources;
-      });
-
     if (this.entity) {
       this.organizationGroupsService.getPathForOrganizationGroup(Utils.getIdFromSelfUrl(this.entity)).subscribe((response) => {
         this.path = response.resources
       })
     }
 
+  }
+
+  getSort(): Sort {
+    return {
+      name: 'ASC'
+    }
   }
 }

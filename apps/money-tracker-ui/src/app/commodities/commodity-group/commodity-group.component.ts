@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { HateoasResourceService, RequestParam, Sort } from "@lagoshny/ngx-hateoas-client";
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommodityGroup, MoneyTypes, Entity, ExpenseItem } from "@clematis-shared/model";
 import {
   CommodityGroupService,
-  EntityComponent
+  EntityComponent, EntityListComponent
 } from "@clematis-shared/shared-components";
 import { Title } from "@angular/platform-browser";
 import { Utils } from '@clematis-shared/model';
@@ -20,7 +20,9 @@ import { Utils } from '@clematis-shared/model';
 export class CommodityGroupComponent extends EntityComponent<CommodityGroup>
   implements OnInit {
 
-  loading: boolean = true;
+  @ViewChild(EntityListComponent) entityList!: EntityListComponent<CommodityGroup>;
+
+  loading: boolean = false;
 
   parent: CommodityGroup | undefined;
 
@@ -41,6 +43,7 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup>
   }
 
   ngOnInit(): void {
+    this.loading = true
     this.onInit()
   }
 
@@ -60,6 +63,11 @@ export class CommodityGroupComponent extends EntityComponent<CommodityGroup>
 
   override setEntity(entity: CommodityGroup) {
     super.setEntity(entity)
+
+    this.entityList?.refreshData({
+      queryArguments: this.getQueryArguments(),
+      queryName: 'recursiveByParentId'
+    })
 
     this.entity?.getRelation<CommodityGroup>('parent')
       .subscribe((parent: CommodityGroup) => {

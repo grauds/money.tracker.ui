@@ -18,12 +18,18 @@
   <app-entity-list
     [searchRequest]="{
         queryArguments: getQueryArguments(),
-        queryName: 'recursiveWithCommoditiesByParentId'
+        queryName: 'recursiveByParentId'
     }"
     (loading$)="setLoading($event)"
     (entities$)="setEntities($event)"
     [sort]="getSort()"
   ></app-entity-list>
+
+  <app-commodity-group-commodities
+    *ngIf="!(children && children.length > 0)"
+    [id]="id"
+  >
+  </app-commodity-group-commodities>
 
 
 </div>

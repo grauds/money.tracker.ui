@@ -64,6 +64,7 @@ export class CommodityComponent extends EntityComponent<Commodity> implements On
   }
 
   ngOnInit(): void {
+    this.loading = true
     this.onInit()
   }
 

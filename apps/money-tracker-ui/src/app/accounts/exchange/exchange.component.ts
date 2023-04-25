@@ -116,9 +116,13 @@ export class ExchangeComponent implements OnInit {
       },
       queryParamsHandling: 'merge',
       skipLocationChange: false
+    }).then(() => {
+      this.entityList.refreshData({
+        queryArguments: this.getQueryArguments(),
+        queryName: 'events'
+      })
     })
 
-    this.entityList.loadData()
   }
 
   getQueryArguments(): any {

@@ -84,6 +84,8 @@ import { BalanceComponent } from './expenses/balance/balance.component';
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { CommodityGroupCommoditiesComponent } from './commodities/commodity-group-commodities/commodity-group-commodities.component';
+import { OrganizationGroupOrganizationsComponent } from './organizations/organization-group-organizations/organization-group-organizations.component';
 
 const routes: Routes = [
   {
@@ -201,6 +203,8 @@ const mapConfig: YaConfig = {
     ExchangeEventElementComponent,
     InOutListComponent,
     BalanceComponent,
+    CommodityGroupCommoditiesComponent,
+    OrganizationGroupOrganizationsComponent,
   ],
   imports: [
     HttpClientModule,
