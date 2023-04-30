@@ -1,16 +1,15 @@
 <div *ngIf="isLoggedIn">
 
-  <mat-form-field appearance="fill">
-    <mat-label>Available currencies</mat-label>
-    <mat-select [disabled]="this.loading" [value]="currency" (valueChange)="updateCurrency($event)">
-      <mat-option *ngFor="let currency of currencies | keyvalue" [value]="currency.value">
-        {{currency.value}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <app-money-type-selector
+    [label]="'Available currencies'"
+    [disabled]="this.loading"
+    [currencies]="currencies"
+    [currency]="currency"
+    (currency$)="updateCurrency($event)"
+  ></app-money-type-selector>
 
   <div class="rubber totalsHeader" [hidden]="this.loading">
-    {{ this.total | currency: this.currency }}
+    {{ this.total | currency: this.currency.code }}
   </div>
 
   <div class="rubber totalsHeader" [hidden]="!(this.loading)">
@@ -21,7 +20,11 @@
        [options]="options"
        (chartClick)="onChartEvent($event, 'chartClick')"
        [loading]="loading"
-       class="accounts-chart">
+       class="accounts-chart"
+       [style]="{
+            height: (accountsBalances && accountsBalances.length > 5) ?
+                      (accountsBalances.length * 40 + 'px') : '200px'
+       }">
   </div>
 
 

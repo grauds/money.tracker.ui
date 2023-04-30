@@ -1,43 +1,38 @@
 <div *ngIf="isLoggedIn">
 
   <h4 *ngIf="this.report" class="header" [hidden]="pageLoading">
-    <span><b>Sold:</b> {{(this.report.sourceAmount ? this.report.sourceAmount : 0) | currency:this.sourceCurrency}}, </span>
-    <span><b>Bought:</b> {{(this.report.destAmount ? this.report.destAmount : 0) | currency:this.destCurrency}}, </span>
+    <span><b>Sold:</b> {{(this.report.sourceAmount ? this.report.sourceAmount : 0) | currency:this.sourceCurrency.code}}, </span>
+    <span><b>Bought:</b> {{(this.report.destAmount ? this.report.destAmount : 0) | currency:this.destCurrency.code}}, </span>
     <span><b>Average:</b> {{(this.report.avgRate ? this.report.avgRate : 0) | number: '1.6-8'}} , </span>
     <span><b>Current:</b> {{this.report.curRate | number: '1.6-8'}} </span>
   </h4>
 
-  <h4 *ngIf="this.report" class="header" [hidden]="!(pageLoading)">
+  <h4 class="header" [hidden]="!(pageLoading)">
     <span><b>Loading...</b></span>
   </h4>
 
-  <div *ngIf="this.report">
-    <mat-form-field appearance="fill">
-      <mat-label>Available source currencies</mat-label>
-      <mat-select [disabled]="loading" [value]="sourceCurrency" (valueChange)="updatesSourceCurrency($event)">
-        <mat-option *ngFor="let currency of getSourceCurrencies() | keyvalue" [value]="currency.value">
-          {{currency.value}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+  <app-money-type-selector
+    [label]="'Available source currencies'"
+    [disabled]="loading"
+    [currencies]="getSourceCurrencies()"
+    [currency]="sourceCurrency"
+    (currency$)="updatesSourceCurrency($event)"
+  ></app-money-type-selector>
 
-    <button mat-icon-button (click)="swapCurrencies()">
-      <mat-icon>swap_horiz</mat-icon>
-    </button>
+  <button mat-icon-button (click)="swapCurrencies()">
+    <mat-icon>swap_horiz</mat-icon>
+  </button>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Available destination currencies</mat-label>
-      <mat-select [disabled]="loading" [value]="destCurrency" (valueChange)="updatesDestCurrency($event)">
-        <mat-option *ngFor="let currency of getDestCurrencies() | keyvalue" [value]="currency.value">
-          {{currency.value}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+  <app-money-type-selector
+    [label]="'Available destination currencies'"
+    [disabled]="loading"
+    [currencies]="getDestCurrencies()"
+    [currency]="destCurrency"
+    (currency$)="updatesDestCurrency($event)"
+  ></app-money-type-selector>
 
-    <div class="rubber timeHeader" *ngIf="this.report && this.report.delta">
-      {{this.report.delta | currency: this.sourceCurrency}}
-    </div>
-
+  <div class="rubber timeHeader" *ngIf="this.report && this.report.delta">
+    {{this.report.delta | currency: this.sourceCurrency.code}}
   </div>
 
   <ng-template #exchangeTable let-entities="entities">
@@ -52,12 +47,16 @@
           <ng-container matColumnDef="from">
             <th mat-header-cell *matHeaderCellDef> From </th>
             <td mat-cell *matCellDef="let element">
+
               <a *ngIf="element.source && element.sourceLink"
                  routerLink="{{element.sourceLink}}">
-                {{element.source.name}}</a>
+                {{element.source.name}}
+              </a>
 
               <div *ngIf="element.source && !element.sourceLink">
-                {{element.source.name}}</div>
+                {{element.source.name}}
+              </div>
+
             </td>
           </ng-container>
 
@@ -75,12 +74,12 @@
 
           <ng-container matColumnDef="sourceamount">
             <th mat-header-cell *matHeaderCellDef> Source Amount </th>
-            <td mat-cell *matCellDef="let element"> {{element.sourceamount | currency: sourceCurrency}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.sourceamount | currency: sourceCurrency.code}} </td>
           </ng-container>
 
           <ng-container matColumnDef="destamount">
             <th mat-header-cell *matHeaderCellDef> Dest Amount </th>
-            <td mat-cell *matCellDef="let element"> {{element.destamount | currency: destCurrency}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.destamount | currency: destCurrency.code}} </td>
           </ng-container>
 
           <ng-container matColumnDef="rate">

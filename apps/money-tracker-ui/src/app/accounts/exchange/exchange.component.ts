@@ -1,10 +1,20 @@
 import { Component, Inject, OnInit, ViewChild } from "@angular/core";
 import { PagedResourceCollection, Sort } from "@lagoshny/ngx-hateoas-client";
 import { KeycloakService } from "keycloak-angular";
-import { MoneyExchange, MoneyExchangeReport, MoneyTypes } from "@clematis-shared/model";
+import {
+  MoneyExchange,
+  MoneyExchangeReport,
+  MoneyType
+} from "@clematis-shared/model";
+
 import { ActivatedRoute, Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
-import { EntityListComponent, MoneyExchangeService } from "@clematis-shared/shared-components";
+import {
+  EntityListComponent,
+  MoneyExchangeService,
+  MoneyTypeService
+} from "@clematis-shared/shared-components";
+
 import { Observable, of, Subscription, switchMap, tap } from "rxjs";
 
 @Component({
@@ -17,7 +27,6 @@ import { Observable, of, Subscription, switchMap, tap } from "rxjs";
 })
 export class ExchangeComponent implements OnInit {
 
-  // subscribe for page updates in the address bar
   pageSubscription: Subscription;
 
   isLoggedIn: boolean = false;
@@ -28,24 +37,27 @@ export class ExchangeComponent implements OnInit {
 
   pageLoading = false
 
-  sourceCurrency: MoneyTypes = MoneyTypes.RUB;
+  sourceCurrency!: MoneyType;
 
-  destCurrency: MoneyTypes = MoneyTypes.USD;
+  destCurrency!: MoneyType;
 
-  currencies = [MoneyTypes.RUB,
-    MoneyTypes.GBP,
-    MoneyTypes.EUR,
-    MoneyTypes.USD,
-    MoneyTypes.CZK
+  currencies: MoneyType[] = [];
+
+  displayedColumns: string[] = [
+    'exchangedate',
+    'from',
+    'to',
+    'sourceamount',
+    'destamount',
+    'rate'
   ];
-
-  displayedColumns: string[] = ['exchangedate', 'from', 'to', 'sourceamount', 'destamount', 'rate'];
 
   report?: MoneyExchangeReport;
 
   @ViewChild(EntityListComponent) entityList!: EntityListComponent<MoneyExchange>;
 
   constructor(protected readonly keycloak: KeycloakService,
+              private moneyTypeService: MoneyTypeService,
               private router: Router,
               private route: ActivatedRoute,
               private title: Title,
@@ -58,33 +70,52 @@ export class ExchangeComponent implements OnInit {
     this.pageSubscription = route.queryParams.subscribe(
 
       (queryParam: any) => {
-        const sourceCurrency: String = queryParam['source']
-        if (sourceCurrency) {
-          this.sourceCurrency = MoneyTypes[sourceCurrency as keyof typeof MoneyTypes]
-        }
-        const destCurrency: String = queryParam['dest']
-        if (destCurrency) {
-          this.destCurrency = MoneyTypes[destCurrency as keyof typeof MoneyTypes]
-        }
+        this.initMoneyType(queryParam['source'], 'RUB')
+          .subscribe((result: MoneyType) => {
+            this.sourceCurrency = result
+          })
+
+        this.initMoneyType(queryParam['dest'], 'USD')
+          .subscribe((result: MoneyType) => {
+            this.destCurrency = result
+          })
+
       }
     );
+
+    this.moneyTypeService.getPage({
+      pageParams: {
+        page: 0,
+        size: 200
+      },
+    }).subscribe((response: PagedResourceCollection<MoneyType>) => {
+      this.currencies = response.resources
+    })
 
     this.moneyExchangeService.setPostProcessingStream(this.postProcessingHandler)
   }
 
   ngOnInit(): void {
     this.title.setTitle('Currency Exchange')
+    this.loading = true
   }
 
   getSourceCurrencies() {
-    return this.currencies.filter((value: MoneyTypes) => {
-      return value !== this.destCurrency
+    return this.currencies.filter((value: MoneyType) => {
+      return value?.code !== this.destCurrency?.code
     })
   }
 
+  initMoneyType(destCurrency: string, fallback: string) {
+    if (!destCurrency) {
+      destCurrency = fallback
+    }
+    return this.moneyTypeService.getCurrencyByCode(destCurrency)
+  }
+
   getDestCurrencies() {
-    return this.currencies.filter((value: MoneyTypes) => {
-      return value !== this.sourceCurrency
+    return this.currencies.filter((value: MoneyType) => {
+      return value?.code !== this.sourceCurrency?.code
     })
   }
 
@@ -95,13 +126,13 @@ export class ExchangeComponent implements OnInit {
     this.updateRoute()
   }
 
-  updatesSourceCurrency($event: MoneyTypes) {
+  updatesSourceCurrency($event: MoneyType) {
     this.sourceCurrency = $event
     this.entityList.n = 0
     this.updateRoute()
   }
 
-  updatesDestCurrency($event: MoneyTypes) {
+  updatesDestCurrency($event: MoneyType) {
     this.destCurrency = $event
     this.entityList.n = 0
     this.updateRoute()
@@ -117,19 +148,23 @@ export class ExchangeComponent implements OnInit {
       queryParamsHandling: 'merge',
       skipLocationChange: false
     }).then(() => {
-      this.entityList.refreshData({
-        queryArguments: this.getQueryArguments(),
-        queryName: 'events'
-      })
+      if (this.sourceCurrency?.code && this.destCurrency?.code) {
+        this.entityList.refreshData({
+          queryArguments: this.getQueryArguments(),
+          queryName: 'events'
+        })
+      }
     })
 
   }
 
   getQueryArguments(): any {
-    return {
-      source: this.sourceCurrency,
-      dest: this.destCurrency
-    };
+    if (this.sourceCurrency?.code && this.destCurrency?.code) {
+      return {
+        source: this.sourceCurrency.code,
+        dest: this.destCurrency.code
+      };
+    } return {}
   }
 
   getSort(): Sort {

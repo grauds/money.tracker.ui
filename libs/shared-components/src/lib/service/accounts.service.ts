@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs";
-import { AccountBalance } from "@clematis-shared/model";
+import { AccountBalance, MoneyType } from "@clematis-shared/model";
 import { HttpClient} from "@angular/common/http";
 import { PagedGetOption } from "@lagoshny/ngx-hateoas-client/lib/model/declarations";
 import { HateoasResourceService,
@@ -28,19 +28,19 @@ export class AccountsService extends SearchService<AccountBalance> {
     return this.hateoasService.getPage<AccountBalance>(AccountBalance, options);
   }
 
-  getAccountsBalanceInCurrency(code: string): Observable<ResourceCollection<AccountBalance>> {
+  getAccountsBalanceInCurrency(moneyType: MoneyType): Observable<ResourceCollection<AccountBalance>> {
     return this.hateoasService.searchCollection<AccountBalance>(AccountBalance, 'code',
       {
         params: {
-          code: code
+          code: moneyType.code
         }
       })
   }
 
-  getAccountsTotalInCurrency(code: string): Observable<number> {
-    return this.http.get<number>(this.getUrl("/accountsTotals/search/balance"), {
+  getAccountsTotalInCurrency(moneyType: MoneyType): Observable<number> {
+    return this.http.get<number>(this.getUrl('/accountsTotals/search/balance'), {
       params: {
-        code: code
+        code: moneyType.code
       }
     })
   }

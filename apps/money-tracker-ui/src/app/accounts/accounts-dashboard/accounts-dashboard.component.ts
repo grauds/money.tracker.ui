@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountBalance, MoneyTypes } from '@clematis-shared/model';
+import { AccountBalance, MoneyType } from "@clematis-shared/model";
 import { Subscription } from "rxjs";
-import { HateoasResourceService, ResourceCollection } from "@lagoshny/ngx-hateoas-client";
+import {
+  HateoasResourceService,
+  PagedResourceCollection,
+  ResourceCollection
+} from "@lagoshny/ngx-hateoas-client";
 import { KeycloakService } from 'keycloak-angular';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 import { AccountsService } from "@clematis-shared/shared-components";
+import { MoneyTypeService } from "@clematis-shared/shared-components";
 
 @Component({
   selector: 'app-accounts-dashboard',
@@ -14,31 +19,26 @@ import { AccountsService } from "@clematis-shared/shared-components";
 })
 export class AccountsDashboardComponent implements OnInit {
 
+  options: any;
+
   isLoggedIn?: boolean;
 
   accountsBalances: AccountBalance[] = []
 
-  options: any;
-
-  // subscribe for page updates in the address bar
   pageSubscription: Subscription;
 
-  loading = false;
+  loading: boolean = false;
 
-  currency: MoneyTypes = MoneyTypes.RUB;
+  currency: MoneyType = new MoneyType();
 
-  currencies = [MoneyTypes.RUB,
-    MoneyTypes.GBP,
-    MoneyTypes.EUR,
-    MoneyTypes.USD,
-    MoneyTypes.CZK
-  ];
+  currencies: MoneyType[] = [];
 
   total: number = 0;
 
-  constructor(private accountsService: AccountsService,
+  constructor(protected readonly keycloak: KeycloakService,
+              private accountsService: AccountsService,
               private resourceService: HateoasResourceService,
-              protected readonly keycloak: KeycloakService,
+              private moneyTypeService: MoneyTypeService,
               private router: Router,
               private route: ActivatedRoute,
               private title: Title) {
@@ -49,9 +49,12 @@ export class AccountsDashboardComponent implements OnInit {
 
     this.pageSubscription = route.queryParams.subscribe(
       (queryParam: any) => {
-        const currency: String = queryParam['currency']
+        const currency: string = queryParam['currency']
         if (currency) {
-          this.currency = MoneyTypes[currency as keyof typeof MoneyTypes]
+          this.moneyTypeService.getCurrencyByCode(currency)
+            .subscribe((result: MoneyType) => {
+            this.currency = result
+          })
         }
       }
     );
@@ -66,7 +69,7 @@ export class AccountsDashboardComponent implements OnInit {
     this.title.setTitle('Accounts')
   }
 
-  updateCurrency($event: MoneyTypes) {
+  updateCurrency($event: MoneyType) {
     this.currency = $event
     this.loadData()
     this.updateRoute()
@@ -76,7 +79,7 @@ export class AccountsDashboardComponent implements OnInit {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        currency: this.currency
+        currency: this.currency.code
       },
       queryParamsHandling: 'merge',
       skipLocationChange: false
@@ -85,24 +88,46 @@ export class AccountsDashboardComponent implements OnInit {
 
   loadData() {
     this.loading = true
-    this.accountsService.getAccountsBalanceInCurrency(this.currency)
-      .subscribe((response: ResourceCollection<AccountBalance>) => {
+    this.moneyTypeService.getPage({
+      pageParams: {
+        page: 0,
+        size: 200
+      },
+    }).subscribe( (response: PagedResourceCollection<MoneyType>) => {
+      this.currencies = response.resources
+      this.accountsService.getAccountsBalanceInCurrency(this.currency)
+        .subscribe((response: ResourceCollection<AccountBalance>) => {
             this.accountsBalances = response.resources
             this.options = this.getBalancesChart(this.currency);
-            this.accountsService.getAccountsTotalInCurrency(this.currency).subscribe(
+            this.accountsService.getAccountsTotalInCurrency(this.currency)
+              .subscribe(
               (total: number) => {
                 this.total = total
-                this.loading = false
                 return this.accountsBalances
+              }, () => {
+                this.total = 0
+              }, () => {
+                this.loading = false
               }
             )
-          })
+          }, () => {},
+          () => {
+            this.loading = false
+          }
+        )
+    },() => {
+
+        this.loading = false
+      },
+    () => {
+      this.loading = false
+    })
   }
 
-  private getBalancesChart(code: MoneyTypes) {
+  private getBalancesChart(moneyType: MoneyType) {
     return {
       title: {
-        text: 'Accounts Today in ' + code
+        text: 'Accounts Today in ' + moneyType.name
       },
       tooltip: {
         trigger: 'axis',
@@ -137,7 +162,7 @@ export class AccountsDashboardComponent implements OnInit {
       },
       series: [
         {
-          name: code,
+          name: moneyType.name,
           type: 'bar',
           stack: 'Total',
           label: {

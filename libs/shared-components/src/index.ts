@@ -13,7 +13,7 @@ export { PageNotFoundComponent } from './lib/components/page-not-found/page-not-
 export { EntityListFilteredComponent } from './lib/components/entity-list-filtered/entity-list-filtered.component';
 export { EntityComponent } from './lib/components/entity/entity.component'
 export { EntityListComponent } from './lib/components/entity-list/entity-list.component'
-export { SearchPostProcessingHandler } from './lib/service/search.service'
+export { MoneyTypeSelectorComponent } from './lib/components/money-type-selector/money-type-selector.component'
 
 export { AccountsService } from './lib/service/accounts.service'
 export { SearchService } from './lib/service/search.service'
@@ -26,3 +26,5 @@ export { ExpenseItemsService } from './lib/service/expense-items.service'
 export { InOutService } from "./lib/service/in-out.service";
 export { LastCommodityService } from "./lib/service/last-commodity.service";
 export { MoneyExchangeService } from "./lib/service/money-exchange.service";
+export { MoneyTypeService } from "./lib/service/money-type.service"
+export { SearchPostProcessingHandler } from './lib/service/search.service'

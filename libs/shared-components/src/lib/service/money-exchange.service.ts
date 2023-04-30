@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs";
 import { SearchService } from './search.service';
-import { MoneyExchange, MoneyExchangeReport } from "@clematis-shared/model";
+import { MoneyExchange, MoneyExchangeReport, MoneyType } from "@clematis-shared/model";
 import { PagedGetOption } from "@lagoshny/ngx-hateoas-client/lib/model/declarations";
 import { HateoasResourceService, PagedResourceCollection } from "@lagoshny/ngx-hateoas-client";
 import { HttpClient } from "@angular/common/http";
@@ -28,22 +28,22 @@ export class MoneyExchangeService extends SearchService<MoneyExchange> {
   }
 
 
-  getExchangeReport(source: string, dest: string): Observable<MoneyExchangeReport> {
+  getExchangeReport(source: MoneyType, dest: MoneyType): Observable<MoneyExchangeReport> {
 
     return this.http.get<MoneyExchangeReport>(this.getUrl('/exchange/search/report'), {
       params: {
-        source: source,
-        dest: dest
+        source: source.code,
+        dest: dest.code
       }
     })
   }
 
-  getAverageExchangeRate(source: string, dest: string): Observable<number> {
+  getAverageExchangeRate(source: MoneyType, dest: MoneyType): Observable<number> {
 
     return this.http.get<number>(this.getUrl('/exchange/search/average'), {
       params: {
-        source: source,
-        dest: dest
+        source: source.code,
+        dest: dest.code
       }
     })
   }
