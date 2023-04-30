@@ -5,6 +5,7 @@ import { KeycloakService } from "keycloak-angular";
 import { ActivatedRoute, convertToParamMap } from "@angular/router";
 import { HttpClient, HttpHandler } from "@angular/common/http";
 import { of } from "rxjs";
+import { MoneyTypeService } from "@clematis-shared/shared-components";
 
 describe('ExchangeComponent', () => {
   let component: ExchangeComponent;
@@ -24,6 +25,7 @@ describe('ExchangeComponent', () => {
         HttpClient,
         HttpHandler,
         KeycloakService,
+        MoneyTypeService,
         {provide: ActivatedRoute, useValue: fakeActivatedRoute}
       ]
     }).compileComponents();
