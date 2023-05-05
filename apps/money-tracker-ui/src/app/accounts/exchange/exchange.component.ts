@@ -73,13 +73,14 @@ export class ExchangeComponent implements OnInit {
         this.initMoneyType(queryParam['source'], 'RUB')
           .subscribe((result: MoneyType) => {
             this.sourceCurrency = result
-          })
 
-        this.initMoneyType(queryParam['dest'], 'USD')
-          .subscribe((result: MoneyType) => {
-            this.destCurrency = result
-          })
+            this.initMoneyType(queryParam['dest'], 'USD')
+              .subscribe((result: MoneyType) => {
+                this.destCurrency = result
+                this.refreshData();
+              })
 
+          })
       }
     );
 
@@ -148,21 +149,25 @@ export class ExchangeComponent implements OnInit {
       queryParamsHandling: 'merge',
       skipLocationChange: false
     }).then(() => {
-      if (this.sourceCurrency?.code && this.destCurrency?.code) {
-        this.entityList.refreshData({
-          queryArguments: this.getQueryArguments(),
-          queryName: 'events'
-        })
-      }
+      this.refreshData();
     })
 
+  }
+
+  private refreshData() {
+    if (this.sourceCurrency?.code && this.destCurrency?.code) {
+      this.entityList.refreshData({
+        queryArguments: this.getQueryArguments(),
+        queryName: "events"
+      });
+    }
   }
 
   getQueryArguments(): any {
     if (this.sourceCurrency?.code && this.destCurrency?.code) {
       return {
-        source: this.sourceCurrency.code,
-        dest: this.destCurrency.code
+        source: this.sourceCurrency?.code,
+        dest: this.destCurrency?.code
       };
     } return {}
   }

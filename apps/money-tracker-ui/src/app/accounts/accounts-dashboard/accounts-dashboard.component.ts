@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { AccountBalance, MoneyType } from "@clematis-shared/model";
 import { Subscription } from "rxjs";
 import {
@@ -6,16 +6,16 @@ import {
   PagedResourceCollection,
   ResourceCollection
 } from "@lagoshny/ngx-hateoas-client";
-import { KeycloakService } from 'keycloak-angular';
+import { KeycloakService } from "keycloak-angular";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 import { AccountsService } from "@clematis-shared/shared-components";
 import { MoneyTypeService } from "@clematis-shared/shared-components";
 
 @Component({
-  selector: 'app-accounts-dashboard',
-  templateUrl: './accounts-dashboard.component.html',
-  styleUrls: ['./accounts-dashboard.component.sass'],
+  selector: "app-accounts-dashboard",
+  templateUrl: "./accounts-dashboard.component.html",
+  styleUrls: ["./accounts-dashboard.component.sass"]
 })
 export class AccountsDashboardComponent implements OnInit {
 
@@ -23,7 +23,7 @@ export class AccountsDashboardComponent implements OnInit {
 
   isLoggedIn?: boolean;
 
-  accountsBalances: AccountBalance[] = []
+  accountsBalances: AccountBalance[] = [];
 
   pageSubscription: Subscription;
 
@@ -44,35 +44,39 @@ export class AccountsDashboardComponent implements OnInit {
               private title: Title) {
 
     this.keycloak.isLoggedIn().then((logged) => {
-      this.isLoggedIn = logged
-    })
+      this.isLoggedIn = logged;
+    });
 
     this.pageSubscription = route.queryParams.subscribe(
       (queryParam: any) => {
-        const currency: string = queryParam['currency']
-        if (currency) {
-          this.moneyTypeService.getCurrencyByCode(currency)
-            .subscribe((result: MoneyType) => {
-            this.currency = result
-          })
-        }
+        this.initMoneyType(queryParam['currency'], 'RUB')
+          .subscribe((result: MoneyType) => {
+            this.currency = result;
+            this.loadData();
+          });
       }
     );
   }
 
+  initMoneyType(destCurrency: string, fallback: string) {
+    if (!destCurrency) {
+      destCurrency = fallback
+    }
+    return this.moneyTypeService.getCurrencyByCode(destCurrency)
+  }
+
   onChartEvent(event: any, type: string) {
-    console.log('chart event:', type, event);
+    console.log("chart event:", type, event);
   }
 
   ngOnInit(): void {
-    this.loadData()
-    this.title.setTitle('Accounts')
+    this.title.setTitle("Accounts");
   }
 
   updateCurrency($event: MoneyType) {
-    this.currency = $event
-    this.loadData()
-    this.updateRoute()
+    this.currency = $event;
+    this.loadData();
+    this.updateRoute();
   }
 
   updateRoute() {
@@ -81,58 +85,73 @@ export class AccountsDashboardComponent implements OnInit {
       queryParams: {
         currency: this.currency.code
       },
-      queryParamsHandling: 'merge',
+      queryParamsHandling: "merge",
       skipLocationChange: false
-    })
+    });
   }
 
   loadData() {
-    this.loading = true
+    this.loading = true;
+
     this.moneyTypeService.getPage({
       pageParams: {
         page: 0,
         size: 200
+      }
+    }).subscribe({
+      next: (response: PagedResourceCollection<MoneyType>) => {
+          this.currencies = response.resources;
+          this.getAccountsBalanceInCurrency();
+        },
+      error: () => {
       },
-    }).subscribe( (response: PagedResourceCollection<MoneyType>) => {
-      this.currencies = response.resources
-      this.accountsService.getAccountsBalanceInCurrency(this.currency)
-        .subscribe((response: ResourceCollection<AccountBalance>) => {
-            this.accountsBalances = response.resources
-            this.options = this.getBalancesChart(this.currency);
-            this.accountsService.getAccountsTotalInCurrency(this.currency)
-              .subscribe(
-              (total: number) => {
-                this.total = total
-                return this.accountsBalances
-              }, () => {
-                this.total = 0
-              }, () => {
-                this.loading = false
-              }
-            )
-          }, () => {},
-          () => {
-            this.loading = false
-          }
-        )
-    },() => {
+      complete: () => {
+        this.loading = false;
+      }
+    });
+  }
 
-        this.loading = false
-      },
-    () => {
-      this.loading = false
-    })
+  private getAccountsBalanceInCurrency() {
+
+    this.accountsService.getAccountsBalanceInCurrency(this.currency)
+      .subscribe({
+          next: (response: ResourceCollection<AccountBalance>) => {
+            this.accountsBalances = response.resources;
+            this.options = this.getBalancesChart(this.currency);
+            this.getAccountsTotalInCurrency();
+          },
+          error: () => {
+          },
+          complete: () => {
+            this.loading = false;
+          }
+        }
+      );
+  }
+
+  private getAccountsTotalInCurrency() {
+
+    this.accountsService.getAccountsTotalInCurrency(this.currency)
+      .subscribe({
+        next: (total: number) => {
+          this.total = total;
+        }, error: () => {
+          this.total = 0;
+        }, complete: () => {
+          this.loading = false;
+        }
+      });
   }
 
   private getBalancesChart(moneyType: MoneyType) {
     return {
       title: {
-        text: 'Accounts Today in ' + moneyType.name
+        text: "Accounts Today in " + moneyType.name
       },
       tooltip: {
-        trigger: 'axis',
+        trigger: "axis",
         axisPointer: {
-          type: 'shadow'
+          type: "shadow"
         }
       },
       grid: {
@@ -140,49 +159,49 @@ export class AccountsDashboardComponent implements OnInit {
         bottom: 30
       },
       xAxis: {
-        type: 'value',
-        position: 'top',
+        type: "value",
+        position: "top",
         splitLine: {
           lineStyle: {
-            type: 'dashed'
+            type: "dashed"
           }
         }
       },
       yAxis: {
-        type: 'category',
-        axisLine: {show: false},
-        axisLabel: {show: false},
-        axisTick: {show: true},
-        splitLine: {show: false},
+        type: "category",
+        axisLine: { show: false },
+        axisLabel: { show: false },
+        axisTick: { show: true },
+        splitLine: { show: false },
         data: this.accountsBalances
           .filter(accountBalance => accountBalance.balance != 0)
           .map(accountBalance => {
-            return accountBalance.name
+            return accountBalance.name;
           })
       },
       series: [
         {
           name: moneyType.name,
-          type: 'bar',
-          stack: 'Total',
+          type: "bar",
+          stack: "Total",
           label: {
-            position: 'right',
+            position: "right",
             show: true,
-            formatter: '{c} - {b}'
+            formatter: "{c} - {b}"
           },
           select: {
             itemStyle: {
-              shadowColor: 'rgba(0, 0, 0, 0.5)',
+              shadowColor: "rgba(0, 0, 0, 0.5)",
               shadowBlur: 10
             }
           },
-          selectedMode: 'single',
+          selectedMode: "single",
           data: this.accountsBalances
             .filter(accountBalance => accountBalance.balance != 0)
             .map((accountBalance: AccountBalance) => {
               return {
                 value: accountBalance.balance
-              }
+              };
             })
         }
       ]

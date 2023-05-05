@@ -2,14 +2,13 @@
 
   <div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Available currencies</mat-label>
-      <mat-select [disabled]="this.loading" [value]="currency" (valueChange)="updateCurrency($event)">
-        <mat-option *ngFor="let currency of currencies | keyvalue" [value]="currency.value">
-          {{currency.value}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <app-money-type-selector
+      [label]="'Available currencies'"
+      [disabled]="this.loading"
+      [currencies]="currencies"
+      [currency]="currency"
+      (currency$)="updateCurrency($event)"
+    ></app-money-type-selector>
 
     <mat-form-field appearance="fill">
       <mat-label>Category</mat-label>
@@ -24,7 +23,7 @@
     </mat-form-field>
 
     <span [class]="(isFullLayout$ | async) ? 'rubber totalsHeader' : 'rubber totalsHeaderHandset'" [hidden]="this.loading">
-      {{ this.total | currency: this.currency }}
+      {{ this.total | currency: this.currency.code }}
     </span>
 
     <span [class]="(isFullLayout$ | async) ? 'rubber totalsHeader' : 'rubber totalsHeaderHandset'" [hidden]="!(this.loading)">
@@ -37,7 +36,6 @@
   <div echarts
        [options]="options"
        (chartInit)="onChartInit($event)"
-       (chartClick)="onChartEvent($event, 'chartClick')"
        [loading]="loading"
        class="reselling-chart">
   </div>

@@ -79,10 +79,17 @@ export class OrganizationGroupComponent extends EntityComponent<OrganizationGrou
     })
 
     this.entity?.getRelation<OrganizationGroup>('parent')
-      .subscribe((parent: OrganizationGroup) => {
-        this.parent = parent
-        this.parentLink = Entity.getRelativeSelfLinkHref(this.parent)
-      })
+      .subscribe({
+          next: (parent: OrganizationGroup) => {
+            this.parent = parent
+            this.parentLink = Entity.getRelativeSelfLinkHref(this.parent)
+          },
+          error: () => {
+          },
+          complete: () => {
+          }
+        }
+      )
 
     if (this.entity) {
       this.organizationGroupsService.getPathForOrganizationGroup(Utils.getIdFromSelfUrl(this.entity)).subscribe((response) => {

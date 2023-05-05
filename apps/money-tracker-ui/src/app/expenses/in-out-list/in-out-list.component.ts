@@ -3,9 +3,9 @@ import { Title } from "@angular/platform-browser";
 import { KeycloakService } from "keycloak-angular";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Observable, Subscription } from "rxjs";
-import { HateoasResourceService, ResourceCollection } from "@lagoshny/ngx-hateoas-client";
-import { InOutDelta, MoneyTypes } from "@clematis-shared/model";
-import { InOutService } from "@clematis-shared/shared-components";
+import { HateoasResourceService, PagedResourceCollection, ResourceCollection } from "@lagoshny/ngx-hateoas-client";
+import { InOutDelta, MoneyType } from "@clematis-shared/model";
+import { InOutService, MoneyTypeService } from "@clematis-shared/shared-components";
 import { formatCurrency } from "@angular/common";
 import { BreakpointObserver, Breakpoints, BreakpointState, MediaMatcher } from "@angular/cdk/layout";
 import { map, shareReplay } from "rxjs/operators";
@@ -22,14 +22,9 @@ export class InOutListComponent implements OnInit {
 
   isLoggedIn: boolean = false;
 
-  currency: MoneyTypes = MoneyTypes.RUB;
+  currency: MoneyType = new MoneyType();
 
-  currencies = [MoneyTypes.RUB,
-    MoneyTypes.GBP,
-    MoneyTypes.EUR,
-    MoneyTypes.USD,
-    MoneyTypes.CZK
-  ];
+  currencies: MoneyType[] = [];
 
   loading: boolean = false;
 
@@ -65,11 +60,16 @@ export class InOutListComponent implements OnInit {
   constructor(private inOutService: InOutService,
               private resourceService: HateoasResourceService,
               protected readonly keycloak: KeycloakService,
+              private moneyTypeService: MoneyTypeService,
               private router: Router,
               private route: ActivatedRoute,
               private title: Title,
               media: MediaMatcher,
               private breakpointObserver: BreakpointObserver) {
+
+    this.keycloak.isLoggedIn().then((logged) => {
+      this.isLoggedIn = logged
+    })
 
     this.mobileQuery = media.matchMedia(Breakpoints.Handset);
     this._mobileQueryListener = () => {
@@ -83,17 +83,14 @@ export class InOutListComponent implements OnInit {
     } else {
       this.mobileQuery.addListener(this._mobileQueryListener);
     }
-
-    this.keycloak.isLoggedIn().then((logged) => {
-      this.isLoggedIn = logged
-    })
-
     this.pageSubscription = route.queryParams.subscribe(
       (queryParam: any) => {
-        const currency: String = queryParam['currency']
-        if (currency) {
-          this.currency = MoneyTypes[currency as keyof typeof MoneyTypes]
-        }
+        const currency: string = queryParam["currency"];
+        this.moneyTypeService.getCurrencyByCode(currency ? currency : "RUB")
+          .subscribe((result: MoneyType) => {
+            this.currency = result;
+            this.loadData();
+          });
       }
     );
 
@@ -103,11 +100,10 @@ export class InOutListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadData()
     this.title.setTitle('Reselling')
   }
 
-  updateCurrency($event: MoneyTypes) {
+  updateCurrency($event: MoneyType) {
     this.currency = $event
     this.loadData()
     this.updateRoute()
@@ -122,7 +118,7 @@ export class InOutListComponent implements OnInit {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        currency: this.currency
+        currency: this.currency.code
       },
       queryParamsHandling: 'merge',
       skipLocationChange: false
@@ -131,21 +127,50 @@ export class InOutListComponent implements OnInit {
 
   loadData() {
     this.loading = true
+
+    this.moneyTypeService.getPage({
+      pageParams: {
+        page: 0,
+        size: 200
+      }
+    }).subscribe({
+      next: (response: PagedResourceCollection<MoneyType>) => {
+        this.currencies = response.resources;
+        this.getInOutDeltasInCurrency();
+      },
+      error: () => {
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
+  }
+
+  private getInOutDeltasInCurrency() {
+
     this.inOutService.getInOutDeltasInCurrency(this.currency)
-      .subscribe((response: ResourceCollection<InOutDelta>) => {
-        this.deltas = response.resources
-        this.options = this.getDeltasChart(this.currency);
-        this.total = this.deltas.reduce((accumulator, object) => {
-          return accumulator + object.delta;
-        }, 0);
-        this.loading = false
+      .subscribe({
+        next: (response: ResourceCollection<InOutDelta>) => {
+          this.deltas = response.resources
+          this.total = this.deltas.reduce((accumulator, object) => {
+            return accumulator + object.delta;
+          }, 0)
+          if (this.deltas && this.deltas.length > 0) {
+            this.options = this.getDeltasChart(this.currency)
+          }
+        },
+        error: () => {
+        },
+        complete: () => {
+          this.loading = false;
+        }
       })
   }
 
-  private getDeltasChart(code: MoneyTypes) {
+  private getDeltasChart(moneyType: MoneyType) {
     return {
       title: {
-        text: 'Reselling results in ' + code,
+        text: 'Reselling results in ' + moneyType.code,
         subtext: 'Total: ' + formatCurrency(this.deltas.filter((delta) => {
           return this.sign ? (delta.delta >= 0) : (delta.delta < 0)
         }).reduce(function(prev, current) {
@@ -177,7 +202,7 @@ export class InOutListComponent implements OnInit {
       },
       series: [
         {
-          name: code,
+          name: moneyType.name,
           type: 'pie',
           radius: [50, 250],
           center: ['40%', '50%'],
@@ -201,7 +226,7 @@ export class InOutListComponent implements OnInit {
     }
   }
 
-  onChartEvent($event: unknown, chartClick: string) {
+  onChartEvent() {
 
   }
 

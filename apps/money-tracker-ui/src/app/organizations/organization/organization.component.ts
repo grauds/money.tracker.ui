@@ -49,6 +49,7 @@ export class OrganizationComponent extends EntityComponent<Organization> impleme
   }
 
   ngOnInit(): void {
+    this.loading = true
     this.onInit()
   }
 

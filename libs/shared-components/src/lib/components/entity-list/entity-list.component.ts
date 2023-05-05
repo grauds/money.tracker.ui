@@ -25,6 +25,8 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
   @Input() queryParamsMode: "merge" | "preserve" | "" | null = "merge";
 
+  @Input() loadOnInit = true
+
   pageSubscription: Subscription;
 
   @Output() filter$: EventEmitter<Map<string, string>> = new EventEmitter<Map<string, string>>();
@@ -97,7 +99,9 @@ export class EntityListComponent<T extends Entity> implements OnInit {
   ngOnInit(): void {
     this.statusDescription$ = this.searchService.getStatusDescription()
     this.subscribeToSearchRequests()
-    this.loadData()
+    if (this.loadOnInit) {
+      this.loadData()
+    }
   }
 
   loadData() {

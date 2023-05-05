@@ -96,6 +96,7 @@
 
   <app-entity-list [resultItemTemplate]="exchangeTable"
                    [table]="true"
+                   [loadOnInit]="false"
                    [searchRequest]="{
                         queryArguments: getQueryArguments(),
                         queryName: 'events'
