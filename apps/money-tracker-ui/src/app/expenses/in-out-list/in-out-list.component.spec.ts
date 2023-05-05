@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InOutListComponent } from './in-out-list.component';
-import { InOutService } from "@clematis-shared/shared-components";
+import { InOutService, MoneyTypeService } from "@clematis-shared/shared-components";
 import { HttpClient, HttpHandler } from "@angular/common/http";
 import { KeycloakService } from "keycloak-angular";
 import { ActivatedRoute, convertToParamMap } from "@angular/router";
@@ -28,6 +28,7 @@ describe('InOutListComponent', () => {
         HttpHandler,
         KeycloakService,
         MediaMatcher,
+        MoneyTypeService,
         {provide: ActivatedRoute, useValue: fakeActivatedRoute}
       ]
     }).compileComponents();
