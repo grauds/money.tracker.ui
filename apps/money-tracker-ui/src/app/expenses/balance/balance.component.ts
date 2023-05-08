@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountsService } from "@clematis-shared/shared-components";
-import { MoneyTypes, MonthlyDelta } from '@clematis-shared/model';
+import { AccountsService, MoneyTypeService } from "@clematis-shared/shared-components";
+import { MoneyType, MonthlyDelta } from "@clematis-shared/model";
 import { HateoasResourceService, PagedResourceCollection } from '@lagoshny/ngx-hateoas-client';
 import { catchError, of, Subscription, switchMap, tap } from "rxjs";
-import { KeycloakService } from 'keycloak-angular';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 
@@ -14,9 +13,7 @@ import { Title } from "@angular/platform-browser";
 })
 export class BalanceComponent implements OnInit {
 
-  isLoggedIn?: boolean;
-
-  waterfall: any;
+  chart: any;
 
   // total number of elements
   total: number = 0;
@@ -27,36 +24,26 @@ export class BalanceComponent implements OnInit {
   // current page number counter
   n: number | undefined = undefined;
 
-  // subscribe for page updates in the address bar
   pageSubscription: Subscription;
 
   message: string = '';
 
   loading = false;
 
-  currency: MoneyTypes = MoneyTypes.RUB;
+  currency: MoneyType = new MoneyType();
 
-  currencies = [MoneyTypes.RUB,
-    MoneyTypes.GBP,
-    MoneyTypes.EUR,
-    MoneyTypes.USD
-  ];
+  currencies: MoneyType[] = [];
 
   startDate: string = '';
 
   endDate: string = '';
 
-
   constructor(private accountsService: AccountsService,
               private resourceService: HateoasResourceService,
-              protected readonly keycloak: KeycloakService,
+              private moneyTypeService: MoneyTypeService,
               private router: Router,
               private route: ActivatedRoute,
               private title: Title) {
-
-    this.keycloak.isLoggedIn().then((logged) => {
-      this.isLoggedIn = logged
-    })
 
     this.pageSubscription = route.queryParams.subscribe(
       (queryParam: any) => {
@@ -64,50 +51,76 @@ export class BalanceComponent implements OnInit {
         this.n = isNaN(page) ? undefined : page;
         const size = Number.parseInt(queryParam['size'], 10)
         this.limit = isNaN(size) ? 12 : size;
-        const currency: String = queryParam['currency']
-        if (currency) {
-          this.currency = MoneyTypes[currency as keyof typeof MoneyTypes]
-        }
-        this.ngOnInit();
+        this.initMoneyType(queryParam['currency'], 'RUB')
+          .subscribe((result: MoneyType) => {
+            this.currency = result;
+            this.loadData()
+          });
       }
     );
   }
 
+  initMoneyType(destCurrency: string, fallback: string) {
+    if (!destCurrency) {
+      destCurrency = fallback
+    }
+    return this.moneyTypeService.getCurrencyByCode(destCurrency)
+  }
+
   ngOnInit(): void {
-    this.loadData(this.currency)
     this.title.setTitle('Balance Monthly')
   }
 
   setCurrentPage(pageIndex: number, pageSize: number) {
     this.n = pageIndex
     this.limit = pageSize
-    this.updateCurrencyOrPage(this.currency)
+    this.updateCurrency(this.currency)
   }
 
-  updateCurrencyOrPage($event: MoneyTypes) {
-    this.loadData($event)
-    this.updateRoute()
+  updateCurrency($event: MoneyType) {
+    this.currency = $event;
+
+    this.updateRoute().then(() => {
+      this.loadData()
+    });
   }
 
   updateRoute() {
-    this.router.navigate([], {
+    return this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
         page: this.n,
         size: this.limit,
-        currency: this.currency
+        currency: this.currency.code
       },
       queryParamsHandling: 'merge',
       skipLocationChange: false
     })
   }
 
-  loadData(code: MoneyTypes) {
+  loadData() {
     this.loading = true
-    this.createChart(code).subscribe(chart => this.waterfall = chart)
+
+    this.moneyTypeService.getPage({
+      pageParams: {
+        page: 0,
+        size: 200
+      }
+    }).subscribe({
+      next: (response: PagedResourceCollection<MoneyType>) => {
+        this.currencies = response.resources;
+        this.createChart(this.currency)
+          .subscribe(chart => this.chart = chart)
+      },
+      error: () => {
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
   }
 
-  private createChart(code: MoneyTypes) {
+  private createChart(moneyType: MoneyType) {
 
     let chart = {};
 
@@ -119,7 +132,7 @@ export class BalanceComponent implements OnInit {
       switchMap(() => {
         return this.resourceService.searchPage<MonthlyDelta>(MonthlyDelta, 'history', {
           params: {
-            code: code
+            code: moneyType.code
           },
           pageParams: {
             page: 0,
@@ -135,7 +148,7 @@ export class BalanceComponent implements OnInit {
 
         return this.resourceService.searchPage<MonthlyDelta>(MonthlyDelta, 'history', {
           params: {
-            code: code
+            code: moneyType.code
           },
           pageParams: {
             page: n,
@@ -150,7 +163,7 @@ export class BalanceComponent implements OnInit {
       switchMap((resources: MonthlyDelta[]) => {
 
         // filter out any other currencies
-        monthlyDeltas = resources.filter((value: MonthlyDelta) => value.code === code)
+        monthlyDeltas = resources.filter((value: MonthlyDelta) => value.code === moneyType.code)
 
         // form unique ticks
         waterfallX = resources.map((monthlyDelta: MonthlyDelta) => {
@@ -160,7 +173,7 @@ export class BalanceComponent implements OnInit {
         // the starting value for the graph fragment
         if (resources.length > 0) {
           console.log('Frame balance: ' + monthlyDeltas[0].year + ' ' + monthlyDeltas[0].month)
-          return this.accountsService.getBalance(monthlyDeltas[0].year, monthlyDeltas[0].month, code)
+          return this.accountsService.getBalance(monthlyDeltas[0].year, monthlyDeltas[0].month, moneyType.code)
         }
 
         return of(0)
@@ -187,7 +200,7 @@ export class BalanceComponent implements OnInit {
           waterfallTotals.push(currentBalance.toString())
 
         })
-        return of(this.buildChart(waterfallX, waterfallDelta, waterfallTotals, code))
+        return of(this.buildChart(waterfallX, waterfallDelta, waterfallTotals, moneyType))
       }),
       catchError((err: Error) => {
         this.loading = false
@@ -199,17 +212,17 @@ export class BalanceComponent implements OnInit {
   private buildChart(waterfallX: string[],
                       waterfallDelta: string[],
                       waterfallTotals: string[],
-                      code: MoneyTypes) {
+                      moneyType: MoneyType) {
 
     this.startDate = waterfallX[0]
     this.endDate = waterfallX[waterfallX.length - 1]
     this.loading = false
 
-    this.currency = code
+    this.currency = moneyType
 
     return {
       title: {
-        text: 'Monthly Balance ' + code
+        text: 'Monthly Balance in ' + moneyType.name
       },
       tooltip: {
         trigger: 'axis',

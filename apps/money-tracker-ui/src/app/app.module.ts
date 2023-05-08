@@ -6,7 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { initializeKeycloak } from './init/keycloak-init.factory';
 import { ContentLoaderModule } from '@ngneat/content-loader';
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularYandexMapsModule, YaConfig } from 'angular8-yandex-maps';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -65,13 +65,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatSortModule } from "@angular/material/sort";
+import { MatSortModule } from '@angular/material/sort';
 
 import {
   ENVIRONMENT,
   EnvironmentService,
   SharedComponentsModule,
-  PageNotFoundComponent
+  PageNotFoundComponent,
 } from '@clematis-shared/shared-components';
 
 import { AccountsDashboardComponent } from './accounts/accounts-dashboard/accounts-dashboard.component';
@@ -81,11 +81,12 @@ import { ExchangeEventElementComponent } from './accounts/exchange-event-element
 import { environment } from '../environments/environment';
 import { InOutListComponent } from './expenses/in-out-list/in-out-list.component';
 import { BalanceComponent } from './expenses/balance/balance.component';
-import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MatMomentDateModule } from "@angular/material-moment-adapter";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CommodityGroupCommoditiesComponent } from './commodities/commodity-group-commodities/commodity-group-commodities.component';
 import { OrganizationGroupOrganizationsComponent } from './organizations/organization-group-organizations/organization-group-organizations.component';
+import { IncomeMonthlyComponent } from './income/income-monthly/income-monthly.component';
 
 const routes: Routes = [
   {
@@ -144,6 +145,10 @@ const routes: Routes = [
       {
         path: 'expenses',
         component: ExpensesListComponent,
+      },
+      {
+        path: 'income',
+        component: IncomeMonthlyComponent,
       },
       {
         path: 'inOut',
@@ -205,21 +210,20 @@ const mapConfig: YaConfig = {
     BalanceComponent,
     CommodityGroupCommoditiesComponent,
     OrganizationGroupOrganizationsComponent,
+    IncomeMonthlyComponent,
   ],
   imports: [
     HttpClientModule,
     BrowserModule,
     FontAwesomeModule,
     KeycloakAngularModule,
-    RouterModule.forRoot(
-      routes
-    ),
+    RouterModule.forRoot(routes),
     NgxHateoasClientModule.forRoot(),
     ContentLoaderModule,
     FormsModule,
     AngularYandexMapsModule.forRoot(mapConfig),
     NgxEchartsModule.forRoot({
-      echarts: () => import("echarts")
+      echarts: () => import('echarts'),
     }),
     BrowserAnimationsModule,
     MatToolbarModule,
@@ -240,7 +244,7 @@ const mapConfig: YaConfig = {
     MatDatepickerModule,
     MatMomentDateModule,
     ReactiveFormsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
   ],
   providers: [
     {

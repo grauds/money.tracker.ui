@@ -156,7 +156,7 @@ export class ExchangeComponent implements OnInit {
 
   private refreshData() {
     if (this.sourceCurrency?.code && this.destCurrency?.code) {
-      this.entityList.refreshData({
+      this.entityList?.refreshData({
         queryArguments: this.getQueryArguments(),
         queryName: "events"
       });
