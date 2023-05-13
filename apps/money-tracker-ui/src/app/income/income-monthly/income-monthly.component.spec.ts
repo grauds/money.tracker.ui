@@ -1,11 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IncomeMonthlyComponent } from './income-monthly.component';
 import { HttpClient, HttpHandler } from "@angular/common/http";
-import { MoneyTypeService } from "@clematis-shared/shared-components";
+import { IncomeItemsService, MoneyTypeService } from "@clematis-shared/shared-components";
+import { of } from "rxjs";
+import { ActivatedRoute, convertToParamMap } from "@angular/router";
 
 describe('IncomeMonthlyComponent', () => {
   let component: IncomeMonthlyComponent;
   let fixture: ComponentFixture<IncomeMonthlyComponent>;
+
+  const fakeActivatedRoute = {
+    queryParams: of({}),
+    snapshot: {
+      paramMap: convertToParamMap({ })
+    }
+  } as ActivatedRoute;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -13,7 +22,9 @@ describe('IncomeMonthlyComponent', () => {
       providers: [
         HttpClient,
         HttpHandler,
-        MoneyTypeService
+        MoneyTypeService,
+        IncomeItemsService,
+        {provide: ActivatedRoute, useValue: fakeActivatedRoute}
       ]
     }).compileComponents();
 
