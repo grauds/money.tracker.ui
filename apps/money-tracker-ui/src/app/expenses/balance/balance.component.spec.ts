@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BalanceComponent } from './balance.component';
-import { AccountsService } from "@clematis-shared/shared-components";
+import { AccountsService, MoneyTypeService } from "@clematis-shared/shared-components";
 import { HttpClient, HttpHandler } from "@angular/common/http";
 import { KeycloakService } from "keycloak-angular";
 import { ActivatedRoute, convertToParamMap } from "@angular/router";
@@ -26,6 +26,7 @@ describe('BalanceComponent', () => {
         HttpClient,
         HttpHandler,
         KeycloakService,
+        MoneyTypeService,
         {provide: ActivatedRoute, useValue: fakeActivatedRoute}
       ]
     }).compileComponents();
