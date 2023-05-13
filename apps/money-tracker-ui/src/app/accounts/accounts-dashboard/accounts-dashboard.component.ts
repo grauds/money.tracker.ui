@@ -6,7 +6,6 @@ import {
   PagedResourceCollection,
   ResourceCollection
 } from "@lagoshny/ngx-hateoas-client";
-import { KeycloakService } from "keycloak-angular";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 import { AccountsService } from "@clematis-shared/shared-components";
@@ -19,40 +18,44 @@ import { MoneyTypeService } from "@clematis-shared/shared-components";
 })
 export class AccountsDashboardComponent implements OnInit {
 
-  options: any;
+  chart: any;
 
-  isLoggedIn?: boolean;
+  // total number of elements
+  total: number = 0;
+
+  // number of records per page
+  limit: number = 12;
+
+  // current page number counter
+  n: number | undefined = undefined;
 
   accountsBalances: AccountBalance[] = [];
 
   pageSubscription: Subscription;
 
-  loading: boolean = false;
+  loading = false;
 
   currency: MoneyType = new MoneyType();
 
   currencies: MoneyType[] = [];
 
-  total: number = 0;
-
-  constructor(protected readonly keycloak: KeycloakService,
-              private accountsService: AccountsService,
+  constructor(private accountsService: AccountsService,
               private resourceService: HateoasResourceService,
               private moneyTypeService: MoneyTypeService,
               private router: Router,
               private route: ActivatedRoute,
               private title: Title) {
 
-    this.keycloak.isLoggedIn().then((logged) => {
-      this.isLoggedIn = logged;
-    });
-
     this.pageSubscription = route.queryParams.subscribe(
       (queryParam: any) => {
+        const page = Number.parseInt(queryParam['page'], 10)
+        this.n = isNaN(page) ? undefined : page;
+        const size = Number.parseInt(queryParam['size'], 10)
+        this.limit = isNaN(size) ? 12 : size;
         this.initMoneyType(queryParam['currency'], 'RUB')
           .subscribe((result: MoneyType) => {
             this.currency = result;
-            this.loadData();
+            this.loadData()
           });
       }
     );
@@ -73,25 +76,35 @@ export class AccountsDashboardComponent implements OnInit {
     this.title.setTitle("Accounts");
   }
 
-  updateCurrency($event: MoneyType) {
-    this.currency = $event;
-    this.loadData();
-    this.updateRoute();
+  setCurrentPage(pageIndex: number, pageSize: number) {
+    this.n = pageIndex
+    this.limit = pageSize
+    this.updateCurrency(this.currency)
   }
 
-  updateRoute() {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        currency: this.currency.code
-      },
-      queryParamsHandling: "merge",
-      skipLocationChange: false
+  updateCurrency($event: MoneyType) {
+    this.currency = $event;
+
+    this.updateRoute().then(() => {
+      this.loadData()
     });
   }
 
+  updateRoute() {
+    return this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        page: this.n,
+        size: this.limit,
+        currency: this.currency.code
+      },
+      queryParamsHandling: 'merge',
+      skipLocationChange: false
+    })
+  }
+
   loadData() {
-    this.loading = true;
+    this.loading = true
 
     this.moneyTypeService.getPage({
       pageParams: {
@@ -117,7 +130,7 @@ export class AccountsDashboardComponent implements OnInit {
       .subscribe({
           next: (response: ResourceCollection<AccountBalance>) => {
             this.accountsBalances = response.resources;
-            this.options = this.getBalancesChart(this.currency);
+            this.chart = this.getBalancesChart(this.currency);
             this.getAccountsTotalInCurrency();
           },
           error: () => {

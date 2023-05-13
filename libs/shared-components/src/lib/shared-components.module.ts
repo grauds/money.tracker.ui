@@ -28,6 +28,7 @@ import { CommoditiesService } from './service/commodities.service';
 import { CommodityGroupsService } from './service/commodity-groups.service';
 import { OrganizationGroupsService } from './service/organization-groups.service';
 import { ExpenseItemsService } from './service/expense-items.service';
+import { IncomeItemsService } from './service/income-items.service'
 
 import { ErrorDialogService } from './error/error-dialog.service';
 import { GlobalErrorHandler } from './error/global-error-handler';
@@ -89,6 +90,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     CommodityGroupsService,
     OrganizationGroupsService,
     ExpenseItemsService,
+    IncomeItemsService,
     InOutService,
     LastCommodityService,
     MoneyExchangeService,
