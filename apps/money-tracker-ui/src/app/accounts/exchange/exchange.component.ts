@@ -1,6 +1,5 @@
-import { Component, Inject, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from "@angular/core";
 import { PagedResourceCollection, Sort } from "@lagoshny/ngx-hateoas-client";
-import { KeycloakService } from "keycloak-angular";
 import {
   MoneyExchange,
   MoneyExchangeReport,
@@ -25,11 +24,11 @@ import { Observable, of, Subscription, switchMap, tap } from "rxjs";
     { provide: 'searchService', useClass: MoneyExchangeService }
   ]
 })
-export class ExchangeComponent implements OnInit {
+export class ExchangeComponent implements OnInit, AfterViewInit {
 
-  pageSubscription: Subscription;
+  @ViewChild(EntityListComponent) entityList!: EntityListComponent<MoneyExchange>;
 
-  isLoggedIn: boolean = false;
+  pageSubscription: Subscription | undefined;
 
   options: any;
 
@@ -54,35 +53,20 @@ export class ExchangeComponent implements OnInit {
 
   report?: MoneyExchangeReport;
 
-  @ViewChild(EntityListComponent) entityList!: EntityListComponent<MoneyExchange>;
-
-  constructor(protected readonly keycloak: KeycloakService,
-              private moneyTypeService: MoneyTypeService,
+  constructor(private moneyTypeService: MoneyTypeService,
               private router: Router,
               private route: ActivatedRoute,
               private title: Title,
               @Inject("searchService") private moneyExchangeService: MoneyExchangeService) {
 
-    this.keycloak.isLoggedIn().then((logged) => {
-      this.isLoggedIn = logged
-    })
+    this.moneyExchangeService.setPostProcessingStream(this.postProcessingHandler)
+  }
 
-    this.pageSubscription = route.queryParams.subscribe(
+  ngOnInit(): void {
+    this.title.setTitle('Currency Exchange')
+  }
 
-      (queryParam: any) => {
-        this.initMoneyType(queryParam['source'], 'RUB')
-          .subscribe((result: MoneyType) => {
-            this.sourceCurrency = result
-
-            this.initMoneyType(queryParam['dest'], 'USD')
-              .subscribe((result: MoneyType) => {
-                this.destCurrency = result
-                this.refreshData();
-              })
-
-          })
-      }
-    );
+  ngAfterViewInit(): void {
 
     this.moneyTypeService.getPage({
       pageParams: {
@@ -91,14 +75,23 @@ export class ExchangeComponent implements OnInit {
       },
     }).subscribe((response: PagedResourceCollection<MoneyType>) => {
       this.currencies = response.resources
+      this.pageSubscription = this.route.queryParams.subscribe(
+
+        (queryParam: any) => {
+          this.initMoneyType(queryParam['source'], 'RUB')
+            .subscribe((result: MoneyType) => {
+              this.sourceCurrency = result
+
+              this.initMoneyType(queryParam['dest'], 'USD')
+                .subscribe((result: MoneyType) => {
+                  this.destCurrency = result
+                  this.loadData()
+                })
+            })
+        }
+      );
     })
 
-    this.moneyExchangeService.setPostProcessingStream(this.postProcessingHandler)
-  }
-
-  ngOnInit(): void {
-    this.title.setTitle('Currency Exchange')
-    this.loading = true
   }
 
   getSourceCurrencies() {
@@ -141,20 +134,19 @@ export class ExchangeComponent implements OnInit {
 
   updateRoute() {
 
-    this.router.navigate([], {
+    return this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
         ...this.getQueryArguments()
       },
       queryParamsHandling: 'merge',
       skipLocationChange: false
-    }).then(() => {
-      this.refreshData();
     })
 
   }
 
-  private refreshData() {
+  private loadData() {
+
     if (this.sourceCurrency?.code && this.destCurrency?.code) {
       this.entityList.refreshData({
         queryArguments: this.getQueryArguments(),

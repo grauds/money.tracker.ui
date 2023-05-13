@@ -1,5 +1,3 @@
-<div *ngIf="isLoggedIn">
-
   <h4 *ngIf="this.report" class="header" [hidden]="pageLoading">
     <span><b>Sold:</b> {{(this.report.sourceAmount ? this.report.sourceAmount : 0) | currency:this.sourceCurrency.code}}, </span>
     <span><b>Bought:</b> {{(this.report.destAmount ? this.report.destAmount : 0) | currency:this.destCurrency.code}}, </span>
@@ -104,5 +102,3 @@
                    [sort]="getSort()"
                    (loading$)="setLoading($event)"
   ></app-entity-list>
-
-</div>

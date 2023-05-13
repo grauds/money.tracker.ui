@@ -1,0 +1,35 @@
+<div>
+  <app-money-type-selector
+    [label]="'Available currencies'"
+    [disabled]="this.loading"
+    [currencies]="currencies"
+    [currency]="currency"
+    (currency$)="updateCurrency($event)"
+  ></app-money-type-selector>
+  <mat-form-field appearance="fill">
+    <mat-label>Start Month and Year</mat-label>
+    <input matInput [matDatepicker]="dps" [disabled]="loading" [formControl]="startDate">
+    <mat-hint>MM/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="dps"></mat-datepicker-toggle>
+    <mat-datepicker #dps
+                    [disabled]="loading"
+                    startView="multi-year"
+                    (monthSelected)="setStartMonthAndYear($event, dps)"
+                    panelClass="example-month-picker">
+    </mat-datepicker>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>End Month and Year</mat-label>
+    <input matInput [matDatepicker]="dpe" [disabled]="loading" [formControl]="endDate">
+    <mat-hint>MM/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="dpe"></mat-datepicker-toggle>
+    <mat-datepicker #dpe
+                    [disabled]="loading"
+                    startView="multi-year"
+                    (monthSelected)="setEndMonthAndYear($event, dpe)"
+                    panelClass="example-month-picker">
+    </mat-datepicker>
+  </mat-form-field>
+</div>
+
+<div echarts [options]="chart" class="income-chart" [loading]="loading"></div>
