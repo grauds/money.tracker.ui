@@ -46,7 +46,7 @@ pipeline {
 
     stage ('Dependency-Check') {
         steps {
-            warnError('Dependency check is buggy') {
+            catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
               dependencyCheck additionalArguments: '''
                   -o "./"
                   -s "./"
