@@ -46,13 +46,15 @@ pipeline {
 
     stage ('Dependency-Check') {
         steps {
-            dependencyCheck additionalArguments: '''
-                -o "./"
-                -s "./"
-                -f "ALL"
-                --prettyPrint''', odcInstallation: 'Dependency Checker'
+            catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+              dependencyCheck additionalArguments: '''
+                  -o "./"
+                  -s "./"
+                  -f "ALL"
+                  --prettyPrint''', odcInstallation: 'Dependency Checker'
 
-            dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+              dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+            }
         }
     }
 

@@ -5,7 +5,11 @@ import { ExpenseItem } from "@clematis-shared/model";
 import { Sort } from "@lagoshny/ngx-hateoas-client";
 import { FormControl } from "@angular/forms";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
-import * as moment from 'moment';
+
+import * as _moment from "moment"
+// tslint:disable-next-line:no-duplicate-imports
+import {default as _rollupMoment} from 'moment';
+const moment = _rollupMoment || _moment;
 
 @Component({
   selector: 'app-expenses-list',
