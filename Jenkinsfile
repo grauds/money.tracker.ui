@@ -44,9 +44,9 @@ pipeline {
       }
     }
 
-    try {
-      stage ('Dependency-Check') {
-          steps {
+    stage ('Dependency-Check') {
+        steps {
+            warnError('Dependency check is buggy') {
               dependencyCheck additionalArguments: '''
                   -o "./"
                   -s "./"
@@ -54,10 +54,8 @@ pipeline {
                   --prettyPrint''', odcInstallation: 'Dependency Checker'
 
               dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-          }
-      }
-    } catch(Exception error) {
-      currentBuild.result = 'SUCCESS'
+            }
+        }
     }
 
     stage("Build and start docker compose services") {
