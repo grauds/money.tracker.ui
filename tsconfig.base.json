@@ -25,6 +25,7 @@
         "libs/shared-components/src/index.ts"
       ]
     },
+    "esModuleInterop": true,
     "rootDir": "."
   },
   "angularCompilerOptions": {

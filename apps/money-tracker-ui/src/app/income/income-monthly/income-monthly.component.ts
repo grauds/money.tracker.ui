@@ -72,6 +72,10 @@ export class IncomeMonthlyComponent implements OnInit {
 
   income: Array<IncomeMonthly> = [];
 
+  minDate: Date;
+
+  maxDate: Date;
+
   constructor(private moneyTypeService: MoneyTypeService,
               private incomeItemsService: IncomeItemsService,
               private router: Router,
@@ -87,6 +91,10 @@ export class IncomeMonthlyComponent implements OnInit {
           });
       }
     );
+
+    const currentYear = new Date().getFullYear();
+    this.minDate = new Date(currentYear - 20, 0, 1);
+    this.maxDate = new Date(currentYear + 1, 11, 31);
   }
 
   initMoneyType(destCurrency: string, fallback: string) {
@@ -109,21 +117,22 @@ export class IncomeMonthlyComponent implements OnInit {
   }
 
   setStartMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
-    const ctrlValue = this.startDate.value!;
-    ctrlValue.month(normalizedMonthAndYear.month());
-    ctrlValue.year(normalizedMonthAndYear.year());
-    this.startDate.setValue(ctrlValue);
     datepicker.close()
+    this.setDate(normalizedMonthAndYear, this.startDate);
     this.loadData()
   }
 
   setEndMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
-    const ctrlValue = this.endDate.value!;
+    datepicker.close();
+    this.setDate(normalizedMonthAndYear, this.endDate);
+    this.loadData()
+  }
+
+  private setDate(normalizedMonthAndYear: moment.Moment, startDate: FormControl<any>) {
+    const ctrlValue = startDate.value!;
     ctrlValue.month(normalizedMonthAndYear.month());
     ctrlValue.year(normalizedMonthAndYear.year());
-    this.endDate.setValue(ctrlValue);
-    datepicker.close();
-    this.loadData()
+    startDate.setValue(ctrlValue);
   }
 
   updateRoute() {
@@ -269,4 +278,11 @@ export class IncomeMonthlyComponent implements OnInit {
     };
   }
 
+  minusSixMonths() {
+
+  }
+
+  plusSixMonths() {
+
+  }
 }
