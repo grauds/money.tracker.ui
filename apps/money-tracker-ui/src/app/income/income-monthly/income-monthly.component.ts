@@ -12,14 +12,13 @@ import { IncomeMonthly, MoneyType } from "@clematis-shared/model";
 import { IncomeItemsService } from "@clematis-shared/shared-components";
 import { MoneyTypeService } from "@clematis-shared/shared-components";
 import { FormControl } from "@angular/forms";
-
-import * as _moment from 'moment';
-// tslint:disable-next-line:no-duplicate-imports
-import {default as _rollupMoment, Moment} from 'moment';
 import { MatDatepicker } from "@angular/material/datepicker";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material/core";
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from "@angular/material-moment-adapter";
 
+import * as _moment from 'moment';
+// tslint:disable-next-line:no-duplicate-imports
+import {default as _rollupMoment, Moment} from 'moment';
 const moment = _rollupMoment || _moment;
 
 // See the Moment.js docs for the meaning of these formats:
@@ -66,7 +65,7 @@ export class IncomeMonthlyComponent implements OnInit {
 
   currencies: MoneyType[] = [];
 
-  startDate = new FormControl(moment().month(-6));
+  startDate = new FormControl(moment().add(-6, 'M'));
 
   endDate = new FormControl(moment());
 
@@ -279,10 +278,14 @@ export class IncomeMonthlyComponent implements OnInit {
   }
 
   minusSixMonths() {
-
+    this.setDate(this.startDate.value!.add(-6, 'M'), this.startDate);
+    this.setDate(this.endDate.value!.add(-6, 'M'), this.endDate);
+    this.loadData()
   }
 
   plusSixMonths() {
-
+    this.setDate(this.startDate.value!.add(6, 'M'), this.startDate);
+    this.setDate(this.endDate.value!.add(6, 'M'), this.endDate);
+    this.loadData()
   }
 }

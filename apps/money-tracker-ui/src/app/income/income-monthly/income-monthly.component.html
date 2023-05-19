@@ -6,6 +6,9 @@
     [currency]="currency"
     (currency$)="updateCurrency($event)"
   ></app-money-type-selector>
+  <button mat-icon-button (click)="minusSixMonths()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
   <mat-form-field appearance="fill">
     <mat-label>Start Month and Year</mat-label>
     <input matInput
@@ -39,10 +42,6 @@
                     panelClass="example-month-picker">
     </mat-datepicker>
   </mat-form-field>
-
-  <button mat-icon-button (click)="minusSixMonths()">
-    <mat-icon>arrow_back</mat-icon>
-  </button>
 
   <button mat-icon-button (click)="plusSixMonths()">
     <mat-icon>arrow_forward</mat-icon>
