@@ -6,9 +6,17 @@
     [currency]="currency"
     (currency$)="updateCurrency($event)"
   ></app-money-type-selector>
+  <button mat-icon-button (click)="minusSixMonths()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
   <mat-form-field appearance="fill">
     <mat-label>Start Month and Year</mat-label>
-    <input matInput [matDatepicker]="dps" [disabled]="loading" [formControl]="startDate">
+    <input matInput
+           [matDatepicker]="dps"
+           [disabled]="loading"
+           [formControl]="startDate"
+           [min]="minDate" [max]="maxDate"
+    >
     <mat-hint>MM/YYYY</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="dps"></mat-datepicker-toggle>
     <mat-datepicker #dps
@@ -20,7 +28,11 @@
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>End Month and Year</mat-label>
-    <input matInput [matDatepicker]="dpe" [disabled]="loading" [formControl]="endDate">
+    <input matInput [matDatepicker]="dpe"
+           [disabled]="loading"
+           [formControl]="endDate"
+           [min]="minDate" [max]="maxDate"
+    >
     <mat-hint>MM/YYYY</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="dpe"></mat-datepicker-toggle>
     <mat-datepicker #dpe
@@ -30,6 +42,11 @@
                     panelClass="example-month-picker">
     </mat-datepicker>
   </mat-form-field>
+
+  <button mat-icon-button (click)="plusSixMonths()">
+    <mat-icon>arrow_forward</mat-icon>
+  </button>
+
 </div>
 
 <div echarts [options]="chart" class="income-chart" [loading]="loading"></div>

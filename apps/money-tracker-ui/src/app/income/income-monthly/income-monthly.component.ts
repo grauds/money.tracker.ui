@@ -12,14 +12,13 @@ import { IncomeMonthly, MoneyType } from "@clematis-shared/model";
 import { IncomeItemsService } from "@clematis-shared/shared-components";
 import { MoneyTypeService } from "@clematis-shared/shared-components";
 import { FormControl } from "@angular/forms";
-
-import * as _moment from 'moment';
-// tslint:disable-next-line:no-duplicate-imports
-import {default as _rollupMoment, Moment} from 'moment';
 import { MatDatepicker } from "@angular/material/datepicker";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material/core";
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from "@angular/material-moment-adapter";
 
+import * as _moment from 'moment';
+// tslint:disable-next-line:no-duplicate-imports
+import {default as _rollupMoment, Moment} from 'moment';
 const moment = _rollupMoment || _moment;
 
 // See the Moment.js docs for the meaning of these formats:
@@ -66,11 +65,15 @@ export class IncomeMonthlyComponent implements OnInit {
 
   currencies: MoneyType[] = [];
 
-  startDate = new FormControl(moment().month(-6));
+  startDate = new FormControl(moment().add(-6, 'M'));
 
   endDate = new FormControl(moment());
 
   income: Array<IncomeMonthly> = [];
+
+  minDate: Date;
+
+  maxDate: Date;
 
   constructor(private moneyTypeService: MoneyTypeService,
               private incomeItemsService: IncomeItemsService,
@@ -87,6 +90,10 @@ export class IncomeMonthlyComponent implements OnInit {
           });
       }
     );
+
+    const currentYear = new Date().getFullYear();
+    this.minDate = new Date(currentYear - 20, 0, 1);
+    this.maxDate = new Date(currentYear + 1, 11, 31);
   }
 
   initMoneyType(destCurrency: string, fallback: string) {
@@ -109,21 +116,22 @@ export class IncomeMonthlyComponent implements OnInit {
   }
 
   setStartMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
-    const ctrlValue = this.startDate.value!;
-    ctrlValue.month(normalizedMonthAndYear.month());
-    ctrlValue.year(normalizedMonthAndYear.year());
-    this.startDate.setValue(ctrlValue);
     datepicker.close()
+    this.setDate(normalizedMonthAndYear, this.startDate);
     this.loadData()
   }
 
   setEndMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
-    const ctrlValue = this.endDate.value!;
+    datepicker.close();
+    this.setDate(normalizedMonthAndYear, this.endDate);
+    this.loadData()
+  }
+
+  private setDate(normalizedMonthAndYear: moment.Moment, startDate: FormControl<any>) {
+    const ctrlValue = startDate.value!;
     ctrlValue.month(normalizedMonthAndYear.month());
     ctrlValue.year(normalizedMonthAndYear.year());
-    this.endDate.setValue(ctrlValue);
-    datepicker.close();
-    this.loadData()
+    startDate.setValue(ctrlValue);
   }
 
   updateRoute() {
@@ -269,4 +277,15 @@ export class IncomeMonthlyComponent implements OnInit {
     };
   }
 
+  minusSixMonths() {
+    this.setDate(this.startDate.value!.add(-6, 'M'), this.startDate);
+    this.setDate(this.endDate.value!.add(-6, 'M'), this.endDate);
+    this.loadData()
+  }
+
+  plusSixMonths() {
+    this.setDate(this.startDate.value!.add(6, 'M'), this.startDate);
+    this.setDate(this.endDate.value!.add(6, 'M'), this.endDate);
+    this.loadData()
+  }
 }

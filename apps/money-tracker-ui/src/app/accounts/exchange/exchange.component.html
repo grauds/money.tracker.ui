@@ -1,11 +1,11 @@
-  <h4 *ngIf="this.report" class="header" [hidden]="pageLoading">
+  <h4 *ngIf="this.report" class="header" [hidden]="loading">
     <span><b>Sold:</b> {{(this.report.sourceAmount ? this.report.sourceAmount : 0) | currency:this.sourceCurrency.code}}, </span>
     <span><b>Bought:</b> {{(this.report.destAmount ? this.report.destAmount : 0) | currency:this.destCurrency.code}}, </span>
     <span><b>Average:</b> {{(this.report.avgRate ? this.report.avgRate : 0) | number: '1.6-8'}} , </span>
     <span><b>Current:</b> {{this.report.curRate | number: '1.6-8'}} </span>
   </h4>
 
-  <h4 class="header" [hidden]="!(pageLoading)">
+  <h4 class="header" [hidden]="!(loading)">
     <span><b>Loading...</b></span>
   </h4>
 

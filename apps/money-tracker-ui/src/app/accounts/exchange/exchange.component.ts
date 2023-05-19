@@ -34,8 +34,6 @@ export class ExchangeComponent implements OnInit, AfterViewInit {
 
   loading = false
 
-  pageLoading = false
-
   sourceCurrency!: MoneyType;
 
   destCurrency!: MoneyType;
@@ -67,31 +65,30 @@ export class ExchangeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.moneyTypeService.getPage({
+        pageParams: {
+          page: 0,
+          size: 200
+        },
+      }).subscribe((response: PagedResourceCollection<MoneyType>) => {
+        this.currencies = response.resources
+        this.pageSubscription = this.route.queryParams.subscribe(
+          (queryParam: any) => {
+            this.initMoneyType(queryParam['source'], 'RUB')
+              .subscribe((result: MoneyType) => {
+                this.sourceCurrency = result
 
-    this.moneyTypeService.getPage({
-      pageParams: {
-        page: 0,
-        size: 200
-      },
-    }).subscribe((response: PagedResourceCollection<MoneyType>) => {
-      this.currencies = response.resources
-      this.pageSubscription = this.route.queryParams.subscribe(
-
-        (queryParam: any) => {
-          this.initMoneyType(queryParam['source'], 'RUB')
-            .subscribe((result: MoneyType) => {
-              this.sourceCurrency = result
-
-              this.initMoneyType(queryParam['dest'], 'USD')
-                .subscribe((result: MoneyType) => {
-                  this.destCurrency = result
-                  this.loadData()
-                })
-            })
-        }
-      );
+                this.initMoneyType(queryParam['dest'], 'USD')
+                  .subscribe((result: MoneyType) => {
+                    this.destCurrency = result
+                    this.loadData()
+                  })
+              })
+          }
+        );
+      })
     })
-
   }
 
   getSourceCurrencies() {
