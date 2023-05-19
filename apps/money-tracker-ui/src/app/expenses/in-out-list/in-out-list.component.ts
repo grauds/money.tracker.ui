@@ -175,7 +175,7 @@ export class InOutListComponent implements OnInit {
           return this.sign ? (delta.delta >= 0) : (delta.delta < 0)
         }).reduce(function(prev, current) {
           return prev + current.delta
-        }, 0), navigator.language, 'RUB')
+        }, 0), navigator.language, this.currency.code)
       },
       tooltip: {
         trigger: 'item',
