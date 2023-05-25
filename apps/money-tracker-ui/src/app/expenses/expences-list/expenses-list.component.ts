@@ -1,10 +1,15 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Title } from "@angular/platform-browser";
-import { EntityListComponent, ExpenseItemsService } from "@clematis-shared/shared-components";
-import { ExpenseItem } from "@clematis-shared/model";
-import { Sort } from "@lagoshny/ngx-hateoas-client";
 import { FormControl } from "@angular/forms";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
+
+import { Sort } from "@lagoshny/ngx-hateoas-client";
+
+import {
+  EntityListComponent,
+  ExpenseItemsService
+} from "@clematis-shared/shared-components";
+import { ExpenseItem } from '@clematis-shared/model';
 
 import * as _moment from "moment"
 // tslint:disable-next-line:no-duplicate-imports

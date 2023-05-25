@@ -7,7 +7,8 @@ import {
   CommodityGroup,
   MoneyTypes,
   ExpenseItem,
-  Entity
+  Entity,
+  Utils
 } from '@clematis-shared/model';
 import {
   CommoditiesService,
@@ -16,7 +17,6 @@ import {
   ExpenseItemsService
 } from "@clematis-shared/shared-components";
 import { Title } from "@angular/platform-browser";
-import { Utils } from '@clematis-shared/model';
 import { formatDate } from "@angular/common";
 
 @Component({
