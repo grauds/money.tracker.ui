@@ -2,7 +2,7 @@
 # BUILD STAGE
 # ------------------------------------------------------------------------------
 
-FROM node:16-alpine as build-image
+FROM node:18-alpine as build-image
 
 WORKDIR /opt/software
 
