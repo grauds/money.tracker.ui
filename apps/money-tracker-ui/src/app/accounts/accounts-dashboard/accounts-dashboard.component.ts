@@ -187,7 +187,6 @@ export class AccountsDashboardComponent implements OnInit {
         axisTick: { show: true },
         splitLine: { show: false },
         data: this.accountsBalances
-          .filter(accountBalance => accountBalance.balance != 0)
           .map(accountBalance => {
             return accountBalance.name;
           })
@@ -210,7 +209,6 @@ export class AccountsDashboardComponent implements OnInit {
           },
           selectedMode: "single",
           data: this.accountsBalances
-            .filter(accountBalance => accountBalance.balance != 0)
             .map((accountBalance: AccountBalance) => {
               return {
                 value: accountBalance.balance
