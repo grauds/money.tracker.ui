@@ -51,6 +51,7 @@ pipeline {
                   -o "./"
                   -s "./"
                   -f "ALL"
+                  -P "depcheck.properties"
                   --prettyPrint''', odcInstallation: 'Dependency Checker'
 
               dependencyCheckPublisher pattern: 'dependency-check-report.xml'
