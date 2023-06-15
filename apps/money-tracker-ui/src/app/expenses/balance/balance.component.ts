@@ -79,7 +79,6 @@ export class BalanceComponent implements OnInit {
 
   updateCurrency($event: MoneyType) {
     this.currency = $event;
-
     this.updateRoute().then(() => {
       this.loadData()
     });
@@ -144,7 +143,8 @@ export class BalanceComponent implements OnInit {
 
         this.limit = response.pageSize
         this.total = response.totalElements
-        let n = (this.n !== undefined) ? this.n : (response.totalPages - 1)
+        let totalPages = response.totalPages
+        let n = (this.n !== undefined && this.n < totalPages) ? this.n : (totalPages - 1)
 
         return this.resourceService.searchPage<MonthlyDelta>(MonthlyDelta, 'history', {
           params: {
