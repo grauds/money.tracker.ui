@@ -67,7 +67,7 @@ export class IncomeMonthlyComponent implements OnInit {
 
   startDate = new FormControl(moment().add(-6, 'M'));
 
-  endDate = new FormControl(moment());
+  endDate = new FormControl(moment().add(1, 'M'));
 
   income: Array<IncomeMonthly> = [];
 
