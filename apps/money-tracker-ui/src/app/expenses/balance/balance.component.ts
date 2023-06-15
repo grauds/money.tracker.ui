@@ -22,7 +22,7 @@ export class BalanceComponent implements OnInit {
   limit: number = 12;
 
   // current page number counter
-  n: number | undefined = undefined;
+  n: number = 0;
 
   pageSubscription: Subscription;
 
@@ -48,7 +48,7 @@ export class BalanceComponent implements OnInit {
     this.pageSubscription = route.queryParams.subscribe(
       (queryParam: any) => {
         const page = Number.parseInt(queryParam['page'], 10)
-        this.n = isNaN(page) ? undefined : page;
+        this.n = isNaN(page) ? 0 : page;
         const size = Number.parseInt(queryParam['size'], 10)
         this.limit = isNaN(size) ? 12 : size;
         this.initMoneyType(queryParam['currency'], 'RUB')
@@ -71,17 +71,17 @@ export class BalanceComponent implements OnInit {
     this.title.setTitle('Balance Monthly')
   }
 
-  setCurrentPage(pageIndex: number, pageSize: number) {
+  setCurrentPage(pageIndex: number, pageSize?: number) {
     this.n = pageIndex
-    this.limit = pageSize
-    this.updateCurrency(this.currency)
+    if (pageSize) {
+      this.limit = pageSize
+    }
+    return this.updateRoute();
   }
 
   updateCurrency($event: MoneyType) {
     this.currency = $event;
-    this.updateRoute().then(() => {
-      this.loadData()
-    });
+    return this.updateRoute();
   }
 
   updateRoute() {
@@ -108,28 +108,20 @@ export class BalanceComponent implements OnInit {
     }).subscribe({
       next: (response: PagedResourceCollection<MoneyType>) => {
         this.currencies = response.resources;
-        this.createChart(this.currency)
+        this.getData(this.currency)
           .subscribe(chart => this.chart = chart)
       },
       error: () => {
-      },
-      complete: () => {
-        this.loading = false;
       }
     });
   }
 
-  private createChart(moneyType: MoneyType) {
+  private getData(moneyType: MoneyType) {
 
-    let chart = {};
+    let xAxis: string[] = []
+    let yAxis: MonthlyDelta[] = []
 
-    // form unique X ticks
-    let waterfallX: string[] = []
-    let monthlyDeltas: MonthlyDelta[] = []
-
-    return of(chart).pipe(
-      switchMap(() => {
-        return this.resourceService.searchPage<MonthlyDelta>(MonthlyDelta, 'history', {
+    return this.resourceService.searchPage<MonthlyDelta>(MonthlyDelta, 'history', {
           params: {
             code: moneyType.code
           },
@@ -138,75 +130,75 @@ export class BalanceComponent implements OnInit {
             size: this.limit,
           }
         })
-      }),
-      switchMap((response: PagedResourceCollection<MonthlyDelta>) => {
+      .pipe(
+        switchMap((response: PagedResourceCollection<MonthlyDelta>) => {
 
-        this.limit = response.pageSize
-        this.total = response.totalElements
-        let totalPages = response.totalPages
-        let n = (this.n !== undefined && this.n < totalPages) ? this.n : (totalPages - 1)
+          this.limit = response.pageSize
+          this.total = response.totalElements
 
-        return this.resourceService.searchPage<MonthlyDelta>(MonthlyDelta, 'history', {
-          params: {
-            code: moneyType.code
-          },
-          pageParams: {
-            page: n,
-            size: this.limit,
+          let totalPages = response.totalPages
+          let n = (this.n !== undefined && this.n < totalPages) ? this.n : (totalPages - 1)
+
+          return this.resourceService.searchPage<MonthlyDelta>(MonthlyDelta, 'history', {
+            params: {
+              code: moneyType.code
+            },
+            pageParams: {
+              page: n,
+              size: this.limit,
+            }
+          })
+        }),
+        switchMap((response: PagedResourceCollection<MonthlyDelta>) => {
+          this.n = response.pageNumber
+          return of(response.resources)
+        }),
+        switchMap((resources: MonthlyDelta[]) => {
+
+          // filter out any other currencies
+          yAxis = resources.filter((value: MonthlyDelta) => value.code === moneyType.code)
+
+          // form unique ticks
+          xAxis = resources.map((monthlyDelta: MonthlyDelta) => {
+            return monthlyDelta.year + '/' + monthlyDelta.month
+          }).filter((value, index, self) => self.indexOf(value) === index)
+
+          // the starting value for the graph fragment
+          if (resources.length > 0) {
+            return this.accountsService.getBalance(yAxis[0].year, yAxis[0].month, moneyType.code)
           }
+
+          return of(0)
+        }),
+        tap((balance: number) => console.log('Frame balance: ' + balance)),
+        switchMap((balance: number) => {
+
+          let currentBalance = balance ? balance : 0
+          let deltas: string[] = []
+          let totals: string[] = []
+
+          // https://github.com/apache/echarts/issues/11885
+          xAxis.forEach((tick: String) => {
+
+            let values = yAxis.filter((delta) => (delta.year + '/' + delta.month) === tick)
+
+            if (values.length > 0) {
+              let value = values[0]
+              deltas.push(value.delta.toString())
+              currentBalance += value.delta
+            } else {
+              deltas.push('0')
+            }
+            totals.push(currentBalance.toString())
+
+          })
+          return of(this.buildChart(xAxis, deltas, totals, moneyType))
+        }),
+        catchError((err: Error) => {
+          this.loading = false
+          throw err
         })
-      }),
-      switchMap((response: PagedResourceCollection<MonthlyDelta>) => {
-        this.n = response.pageNumber
-        return of(response.resources)
-      }),
-      switchMap((resources: MonthlyDelta[]) => {
-
-        // filter out any other currencies
-        monthlyDeltas = resources.filter((value: MonthlyDelta) => value.code === moneyType.code)
-
-        // form unique ticks
-        waterfallX = resources.map((monthlyDelta: MonthlyDelta) => {
-          return monthlyDelta.year + '/' + monthlyDelta.month
-        }).filter((value, index, self) => self.indexOf(value) === index)
-
-        // the starting value for the graph fragment
-        if (resources.length > 0) {
-          console.log('Frame balance: ' + monthlyDeltas[0].year + ' ' + monthlyDeltas[0].month)
-          return this.accountsService.getBalance(monthlyDeltas[0].year, monthlyDeltas[0].month, moneyType.code)
-        }
-
-        return of(0)
-      }),
-      tap((balance: number) => console.log('Frame balance: ' + balance)),
-      switchMap((balance: number) => {
-
-        let currentBalance = balance ? balance : 0
-        let waterfallDelta: string[] = []
-        let waterfallTotals: string[] = []
-
-        // https://github.com/apache/echarts/issues/11885
-        waterfallX.forEach((tick: String) => {
-
-          let values = monthlyDeltas.filter((delta) => (delta.year + '/' + delta.month) === tick)
-
-          if (values.length > 0) {
-            let value = values[0]
-            waterfallDelta.push(value.delta.toString())
-            currentBalance += value.delta
-          } else {
-            waterfallDelta.push('0')
-          }
-          waterfallTotals.push(currentBalance.toString())
-
-        })
-        return of(this.buildChart(waterfallX, waterfallDelta, waterfallTotals, moneyType))
-      }),
-      catchError((err: Error) => {
-        this.loading = false
-        throw err
-      })
-    )
+      )
   }
 
   private buildChart(waterfallX: string[],

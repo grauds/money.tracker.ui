@@ -51,6 +51,8 @@ export class ExchangeComponent implements OnInit, AfterViewInit {
 
   report?: MoneyExchangeReport;
 
+  private resetPages: boolean = false;
+
   constructor(private moneyTypeService: MoneyTypeService,
               private router: Router,
               private route: ActivatedRoute,
@@ -114,18 +116,19 @@ export class ExchangeComponent implements OnInit, AfterViewInit {
     const swap = this.sourceCurrency
     this.sourceCurrency = this.destCurrency
     this.destCurrency = swap
+    this.resetPages = false
     this.updateRoute()
   }
 
   updatesSourceCurrency($event: MoneyType) {
     this.sourceCurrency = $event
-    this.entityList.n = 0
+    this.resetPages = true
     this.updateRoute()
   }
 
   updatesDestCurrency($event: MoneyType) {
     this.destCurrency = $event
-    this.entityList.n = 0
+    this.resetPages = true
     this.updateRoute()
   }
 
@@ -147,8 +150,8 @@ export class ExchangeComponent implements OnInit, AfterViewInit {
     if (this.sourceCurrency?.code && this.destCurrency?.code) {
       this.entityList.refreshData({
         queryArguments: this.getQueryArguments(),
-        queryName: "events"
-      });
+        queryName: 'events'
+      }, this.resetPages);
     }
   }
 

@@ -27,6 +27,11 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
   @Input() loadOnInit = true
 
+  @Input() searchRequest?: SearchRequest;
+
+  searchRequest$: EventEmitter<SearchRequest | undefined>
+    = new EventEmitter<SearchRequest | undefined>();
+
   pageSubscription: Subscription;
 
   @Output() filter$: EventEmitter<Map<string, string>> = new EventEmitter<Map<string, string>>();
@@ -34,17 +39,6 @@ export class EntityListComponent<T extends Entity> implements OnInit {
   filter: Map<string, string> = new Map<string, string>();
 
   @Output() statusDescription$: Observable<string> | undefined
-
-  searchRequest$: EventEmitter<SearchRequest | undefined>
-    = new EventEmitter<SearchRequest | undefined>();
-
-  @Input() searchRequest?: SearchRequest;
-
-  total: number | undefined;
-
-  limit = 10;
-
-  n = 0;
 
   @Output() entities$: EventEmitter<T[]> = new EventEmitter<T[]>();
 
@@ -54,6 +48,12 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
   loading = false;
 
+  total: number | undefined;
+
+  limit = 10;
+
+  n = 0;
+
   error: string | undefined;
 
   public constructor(@Inject("searchService") private readonly searchService: SearchService<T>,
@@ -62,28 +62,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
     this.pageSubscription = route.queryParams.subscribe(
       (queryParams: Params) => {
-
-        // parse page, limit and sort information
-        const page: number = Number.parseInt(queryParams['page'], 10)
-        this.n = isNaN(page) ? 0 : page;
-
-        const size: number = Number.parseInt(queryParams['size'], 10)
-        this.limit = isNaN(size) ? 10 : size;
-
-        const sort: string = queryParams['sort']
-        if (sort) {
-          const s: string[] = sort.split(',')
-          if (s.length === 2) {
-            this.sort = { [s[0]] : s[1] as SortOrder }
-          }
-        }
-
-        // add the rest of the url search parameters as filters
-        Object.keys(queryParams).forEach((k) => {
-          if (k !== 'page' && k !== 'size' && k !== 'sort') {
-            this.filter.set(k, queryParams[k])
-          }
-        })
+        this.updateFromParameters(queryParams);
       }
     );
 
@@ -96,6 +75,31 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     })
   }
 
+  updateFromParameters(queryParams: Params) {
+
+    // parse page, limit and sort information
+    const page: number = Number.parseInt(queryParams["page"], 10);
+    this.n = isNaN(page) ? 0 : page;
+
+    const size: number = Number.parseInt(queryParams["size"], 10);
+    this.limit = isNaN(size) ? 10 : size;
+
+    const sort: string = queryParams["sort"];
+    if (sort) {
+      const s: string[] = sort.split(",");
+      if (s.length === 2) {
+        this.sort = { [s[0]]: s[1] as SortOrder };
+      }
+    }
+
+    // add the rest of the url search parameters as filters
+    Object.keys(queryParams).forEach((k) => {
+      if (k !== "page" && k !== "size" && k !== "sort") {
+        this.filter.set(k, queryParams[k]);
+      }
+    });
+  }
+
   ngOnInit(): void {
     this.statusDescription$ = this.searchService.getStatusDescription()
     this.subscribeToSearchRequests()
@@ -104,16 +108,21 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     }
   }
 
-  loadData() {
+  private loadData() {
     this.loading$.next(true)
     this.searchRequest$.next(this.searchRequest)
   }
 
-  refreshData(searchRequest?: SearchRequest) {
-    this.n = 0
-    this.searchRequest = searchRequest
-    this.updateRoute()
-    this.loadData()
+  refreshData(searchRequest?: SearchRequest, resetPages: boolean = true) {
+    if (resetPages) {
+      this.n = 0
+    }
+    if (searchRequest) {
+      this.searchRequest = searchRequest
+    }
+    this.updateRoute().then(() => {
+      this.loadData()
+    })
   }
 
   private subscribeToSearchRequests() {
@@ -176,8 +185,8 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     return of(searchResult)
   }
 
-  updateRoute() {
-    this.router.navigate([], this.getRouteParameters())
+  updateRoute(): Promise<boolean> {
+    return this.router.navigate([], this.getRouteParameters())
   }
 
   getRouteParameters(): NavigationExtras {
@@ -209,8 +218,9 @@ export class EntityListComponent<T extends Entity> implements OnInit {
   setCurrentPage(event: PageEvent) {
     this.n = event.pageIndex
     this.limit = event.pageSize
-    this.updateRoute()
-    this.loadData()
+    this.updateRoute().then(() => {
+      this.loadData()
+    })
   }
 
   getSort(): RestSort {
@@ -236,8 +246,9 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     } else {
       this.sort = null
     }
-    this.updateRoute()
-    this.loadData()
+    this.updateRoute().then(() => {
+      this.loadData()
+    })
   }
 
   getFilter(): Map<string, string> {
