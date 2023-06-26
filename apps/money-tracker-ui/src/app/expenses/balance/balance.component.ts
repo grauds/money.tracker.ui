@@ -22,7 +22,7 @@ export class BalanceComponent implements OnInit {
   limit: number = 12;
 
   // current page number counter
-  n: number = 0;
+  n: number | undefined = undefined;
 
   pageSubscription: Subscription;
 
@@ -48,7 +48,7 @@ export class BalanceComponent implements OnInit {
     this.pageSubscription = route.queryParams.subscribe(
       (queryParam: any) => {
         const page = Number.parseInt(queryParam['page'], 10)
-        this.n = isNaN(page) ? 0 : page;
+        this.n = isNaN(page) ? undefined : page;
         const size = Number.parseInt(queryParam['size'], 10)
         this.limit = isNaN(size) ? 12 : size;
         this.initMoneyType(queryParam['currency'], 'RUB')
@@ -116,7 +116,7 @@ export class BalanceComponent implements OnInit {
     });
   }
 
-  private getData(moneyType: MoneyType) {
+  getData(moneyType: MoneyType) {
 
     let xAxis: string[] = []
     let yAxis: MonthlyDelta[] = []
