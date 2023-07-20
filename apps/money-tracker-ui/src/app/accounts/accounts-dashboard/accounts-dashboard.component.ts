@@ -35,6 +35,8 @@ export class AccountsDashboardComponent implements OnInit {
 
   loading = false;
 
+  totalsLoading = false;
+
   currency: MoneyType = new MoneyType();
 
   currencies: MoneyType[] = [];
@@ -104,7 +106,6 @@ export class AccountsDashboardComponent implements OnInit {
   }
 
   loadData() {
-    this.loading = true
 
     this.moneyTypeService.getPage({
       pageParams: {
@@ -117,21 +118,21 @@ export class AccountsDashboardComponent implements OnInit {
           this.getAccountsBalanceInCurrency();
         },
       error: () => {
-      },
-      complete: () => {
-        this.loading = false;
       }
     });
   }
 
   private getAccountsBalanceInCurrency() {
 
+    this.loading = true
+    this.totalsLoading = true;
+
     this.accountsService.getAccountsBalanceInCurrency(this.currency)
       .subscribe({
           next: (response: ResourceCollection<AccountBalance>) => {
             this.accountsBalances = response.resources;
-            this.chart = this.getBalancesChart(this.currency);
             this.getAccountsTotalInCurrency();
+            this.chart = this.getBalancesChart(this.currency);
           },
           error: () => {
           },
@@ -144,6 +145,7 @@ export class AccountsDashboardComponent implements OnInit {
 
   private getAccountsTotalInCurrency() {
 
+    this.totalsLoading = true;
     this.accountsService.getAccountsTotalInCurrency(this.currency)
       .subscribe({
         next: (total: number) => {
@@ -151,7 +153,7 @@ export class AccountsDashboardComponent implements OnInit {
         }, error: () => {
           this.total = 0;
         }, complete: () => {
-          this.loading = false;
+          this.totalsLoading = false;
         }
       });
   }

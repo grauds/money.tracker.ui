@@ -7,11 +7,11 @@
     (currency$)="updateCurrency($event)"
   ></app-money-type-selector>
 
-  <div class="rubber totalsHeader" [hidden]="this.loading">
+  <div class="rubber totalsHeader" [hidden]="this.totalsLoading">
     {{ this.total | currency: this.currency.code }}
   </div>
 
-  <div class="rubber totalsHeader" [hidden]="!(this.loading)">
+  <div class="rubber totalsHeader" [hidden]="!(this.totalsLoading)">
     Loading...
   </div>
 
