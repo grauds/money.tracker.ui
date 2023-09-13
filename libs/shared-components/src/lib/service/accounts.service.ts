@@ -45,6 +45,15 @@ export class AccountsService extends SearchService<AccountBalance> {
     })
   }
 
+  getAccountsTotalHistoryInCurrency(moneyType: MoneyType, days: number): Observable<number> {
+    return this.http.get<number>(this.getUrl('/accountsTotals/search/balanceHistory'), {
+      params: {
+        code: moneyType.code,
+        days: days
+      }
+    })
+  }
+
   getBalance(an: number, mois: number, code: string): Observable<number> {
 
     return this.http.get<number>(this.getUrl('/monthlyDeltas/search/balance'), {

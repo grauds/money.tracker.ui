@@ -1,3 +1,12 @@
+<h4 class="header" [hidden]="totalsLoading">
+  <span><b>Week Ago:</b> {{ this.totalWeekAgo | currency: this.currency.code }}, </span>
+  <span><b>Current:</b> {{ this.total | currency: this.currency.code }}, </span>
+  <span><b>Delta:</b> {{(this.total - this.totalWeekAgo) | currency: this.currency.code }}</span>
+</h4>
+
+<h4 class="header" [hidden]="!(totalsLoading)">
+  <span><b>Loading...</b></span>
+</h4>
 
   <app-money-type-selector
     [label]="'Available currencies'"
@@ -6,14 +15,6 @@
     [currency]="currency"
     (currency$)="updateCurrency($event)"
   ></app-money-type-selector>
-
-  <div class="rubber totalsHeader" [hidden]="this.totalsLoading">
-    {{ this.total | currency: this.currency.code }}
-  </div>
-
-  <div class="rubber totalsHeader" [hidden]="!(this.totalsLoading)">
-    Loading...
-  </div>
 
   <div echarts
        [options]="chart"

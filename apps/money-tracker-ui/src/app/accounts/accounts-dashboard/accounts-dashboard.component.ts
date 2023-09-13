@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { AccountBalance, MoneyType } from "@clematis-shared/model";
 import { Subscription } from "rxjs";
 import {
-  HateoasResourceService,
   PagedResourceCollection,
   ResourceCollection
 } from "@lagoshny/ngx-hateoas-client";
@@ -20,8 +19,11 @@ export class AccountsDashboardComponent implements OnInit {
 
   chart: any;
 
-  // total number of elements
+  // total sum in the chosen currency
   total: number = 0;
+
+  // total sum week ago in the chosen currency
+  totalWeekAgo: number = 0;
 
   // number of records per page
   limit: number = 12;
@@ -37,12 +39,13 @@ export class AccountsDashboardComponent implements OnInit {
 
   totalsLoading = false;
 
+  totalsHistoryLoading = false;
+
   currency: MoneyType = new MoneyType();
 
   currencies: MoneyType[] = [];
 
   constructor(private accountsService: AccountsService,
-              private resourceService: HateoasResourceService,
               private moneyTypeService: MoneyTypeService,
               private router: Router,
               private route: ActivatedRoute,
@@ -132,6 +135,7 @@ export class AccountsDashboardComponent implements OnInit {
           next: (response: ResourceCollection<AccountBalance>) => {
             this.accountsBalances = response.resources;
             this.getAccountsTotalInCurrency();
+            this.getAccountsTotalWeekAgoInCurrency();
             this.chart = this.getBalancesChart(this.currency);
           },
           error: () => {
@@ -154,6 +158,21 @@ export class AccountsDashboardComponent implements OnInit {
           this.total = 0;
         }, complete: () => {
           this.totalsLoading = false;
+        }
+      });
+  }
+
+  private getAccountsTotalWeekAgoInCurrency() {
+
+    this.totalsHistoryLoading = true;
+    this.accountsService.getAccountsTotalHistoryInCurrency(this.currency, 7)
+      .subscribe({
+        next: (total: number) => {
+          this.totalWeekAgo = total;
+        }, error: () => {
+          this.totalWeekAgo = 0;
+        }, complete: () => {
+          this.totalsHistoryLoading = false;
         }
       });
   }
