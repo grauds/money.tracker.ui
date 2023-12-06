@@ -40,7 +40,12 @@ pipeline {
            docker build --output "type=local,dest=${WORKSPACE}/coverage" --target test-out .
            ls -l ./coverage
         '''
-        publishCoverage adapters: [istanbulCoberturaAdapter(mergeToOneReport: true, path: 'coverage/**/cobertura-coverage.xml')], sourceFileResolver: sourceFiles('STORE_LAST_BUILD')
+        recordCoverage(tools: [[parser: 'COBERTURA', pattern: 'coverage/**/cobertura-coverage.xml']],
+          id: 'cobertura', name: 'Cobertura Coverage',
+          sourceCodeRetention: 'EVERY_BUILD',
+          qualityGates: [
+            [threshold: 60.0, metric: 'LINE', baseline: 'PROJECT', unstable: true],
+            [threshold: 60.0, metric: 'BRANCH', baseline: 'PROJECT', unstable: true]])
       }
     }
 
