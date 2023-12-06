@@ -40,12 +40,16 @@ pipeline {
            docker build --output "type=local,dest=${WORKSPACE}/coverage" --target test-out .
            ls -l ./coverage
         '''
-        recordCoverage(tools: [[parser: 'COBERTURA', pattern: 'coverage/**/cobertura-coverage.xml']],
+        recordCoverage(
+          tools: [[parser: 'COBERTURA', pattern: 'coverage/**/cobertura-coverage.xml']],
           id: 'cobertura', name: 'Cobertura Coverage',
           sourceCodeRetention: 'EVERY_BUILD',
+          ignoreParsingErrors: true,
           qualityGates: [
             [threshold: 60.0, metric: 'LINE', baseline: 'PROJECT', unstable: true],
-            [threshold: 60.0, metric: 'BRANCH', baseline: 'PROJECT', unstable: true]])
+            [threshold: 60.0, metric: 'BRANCH', baseline: 'PROJECT', unstable: true]
+          ]
+        )
       }
     }
 
