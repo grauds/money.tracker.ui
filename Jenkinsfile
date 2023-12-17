@@ -42,7 +42,8 @@ pipeline {
         '''
         recordCoverage(
           tools: [[parser: 'COBERTURA', pattern: 'coverage/**/cobertura-coverage.xml']],
-          id: 'cobertura', name: 'Cobertura Coverage',
+          id: 'cobertura',
+          name: 'Cobertura Coverage',
           sourceCodeRetention: 'EVERY_BUILD',
           ignoreParsingErrors: true,
           qualityGates: [

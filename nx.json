@@ -47,5 +47,6 @@
     "@nrwl/angular:component": {
       "style": "css"
     }
-  }
+  },
+  "neverConnectToCloud": true
 }
