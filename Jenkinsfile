@@ -56,6 +56,9 @@ pipeline {
 
     stage ('Dependency-Check') {
         steps {
+            sh '''
+              npm install
+            '''
             catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
               dependencyCheck additionalArguments: '''
                   -o "./"
