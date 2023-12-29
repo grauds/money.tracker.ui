@@ -45,9 +45,7 @@ export class MainComponent implements OnInit {
               private route: ActivatedRoute,
               private title: Title) {
 
-    this.keycloak.isLoggedIn().then((logged) => {
-      this.isLoggedIn = logged
-    })
+    this.isLoggedIn = this.keycloak.isLoggedIn();
 
     this.pageSubscription = route.queryParams.subscribe(
       (queryParam: any) => {

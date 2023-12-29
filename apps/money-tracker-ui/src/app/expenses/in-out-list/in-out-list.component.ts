@@ -67,9 +67,7 @@ export class InOutListComponent implements OnInit {
               media: MediaMatcher,
               private breakpointObserver: BreakpointObserver) {
 
-    this.keycloak.isLoggedIn().then((logged) => {
-      this.isLoggedIn = logged
-    })
+    this.isLoggedIn = this.keycloak.isLoggedIn();
 
     this.mobileQuery = media.matchMedia(Breakpoints.Handset);
     this._mobileQueryListener = () => {
