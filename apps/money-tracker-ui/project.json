@@ -1,5 +1,6 @@
 {
   "name": "money-tracker-ui",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "generators": {
     "@schematics/angular:application": {
@@ -143,7 +144,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/money-tracker-ui"],
+      "outputs": ["{workspaceRoot}/coverage/apps/money-tracker-ui"],
       "options": {
         "main": "apps/money-tracker-ui/src/test-setup.ts",
         "polyfills": "apps/money-tracker-ui/src/polyfills.ts",

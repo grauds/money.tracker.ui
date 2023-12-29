@@ -58,7 +58,6 @@
     "@nrwl/eslint-plugin-nx": "17.2.8",
     "@nrwl/jest": "17.2.8",
     "@nrwl/linter": "17.2.8",
-    "@nrwl/nx-cloud": "16.5.2",
     "@nrwl/workspace": "17.2.8",
     "@types/jest": "29.4.0",
     "@types/node": "^18.14.1",
@@ -76,4 +75,3 @@
     "typescript": "5.2.2"
   }
 }
-
