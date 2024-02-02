@@ -47,4 +47,5 @@ Thumbs.db
 /lib/
 
 .nx/cache
+.nx/
 /.nx/
