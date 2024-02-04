@@ -93,7 +93,7 @@ Please consult Jenkins documentation on how to configure a Pipeline from Jenkins
 
 The page offers overview of accounts assets distribution in currencies registered in the database. The application assumes exchange rates are known for those currencies for each date, if not, the last known rate before the missing date is taken. This rule works for all views where values can be shown in different currencies. 
 
-![image](./images/accounts.png)
+<img src="./images/accounts.png" alt="drawing" width="50%" />
 
 
 ### <img src="./images/trending-up.png" alt="drawing" width="25px"/> Income
