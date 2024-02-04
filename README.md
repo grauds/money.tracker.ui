@@ -115,7 +115,7 @@ Monthly balance shows how the amount of money changes over time on monthly basis
 
 ### Currency Exchange
 
-Currency exchange may come in handy to redistribute the money accross different currencies to avoid exchange rate risks. However, it is often not known exactly how successful the operations were. This chart offers simple analysis for this, yielding the sheer profit or loss calculated as the total amount of money spent to buy a currency to the price of that currency now. The screen below shows that is the same amount of rules was bought now, it would've cost $56.35 less, i.e. dollars now are more expensive.
+Currency exchange may come in handy to redistribute the money accross different currencies to avoid exchange rate risks. However, it is often not known exactly how successful the operations were. This chart offers simple analysis for this, yielding the sheer profit or loss calculated as the total amount of money spent to buy a currency to the price of that currency now. The screen below shows that is the same amount of rubles was bought now, it would've cost $56.35 less, i.e. dollars now are more expensive.
 
 <img src="./images/currency-exchange.png" alt="drawing" width="50%" />
 
