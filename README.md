@@ -1,5 +1,7 @@
 # Money Tracker UI
 
+[![Docker Image CI](https://github.com/grauds/money.tracker.ui/actions/workflows/docker-image.yml/badge.svg)](https://github.com/grauds/money.tracker.ui/actions/workflows/docker-image.yml)
+
 ![image](./images/application.png)
 
 [Money Tracker offline application](https://dominsoft.ru) keeps track of daily spendings and provides insights to different budget areas like spendings, profits, incomes, commodities, loans and credits, trade organizations and commodities. The data is stored in its database which is shared with this web applications therefore the web application is capable of getting a fresh copy of data and displaying additional reports and insights.
