@@ -8,7 +8,7 @@ export const environment: EnvironmentInterface = {
 
   apiUrl: "/api",
 
-  authUrl: "http://192.168.1.2:8083/auth",
+  authUrl: "http://192.168.1.118:8083/auth",
 
   production: true
 

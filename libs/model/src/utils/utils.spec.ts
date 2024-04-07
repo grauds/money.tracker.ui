@@ -29,7 +29,7 @@ describe('Utils', () => {
   it('should parse an url', () => {
     const parsed = Utils.parseResourceUrlToAppUrl(url3)
     console.log(parsed)
-    expect(parsed).toEqual('/commodities/52/http:/192.168.1.2:18085/commodityGroups/1')
+    expect(parsed).toEqual('/commodities/52/http:/192.168.1.118:18085/commodityGroups/1')
   });
 
   it('should restore redirect after keycloak correctly', () => {
