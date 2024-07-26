@@ -42,11 +42,11 @@ export class ExchangeComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = [
     'exchangedate',
-    'from',
-    'to',
     'sourceamount',
     'destamount',
-    'rate'
+    'rate',
+    'ratedelta',
+    'delta'
   ];
 
   report?: MoneyExchangeReport;
