@@ -8,22 +8,20 @@ import { Router } from "@angular/router";
 })
 export class PageSizeComponent implements OnInit, OnChanges {
 
-  @Input()
-  path: string = '';
+  @Input() path = '';
 
   // total number of records
   @Input() total: number | undefined;
 
   // number of records per page
-  @Input()
-  itemsPerPage: number = 20;
+  @Input() itemsPerPage = 20;
 
   // current page number
   @Input()
   currentPage = 0
 
   // use location bar of the browser to display search parameters
-  @Input() useLocation: Boolean = true;
+  @Input() useLocation = true;
 
   // change current page event
   @Output() changeCurrentPage = new EventEmitter<number>();
@@ -31,9 +29,11 @@ export class PageSizeComponent implements OnInit, OnChanges {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    // should not be empty
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    // should not be empty
   }
 
   setCurrentPage = (currentPage: number) => {

@@ -13,6 +13,7 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/money-tracker-ui",
         "index": "apps/money-tracker-ui/src/index.html",
@@ -143,7 +144,7 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/money-tracker-ui"],
       "options": {
         "main": "apps/money-tracker-ui/src/test-setup.ts",

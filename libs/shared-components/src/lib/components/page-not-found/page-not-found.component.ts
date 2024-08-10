@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: 'clematis-shared-page-not-found',
+  selector: 'app-clematis-shared-page-not-found',
   templateUrl: './page-not-found.component.html',
   styleUrls: ['./page-not-found.component.sass'],
 })

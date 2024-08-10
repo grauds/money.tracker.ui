@@ -17,16 +17,16 @@ import { Router } from '@angular/router';
 })
 export class PaginationBarComponent implements OnInit, OnChanges {
 
-  @Input() path: string = '';
+  @Input() path = '';
 
   // number of records per page
-  @Input() itemsPerPage: number = 20;
+  @Input() itemsPerPage = 20;
 
   // use location bar of the browser to display search parameters
-  @Input() useLocation: Boolean = true;
+  @Input() useLocation = true;
 
   // current page number
-  @Input() currentPage: number = 1;
+  @Input() currentPage = 1;
 
   // total number of records
   @Input() total: number | undefined;
@@ -37,9 +37,11 @@ export class PaginationBarComponent implements OnInit, OnChanges {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    // should not be empty
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    // should not be empty
   }
 
   prevPageDisabled() {
@@ -97,8 +99,8 @@ export class PaginationBarComponent implements OnInit, OnChanges {
 
   range() {
 
-    let pageCount: number = this.pageCount();
-    let rangeSize: number = 5 < pageCount ? 5 : pageCount;
+    const pageCount = this.pageCount();
+    const rangeSize = 5 < pageCount ? 5 : pageCount;
     let start: number;
 
     if (this.currentPage === 1 || this.currentPage === 2) {

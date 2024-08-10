@@ -21,3 +21,6 @@ export { MoneyExchangeReport } from '../dto/money-exchange-report'
 
 export { SearchRequest } from '../dto/search-request'
 export { SearchStringMode } from '../dto/search-string-mode'
+
+export { HttpError } from '../model/http-error'
+export { Utils } from '../utils/utils'

@@ -2,24 +2,42 @@
   "name": "model",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/model/src",
+  "prefix": "lib",
   "projectType": "library",
-  "prefix": "clematis-shared",
+  "tags": ["model"],
   "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "options": {
+        "project": "libs/model/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/model/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/model/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/model/**/*.ts"]
+        "lintFilePatterns": [
+          "libs/model/**/*.ts"
+        ]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/model"],
       "options": {
         "jestConfig": "libs/model/jest.config.ts",
         "passWithNoTests": true
       }
     }
-  },
-  "tags": ["model"]
+  }
 }

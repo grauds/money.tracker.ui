@@ -1,5 +1,6 @@
 import { HateoasProjection } from "@lagoshny/ngx-hateoas-client";
-import { Commodity, Entity } from "@clematis-shared/model";
+import { Commodity } from './commodity';
+import { Entity } from './entity';
 
 @HateoasProjection(Commodity, 'commodityLink')
 export class CommodityLink extends Entity {
