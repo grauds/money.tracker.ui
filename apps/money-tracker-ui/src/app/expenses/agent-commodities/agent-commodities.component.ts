@@ -216,18 +216,29 @@ export class AgentCommoditiesComponent implements OnInit {
                     moneyType: MoneyType) {
   
     return {
-      title: {
-        text: 'Users\' Commodities in ' + moneyType.code
+      legend: {
+        backgroundColor: 'rgba(206,206,206,0.7)',
+        type: 'scroll',
+        right: 10,
+        top: 20,
+        bottom: 20,
+        data: (function () {
+          return [ ...series.keys() ].sort();
+        })()
       },
       tooltip: {
         trigger: 'axis',
         axisPointer: {
-          type: 'cross',
-          label: {
-            backgroundColor: '#6a7985'
-          }
+          type: 'cross'
         },
-        order: 'valueDesc',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        position: function (pos: number[], params: any, el: any, elRect: any, 
+          size: { viewSize: number[]; }) {
+          var obj: any = { top: 10 };
+          obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+          return obj;
+        },
+        confine: false,
         formatter: function (params: any[]) {
           let output = params[0].axisValueLabel + '<br/>';
           output += '<table class="w-full">';

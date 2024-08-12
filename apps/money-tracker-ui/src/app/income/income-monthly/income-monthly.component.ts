@@ -233,25 +233,43 @@ export class IncomeMonthlyComponent implements OnInit {
                      moneyType: MoneyType) {
 
     return {
-      title: {
-        text: "Income in " + moneyType.name
-      },
-      tooltip: {
-      },
       legend: {
-        type: 'scroll',
-        orient: 'vertical',
         backgroundColor: 'rgba(206,206,206,0.7)',
+        type: 'scroll',
         right: 10,
         top: 20,
         bottom: 20,
-        padding: [25, 25, 25, 10],
-        textStyle: {
-          color: 'black',
-          overflow: 'break',
-          width: 150
-        }
       },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross'
+        },
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        position: function (pos: number[], params: any, el: any, elRect: any, 
+          size: { viewSize: number[]; }) {
+          var obj: any = { top: 10 };
+          obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+          return obj;
+        },
+        formatter: function (params: any[]) {
+          let output = params[0].axisValueLabel + '<br/>';
+          output += '<table class="w-full">';
+  
+          const sorted: any[] = params.sort((paramA, paramB) => paramB.value - paramA.value);
+          sorted.forEach(function (param) {
+            if (param.value > 0) {
+              output += `<tr>
+                <td>${param.marker}</td>
+                <td>${param.seriesName}</td>
+                <td class="text-right font-bold tabular-nums">${param.value}</td>
+              </tr>`;
+            }
+          });
+  
+          return output + '</table>';
+        },
+      },      
       grid: {
         left: '3%',
         right: '4%',

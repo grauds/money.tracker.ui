@@ -178,10 +178,7 @@ export class AccountsDashboardComponent implements OnInit {
   }
 
   private getBalancesChart(moneyType: MoneyType) {
-    return {
-      title: {
-        text: "Accounts Today in " + moneyType.name
-      },
+    return {      
       tooltip: {
         trigger: "axis",
         axisPointer: {
@@ -189,8 +186,10 @@ export class AccountsDashboardComponent implements OnInit {
         }
       },
       grid: {
-        top: 80,
-        bottom: 30
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: false
       },
       xAxis: {
         type: "value",
@@ -208,6 +207,9 @@ export class AccountsDashboardComponent implements OnInit {
         axisTick: { show: true },
         splitLine: { show: false },
         data: this.accountsBalances
+          .filter((accountBalance: AccountBalance) => {
+            return accountBalance.balance != 0
+          })
           .map(accountBalance => {
             return accountBalance.name;
           })
@@ -230,6 +232,9 @@ export class AccountsDashboardComponent implements OnInit {
           },
           selectedMode: "single",
           data: this.accountsBalances
+            .filter((accountBalance: AccountBalance) => {
+              return accountBalance.balance != 0
+            })
             .map((accountBalance: AccountBalance) => {
               return {
                 value: accountBalance.balance
