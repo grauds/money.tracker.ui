@@ -1,26 +1,18 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { Title } from "@angular/platform-browser";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Observable, of, Subscription, switchMap } from "rxjs";
-import { KeycloakService } from "keycloak-angular";
+import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, of, Subscription, switchMap } from 'rxjs';
 
-import {
-  PagedResourceCollection,
-  ResourceCollection
-} from "@lagoshny/ngx-hateoas-client";
+import { KeycloakService } from 'keycloak-angular';
+import { PagedResourceCollection } from '@lagoshny/ngx-hateoas-client';
 
-import { IncomeMonthly, MoneyType } from "@clematis-shared/model";
-import { 
-  IncomeItemsService, 
-  MoneyTypeService 
-} from "@clematis-shared/shared-components";
-
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material/core";
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from "@angular/material-moment-adapter";
+import { AgentCommodities, MoneyType, Page } from '@clematis-shared/model';
+import { ExpenseItemsService, MoneyTypeService } from '@clematis-shared/shared-components';
 
 import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
 import {default as _rollupMoment} from 'moment';
+
 const moment = _rollupMoment || _moment;
 
 // See the Moment.js docs for the meaning of these formats:
@@ -38,28 +30,17 @@ export const MY_FORMATS = {
 };
 
 @Component({
-  selector: 'app-income-monthly',
-  templateUrl: './income-monthly.component.html',
-  styleUrls: ['./income-monthly.component.sass'],
-  providers: [
-    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
-    // application's root module. We provide it at the component level here, due to limitations of
-    // our example generation script.
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-    },
-
-    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
-  ],
-  encapsulation: ViewEncapsulation.None,
+  selector: 'app-agent-commodities',
+  templateUrl: './agent-commodities.component.html',
+  styleUrl: './agent-commodities.component.sass',
 })
-export class IncomeMonthlyComponent implements OnInit {
+export class AgentCommoditiesComponent implements OnInit {
 
   chart: any;
 
   pageSubscription: Subscription;
+
+  isLoggedIn: boolean = false;
 
   loading = false;
 
@@ -71,18 +52,12 @@ export class IncomeMonthlyComponent implements OnInit {
 
   endDate = moment().add(1, 'M');
 
-  income: Array<IncomeMonthly> = [];
-
-  isLoggedIn: boolean = false;
-
   constructor(protected readonly keycloak: KeycloakService,
               private moneyTypeService: MoneyTypeService,
-              private incomeItemsService: IncomeItemsService,
+              private expenseItemsService: ExpenseItemsService,
               private router: Router,
               private route: ActivatedRoute,
               private title: Title) {
-
-    this.isLoggedIn = this.keycloak.isLoggedIn();
 
     this.pageSubscription = route.queryParams.subscribe(
       (queryParam: any) => {
@@ -93,6 +68,8 @@ export class IncomeMonthlyComponent implements OnInit {
           });
       }
     );
+
+    this.isLoggedIn = this.keycloak.isLoggedIn();
   }
 
   initMoneyType(destCurrency: string, fallback: string) {
@@ -103,7 +80,7 @@ export class IncomeMonthlyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title.setTitle('Income')
+    this.title.setTitle('Users Commodities')
   }
 
   updateCurrency($event: MoneyType) {
@@ -138,7 +115,7 @@ export class IncomeMonthlyComponent implements OnInit {
   }
 
   loadData() {
-    this.loading = true
+    this.loading = true;
 
     this.moneyTypeService.getPage({
       pageParams: {
@@ -159,42 +136,42 @@ export class IncomeMonthlyComponent implements OnInit {
       complete: () => {
       }
     });
-  }
+  }  
 
   private createChart(moneyType: MoneyType): Observable<any> {
-
     let chart = {};
 
     let ticks: string[] = []
-    let series: Map<string, IncomeMonthly[]> = new Map();
+    let series: Map<string, AgentCommodities[]> = new Map();
 
     return of(chart).pipe(
       switchMap(() => {
-        return this.incomeItemsService.getIncomeInCurrency(
+        return this.expenseItemsService.getAgentExpencesInCurrency(
           this.currency,
           this.startDate.month(), this.startDate.year(),
-          this.endDate.month(), this.endDate.year())
+          this.endDate.month(), this.endDate.year())        
       }),
-      switchMap((response: ResourceCollection<IncomeMonthly>) => {
-        return of(response.resources)
+      switchMap((response: Page<AgentCommodities>) => {
+        return of(response.content)
       }),
-      switchMap((resources: IncomeMonthly[]) => {
+      switchMap((response: AgentCommodities[]) => {
 
         // form series of data in the interval
-        resources.forEach((incomeMonthly: IncomeMonthly) => {
-          if (incomeMonthly.name) {
-            let values: IncomeMonthly[] = []
-            if (series.get(incomeMonthly.name)) {
-              values = series.get(incomeMonthly.name)!
+        response.forEach((month: AgentCommodities) => {
+          if (month.agent && month.commodityGroup) {
+            const key = month.agent + " " + month.commodityGroup;
+            let values: AgentCommodities[] = []
+            if (series.get(key)) {
+              values = series.get(key)!
             }
-            values.push(incomeMonthly)
-            series.set(incomeMonthly.name, values)
+            values.push(month)
+            series.set(key, values)
           }
         })
 
         // form unique ticks
-        ticks = resources.map((incomeReport: IncomeMonthly) => {
-          return incomeReport.year + '/' + incomeReport.month
+        ticks = response.map((month: AgentCommodities) => {
+          return month.an + '/' + month.mois
         }).filter((value, index, self) => self.indexOf(value) === index)
 
         return of(0)
@@ -202,16 +179,19 @@ export class IncomeMonthlyComponent implements OnInit {
       switchMap(() => {
         return of(this.buildChart(ticks, series, moneyType))
       })
+    
     )
   }
 
-  private getChartsSeries(ticks: string[], series: Map<string, IncomeMonthly[]>): any[] {
+  private getChartsSeries(ticks: string[], series: Map<string, AgentCommodities[]>): any[] {
     let chartSeries: any[] = []
-    series.forEach((incomeMonthly: IncomeMonthly[], name: string) => {
+
+    series.forEach((commoditiesMonthly: AgentCommodities[], name: string) => {
       return chartSeries.push({
         name: name,
-        type: "bar",
+        type: "line",
         stack: "total",
+        areaStyle: {},
         emphasis: {
           focus: "series",
           label: {
@@ -219,38 +199,52 @@ export class IncomeMonthlyComponent implements OnInit {
           }
         },
         data: ticks.map((tick) => {
-          return incomeMonthly.find((value: IncomeMonthly) => {
-            return (value.year + '/' + value.month) === tick
-          })?.totalConverted
+          const ac: AgentCommodities | undefined 
+           = commoditiesMonthly.find((value: AgentCommodities) => {
+            return (value.an + '/' + value.mois) === tick
+          })
+          return ac ? ac.total : 0
         })
       });
     })
+    
     return chartSeries
   }
 
   private buildChart(ticks: string[],
-                     series: Map<string, IncomeMonthly[]>,
-                     moneyType: MoneyType) {
-
+                    series: Map<string, AgentCommodities[]>,
+                    moneyType: MoneyType) {
+  
     return {
       title: {
-        text: "Income in " + moneyType.name
+        text: 'Users\' Commodities in ' + moneyType.code
       },
       tooltip: {
-      },
-      legend: {
-        type: 'scroll',
-        orient: 'vertical',
-        backgroundColor: 'rgba(206,206,206,0.7)',
-        right: 10,
-        top: 20,
-        bottom: 20,
-        padding: [25, 25, 25, 10],
-        textStyle: {
-          color: 'black',
-          overflow: 'break',
-          width: 150
-        }
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: '#6a7985'
+          }
+        },
+        order: 'valueDesc',
+        formatter: function (params: any[]) {
+          let output = params[0].axisValueLabel + '<br/>';
+          output += '<table class="w-full">';
+  
+          const sorted: any[] = params.sort((paramA, paramB) => paramB.value - paramA.value);
+          sorted.forEach(function (param) {
+            if (param.value !== 0) {
+              output += `<tr>
+                <td>${param.marker}</td>
+                <td>${param.seriesName}</td>
+                <td class="text-right font-bold tabular-nums">${param.value}</td>
+              </tr>`;
+            }
+          });
+  
+          return output + '</table>';
+        },
       },
       grid: {
         left: '3%',
@@ -258,14 +252,20 @@ export class IncomeMonthlyComponent implements OnInit {
         bottom: '3%',
         containLabel: true
       },
-      xAxis: {
-        type: 'category',
-        data: ticks
-      },
-      yAxis: {
-        type: 'value'
-      },
+      xAxis: [
+        {
+          type: 'category',
+          boundaryGap: false,
+          data: ticks
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value'
+        }
+      ],
       series: this.getChartsSeries(ticks, series)
     };
+
   }
 }

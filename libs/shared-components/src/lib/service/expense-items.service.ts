@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Entity, ExpenseItem } from "@clematis-shared/model";
+import { AgentCommodities, Entity, ExpenseItem, MoneyType, Page } from "@clematis-shared/model";
 import { PagedGetOption } from "@lagoshny/ngx-hateoas-client/lib/model/declarations";
 import {
   HateoasResourceService,
@@ -68,4 +68,22 @@ export class ExpenseItemsService extends SearchService<ExpenseItem> {
       })
     } return of(new ResourceCollection<ExpenseItem>())
   }
+
+  getAgentExpencesInCurrency(currency: MoneyType,
+                             moisStart: number,
+                             anStart: number,
+                             moisEnd: number,
+                             anEnd: number):
+                        Observable<Page<AgentCommodities>> {
+
+      return this.http.get<Page<AgentCommodities>>(this.getUrl('/agentCommodityGroupExpenses'), {
+        params: {
+          code: currency.code,
+          moisStart: moisStart,
+          anStart: anStart,
+          moisEnd: moisEnd,
+          anEnd: anEnd
+        }
+      })
+    }
 }

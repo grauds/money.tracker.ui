@@ -19,8 +19,10 @@ export { UnitType } from '../model/unit-type'
 
 export { MoneyExchangeReport } from '../dto/money-exchange-report'
 
+export { AgentCommodities } from '../dto/agent-commodities'
 export { SearchRequest } from '../dto/search-request'
 export { SearchStringMode } from '../dto/search-string-mode'
 
+export { Page } from '../dto/page'
 export { HttpError } from '../model/http-error'
 export { Utils } from '../utils/utils'

@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { LastCommodityService } from './service/last-commodity.service';
 import { MoneyExchangeService } from './service/money-exchange.service';
@@ -43,6 +44,7 @@ import { PaginationBarComponent } from './components/pagination-bar/pagination-b
 import { MoneyTypeSelectorComponent } from './components/money-type-selector/money-type-selector.component';
 import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { DateRangeSelectorComponent } from './components/date-range-selector/date-range-selector.component';
 
 @NgModule({
   imports: [
@@ -56,6 +58,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     MatButtonModule,
     MatProgressSpinnerModule,
     MatButtonToggleModule,
+    MatDatepickerModule,
     MatProgressBarModule,
     MatFormFieldModule,
     MatInputModule,
@@ -68,7 +71,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     BreadcrumbsComponent,
     EntityListComponent,
     EntityListFilteredComponent,
-    MoneyTypeSelectorComponent
+    MoneyTypeSelectorComponent,
+    DateRangeSelectorComponent
   ],
   declarations: [
     EntityListComponent,
@@ -81,6 +85,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     PageNotFoundComponent,
     MoneyTypeSelectorComponent,
     MoneyTypeSelectorComponent,
+    DateRangeSelectorComponent
   ],
   providers: [
     AccountsService,

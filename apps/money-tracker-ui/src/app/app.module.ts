@@ -87,6 +87,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CommodityGroupCommoditiesComponent } from './commodities/commodity-group-commodities/commodity-group-commodities.component';
 import { OrganizationGroupOrganizationsComponent } from './organizations/organization-group-organizations/organization-group-organizations.component';
 import { IncomeMonthlyComponent } from './income/income-monthly/income-monthly.component';
+import { AgentCommoditiesComponent } from './expenses/agent-commodities/agent-commodities.component';
 
 const routes: Routes = [
   {
@@ -151,6 +152,10 @@ const routes: Routes = [
         component: IncomeMonthlyComponent,
       },
       {
+        path: 'commoditiesAgents',
+        component: AgentCommoditiesComponent
+      },
+      {
         path: 'inOut',
         component: InOutListComponent,
       },
@@ -211,6 +216,7 @@ const mapConfig: YaConfig = {
     CommodityGroupCommoditiesComponent,
     OrganizationGroupOrganizationsComponent,
     IncomeMonthlyComponent,
+    AgentCommoditiesComponent
   ],
   imports: [
     HttpClientModule,

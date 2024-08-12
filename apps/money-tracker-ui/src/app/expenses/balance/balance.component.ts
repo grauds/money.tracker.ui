@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountsService, MoneyTypeService } from "@clematis-shared/shared-components";
-import { MoneyType, MonthlyDelta } from "@clematis-shared/model";
-import { HateoasResourceService, PagedResourceCollection } from '@lagoshny/ngx-hateoas-client';
 import { catchError, of, Subscription, switchMap, tap } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
+import { KeycloakService } from 'keycloak-angular';
+
+import { HateoasResourceService, PagedResourceCollection } from '@lagoshny/ngx-hateoas-client';
+
+import { AccountsService, MoneyTypeService } from "@clematis-shared/shared-components";
+import { MoneyType, MonthlyDelta } from "@clematis-shared/model";
 
 @Component({
   selector: 'app-balance',
@@ -14,6 +17,8 @@ import { Title } from "@angular/platform-browser";
 export class BalanceComponent implements OnInit {
 
   chart: any;
+
+  isLoggedIn: boolean = false;
 
   // total number of elements
   total: number = 0;
@@ -39,11 +44,14 @@ export class BalanceComponent implements OnInit {
   endDate: string = '';
 
   constructor(private accountsService: AccountsService,
+              protected readonly keycloak: KeycloakService,
               private resourceService: HateoasResourceService,
               private moneyTypeService: MoneyTypeService,
               private router: Router,
               private route: ActivatedRoute,
               private title: Title) {
+
+    this.isLoggedIn = this.keycloak.isLoggedIn();
 
     this.pageSubscription = route.queryParams.subscribe(
       (queryParam: any) => {
@@ -173,7 +181,7 @@ export class BalanceComponent implements OnInit {
         tap((balance: number) => console.log('Frame balance: ' + balance)),
         switchMap((balance: number) => {
 
-          let currentBalance = balance ? balance : 0
+          let currentBalance = balance || 0
           let deltas: string[] = []
           let totals: string[] = []
 

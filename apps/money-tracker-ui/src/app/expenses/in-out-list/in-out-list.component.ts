@@ -3,13 +3,15 @@ import { Title } from "@angular/platform-browser";
 import { KeycloakService } from "keycloak-angular";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Observable, Subscription } from "rxjs";
-import { HateoasResourceService, PagedResourceCollection, ResourceCollection } from "@lagoshny/ngx-hateoas-client";
-import { InOutDelta, MoneyType } from "@clematis-shared/model";
-import { InOutService, MoneyTypeService } from "@clematis-shared/shared-components";
+import { PagedResourceCollection, ResourceCollection } from "@lagoshny/ngx-hateoas-client";
+
 import { formatCurrency } from "@angular/common";
 import { BreakpointObserver, Breakpoints, BreakpointState, MediaMatcher } from "@angular/cdk/layout";
 import { map, shareReplay } from "rxjs/operators";
 import { ECharts } from "echarts";
+
+import { InOutDelta, MoneyType } from "@clematis-shared/model";
+import { InOutService, MoneyTypeService } from "@clematis-shared/shared-components";
 
 @Component({
   selector: 'app-in-out-list',
@@ -34,7 +36,7 @@ export class InOutListComponent implements OnInit {
 
   options: any;
 
-  sign = true;
+  sign = false;
 
   mobileQuery: MediaQueryList;
 
@@ -58,7 +60,6 @@ export class InOutListComponent implements OnInit {
   echartsInstance: ECharts | undefined;
 
   constructor(private inOutService: InOutService,
-              private resourceService: HateoasResourceService,
               protected readonly keycloak: KeycloakService,
               private moneyTypeService: MoneyTypeService,
               private router: Router,
@@ -86,7 +87,7 @@ export class InOutListComponent implements OnInit {
     this.pageSubscription = route.queryParams.subscribe(
       (queryParam: any) => {
         const currency: string = queryParam["currency"];
-        this.moneyTypeService.getCurrencyByCode(currency ? currency : "RUB")
+        this.moneyTypeService.getCurrencyByCode(currency || "RUB")
           .subscribe((result: MoneyType) => {
             this.currency = result;
             this.loadData();

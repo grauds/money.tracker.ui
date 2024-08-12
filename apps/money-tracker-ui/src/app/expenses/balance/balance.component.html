@@ -1,4 +1,4 @@
-
+<div *ngIf="isLoggedIn">
   <div>
     <app-money-type-selector
       [label]="'Available currencies'"
@@ -26,3 +26,4 @@
 
   <div echarts [options]="chart" class="chart" [loading]="loading"></div>
 
+</div>

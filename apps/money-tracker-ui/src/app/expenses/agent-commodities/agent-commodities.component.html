@@ -1,0 +1,29 @@
+<div *ngIf="isLoggedIn">
+    
+    <div>
+        <app-money-type-selector
+          [label]="'Available currencies'"
+          [disabled]="loading"
+          [currencies]="currencies"
+          [currency]="currency"
+          (currency$)="updateCurrency($event)"
+        ></app-money-type-selector>
+    
+        <app-date-range-selector 
+          [loading]="loading"
+          (startDate$)="updateStartDate($event)"
+          (endDate$)="updateEndDate($event)"
+        ></app-date-range-selector>
+      
+      </div>
+      
+
+    <div 
+        echarts
+        [options]="chart"
+        [loading]="loading"
+        class="chart">
+    </div>
+
+</div>
+
