@@ -4,6 +4,7 @@ import { HttpClient, HttpHandler } from "@angular/common/http";
 import { IncomeItemsService, MoneyTypeService } from "@clematis-shared/shared-components";
 import { of } from "rxjs";
 import { ActivatedRoute, convertToParamMap } from "@angular/router";
+import { KeycloakService } from 'keycloak-angular';
 
 describe('IncomeMonthlyComponent', () => {
   let component: IncomeMonthlyComponent;
@@ -23,6 +24,7 @@ describe('IncomeMonthlyComponent', () => {
         HttpClient,
         HttpHandler,
         MoneyTypeService,
+        KeycloakService,
         IncomeItemsService,
         {provide: ActivatedRoute, useValue: fakeActivatedRoute}
       ]
