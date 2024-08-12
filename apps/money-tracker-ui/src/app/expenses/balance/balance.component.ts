@@ -24,7 +24,7 @@ export class BalanceComponent implements OnInit {
   total: number = 0;
 
   // number of records per page
-  limit: number = 12;
+  limit: number = 35;
 
   // current page number counter
   n: number | undefined = undefined;
@@ -58,7 +58,7 @@ export class BalanceComponent implements OnInit {
         const page = Number.parseInt(queryParam['page'], 10)
         this.n = isNaN(page) ? undefined : page;
         const size = Number.parseInt(queryParam['size'], 10)
-        this.limit = isNaN(size) ? 12 : size;
+        this.limit = isNaN(size) ? 35 : size;
         this.initMoneyType(queryParam['currency'], 'RUB')
           .subscribe((result: MoneyType) => {
             this.currency = result;
