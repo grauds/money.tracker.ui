@@ -1,0 +1,81 @@
+.wrapper {
+    width: 100%;
+}
+
+.component {
+    width: 70%;
+    background-color: var(--pink);
+    color: var(--foreground);
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 25px;
+}
+
+.header {
+    font-size: 24px;
+    line-height: 25px;
+}
+
+.value {
+    font-size: 48px;
+    line-height: 150px;
+}
+
+.icon {
+    margin-left: auto;
+    line-height: 80px;
+}
+
+@media (min-width: 1070px) and (max-width: 1290px) {
+    
+    .header {
+        font-size: 18px;
+    }
+
+    .value {
+        font-size: 36px;
+    }
+
+    .icon {
+        margin-left: auto;
+        line-height: 60px;
+    }
+
+    .icon svg {
+        width: 80px;
+    }
+}
+
+@media (min-width: 960px) and (max-width: 1070px) {
+    .component {
+        width: 100%;
+    }
+    
+    .header {
+        font-size: 18px;
+        line-height: 18px;
+    }
+
+    .value {
+        font-size: 25px;
+        line-height: 25px;
+    }
+}
+
+@media all and (max-width: 960px) {
+    .component {
+        width: 100%;
+        float: none;
+    }
+
+    .header {
+        font-size: 18px;
+        line-height: 18px;
+    }
+
+    .value {
+        font-size: 35px;
+        line-height: 35px;
+    }
+
+}

@@ -17,6 +17,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 import { LastCommodityService } from './service/last-commodity.service';
 import { MoneyExchangeService } from './service/money-exchange.service';
@@ -30,6 +31,7 @@ import { CommodityGroupsService } from './service/commodity-groups.service';
 import { OrganizationGroupsService } from './service/organization-groups.service';
 import { ExpenseItemsService } from './service/expense-items.service';
 import { IncomeItemsService } from './service/income-items.service'
+import { StatsService } from './service/stats.service'
 
 import { ErrorDialogService } from './error/error-dialog.service';
 import { GlobalErrorHandler } from './error/global-error-handler';
@@ -45,6 +47,7 @@ import { MoneyTypeSelectorComponent } from './components/money-type-selector/mon
 import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { DateRangeSelectorComponent } from './components/date-range-selector/date-range-selector.component';
+import { StatsTotalsComponentComponent } from './components/stats-totals/stats-totals-component.component';
 
 @NgModule({
   imports: [
@@ -53,6 +56,7 @@ import { DateRangeSelectorComponent } from './components/date-range-selector/dat
     MatIconModule,
     MatPaginatorModule,
     MatTableModule,
+    MatGridListModule,
     ContentLoaderModule,
     MatDialogModule,
     MatButtonModule,
@@ -64,7 +68,7 @@ import { DateRangeSelectorComponent } from './components/date-range-selector/dat
     MatInputModule,
     MatOptionModule,
     MatSelectModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     EntityElementComponent,
@@ -72,7 +76,8 @@ import { DateRangeSelectorComponent } from './components/date-range-selector/dat
     EntityListComponent,
     EntityListFilteredComponent,
     MoneyTypeSelectorComponent,
-    DateRangeSelectorComponent
+    DateRangeSelectorComponent,
+    StatsTotalsComponentComponent
   ],
   declarations: [
     EntityListComponent,
@@ -85,7 +90,8 @@ import { DateRangeSelectorComponent } from './components/date-range-selector/dat
     PageNotFoundComponent,
     MoneyTypeSelectorComponent,
     MoneyTypeSelectorComponent,
-    DateRangeSelectorComponent
+    DateRangeSelectorComponent,
+    StatsTotalsComponentComponent
   ],
   providers: [
     AccountsService,
@@ -100,6 +106,7 @@ import { DateRangeSelectorComponent } from './components/date-range-selector/dat
     LastCommodityService,
     MoneyExchangeService,
     MoneyTypeService,
+    StatsService,
     ErrorDialogService,
     {
       provide: ErrorHandler,

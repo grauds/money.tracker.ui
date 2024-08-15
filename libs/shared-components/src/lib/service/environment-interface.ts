@@ -4,5 +4,7 @@ export interface EnvironmentInterface {
 
   apiUrl: string
 
+  aboutUrl: string
+
   authUrl: string
 }

@@ -1,8 +1,115 @@
+@import url('https://fonts.cdnfonts.com/css/sf-ui-display');
+
+:root {
+  --OFF: ; 
+  --ON: initial;
+
+  --black: #333333;
+  --whitelightness: 100%;
+  --white: hsl(0, 0%, var(--whitelightness));
+  --greyF3: #f3f3f3;
+  --grey33: #333;
+  --greyEC: #ececec;
+  --greyCC: #cccccc;
+  --greyF4: hsl(0, 0%, calc(var(--whitelightness) - 4%));
+  --greyDE: #DEDEDE;
+  --greyEE: #EEEEEE;
+  --greyD9: #D9D9D9;
+  --greyC4: #c4c4c4;
+  --grey99: #999999;
+  --grey66: #666666;
+  --darkred: #B7280F;
+  --red: #DC3E22;
+  --orange: #EE735D;
+  --coral: #EA8979;
+  --green: #8994419c;
+  --lightgreen: #a8b64f65;
+  --pink: #FFDDA9;
+  --violet: #DFDCFE;
+  --blue: #C5F1FF;
+  --brightBlue: rgb(125, 210, 247);
+}
+
+.themeDefault,
+.themeLight {
+  --light: var(--ON);
+  --dark: var(--OFF);
+  --system: var(--OFF);
+}
+
+.themeDark {
+  --light: var(--OFF);
+  --dark: var(--ON);
+  --system: var(--OFF);
+}
+
+.themeSystem {
+  --light: var(--OFF);
+  --dark: var(--OFF);
+  --system: var(--ON);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: var(--light, var(--white)) var(--dark, var(--grey33)) var(--system, var(--white));
+    --backgroundSecondary: var(--light, var(--greyF4)) var(--dark, var(--grey66)) var(--system, var(--greyF4));
+    --foreground: var(--light, var(--grey33)) var(--dark, var(--white)) var(--system, var(--grey33));
+    --accent: var(--light, var(--red)) var(--dark, var(--brightBlue)) var(--system, var(--red));
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--light, var(--white)) var(--dark, var(--grey33)) var(--system, var(--grey33));
+    --backgroundSecondary: var(--light, var(--greyF4)) var(--dark, var(--grey66)) var(--system, var(--grey66));
+    --foreground: var(--light, var(--grey33)) var(--dark, var(--white)) var(--system, var(--white));
+    --accent: var(--light, var(--red)) var(--dark, var(--brightBlue)) var(--system, var(--brightBlue));
+  }
+}
+
 /* You can add global styles to this file, and also import other style files */
 html, body { height: 100%; }
+
+
 body {
-  margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
-  background: #ffffff !important;
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  line-height: 33px;
+  font-family: 'SF UI Display', sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+* {
+    box-sizing: border-box;
+    --webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+ul {
+  list-style: none; /* Remove default bullets */
+}
+
+ul li::before {
+  content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+  color: var(--darkred);
+  display: inline-block;  
+  width: 1em;  
+  margin-left: -1em; 
+}
+
+a {
+  text-decoration: none;
+  color: var(--foreground);
+}
+
+button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--foreground);
 }
 
 .table-striped-fixed > tbody > tr:nth-of-type(odd) > tr {
@@ -15,7 +122,3 @@ body {
   background-color: #e9ecef;
   border-radius: .3rem;
 }
-
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

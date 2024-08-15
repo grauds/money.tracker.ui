@@ -71,7 +71,7 @@ import {
   ENVIRONMENT,
   EnvironmentService,
   SharedComponentsModule,
-  PageNotFoundComponent,
+  PageNotFoundComponent
 } from '@clematis-shared/shared-components';
 
 import { AccountsDashboardComponent } from './accounts/accounts-dashboard/accounts-dashboard.component';
@@ -229,7 +229,7 @@ const mapConfig: YaConfig = {
     FormsModule,
     AngularYandexMapsModule.forRoot(mapConfig),
     NgxEchartsModule.forRoot({
-      echarts: () => import('echarts'),
+        echarts: () => import('echarts'),
     }),
     BrowserAnimationsModule,
     MatToolbarModule,
@@ -250,8 +250,8 @@ const mapConfig: YaConfig = {
     MatDatepickerModule,
     MatMomentDateModule,
     ReactiveFormsModule,
-    MatProgressBarModule,
-  ],
+    MatProgressBarModule
+],
   providers: [
     {
       provide: KeycloakService,

@@ -1,0 +1,19 @@
+<h4 class="header">
+    <span><b>Database statistics report</b></span>
+</h4>
+
+<app-stats-totals-component title="Last Update" background="{{'var(--lightgreen)'}}" value={{getLastDate()}} />
+
+<app-stats-totals-component title="First Update" background="{{'var(--violet)'}}" float="right" value={{getStartDate()}} />
+
+<app-stats-totals-component title="Income Transactions" background="{{'var(--green)'}}" value={{infoAbout?.income}} />
+
+<app-stats-totals-component title="Accounts" background="{{'var(--blue)'}}" float="right" value={{infoAbout?.accounts}} />
+
+<app-stats-totals-component title="Expenses Transactions" background="{{'var(--coral)'}}" value={{infoAbout?.expenses}} />
+
+<app-stats-totals-component title="Expense Items Transactions with Tradeplaces" value={{infoAbout?.expensesTradeplace}} />
+
+<app-stats-totals-component title="Expense Items Transactions without Tradeplaces" value={{infoAbout?.expensesNoTradeplace}} />
+
+<app-stats-totals-component title="Expense Items Transactions without Commodities" value={{infoAbout?.expensesNoCommodity}} />

@@ -2,10 +2,7 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges
+  Output
 } from '@angular/core';
 
 import { Router } from '@angular/router';
@@ -15,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './pagination-bar.component.html',
   styleUrls: ['./pagination-bar.component.css']
 })
-export class PaginationBarComponent implements OnInit, OnChanges {
+export class PaginationBarComponent  {
 
   @Input() path = '';
 
@@ -36,14 +33,7 @@ export class PaginationBarComponent implements OnInit, OnChanges {
 
   constructor(private router: Router) { }
 
-  ngOnInit(): void {
-    // should not be empty
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    // should not be empty
-  }
-
+  
   prevPageDisabled() {
     return this.currentPage === 1 ? 'disabled' : '';
   }
