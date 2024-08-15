@@ -1,6 +1,13 @@
-<h4 class="header">
-    <span><b>Database statistics report</b></span>
-</h4>
+<p>
+
+</p>
+
+<h1>Welcome to Money Tracker Reports and Analysis Tool</h1>  
+
+<p>
+   This applications makes it easy to visualise your finantial data and analyse it. Use the menu on the left 
+   to navigate the report topics.
+</p>
 
 <app-stats-totals-component title="Last Update" background="{{'var(--lightgreen)'}}" value={{getLastDate()}} />
 
@@ -12,8 +19,8 @@
 
 <app-stats-totals-component title="Expenses Transactions" background="{{'var(--coral)'}}" value={{infoAbout?.expenses}} />
 
-<app-stats-totals-component title="Expense Items Transactions with Tradeplaces" value={{infoAbout?.expensesTradeplace}} />
+<app-stats-totals-component title="Expense Items with Tradeplaces" value={{infoAbout?.expensesTradeplace}} />
 
-<app-stats-totals-component title="Expense Items Transactions without Tradeplaces" value={{infoAbout?.expensesNoTradeplace}} />
+<app-stats-totals-component title="Expense Items without Tradeplaces" value={{infoAbout?.expensesNoTradeplace}} />
 
-<app-stats-totals-component title="Expense Items Transactions without Commodities" value={{infoAbout?.expensesNoCommodity}} />
+<app-stats-totals-component title="Expense Items without Commodities" value={{infoAbout?.expensesNoCommodity}} />
