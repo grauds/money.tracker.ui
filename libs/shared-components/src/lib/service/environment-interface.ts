@@ -1,10 +1,6 @@
 export interface EnvironmentInterface {
-
   production: boolean
-
   apiUrl: string
-
-  aboutUrl: string
-
+  infoUrl: string
   authUrl: string
 }

@@ -24,6 +24,6 @@ export class StatsService {
   }
 
   getUrl(url: string) :string {
-    return this.environmentService.getValue('aboutUrl') + url
+    return this.environmentService.getValue('infoUrl') + url
   }
 }

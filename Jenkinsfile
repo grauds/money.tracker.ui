@@ -27,10 +27,18 @@ pipeline {
       }
     }
 
-    stage('Dockerized build') {
+    stage('Dockerized build for UAT') {
       steps {
         sh '''
-           docker build . -t money.tracker.ui -f Dockerfile
+           docker build . -t money.tracker.ui.uat -f Dockerfile --build-arg="ENVIRONMENT=uat"
+        '''
+      }
+    }
+
+    stage('Dockerized build for DEMO') {
+      steps {
+        sh '''
+           docker build . -t money.tracker.ui.demo -f Dockerfile --build-arg="ENVIRONMENT=demo"
         '''
       }
     }

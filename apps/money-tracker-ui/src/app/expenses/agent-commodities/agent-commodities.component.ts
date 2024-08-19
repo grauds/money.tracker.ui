@@ -134,6 +134,7 @@ export class AgentCommoditiesComponent implements OnInit {
       error: () => {
       },
       complete: () => {
+        this.loading = false;
       }
     });
   }  

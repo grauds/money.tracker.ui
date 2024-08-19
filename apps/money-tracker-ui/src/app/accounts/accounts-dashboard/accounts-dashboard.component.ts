@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { AccountBalance, MoneyType } from "@clematis-shared/model";
-import { Subscription } from "rxjs";
+import { BehaviorSubject, Subscription } from "rxjs";
 import {
   PagedResourceCollection,
   ResourceCollection
@@ -45,6 +45,12 @@ export class AccountsDashboardComponent implements OnInit {
 
   currencies: MoneyType[] = [];
 
+  filterZerosOut: boolean = true;
+
+  filterZerosOutEvent = new BehaviorSubject<boolean>(true);
+
+  checkSubscription = this.filterZerosOutEvent.asObservable();
+
   constructor(private accountsService: AccountsService,
               private moneyTypeService: MoneyTypeService,
               private router: Router,
@@ -64,6 +70,10 @@ export class AccountsDashboardComponent implements OnInit {
           });
       }
     );
+
+    this.checkSubscription.subscribe(() => {
+      this.chart = this.getBalancesChart(this.currency);
+    })
   }
 
   initMoneyType(destCurrency: string, fallback: string) {
@@ -77,8 +87,32 @@ export class AccountsDashboardComponent implements OnInit {
     console.log("chart event:", type, event);
   }
 
+  onFilterEvent(data: boolean) {
+    this.filterZerosOutEvent.next(data);
+  }
+
   ngOnInit(): void {
     this.title.setTitle("Accounts");
+  }
+
+  calculateBarHight(): string {
+
+    const filtered = this.filter()
+
+    if (filtered) {
+
+        if (filtered.length > 0 && filtered.length < 6) {
+          return (filtered.length * 40 + 'px');
+        } else if (filtered.length >= 6 && filtered.length <= 25) {
+          return (filtered.length * 30 + 'px');
+        } else {
+          return (filtered.length * 20 + 'px');
+        }
+
+    } else {
+      return '600px';
+    }
+
   }
 
   setCurrentPage(pageIndex: number, pageSize: number) {
@@ -206,10 +240,8 @@ export class AccountsDashboardComponent implements OnInit {
         axisLabel: { show: false },
         axisTick: { show: true },
         splitLine: { show: false },
-        data: this.accountsBalances
-          .filter((accountBalance: AccountBalance) => {
-            return accountBalance.balance != 0
-          })
+        data: this
+          .filter()
           .map(accountBalance => {
             return accountBalance.name;
           })
@@ -231,10 +263,8 @@ export class AccountsDashboardComponent implements OnInit {
             }
           },
           selectedMode: "single",
-          data: this.accountsBalances
-            .filter((accountBalance: AccountBalance) => {
-              return accountBalance.balance != 0
-            })
+          data: this
+            .filter()
             .map((accountBalance: AccountBalance) => {
               return {
                 value: accountBalance.balance
@@ -243,5 +273,16 @@ export class AccountsDashboardComponent implements OnInit {
         }
       ]
     };
+  }
+
+  private filter() {
+    return this.accountsBalances.filter((accountBalance: AccountBalance) => {
+      return this._filter(accountBalance)
+    })
+  }
+
+  private _filter(accountBalance: AccountBalance): boolean {
+    return (!this.filterZerosOut && accountBalance.balance == 0)
+      || accountBalance.balance != 0;
   }
 }

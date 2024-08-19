@@ -16,6 +16,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import {
   CommodityGroup,
@@ -250,7 +251,8 @@ const mapConfig: YaConfig = {
     MatDatepickerModule,
     MatMomentDateModule,
     ReactiveFormsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatCheckboxModule
 ],
   providers: [
     {

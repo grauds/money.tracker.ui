@@ -111,6 +111,20 @@
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true
+        },
+        "qa": {
+          "fileReplacements": [
+            {
+              "replace": "apps/money-tracker-ui/src/environments/environment.ts",
+              "with": "apps/money-tracker-ui/src/environments/environment.qa.ts"
+            }
+          ],
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
         }
       },
       "defaultConfiguration": "default"
@@ -127,6 +141,9 @@
         "local": {
           "browserTarget": "money-tracker-ui:build:local",
           "proxyConfig": "./proxy.conf.json"
+        },
+        "qa": {
+          "browserTarget": "money-tracker-ui:build:qa"
         },
         "uat": {
           "browserTarget": "money-tracker-ui:build:uat"

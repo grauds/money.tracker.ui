@@ -18,7 +18,7 @@ COPY libs libs
 
 RUN npm install
 
-RUN nx run money-tracker-ui:build:production
+RUN nx run money-tracker-ui:build:${ENVIRONMENT}
 RUN nx run-many --target=test --all --coverage
 
 # ------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ ARG APP_ROOT=/var/www/$APP_NAME
 
 RUN mkdir -p $APP_ROOT
 COPY --from=0 $SOURCE_PATH $APP_ROOT
-COPY ./apps/$APP_NAME/jenkins/nginx-default.conf /etc/nginx/conf.d/default.conf
+# COPY ./apps/$APP_NAME/jenkins/nginx-default.conf /etc/nginx/conf.d/default.conf
 
 RUN ls -l $APP_ROOT
 

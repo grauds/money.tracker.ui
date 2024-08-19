@@ -16,13 +16,20 @@
     (currency$)="updateCurrency($event)"
   ></app-money-type-selector>
 
+  <mat-checkbox
+      class="filter"
+      [(ngModel)]="filterZerosOut"
+      (change)="onFilterEvent($event.checked)"
+    >
+     Show accounts with zero balance
+    </mat-checkbox>
+
   <div echarts
        [options]="chart"
        (chartClick)="onChartEvent($event, 'chartClick')"
        [loading]="loading"
        class="accounts-chart"
        [style]="{
-            height: (accountsBalances && accountsBalances.length > 5) ?
-                      (accountsBalances.length * 15 + 'px') : '400px'
+            height: calculateBarHight()
        }">
   </div>
