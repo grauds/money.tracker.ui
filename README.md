@@ -125,20 +125,27 @@ It is a simple log of all the operations for the database, sorted by time in des
 <img src="./images/expenses.png" alt="drawing" width="50%" />
 
 
-### History
+### <img src="./images/history.png" alt="drawing" width="25px"/> History
 
-The list of commodities with a slightly different representation - all the commodities here are unique and sorted by the last time they were bought. For unique articles like bycicles or houses it may be a single appearance tens of years back. For periodic items like food or clothing it is usually the places at the top of the list.
+The list of commodities with a slightly different representation - all the commodities here are unique and sorted by the last time they were bought. For unique articles like bycicles or houses it may be a single appearance tens of years back. For periodic items like food or clothing it is usually the places at the top of the list. 
 
 <img src="./images/last-commodities.png" alt="drawing" width="50%" />
 
 
-### Currency Exchange
+### <img src="./images/shopping-cart.png" alt="drawing" width="25px"/> Users' commodities
+
+Monthly breakdown of users' contributions to expenses in terms of money and commodities. It is required to be precise with agents attribution to expenses in the Money Tracker application.
+
+<img src="./images/users-commodities.png" alt="drawing" width="50%" />
+
+
+### <img src="./images/currency-exchange.png" alt="drawing" width="25px"/> Currency Exchange
 
 Currency exchange may come in handy to redistribute the money accross different currencies to avoid exchange rate risks. However, it is often not known exactly how successful the operations were. This chart offers simple analysis for this, yielding the sheer profit or loss calculated as the total amount of money spent to buy a currency to the price of that currency now. The screen below shows that is the same amount of dollars was sold now, it would've bought 1,699.11 roubles more, i.e. dollars are more expensive now.
 
-<img src="./images/currency-exchange.png" alt="drawing" width="50%" />
+<img src="./images/currency-exchange-report.png" alt="drawing" width="50%" />
 
-### Reselling
+### <img src="./images/trolley.png" alt="drawing" width="25px"/> Reselling
 
 This chart is useful for those who buy and sell often using the same commodity identifiers. System compares the amount of money for a commodity spent on it with the amount of money received in a operation like reselling or any other. 
 
@@ -150,4 +157,8 @@ The lists of all registered resources with clickable links leading to individual
 
 
 
+### <img src="./images/about-icon.png" alt="drawing" width="25px"/> About
 
+This page is available without authentication and shows basic, not sensitive statistic information about the database itself, last update date of financial information, some numbers around quality of the data: missing trade places or commodities.
+
+<img src="./images/about.png" alt="drawing" width="50%" />
