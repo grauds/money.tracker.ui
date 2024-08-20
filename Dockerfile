@@ -19,7 +19,7 @@ COPY libs libs
 RUN npm install
 
 RUN nx run money-tracker-ui:build:${ENVIRONMENT}
-RUN nx run-many --target=test --all --coverage
+RUN nx run-many --target=test --all --coverage --verbose
 
 # ------------------------------------------------------------------------------
 # COPY COVERAGE STAGE (after build)
