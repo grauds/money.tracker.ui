@@ -18,6 +18,8 @@ COPY libs libs
 
 RUN npm install
 
+ENV NX_DAEMON=false
+
 RUN nx run money-tracker-ui:build:${ENVIRONMENT}
 RUN nx run-many --target=test --all --coverage --verbose
 
