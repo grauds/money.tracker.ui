@@ -18,7 +18,7 @@ export { EntityComponent } from './lib/components/entity/entity.component';
 export { EntityListComponent } from './lib/components/entity-list/entity-list.component';
 export { MoneyTypeSelectorComponent } from './lib/components/money-type-selector/money-type-selector.component';
 export { DateRangeSelectorComponent } from './lib/components/date-range-selector/date-range-selector.component';
-export { StatsTotalsComponentComponent } from './lib/components/stats-totals/stats-totals-component.component';
+export { StatsTotalsComponent } from './lib/components/stats-totals/stats-totals.component';
 
 export { AccountsService } from './lib/service/accounts.service';
 export { SearchService } from './lib/service/search.service';

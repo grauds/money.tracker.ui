@@ -7,8 +7,10 @@ import {
 } from "@lagoshny/ngx-hateoas-client";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
-import { AccountsService } from "@clematis-shared/shared-components";
-import { MoneyTypeService } from "@clematis-shared/shared-components";
+import { 
+  AccountsService,
+  MoneyTypeService 
+} from "@clematis-shared/shared-components";
 
 @Component({
   selector: "app-accounts-dashboard",

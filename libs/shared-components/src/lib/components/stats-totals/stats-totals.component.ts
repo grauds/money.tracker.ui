@@ -2,10 +2,10 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-stats-totals-component',
-  templateUrl: './stats-totals-component.component.html',
-  styleUrl: './stats-totals-component.component.css',
+  templateUrl: './stats-totals.component.html',
+  styleUrl: './stats-totals.component.css',
 })
-export class StatsTotalsComponentComponent {
+export class StatsTotalsComponent {
    
   @Input() title: string | undefined;
   

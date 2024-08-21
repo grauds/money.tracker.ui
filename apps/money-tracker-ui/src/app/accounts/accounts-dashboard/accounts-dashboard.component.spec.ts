@@ -1,11 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { AccountsDashboardComponent } from './accounts-dashboard.component';
-import { AccountsService, MoneyTypeService } from "@clematis-shared/shared-components";
 import { HttpClient, HttpHandler } from "@angular/common/http";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute, convertToParamMap } from "@angular/router";
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 import { KeycloakService } from "keycloak-angular";
 import { of } from "rxjs";
-import { ActivatedRoute, convertToParamMap } from "@angular/router";
+
+import { AccountsDashboardComponent } from './accounts-dashboard.component';
+import { AccountsService, MoneyTypeService, SharedComponentsModule } from "@clematis-shared/shared-components";
 
 describe('AccountsDashboardComponent', () => {
   let component: AccountsDashboardComponent;
@@ -14,13 +17,18 @@ describe('AccountsDashboardComponent', () => {
   const fakeActivatedRoute = {
     queryParams: of({}),
     snapshot: {
-      paramMap: convertToParamMap({ })
+      paramMap: convertToParamMap({ })      
     }
   } as ActivatedRoute;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AccountsDashboardComponent],
+      imports: [
+        SharedComponentsModule,
+        BrowserAnimationsModule,
+        MatCheckboxModule
+      ],
       providers: [
         AccountsService,
         HttpClient,

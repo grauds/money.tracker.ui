@@ -1,11 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { ExchangeComponent } from './exchange.component';
-import { KeycloakService } from "keycloak-angular";
+import { MatIconModule } from '@angular/material/icon';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, convertToParamMap } from "@angular/router";
 import { HttpClient, HttpHandler } from "@angular/common/http";
 import { of } from "rxjs";
-import { MoneyTypeService } from "@clematis-shared/shared-components";
+
+import { ExchangeComponent } from './exchange.component';
+import { KeycloakService } from "keycloak-angular";
+import { MoneyTypeService, SharedComponentsModule } from "@clematis-shared/shared-components";
 
 describe('ExchangeComponent', () => {
   let component: ExchangeComponent;
@@ -21,6 +23,11 @@ describe('ExchangeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ExchangeComponent],
+      imports: [ 
+        SharedComponentsModule, 
+        BrowserAnimationsModule,
+        MatIconModule 
+      ],
       providers: [
         HttpClient,
         HttpHandler,

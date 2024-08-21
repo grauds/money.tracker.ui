@@ -67,6 +67,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSortModule } from '@angular/material/sort';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import {
   ENVIRONMENT,
@@ -82,9 +85,6 @@ import { ExchangeEventElementComponent } from './accounts/exchange-event-element
 import { environment } from '../environments/environment';
 import { InOutListComponent } from './expenses/in-out-list/in-out-list.component';
 import { BalanceComponent } from './expenses/balance/balance.component';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CommodityGroupCommoditiesComponent } from './commodities/commodity-group-commodities/commodity-group-commodities.component';
 import { OrganizationGroupOrganizationsComponent } from './organizations/organization-group-organizations/organization-group-organizations.component';
 import { IncomeMonthlyComponent } from './income/income-monthly/income-monthly.component';

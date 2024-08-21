@@ -6,7 +6,8 @@ import {
   CommoditiesService,
   CommodityGroupService,
   CommodityGroupsService,
-  ExpenseItemsService
+  ExpenseItemsService,
+  SharedComponentsModule
 } from "@clematis-shared/shared-components";
 import { ActivatedRoute, convertToParamMap } from "@angular/router";
 import { of } from "rxjs";
@@ -25,6 +26,9 @@ describe('CommodityComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ CommodityComponent ],
+      imports: [ 
+        SharedComponentsModule
+      ],
       providers: [
         HttpClient,
         HttpHandler,

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { NavigationEnd, Router } from '@angular/router';
-import { BreakpointObserver, Breakpoints, MediaMatcher } from '@angular/cdk/layout';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from "rxjs";
 import { map, shareReplay } from "rxjs/operators";
 import { KeycloakProfile } from "keycloak-js";
@@ -34,11 +34,10 @@ export class HeaderComponent {
   @Input() isLoggedIn?: boolean;
 
   // current route of the application
-  currentRoute: String = '';
+  currentRoute = '';
 
   constructor(private router: Router,
               private readonly keycloak: KeycloakService,
-              media: MediaMatcher,
               private breakpointObserver: BreakpointObserver) {
 
     this.router.events.subscribe((event) => {

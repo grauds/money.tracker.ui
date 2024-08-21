@@ -47,7 +47,7 @@ import { MoneyTypeSelectorComponent } from './components/money-type-selector/mon
 import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { DateRangeSelectorComponent } from './components/date-range-selector/date-range-selector.component';
-import { StatsTotalsComponentComponent } from './components/stats-totals/stats-totals-component.component';
+import { StatsTotalsComponent } from './components/stats-totals/stats-totals.component';
 
 @NgModule({
   imports: [
@@ -77,7 +77,7 @@ import { StatsTotalsComponentComponent } from './components/stats-totals/stats-t
     EntityListFilteredComponent,
     MoneyTypeSelectorComponent,
     DateRangeSelectorComponent,
-    StatsTotalsComponentComponent
+    StatsTotalsComponent
   ],
   declarations: [
     EntityListComponent,
@@ -91,7 +91,7 @@ import { StatsTotalsComponentComponent } from './components/stats-totals/stats-t
     MoneyTypeSelectorComponent,
     MoneyTypeSelectorComponent,
     DateRangeSelectorComponent,
-    StatsTotalsComponentComponent
+    StatsTotalsComponent
   ],
   providers: [
     AccountsService,
