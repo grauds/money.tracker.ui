@@ -34,7 +34,7 @@ export abstract class EntityComponent<T extends Entity> {
   onInit(): void {
     const id = this.route.snapshot.paramMap.get('id')
     if (id !== this.id) {
-      this.id = id ? id : ''
+      this.id = id ?? ''
       this.loadData()
     }
   }

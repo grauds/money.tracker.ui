@@ -6,7 +6,14 @@
 
 [Money Tracker](https://dominsoft.ru) application helps with daily financial activities logging and provides insights to different budget areas like spendings, profits, incomes, commodities, loans and credits, trade organizations and commodities. The data is stored in its database which is shared with this web applications therefore the web application is capable of getting a fresh copy of data and displaying additional reports and insights.
 
- 
+## Shared libraries
+
+This application uses two Angular Typescript libraries from this repository, see documentation below:
+
+1. [Shared Model Library](./libs/model/README.md) - models the domain from the backend with the helps of entity bound classes and DTOs. 
+2. [Shared Components Library](./libs/shared-components/README.md) - is focusing on search services and basic search components.
+
+
 ## Quick Start
 
 ### Dependencies

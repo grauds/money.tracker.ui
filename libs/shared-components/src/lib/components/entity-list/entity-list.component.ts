@@ -113,7 +113,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     this.searchRequest$.next(this.searchRequest)
   }
 
-  refreshData(searchRequest?: SearchRequest, resetPages: boolean = true) {
+  refreshData(searchRequest?: SearchRequest, resetPages = true) {
     if (resetPages) {
       this.n = 0
     }
