@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of, Subscription, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subscription, switchMap } from 'rxjs';
 
 import { KeycloakService } from 'keycloak-angular';
 import { PagedResourceCollection } from '@lagoshny/ngx-hateoas-client';
@@ -44,13 +44,19 @@ export class AgentCommoditiesComponent implements OnInit {
 
   loading = false;
 
-  currency: MoneyType = new MoneyType();
+  currency: MoneyType | undefined;
 
   currencies: MoneyType[] = [];
 
   startDate = moment().add(-6, 'M');
 
   endDate = moment().add(1, 'M');
+
+  showGroups: boolean = true;
+
+  showGroupsEvent = new BehaviorSubject<boolean>(true);
+
+  checkSubscription = this.showGroupsEvent.asObservable();
 
   constructor(protected readonly keycloak: KeycloakService,
               private moneyTypeService: MoneyTypeService,
@@ -70,6 +76,17 @@ export class AgentCommoditiesComponent implements OnInit {
     );
 
     this.isLoggedIn = this.keycloak.isLoggedIn();
+
+    this.checkSubscription.subscribe(() => {
+      if (this.currency) {
+        this.loading = true;
+        this.createChart(this.currency)
+            .subscribe(chart => {
+              this.chart = chart;
+              this.loading = false;
+            })
+      }
+    })
   }
 
   initMoneyType(destCurrency: string, fallback: string) {
@@ -77,6 +94,10 @@ export class AgentCommoditiesComponent implements OnInit {
       destCurrency = fallback
     }
     return this.moneyTypeService.getCurrencyByCode(destCurrency)
+  }
+
+  onFilterEvent(data: boolean) {
+    this.showGroupsEvent.next(data);
   }
 
   ngOnInit(): void {
@@ -104,11 +125,15 @@ export class AgentCommoditiesComponent implements OnInit {
   }
 
   updateRoute() {
-    return this.router.navigate([], {
+    return this.router.navigate([], this.currency ? {
       relativeTo: this.route,
       queryParams: {
         currency: this.currency.code
       },
+      queryParamsHandling: 'merge',
+      skipLocationChange: false
+    } : {
+      relativeTo: this.route,
       queryParamsHandling: 'merge',
       skipLocationChange: false
     })
@@ -125,11 +150,13 @@ export class AgentCommoditiesComponent implements OnInit {
     }).subscribe({
       next: (response: PagedResourceCollection<MoneyType>) => {
         this.currencies = response.resources;
-        this.createChart(this.currency)
-          .subscribe(chart => {
-            this.chart = chart;
-            this.loading = false;
-          })
+        if (this.currency) {
+          this.createChart(this.currency)
+            .subscribe(chart => {
+              this.chart = chart;
+              this.loading = false;
+            })
+        }
       },
       error: () => {
       },
@@ -139,18 +166,19 @@ export class AgentCommoditiesComponent implements OnInit {
     });
   }  
 
-  private createChart(moneyType: MoneyType): Observable<any> {
+  private createChart(currency: MoneyType): Observable<any> {
     let chart = {};
 
     let ticks: string[] = []
     let series: Map<string, AgentCommodities[]> = new Map();
 
-    return of(chart).pipe(
+    return this.currency ? of(chart).pipe(
       switchMap(() => {
         return this.expenseItemsService.getAgentExpencesInCurrency(
-          this.currency,
+          currency,
           this.startDate.month(), this.startDate.year(),
-          this.endDate.month(), this.endDate.year())        
+          this.endDate.month(), this.endDate.year()
+        )        
       }),
       switchMap((response: Page<AgentCommodities>) => {
         return of(response.content)
@@ -160,12 +188,26 @@ export class AgentCommoditiesComponent implements OnInit {
         // form series of data in the interval
         response.forEach((month: AgentCommodities) => {
           if (month.agent && month.commodityGroup) {
-            const key = month.agent + " " + month.commodityGroup;
+            const key = month.agent + (this.showGroups ? (": " + month.commodityGroup) : "");
             let values: AgentCommodities[] = []
             if (series.get(key)) {
               values = series.get(key)!
             }
-            values.push(month)
+            if (this.showGroups) {
+              values.push(month)
+            } else {
+              let found = false;
+              for (var i in values) {
+                if (values[i].agent == month.agent && values[i].an == month.an && values[i].mois == month.mois) {
+                   values[i].total += month.total;
+                   found = true;
+                   break;
+                }
+              }
+              if (!found) {
+                values.push(month)
+              }
+            }        
             series.set(key, values)
           }
         })
@@ -178,10 +220,10 @@ export class AgentCommoditiesComponent implements OnInit {
         return of(0)
       }),
       switchMap(() => {
-        return of(this.buildChart(ticks, series, moneyType))
+        return of(this.buildChart(ticks, series))
       })
     
-    )
+    ) : of (chart)
   }
 
   private getChartsSeries(ticks: string[], series: Map<string, AgentCommodities[]>): any[] {
@@ -213,8 +255,8 @@ export class AgentCommoditiesComponent implements OnInit {
   }
 
   private buildChart(ticks: string[],
-                    series: Map<string, AgentCommodities[]>,
-                    moneyType: MoneyType) {
+                    series: Map<string, AgentCommodities[]>
+                  ) {
   
     return {
       legend: {
@@ -235,7 +277,7 @@ export class AgentCommoditiesComponent implements OnInit {
         backgroundColor: 'rgba(255, 255, 255, 0.8)',
         position: function (pos: number[], params: any, el: any, elRect: any, 
           size: { viewSize: number[]; }) {
-          var obj: any = { top: 10 };
+          let obj: any = { top: 10 };
           obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
           return obj;
         },
