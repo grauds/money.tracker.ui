@@ -59,11 +59,11 @@ export class AgentCommoditiesComponent implements OnInit {
   checkSubscription = this.showGroupsEvent.asObservable();
 
   constructor(protected readonly keycloak: KeycloakService,
-              private moneyTypeService: MoneyTypeService,
-              private expenseItemsService: ExpenseItemsService,
-              private router: Router,
-              private route: ActivatedRoute,
-              private title: Title) {
+              private readonly moneyTypeService: MoneyTypeService,
+              private readonly expenseItemsService: ExpenseItemsService,
+              private readonly router: Router,
+              private readonly route: ActivatedRoute,
+              private readonly title: Title) {
 
     this.pageSubscription = route.queryParams.subscribe(
       (queryParam: any) => {

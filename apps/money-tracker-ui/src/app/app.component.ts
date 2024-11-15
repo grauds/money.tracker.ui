@@ -24,8 +24,8 @@ export class AppComponent implements OnInit {
   loading = false;
 
   constructor(protected readonly keycloak: KeycloakService,
-              private router: Router,
-              private route: ActivatedRoute) { }
+              private readonly router: Router,
+              private readonly route: ActivatedRoute) { }
 
   ngOnInit() {
 

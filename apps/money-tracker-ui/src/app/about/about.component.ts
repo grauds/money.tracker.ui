@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from "@angular/platform-browser";
 import { InfoAbout } from '@clematis-shared/model';
 import { StatsService } from '@clematis-shared/shared-components';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-about',
@@ -12,11 +13,19 @@ import { StatsService } from '@clematis-shared/shared-components';
 export class AboutComponent implements OnInit {
 
 
+  isLoggedIn: boolean = false;
+
   income: number = 0;
 
   infoAbout: InfoAbout | undefined;
 
-  constructor(private title: Title, private statsService: StatsService) {}
+  constructor(protected readonly keycloak: KeycloakService, 
+              private readonly title: Title, 
+              private readonly statsService: StatsService) {
+
+
+    this.isLoggedIn = this.keycloak.isLoggedIn();
+  }
 
   ngOnInit(): void {
     this.title.setTitle('Money Tracker - About');

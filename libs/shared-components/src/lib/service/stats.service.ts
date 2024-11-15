@@ -11,7 +11,7 @@ export class StatsService {
   environmentService: EnvironmentService;
 
   constructor(
-    private http: HttpClient,
+    private readonly http: HttpClient,
     environmentService: EnvironmentService
   ) {
     this.environmentService = environmentService;
