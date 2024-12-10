@@ -2,7 +2,7 @@
 # BUILD STAGE
 # ------------------------------------------------------------------------------
 
-FROM node:18-alpine as build-image
+FROM node:18-alpine AS build-image
 
 WORKDIR /opt/software
 
@@ -27,7 +27,7 @@ RUN nx run-many --target=test --all --coverage --verbose
 # COPY COVERAGE STAGE (after build)
 # ------------------------------------------------------------------------------
 
-FROM scratch as test-out
+FROM scratch AS test-out
 COPY --from=build-image  /opt/software/coverage .
 
 # ------------------------------------------------------------------------------
@@ -52,11 +52,11 @@ ARG SOURCE_PATH=$WORK_DIR/dist/apps/$APP_NAME
 # Path to application in docker. Used by nginx to serve static
 ARG APP_ROOT=/var/www/$APP_NAME
 
-RUN mkdir -p $APP_ROOT
+RUN mkdir -p "$APP_ROOT"
 COPY --from=0 $SOURCE_PATH $APP_ROOT
 # COPY ./apps/$APP_NAME/jenkins/nginx-default.conf /etc/nginx/conf.d/default.conf
 
-RUN ls -l $APP_ROOT
+RUN ls -l "$APP_ROOT"
 
 ENTRYPOINT ["/usr/local/openresty/nginx/sbin/nginx", "-g", "daemon off;"]
 EXPOSE 80
