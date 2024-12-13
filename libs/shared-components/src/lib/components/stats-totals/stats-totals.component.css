@@ -1,9 +1,9 @@
 .wrapper {
-    width: 100%;
+    width: 90%;
 }
 
 .component {
-    width: 70%;
+    width: 90%;
     background-color: var(--pink);
     color: var(--foreground);
     padding: 20px;
@@ -12,12 +12,12 @@
 }
 
 .header {
-    font-size: 24px;
+    font-size: 20px;
     line-height: 25px;
 }
 
 .value {
-    font-size: 36px;
+    font-size: 22px;
     line-height: 150px;
 }
 
@@ -33,7 +33,7 @@
     }
 
     .value {
-        font-size: 25px;
+        font-size: 22px;
     }
 
     .icon {
@@ -57,7 +57,7 @@
     }
 
     .value {
-        font-size: 25px;
+        font-size: 20px;
         line-height: 25px;
     }
 }
@@ -74,7 +74,7 @@
     }
 
     .value {
-        font-size: 35px;
+        font-size: 22px;
         line-height: 35px;
     }
 

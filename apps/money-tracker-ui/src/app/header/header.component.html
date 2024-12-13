@@ -4,9 +4,10 @@
                [attr.role]="(isFullLayout$ | async) ? 'navigation': 'dialog' "
                [mode]="(isFullLayout$ | async) ? 'side' : 'over' "
                [opened]="(isFullLayout$ | async) === true">
-    <div style="padding-left: 30px; padding-right: 30px; padding-top: 15px;"><img src="assets/clematis.png" alt=""></div>
+    <div style="padding-left: 30px; padding-right: 30px; padding-top: 15px;">
+      <img src="assets/clematis.png" width="100" height="100"></div>
     <mat-toolbar>
-      {{title}}
+      Clematis / {{title}}
     </mat-toolbar>
     <mat-nav-list>
       <div *ngIf="isLoggedIn">

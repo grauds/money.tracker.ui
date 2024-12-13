@@ -36,9 +36,9 @@ export class HeaderComponent {
   // current route of the application
   currentRoute = '';
 
-  constructor(private router: Router,
+  constructor(private readonly router: Router,
               private readonly keycloak: KeycloakService,
-              private breakpointObserver: BreakpointObserver) {
+              private readonly breakpointObserver: BreakpointObserver) {
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
