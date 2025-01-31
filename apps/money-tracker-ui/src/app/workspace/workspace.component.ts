@@ -6,6 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./workspace.component.sass'],
 })
 export class WorkspaceComponent {
-
   constructor() {}
 }

@@ -1,44 +1,43 @@
-import { HateoasResource } from "@lagoshny/ngx-hateoas-client";
+import { HateoasResource } from '@lagoshny/ngx-hateoas-client';
 import { MoneyType } from './money-type';
 import { Organization } from './organization';
-import { Entity } from "./entity";
+import { Entity } from './entity';
 
 @HateoasResource('exchange')
 export class MoneyExchange extends Entity {
+  exchangedate = '';
 
-  exchangedate = ''
-
-  source = 0
+  source = 0;
 
   sourceLink: string | undefined;
 
-  dest = 0
+  dest = 0;
 
   destLink: string | undefined;
 
-  usermt = 0
+  usermt = 0;
 
   tradeplace: Organization = new Organization();
 
-  feepercent = 0
+  feepercent = 0;
 
-  rate = 0
+  rate = 0;
 
-  sourceamount = 0
+  sourceamount = 0;
 
-  destamount = 0
+  destamount = 0;
 
-  sourcemoneytype: MoneyType = new MoneyType()
+  sourcemoneytype: MoneyType = new MoneyType();
 
-  destmoneytype: MoneyType = new MoneyType()
+  destmoneytype: MoneyType = new MoneyType();
 
-  remarks = ''
+  remarks = '';
 
-  feecomm = 0
+  feecomm = 0;
 
-  fee = 0
+  fee = 0;
 
-  calcfield = 0
+  calcfield = 0;
 
-  comm = 0
+  comm = 0;
 }

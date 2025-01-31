@@ -1,12 +1,11 @@
 export interface AgentCommodities {
+  agent: string;
 
-    agent: string;
+  commodityGroup: string;
 
-    commodityGroup: string;
+  total: 0;
 
-    total: 0;
+  mois: number;
 
-    mois: number;
-
-    an: number;
+  an: number;
 }

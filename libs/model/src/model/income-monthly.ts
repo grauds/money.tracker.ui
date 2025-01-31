@@ -1,9 +1,8 @@
-import { HateoasResource } from "@lagoshny/ngx-hateoas-client";
-import { Entity } from "./entity";
+import { HateoasResource } from '@lagoshny/ngx-hateoas-client';
+import { Entity } from './entity';
 
 @HateoasResource('incomeMonthly')
 export class IncomeMonthly extends Entity {
-
   code = '';
 
   year = 0;
@@ -12,5 +11,5 @@ export class IncomeMonthly extends Entity {
 
   total = 0;
 
-  totalConverted = 0
+  totalConverted = 0;
 }

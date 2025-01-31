@@ -1,44 +1,63 @@
-import { Observable, of, Subscription, switchMap, tap } from "rxjs";
-import { Component, EventEmitter, Inject, Input, OnInit, Output, TemplateRef } from "@angular/core";
-import { ActivatedRoute, NavigationExtras, Params, Router } from "@angular/router";
+import { Observable, of, Subscription, switchMap, tap } from 'rxjs';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef,
+} from '@angular/core';
+import {
+  ActivatedRoute,
+  NavigationExtras,
+  Params,
+  Router,
+} from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
-import { Sort } from "@angular/material/sort";
-import { Entity, SearchRequest } from "@clematis-shared/model";
-import { PagedResourceCollection, Sort as RestSort, SortOrder } from "@lagoshny/ngx-hateoas-client";
-import { PageParam } from "@lagoshny/ngx-hateoas-client/lib/model/declarations";
-import { SearchService } from "../../service/search.service";
+import { Sort } from '@angular/material/sort';
+import { Entity, SearchRequest } from '@clematis-shared/model';
+import {
+  PagedResourceCollection,
+  Sort as RestSort,
+  SortOrder,
+} from '@lagoshny/ngx-hateoas-client';
+import { PageParam } from '@lagoshny/ngx-hateoas-client/lib/model/declarations';
+import { SearchService } from '../../service/search.service';
 
 @Component({
   selector: 'app-entity-list',
   templateUrl: './entity-list.component.html',
-  styleUrls: ['./entity-list.component.sass']
+  styleUrls: ['./entity-list.component.sass'],
 })
 export class EntityListComponent<T extends Entity> implements OnInit {
-
   @Input() resultItemTemplate: TemplateRef<any> | undefined;
 
-  @Input() filterTemplate: TemplateRef<any>  | undefined;
+  @Input() filterTemplate: TemplateRef<any> | undefined;
 
   @Input() table = false;
 
-  @Input() sort: RestSort | null = null
+  @Input() sort: RestSort | null = null;
 
-  @Input() queryParamsMode: "merge" | "preserve" | "" | null = "merge";
+  @Input() queryParamsMode: 'merge' | 'preserve' | '' | null = 'merge';
 
-  @Input() loadOnInit = true
+  @Input() loadOnInit = true;
 
   @Input() searchRequest?: SearchRequest;
 
-  searchRequest$: EventEmitter<SearchRequest | undefined>
-    = new EventEmitter<SearchRequest | undefined>();
+  searchRequest$: EventEmitter<SearchRequest | undefined> = new EventEmitter<
+    SearchRequest | undefined
+  >();
 
   pageSubscription: Subscription;
 
-  @Output() filter$: EventEmitter<Map<string, string>> = new EventEmitter<Map<string, string>>();
+  @Output() filter$: EventEmitter<Map<string, string>> = new EventEmitter<
+    Map<string, string>
+  >();
 
   filter: Map<string, string> = new Map<string, string>();
 
-  @Output() statusDescription$: Observable<string> | undefined
+  @Output() statusDescription$: Observable<string> | undefined;
 
   @Output() entities$: EventEmitter<T[]> = new EventEmitter<T[]>();
 
@@ -56,10 +75,11 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
   error: string | undefined;
 
-  public constructor(@Inject("searchService") private readonly searchService: SearchService<T>,
-                     protected router: Router,
-                     protected route: ActivatedRoute) {
-
+  public constructor(
+    @Inject('searchService') private readonly searchService: SearchService<T>,
+    protected router: Router,
+    protected route: ActivatedRoute
+  ) {
     this.pageSubscription = route.queryParams.subscribe(
       (queryParams: Params) => {
         this.updateFromParameters(queryParams);
@@ -67,26 +87,25 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     );
 
     this.entities$.subscribe((entities: T[] | null) => {
-      this.entities = entities
-    })
+      this.entities = entities;
+    });
 
-    this.loading$.subscribe((value:boolean) => {
-      this.loading = value
-    })
+    this.loading$.subscribe((value: boolean) => {
+      this.loading = value;
+    });
   }
 
   updateFromParameters(queryParams: Params) {
-
     // parse page, limit and sort information
-    const page: number = Number.parseInt(queryParams["page"], 10);
+    const page: number = Number.parseInt(queryParams['page'], 10);
     this.n = isNaN(page) ? 0 : page;
 
-    const size: number = Number.parseInt(queryParams["size"], 10);
+    const size: number = Number.parseInt(queryParams['size'], 10);
     this.limit = isNaN(size) ? 10 : size;
 
-    const sort: string = queryParams["sort"];
+    const sort: string = queryParams['sort'];
     if (sort) {
-      const s: string[] = sort.split(",");
+      const s: string[] = sort.split(',');
       if (s.length === 2) {
         this.sort = { [s[0]]: s[1] as SortOrder };
       }
@@ -94,133 +113,134 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
     // add the rest of the url search parameters as filters
     Object.keys(queryParams).forEach((k) => {
-      if (k !== "page" && k !== "size" && k !== "sort") {
+      if (k !== 'page' && k !== 'size' && k !== 'sort') {
         this.filter.set(k, queryParams[k]);
       }
     });
   }
 
   ngOnInit(): void {
-    this.statusDescription$ = this.searchService.getStatusDescription()
-    this.subscribeToSearchRequests()
+    this.statusDescription$ = this.searchService.getStatusDescription();
+    this.subscribeToSearchRequests();
     if (this.loadOnInit) {
-      this.loadData()
+      this.loadData();
     }
   }
 
   private loadData() {
-    this.loading$.next(true)
-    this.searchRequest$.next(this.searchRequest)
+    this.loading$.next(true);
+    this.searchRequest$.next(this.searchRequest);
   }
 
   refreshData(searchRequest?: SearchRequest, resetPages = true) {
     if (resetPages) {
-      this.n = 0
+      this.n = 0;
     }
     if (searchRequest) {
-      this.searchRequest = searchRequest
+      this.searchRequest = searchRequest;
     }
     this.updateRoute().then(() => {
-      this.loadData()
-    })
+      this.loadData();
+    });
   }
 
   private subscribeToSearchRequests() {
-
     this.searchRequest$
       .pipe(
         tap(() => {
-          this.searchService.setProcessingStatusDescription("search")
+          this.searchService.setProcessingStatusDescription('search');
         }),
         switchMap((searchRequest: SearchRequest | undefined) => {
-
           const params = {
             pageParams: this.getPageParams(),
             sort: this.getSort(),
-            useCache: this.getUseCache()
-          }
+            useCache: this.getUseCache(),
+          };
 
-          return (searchRequest && searchRequest.queryName) ?
-            this.searchService.searchPage(
-              {...params, params: {
-                          ...searchRequest.queryArguments,
-                          ...this.getFilterParams(),
-                          ...searchRequest.filterParams
-                      }
-              },
-              searchRequest.queryName
-            ) :
-            this.searchService.getPage(params)
+          return searchRequest && searchRequest.queryName
+            ? this.searchService.searchPage(
+                {
+                  ...params,
+                  params: {
+                    ...searchRequest.queryArguments,
+                    ...this.getFilterParams(),
+                    ...searchRequest.filterParams,
+                  },
+                },
+                searchRequest.queryName
+              )
+            : this.searchService.getPage(params);
         }),
-        switchMap(this.executePostProcessing.bind(this)),
+        switchMap(this.executePostProcessing.bind(this))
       )
       .subscribe({
         next: this.broadcastResults.bind(this),
         error: (err: Error) => {
-          this.error = err.message
-          this.entities$.error(err)
+          this.error = err.message;
+          this.entities$.error(err);
         },
         complete: () => {
-          this.entities$.complete()
-        }
-      })
+          this.entities$.complete();
+        },
+      });
   }
 
   private broadcastResults(page: PagedResourceCollection<T>): void {
-
     this.total = page.totalElements;
     this.limit = page.pageSize;
 
-    this.error = undefined
+    this.error = undefined;
     this.loading$.next(false);
     this.entities$.next(page.resources);
   }
 
-  private executePostProcessing(searchResult: PagedResourceCollection<T>): Observable<PagedResourceCollection<T>> {
-    const handler = this.searchService.getPostProcessingStream()
+  private executePostProcessing(
+    searchResult: PagedResourceCollection<T>
+  ): Observable<PagedResourceCollection<T>> {
+    const handler = this.searchService.getPostProcessingStream();
     if (handler) {
-      this.searchService.setProcessingStatusDescription("post processing")
-      return handler(searchResult)
+      this.searchService.setProcessingStatusDescription('post processing');
+      return handler(searchResult);
     }
-    return of(searchResult)
+    return of(searchResult);
   }
 
   updateRoute(): Promise<boolean> {
-    return this.router.navigate([], this.getRouteParameters())
+    return this.router.navigate([], this.getRouteParameters());
   }
 
   getRouteParameters(): NavigationExtras {
-    let queryParams: Params = this.getPageParams()
+    let queryParams: Params = this.getPageParams();
 
     if (this.getSort()) {
-      queryParams = { ...queryParams, ...this.getSortParams()}
+      queryParams = { ...queryParams, ...this.getSortParams() };
     }
 
     if (this.getFilter()) {
-      queryParams = { ...queryParams, ...this.getFilterParams()}
+      queryParams = { ...queryParams, ...this.getFilterParams() };
     }
 
     return {
       relativeTo: this.route,
       queryParams: queryParams,
       queryParamsHandling: this.queryParamsMode,
-      skipLocationChange: false
-    }
+      skipLocationChange: false,
+    };
   }
 
   getPageParams(): PageParam {
     return {
       page: this.n,
-      size: this.limit
+      size: this.limit,
     };
   }
 
   setCurrentPage(event: PageEvent) {
-    this.n = event.pageIndex
-    this.limit = event.pageSize
+    this.n = event.pageIndex;
+    this.limit = event.pageSize;
     this.updateRoute().then(() => {
-      this.loadData()
-    })
+      this.loadData();
+    });
   }
 
   getSort(): RestSort {
@@ -230,25 +250,27 @@ export class EntityListComponent<T extends Entity> implements OnInit {
   getSortParams(): Params | null {
     if (this.sort !== null) {
       return {
-        sort: Object.keys(this.sort).map((k) => {
-          return [k, this.sort !== null ? this.sort[k] : '']
-        }).join(",")
-      }
+        sort: Object.keys(this.sort)
+          .map((k) => {
+            return [k, this.sort !== null ? this.sort[k] : ''];
+          })
+          .join(','),
+      };
     }
-    return null
+    return null;
   }
 
   setSort(sort: Sort) {
     if (sort && sort.direction) {
       this.sort = {
-        [sort.active]: sort.direction.toUpperCase() as SortOrder
-      }
+        [sort.active]: sort.direction.toUpperCase() as SortOrder,
+      };
     } else {
-      this.sort = null
+      this.sort = null;
     }
     this.updateRoute().then(() => {
-      this.loadData()
-    })
+      this.loadData();
+    });
   }
 
   getFilter(): Map<string, string> {
@@ -261,31 +283,31 @@ export class EntityListComponent<T extends Entity> implements OnInit {
       this.filter.forEach((value, key) => {
         queryParams[key] = value;
       });
-      return queryParams
+      return queryParams;
     }
-    return null
+    return null;
   }
 
-  setFilter(id? : string,  value? : string) {
+  setFilter(id?: string, value?: string) {
     if (id && value) {
-      this.filter$.next(this.filter.set(id, value))
+      this.filter$.next(this.filter.set(id, value));
     } else {
-      this.filter$.next(this.filter)
+      this.filter$.next(this.filter);
     }
   }
 
   removeFilter(id: string) {
     if (this.filter.delete(id)) {
-      this.filter$.next(this.filter)
+      this.filter$.next(this.filter);
     }
   }
 
   clearFilter() {
-    this.filter = new Map<string, string>
-    this.filter$.next(this.filter)
+    this.filter = new Map<string, string>();
+    this.filter$.next(this.filter);
   }
 
   getUseCache(): boolean {
-    return true
+    return true;
   }
 }

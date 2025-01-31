@@ -75,7 +75,7 @@ import {
   ENVIRONMENT,
   EnvironmentService,
   SharedComponentsModule,
-  PageNotFoundComponent
+  PageNotFoundComponent,
 } from '@clematis-shared/shared-components';
 
 import { AccountsDashboardComponent } from './accounts/accounts-dashboard/accounts-dashboard.component';
@@ -154,7 +154,7 @@ const routes: Routes = [
       },
       {
         path: 'commoditiesAgents',
-        component: AgentCommoditiesComponent
+        component: AgentCommoditiesComponent,
       },
       {
         path: 'inOut',
@@ -217,7 +217,7 @@ const mapConfig: YaConfig = {
     CommodityGroupCommoditiesComponent,
     OrganizationGroupOrganizationsComponent,
     IncomeMonthlyComponent,
-    AgentCommoditiesComponent
+    AgentCommoditiesComponent,
   ],
   imports: [
     HttpClientModule,
@@ -230,7 +230,7 @@ const mapConfig: YaConfig = {
     FormsModule,
     AngularYandexMapsModule.forRoot(mapConfig),
     NgxEchartsModule.forRoot({
-        echarts: () => import('echarts'),
+      echarts: () => import('echarts'),
     }),
     BrowserAnimationsModule,
     MatToolbarModule,
@@ -252,8 +252,8 @@ const mapConfig: YaConfig = {
     MatMomentDateModule,
     ReactiveFormsModule,
     MatProgressBarModule,
-    MatCheckboxModule
-],
+    MatCheckboxModule,
+  ],
   providers: [
     {
       provide: KeycloakService,

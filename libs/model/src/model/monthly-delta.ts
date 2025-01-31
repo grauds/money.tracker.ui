@@ -1,9 +1,7 @@
-import {HateoasResource, Resource} from "@lagoshny/ngx-hateoas-client";
-
+import { HateoasResource, Resource } from '@lagoshny/ngx-hateoas-client';
 
 @HateoasResource('monthlyDeltas')
 export class MonthlyDelta extends Resource {
-
   code = '';
 
   year = 0;

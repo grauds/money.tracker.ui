@@ -1,11 +1,10 @@
 version: '3.9'
 services:
-
   money-tracker-ui:
     container_name: clematis-money-tracker-ui
     image: money.tracker.ui.uat:latest
     ports:
-      - "18081:80"
+      - '18081:80'
     volumes:
       - /home/clematis/mt-ui/nginx-default.conf:/etc/nginx/conf.d/default.conf
     networks:
@@ -16,7 +15,7 @@ services:
     container_name: clematis-money-tracker-ui-demo
     image: money.tracker.ui.demo:latest
     ports:
-      - "18082:80"
+      - '18082:80'
     volumes:
       - /home/clematis/mt-ui/nginx-demo.conf:/etc/nginx/conf.d/default.conf
     networks:

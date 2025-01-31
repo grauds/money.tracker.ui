@@ -1,73 +1,79 @@
-<mat-progress-bar
-  *ngIf="loading" color="accent" mode="indeterminate">
+<mat-progress-bar *ngIf="loading" color="accent" mode="indeterminate">
 </mat-progress-bar>
 
 <div *ngIf="error">
   <div class="alert alert-danger">
-    {{error}}
+    {{ error }}
   </div>
 </div>
 
 <div *ngIf="!error">
-
-    <div *ngIf="filterTemplate" class="container filter">
-      <ng-container *ngTemplateOutlet="filterTemplate"></ng-container>
-      <div class="filterButtons">
-        <button mat-icon-button (click)="setFilter()">
-          <mat-icon>search</mat-icon>
-        </button>
-        <button mat-icon-button (click)="clearFilter()">
-          <mat-icon>clear</mat-icon>
-        </button>
-      </div>
+  <div *ngIf="filterTemplate" class="container filter">
+    <ng-container *ngTemplateOutlet="filterTemplate"></ng-container>
+    <div class="filterButtons">
+      <button mat-icon-button (click)="setFilter()">
+        <mat-icon>search</mat-icon>
+      </button>
+      <button mat-icon-button (click)="clearFilter()">
+        <mat-icon>clear</mat-icon>
+      </button>
     </div>
+  </div>
 
-    <div *ngIf="(entities && entities.length > 0)" class="container search-results">
+  <div *ngIf="entities && entities.length > 0" class="container search-results">
+    <mat-paginator
+      [length]="total"
+      [pageSize]="limit"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      [pageIndex]="n"
+      (page)="setCurrentPage($event)"
+      [showFirstLastButtons]="true"
+      [disabled]="loading"
+      aria-label="Select page"
+    >
+    </mat-paginator>
 
-      <mat-paginator [length]="total"
-                     [pageSize]="limit"
-                     [pageSizeOptions]="[5, 10, 25, 100]"
-                     [pageIndex]="n"
-                     (page)="setCurrentPage($event)"
-                     [showFirstLastButtons]="true"
-                     [disabled]="loading"
-                     aria-label="Select page">
-      </mat-paginator>
-
-      <div class="area">
-        <!-- custom list -->
-        <div *ngIf="resultItemTemplate">
-          <div *ngIf="!table">
-            <div *ngFor="let a of entities">
-              <ng-container *ngTemplateOutlet="resultItemTemplate; context:{a}"></ng-container>
-            </div>
-          </div>
-          <div *ngIf="table">
-            <ng-container *ngTemplateOutlet="resultItemTemplate; context:{entities}"></ng-container>
-          </div>
-        </div>
-        <!-- fallback to simple list -->
-        <div *ngIf="!resultItemTemplate">
+    <div class="area">
+      <!-- custom list -->
+      <div *ngIf="resultItemTemplate">
+        <div *ngIf="!table">
           <div *ngFor="let a of entities">
-            <app-entity-element [entity]="a"></app-entity-element>
+            <ng-container
+              *ngTemplateOutlet="resultItemTemplate; context: { a }"
+            ></ng-container>
           </div>
         </div>
-        <!-- loading veil -->
-        <div *ngIf="loading" class="processing-indicator">
-          <div><mat-spinner diameter="33"></mat-spinner></div>
-          <div class="pt-5 text-black text-center">{{ statusDescription$ | async }} ...</div>
+        <div *ngIf="table">
+          <ng-container
+            *ngTemplateOutlet="resultItemTemplate; context: { entities }"
+          ></ng-container>
         </div>
       </div>
-
-      <mat-paginator [length]="total"
-                     [pageSize]="limit"
-                     [pageSizeOptions]="[5, 10, 25, 100]"
-                     [pageIndex]="n"
-                     (page)="setCurrentPage($event)"
-                     [showFirstLastButtons]="true"
-                     [disabled]="loading"
-                     aria-label="Select page">
-      </mat-paginator>
+      <!-- fallback to simple list -->
+      <div *ngIf="!resultItemTemplate">
+        <div *ngFor="let a of entities">
+          <app-entity-element [entity]="a"></app-entity-element>
+        </div>
+      </div>
+      <!-- loading veil -->
+      <div *ngIf="loading" class="processing-indicator">
+        <div><mat-spinner diameter="33"></mat-spinner></div>
+        <div class="pt-5 text-black text-center">
+          {{ statusDescription$ | async }} ...
+        </div>
+      </div>
     </div>
 
+    <mat-paginator
+      [length]="total"
+      [pageSize]="limit"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      [pageIndex]="n"
+      (page)="setCurrentPage($event)"
+      [showFirstLastButtons]="true"
+      [disabled]="loading"
+      aria-label="Select page"
+    >
+    </mat-paginator>
+  </div>
 </div>

@@ -1,3 +1,5 @@
 export enum SearchStringMode {
-  Starting = 'Starting', Containing = 'Containing', Ending = 'Ending'
+  Starting = 'Starting',
+  Containing = 'Containing',
+  Ending = 'Ending',
 }

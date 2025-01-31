@@ -1,9 +1,8 @@
 import { HateoasResource } from '@lagoshny/ngx-hateoas-client';
-import { Entity } from "./entity";
+import { Entity } from './entity';
 
 @HateoasResource('expenses')
 export class Expense extends Entity {
-
   disc = 0;
 
   discpercent = 0;
@@ -23,5 +22,4 @@ export class Expense extends Entity {
   transferDate = '';
 
   accountLink: string | undefined;
-
 }

@@ -1,19 +1,13 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pagination-bar',
   templateUrl: './pagination-bar.component.html',
-  styleUrls: ['./pagination-bar.component.css']
+  styleUrls: ['./pagination-bar.component.css'],
 })
-export class PaginationBarComponent  {
-
+export class PaginationBarComponent {
   @Input() path = '';
 
   // number of records per page
@@ -31,9 +25,8 @@ export class PaginationBarComponent  {
   // change current page event
   @Output() changeCurrentPage = new EventEmitter<number>();
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
-  
   prevPageDisabled() {
     return this.currentPage === 1 ? 'disabled' : '';
   }
@@ -47,15 +40,18 @@ export class PaginationBarComponent  {
   };
 
   setCurrentPage = (currentPage: number) => {
-    this.currentPage = currentPage
+    this.currentPage = currentPage;
     if (this.useLocation) {
-      this.router.navigate([this.path], { queryParams: {
-          page: currentPage
-        }, queryParamsHandling: 'merge'});
+      this.router.navigate([this.path], {
+        queryParams: {
+          page: currentPage,
+        },
+        queryParamsHandling: 'merge',
+      });
     } else {
       this.changeCurrentPage.emit(currentPage);
     }
-  }
+  };
 
   lastPage() {
     this.setCurrentPage(this.pageCount());
@@ -63,32 +59,31 @@ export class PaginationBarComponent  {
 
   nextPage() {
     if (this.currentPage < this.pageCount()) {
-      this.setCurrentPage(this.currentPage + 1)
+      this.setCurrentPage(this.currentPage + 1);
     }
   }
 
   setLocation(n: number) {
     if (n > 0 && n <= this.pageCount()) {
-      this.setCurrentPage(n)
+      this.setCurrentPage(n);
     } else if (n > this.pageCount()) {
-      this.setCurrentPage(this.pageCount())
+      this.setCurrentPage(this.pageCount());
     } else if (n < 1) {
-      this.setCurrentPage(1)
+      this.setCurrentPage(1);
     }
   }
 
   prevPage() {
     if (this.currentPage > 0) {
-      this.setCurrentPage(this.currentPage - 1)
+      this.setCurrentPage(this.currentPage - 1);
     }
   }
 
   firstPage() {
-    this.setCurrentPage(1)
+    this.setCurrentPage(1);
   }
 
   range() {
-
     const pageCount = this.pageCount();
     const rangeSize = 5 < pageCount ? 5 : pageCount;
     let start: number;
@@ -105,9 +100,9 @@ export class PaginationBarComponent  {
       start = pageCount + 1 - rangeSize;
     }
 
-    const ret = []
+    const ret = [];
 
-    const length: number = start + rangeSize
+    const length: number = start + rangeSize;
     for (let i = start; i < length; i++) {
       ret.push(i);
     }

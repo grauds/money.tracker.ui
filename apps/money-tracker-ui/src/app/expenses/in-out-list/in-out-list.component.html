@@ -1,7 +1,5 @@
 <div *ngIf="isLoggedIn">
-
   <div>
-
     <app-money-type-selector
       [label]="'Available currencies'"
       [disabled]="this.loading"
@@ -12,34 +10,44 @@
 
     <mat-form-field appearance="fill">
       <mat-label>Category</mat-label>
-      <mat-select [disabled]="this.loading" [value]="sign" (valueChange)="updateCategory($event)">
-        <mat-option [value]="true">
-          Profit
-        </mat-option>
-        <mat-option [value]="false">
-          Loss
-        </mat-option>
+      <mat-select
+        [disabled]="this.loading"
+        [value]="sign"
+        (valueChange)="updateCategory($event)"
+      >
+        <mat-option [value]="true"> Profit </mat-option>
+        <mat-option [value]="false"> Loss </mat-option>
       </mat-select>
     </mat-form-field>
 
-    <span [class]="(isFullLayout$ | async) ? 'rubber totalsHeader' : 'rubber totalsHeaderHandset'" [hidden]="this.loading">
-      {{ this.total | currency: this.currency.code }}
+    <span
+      [class]="
+        (isFullLayout$ | async)
+          ? 'rubber totalsHeader'
+          : 'rubber totalsHeaderHandset'
+      "
+      [hidden]="this.loading"
+    >
+      {{ this.total | currency : this.currency.code }}
     </span>
 
-    <span [class]="(isFullLayout$ | async) ? 'rubber totalsHeader' : 'rubber totalsHeaderHandset'" [hidden]="!(this.loading)">
+    <span
+      [class]="
+        (isFullLayout$ | async)
+          ? 'rubber totalsHeader'
+          : 'rubber totalsHeaderHandset'
+      "
+      [hidden]="!this.loading"
+    >
       Loading...
     </span>
-
   </div>
 
-
-  <div echarts
-       [options]="options"
-       (chartInit)="onChartInit($event)"
-       [loading]="loading"
-       class="reselling-chart">
-  </div>
-
-
-
+  <div
+    echarts
+    [options]="options"
+    (chartInit)="onChartInit($event)"
+    [loading]="loading"
+    class="reselling-chart"
+  ></div>
 </div>

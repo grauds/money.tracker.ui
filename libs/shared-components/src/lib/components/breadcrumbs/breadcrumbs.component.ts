@@ -6,10 +6,8 @@ import { Entity } from '@clematis-shared/model';
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.sass'],
 })
-export class BreadcrumbsComponent  {
-
-  @Input() path: Array<Entity> | null = null
-
+export class BreadcrumbsComponent {
+  @Input() path: Array<Entity> | null = null;
 
   parseResourceUrlToAppUrl(entity: Entity) {
     return Entity.getRelativeSelfLinkHref(entity);

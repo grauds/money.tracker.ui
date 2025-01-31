@@ -1,22 +1,27 @@
 <ng-template #filter>
   <mat-form-field appearance="fill">
     <mat-label>Find by name</mat-label>
-    <mat-select [disabled]="this.loading"
-                (selectionChange)="setFilterMode($event)"
-                [formControl]="mode"
-                (valueChange)="updateSearchMode($event)">
+    <mat-select
+      [disabled]="this.loading"
+      (selectionChange)="setFilterMode($event)"
+      [formControl]="mode"
+      (valueChange)="updateSearchMode($event)"
+    >
       <mat-option *ngFor="let mode of modes | keyvalue" [value]="mode.value">
-        {{mode.value}}
+        {{ mode.value }}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Text</mat-label>
-    <input matInput id="name"
-           (change)="setFilterAction($event)"
-           [formControl]="name"
-           type="text"
-           placeholder="to find in name">
+    <input
+      matInput
+      id="name"
+      (change)="setFilterAction($event)"
+      [formControl]="name"
+      type="text"
+      placeholder="to find in name"
+    />
     <mat-hint>Start typing, Enter to search</mat-hint>
   </mat-form-field>
 </ng-template>

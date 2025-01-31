@@ -1,68 +1,90 @@
 import { Injectable } from '@angular/core';
-import { Observable } from "rxjs";
-import { AccountBalance, MoneyType } from "@clematis-shared/model";
-import { HttpClient} from "@angular/common/http";
-import { PagedGetOption } from "@lagoshny/ngx-hateoas-client/lib/model/declarations";
-import { HateoasResourceService,
+import { Observable } from 'rxjs';
+import { AccountBalance, MoneyType } from '@clematis-shared/model';
+import { HttpClient } from '@angular/common/http';
+import { PagedGetOption } from '@lagoshny/ngx-hateoas-client/lib/model/declarations';
+import {
+  HateoasResourceService,
   PagedResourceCollection,
-  ResourceCollection
-} from "@lagoshny/ngx-hateoas-client";
+  ResourceCollection,
+} from '@lagoshny/ngx-hateoas-client';
 import { SearchService } from './search.service';
-import { EnvironmentService } from "./environment.service";
+import { EnvironmentService } from './environment.service';
 
 @Injectable()
 export class AccountsService extends SearchService<AccountBalance> {
-
-  constructor(private http: HttpClient,
-              private hateoasService: HateoasResourceService,
-              override environmentService: EnvironmentService) {
+  constructor(
+    private http: HttpClient,
+    private hateoasService: HateoasResourceService,
+    override environmentService: EnvironmentService
+  ) {
     super(environmentService);
   }
 
-  searchPage(options: PagedGetOption | undefined, queryName: string):
-    Observable<PagedResourceCollection<AccountBalance>> {
-    return this.hateoasService.searchPage<AccountBalance>(AccountBalance, queryName, options);
+  searchPage(
+    options: PagedGetOption | undefined,
+    queryName: string
+  ): Observable<PagedResourceCollection<AccountBalance>> {
+    return this.hateoasService.searchPage<AccountBalance>(
+      AccountBalance,
+      queryName,
+      options
+    );
   }
 
-  getPage(options: PagedGetOption | undefined): Observable<PagedResourceCollection<AccountBalance>> {
+  getPage(
+    options: PagedGetOption | undefined
+  ): Observable<PagedResourceCollection<AccountBalance>> {
     return this.hateoasService.getPage<AccountBalance>(AccountBalance, options);
   }
 
-  getAccountsBalanceInCurrency(moneyType: MoneyType): Observable<ResourceCollection<AccountBalance>> {
-    return this.hateoasService.searchCollection<AccountBalance>(AccountBalance, 'code',
+  getAccountsBalanceInCurrency(
+    moneyType: MoneyType
+  ): Observable<ResourceCollection<AccountBalance>> {
+    return this.hateoasService.searchCollection<AccountBalance>(
+      AccountBalance,
+      'code',
       {
         params: {
-          code: moneyType.code
-        }
-      })
+          code: moneyType.code,
+        },
+      }
+    );
   }
 
   getAccountsTotalInCurrency(moneyType: MoneyType): Observable<number> {
-    return this.http.get<number>(this.getUrl('/accountsTotals/search/balance'), {
-      params: {
-        code: moneyType.code
+    return this.http.get<number>(
+      this.getUrl('/accountsTotals/search/balance'),
+      {
+        params: {
+          code: moneyType.code,
+        },
       }
-    })
+    );
   }
 
-  getAccountsTotalHistoryInCurrency(moneyType: MoneyType, days: number): Observable<number> {
-    return this.http.get<number>(this.getUrl('/accountsTotals/search/balanceHistory'), {
-      params: {
-        code: moneyType.code,
-        days: days
+  getAccountsTotalHistoryInCurrency(
+    moneyType: MoneyType,
+    days: number
+  ): Observable<number> {
+    return this.http.get<number>(
+      this.getUrl('/accountsTotals/search/balanceHistory'),
+      {
+        params: {
+          code: moneyType.code,
+          days: days,
+        },
       }
-    })
+    );
   }
 
   getBalance(an: number, mois: number, code: string): Observable<number> {
-
     return this.http.get<number>(this.getUrl('/monthlyDeltas/search/balance'), {
       params: {
         an: an,
         mois: mois,
-        code: code
-      }
-    })
-
+        code: code,
+      },
+    });
   }
 }

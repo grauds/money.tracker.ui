@@ -8,9 +8,8 @@ describe('PageSizeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PageSizeComponent ]
-    })
-    .compileComponents();
+      declarations: [PageSizeComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

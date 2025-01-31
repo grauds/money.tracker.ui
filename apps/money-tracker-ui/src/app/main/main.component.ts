@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { MoneyTypes } from '@clematis-shared/model';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
-import { Subscription } from "rxjs";
+import { Subscription } from 'rxjs';
 import { KeycloakService } from 'keycloak-angular';
-import { ActivatedRoute, Router } from "@angular/router";
-import { Title } from "@angular/platform-browser";
+import { ActivatedRoute, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.sass']
+  styleUrls: ['./main.component.sass'],
 })
 export class MainComponent implements OnInit {
-
   isLoggedIn?: boolean;
 
   // total number of elements
@@ -33,42 +32,37 @@ export class MainComponent implements OnInit {
 
   currency: MoneyTypes = MoneyTypes.RUB;
 
-  currencies = [MoneyTypes.RUB,
-    MoneyTypes.GBP,
-    MoneyTypes.EUR,
-    MoneyTypes.USD
-  ];
+  currencies = [MoneyTypes.RUB, MoneyTypes.GBP, MoneyTypes.EUR, MoneyTypes.USD];
 
-  constructor(private resourceService: HateoasResourceService,
-              protected readonly keycloak: KeycloakService,
-              private router: Router,
-              private route: ActivatedRoute,
-              private title: Title) {
-
+  constructor(
+    private resourceService: HateoasResourceService,
+    protected readonly keycloak: KeycloakService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private title: Title
+  ) {
     this.isLoggedIn = this.keycloak.isLoggedIn();
 
-    this.pageSubscription = route.queryParams.subscribe(
-      (queryParam: any) => {
-        const page = Number.parseInt(queryParam['page'], 10)
-        this.n = isNaN(page) ? undefined : page;
-        const size = Number.parseInt(queryParam['size'], 10)
-        this.limit = isNaN(size) ? 12 : size;
-        const currency: String = queryParam['currency']
-        if (currency) {
-          this.currency = MoneyTypes[currency as keyof typeof MoneyTypes]
-        }
-        this.ngOnInit();
+    this.pageSubscription = route.queryParams.subscribe((queryParam: any) => {
+      const page = Number.parseInt(queryParam['page'], 10);
+      this.n = isNaN(page) ? undefined : page;
+      const size = Number.parseInt(queryParam['size'], 10);
+      this.limit = isNaN(size) ? 12 : size;
+      const currency: String = queryParam['currency'];
+      if (currency) {
+        this.currency = MoneyTypes[currency as keyof typeof MoneyTypes];
       }
-    );
+      this.ngOnInit();
+    });
   }
 
   ngOnInit(): void {
-    this.title.setTitle('Currencies')
+    this.title.setTitle('Currencies');
   }
 
   setCurrentPage(pageIndex: number, pageSize: number) {
-    this.n = pageIndex
-    this.limit = pageSize
+    this.n = pageIndex;
+    this.limit = pageSize;
   }
 
   updateRoute() {
@@ -77,10 +71,10 @@ export class MainComponent implements OnInit {
       queryParams: {
         page: this.n,
         size: this.limit,
-        currency: this.currency
+        currency: this.currency,
       },
       queryParamsHandling: 'merge',
-      skipLocationChange: false
-    })
+      skipLocationChange: false,
+    });
   }
 }

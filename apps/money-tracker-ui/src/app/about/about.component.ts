@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Title } from "@angular/platform-browser";
+import { Title } from '@angular/platform-browser';
 import { InfoAbout } from '@clematis-shared/model';
 import { StatsService } from '@clematis-shared/shared-components';
 import { KeycloakService } from 'keycloak-angular';
@@ -11,19 +11,17 @@ import { KeycloakService } from 'keycloak-angular';
   styleUrls: ['./about.component.sass'],
 })
 export class AboutComponent implements OnInit {
-
-
   isLoggedIn: boolean = false;
 
   income: number = 0;
 
   infoAbout: InfoAbout | undefined;
 
-  constructor(protected readonly keycloak: KeycloakService, 
-              private readonly title: Title, 
-              private readonly statsService: StatsService) {
-
-
+  constructor(
+    protected readonly keycloak: KeycloakService,
+    private readonly title: Title,
+    private readonly statsService: StatsService
+  ) {
     this.isLoggedIn = this.keycloak.isLoggedIn();
   }
 
@@ -32,23 +30,23 @@ export class AboutComponent implements OnInit {
     this.loadData();
   }
   loadData() {
-    this.statsService.getIncomeTransactionsCount().subscribe(infoAbout => {
+    this.statsService.getIncomeTransactionsCount().subscribe((infoAbout) => {
       this.infoAbout = infoAbout;
     });
   }
   getStartDate() {
     if (this.infoAbout && this.infoAbout.dates && this.infoAbout.dates.start) {
-      return formatDate(this.infoAbout.dates.start, 'mediumDate', 'en_US'); 
+      return formatDate(this.infoAbout.dates.start, 'mediumDate', 'en_US');
     } else {
-      return "No date"
+      return 'No date';
     }
   }
 
   getLastDate() {
     if (this.infoAbout && this.infoAbout.dates && this.infoAbout.dates.end) {
-      return formatDate(this.infoAbout.dates.end, 'mediumDate', 'en_US'); 
+      return formatDate(this.infoAbout.dates.end, 'mediumDate', 'en_US');
     } else {
-      return "No date"
+      return 'No date';
     }
   }
 }

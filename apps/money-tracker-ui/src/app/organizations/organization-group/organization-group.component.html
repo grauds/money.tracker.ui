@@ -1,21 +1,21 @@
 <app-breadcrumbs *ngIf="entity" [path]="path"></app-breadcrumbs>
 <div *ngIf="entity">
-  <div class='back-area'>
+  <div class="back-area">
     <div class="jumbotron">
-      <h2 style='margin: 10px'></h2>
+      <h2 style="margin: 10px"></h2>
       <h2>
-        {{entity ? entity.name : ''}}
+        {{ entity ? entity.name : '' }}
       </h2>
-      <span style='max-height: 350px; margin: 10px; overflow: auto'>
-          {{entity ? entity.description : ''}}
-        </span>
+      <span style="max-height: 350px; margin: 10px; overflow: auto">
+        {{ entity ? entity.description : '' }}
+      </span>
     </div>
   </div>
 
   <app-entity-list
     [searchRequest]="{
-        queryArguments: getQueryArguments(),
-        queryName: 'recursiveByParentId'
+      queryArguments: getQueryArguments(),
+      queryName: 'recursiveByParentId'
     }"
     (loading$)="setLoading($event)"
     (entities$)="setEntities($event)"
@@ -33,5 +33,4 @@
       <ya-placemark [geometry]="[55.751952, 37.600739]"></ya-placemark>
     </ya-map>
   </div>
-
 </div>

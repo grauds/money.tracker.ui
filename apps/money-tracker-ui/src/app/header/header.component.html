@@ -1,72 +1,85 @@
 <!-- Toolbar -->
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-               [attr.role]="(isFullLayout$ | async) ? 'navigation': 'dialog' "
-               [mode]="(isFullLayout$ | async) ? 'side' : 'over' "
-               [opened]="(isFullLayout$ | async) === true">
-    <div style="padding-left: 30px; padding-right: 30px; padding-top: 15px;">
-      <img src="assets/clematis.png" width="100" height="100"></div>
-    <mat-toolbar>
-      Clematis / {{title}}
-    </mat-toolbar>
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isFullLayout$ | async) ? 'navigation' : 'dialog'"
+    [mode]="(isFullLayout$ | async) ? 'side' : 'over'"
+    [opened]="(isFullLayout$ | async) === true"
+  >
+    <div style="padding-left: 30px; padding-right: 30px; padding-top: 15px">
+      <img src="assets/clematis.png" width="100" height="100" />
+    </div>
+    <mat-toolbar> Clematis / {{ title }} </mat-toolbar>
     <mat-nav-list>
       <div *ngIf="isLoggedIn">
-        <a mat-list-item
-           routerLinkActive="active-link"
-           routerLink="/accounts">
-          <mat-icon fontIcon="savings"></mat-icon> Accounts</a>
-        <a mat-list-item
-           routerLinkActive="active-link"
-           routerLink="/income">
-          <mat-icon fontIcon="trending_up"></mat-icon> Income</a>
-        <a mat-list-item
-           routerLinkActive="active-link"
-           routerLink="/balance">
+        <a mat-list-item routerLinkActive="active-link" routerLink="/accounts">
+          <mat-icon fontIcon="savings"></mat-icon> Accounts</a
+        >
+        <a mat-list-item routerLinkActive="active-link" routerLink="/income">
+          <mat-icon fontIcon="trending_up"></mat-icon> Income</a
+        >
+        <a mat-list-item routerLinkActive="active-link" routerLink="/balance">
           <mat-icon fontIcon="balance"></mat-icon> Balance Monthly
         </a>
-        <a mat-list-item
-           routerLinkActive="active-link"
-           routerLink="/expenses">
-          <mat-icon fontIcon="trending_down"></mat-icon> Expenses</a>
-        <a mat-list-item
-           routerLinkActive="active-link"
-           routerLink="/lastCommodities">
-          <mat-icon fontIcon="history"></mat-icon> History</a>
-        <a mat-list-item
-            routerLinkActive="active-link"
-            routerLink="/commoditiesAgents">
-            <mat-icon fontIcon="local_grocery_store"></mat-icon> Users' Commodities</a>
-        <a mat-list-item
-           routerLinkActive="active-link"
-           routerLink="/exchange">
+        <a mat-list-item routerLinkActive="active-link" routerLink="/expenses">
+          <mat-icon fontIcon="trending_down"></mat-icon> Expenses</a
+        >
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
+          routerLink="/lastCommodities"
+        >
+          <mat-icon fontIcon="history"></mat-icon> History</a
+        >
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
+          routerLink="/commoditiesAgents"
+        >
+          <mat-icon fontIcon="local_grocery_store"></mat-icon> Users'
+          Commodities</a
+        >
+        <a mat-list-item routerLinkActive="active-link" routerLink="/exchange">
           <mat-icon fontIcon="currency_exchange"></mat-icon> Currency Exchange
         </a>
-        <a mat-list-item
-           routerLinkActive="active-link"
-           routerLink="/inOut">
+        <a mat-list-item routerLinkActive="active-link" routerLink="/inOut">
           <mat-icon fontIcon="trolley"></mat-icon> Reselling
         </a>
-        <a mat-list-item
-           routerLinkActive="active-link"
-           routerLink="/commodities">
-          <mat-icon fontIcon="shopping_bag"></mat-icon> Commodities</a>
-        <a mat-list-item
-           routerLinkActive="active-link"
-           routerLink="/commodityGroups">
-          <mat-icon fontIcon="shopping_basket"></mat-icon> Commodities Groups</a>
-        <a mat-list-item
-           routerLinkActive="active-link"
-           routerLink="/organizations">
-          <mat-icon fontIcon="store"></mat-icon> Organizations</a>
-        <a mat-list-item
-           routerLinkActive="active-link"
-           routerLink="/organizationGroups">
-          <mat-icon fontIcon="corporate_fare"></mat-icon> Organizations Groups</a>
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
+          routerLink="/commodities"
+        >
+          <mat-icon fontIcon="shopping_bag"></mat-icon> Commodities</a
+        >
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
+          routerLink="/commodityGroups"
+        >
+          <mat-icon fontIcon="shopping_basket"></mat-icon> Commodities Groups</a
+        >
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
+          routerLink="/organizations"
+        >
+          <mat-icon fontIcon="store"></mat-icon> Organizations</a
+        >
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
+          routerLink="/organizationGroups"
+        >
+          <mat-icon fontIcon="corporate_fare"></mat-icon> Organizations
+          Groups</a
+        >
       </div>
-      <a mat-list-item
-         routerLinkActive="/about"
-         routerLink="/about">
-        <mat-icon fontIcon="info"></mat-icon> About</a>
+      <a mat-list-item routerLinkActive="/about" routerLink="/about">
+        <mat-icon fontIcon="info"></mat-icon> About</a
+      >
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -76,19 +89,36 @@
         aria-label="Toggle sidenav"
         mat-icon-button
         (click)="drawer.toggle()"
-        *ngIf="!(isFullLayout$ | async)">
+        *ngIf="!(isFullLayout$ | async)"
+      >
         <mat-icon fontIcon="menu"></mat-icon>
       </button>
-      <span *ngIf="!(isFullLayout$ | async)">{{title}}</span>
+      <span *ngIf="!(isFullLayout$ | async)">{{ title }}</span>
       <span class="header-spacer"></span>
-      <span class="navbar-username" *ngIf="isLoggedIn && (isFullLayout$ | async)">
-        {{getUserInfo()}}
+      <span
+        class="navbar-username"
+        *ngIf="isLoggedIn && (isFullLayout$ | async)"
+      >
+        {{ getUserInfo() }}
       </span>
-      <span class="navbar-brand" style="border-left: 2px solid white; font-size: 20px;">
-        <button mat-icon-button *ngIf="isLoggedIn" type="button" (click)="logout()">
+      <span
+        class="navbar-brand"
+        style="border-left: 2px solid white; font-size: 20px"
+      >
+        <button
+          mat-icon-button
+          *ngIf="isLoggedIn"
+          type="button"
+          (click)="logout()"
+        >
           <mat-icon fontIcon="logout"></mat-icon>
         </button>
-        <button mat-icon-button *ngIf="!isLoggedIn" type="button" (click)="login()">
+        <button
+          mat-icon-button
+          *ngIf="!isLoggedIn"
+          type="button"
+          (click)="login()"
+        >
           <mat-icon fontIcon="login"></mat-icon>
         </button>
       </span>

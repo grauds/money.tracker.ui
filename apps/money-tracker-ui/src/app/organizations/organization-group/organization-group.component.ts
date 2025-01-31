@@ -1,23 +1,24 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   HateoasResourceService,
   RequestParam,
-  Sort
-} from "@lagoshny/ngx-hateoas-client";
+  Sort,
+} from '@lagoshny/ngx-hateoas-client';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import {
   CommodityGroup,
   Entity,
-  OrganizationGroup
-} from "@clematis-shared/model";
+  OrganizationGroup,
+} from '@clematis-shared/model';
 
 import {
-  EntityComponent, EntityListComponent,
-  OrganizationGroupsService
-} from "@clematis-shared/shared-components";
+  EntityComponent,
+  EntityListComponent,
+  OrganizationGroupsService,
+} from '@clematis-shared/shared-components';
 
-import { Title } from "@angular/platform-browser";
+import { Title } from '@angular/platform-browser';
 import { Utils } from '@clematis-shared/model';
 
 @Component({
@@ -25,13 +26,15 @@ import { Utils } from '@clematis-shared/model';
   templateUrl: './organization-group.component.html',
   styleUrls: ['./organization-group.component.sass'],
   providers: [
-    { provide: 'searchService', useClass: OrganizationGroupsService }
-  ]
+    { provide: 'searchService', useClass: OrganizationGroupsService },
+  ],
 })
-export class OrganizationGroupComponent extends EntityComponent<OrganizationGroup> implements OnInit {
-
-
-  @ViewChild(EntityListComponent) entityList!: EntityListComponent<OrganizationGroup>;
+export class OrganizationGroupComponent
+  extends EntityComponent<OrganizationGroup>
+  implements OnInit
+{
+  @ViewChild(EntityListComponent)
+  entityList!: EntityListComponent<OrganizationGroup>;
 
   loading: boolean = false;
 
@@ -39,69 +42,68 @@ export class OrganizationGroupComponent extends EntityComponent<OrganizationGrou
 
   parentLink: string | undefined;
 
-  children: OrganizationGroup[] = []
+  children: OrganizationGroup[] = [];
 
   path: Array<CommodityGroup> = [];
 
-  constructor(resourceService: HateoasResourceService,
-              private organizationGroupsService: OrganizationGroupsService,
-              route: ActivatedRoute,
-              router: Router,
-              title: Title) {
+  constructor(
+    resourceService: HateoasResourceService,
+    private organizationGroupsService: OrganizationGroupsService,
+    route: ActivatedRoute,
+    router: Router,
+    title: Title
+  ) {
     super(OrganizationGroup, resourceService, route, router, title);
   }
 
   ngOnInit(): void {
-    this.loading = true
-    this.onInit()
+    this.loading = true;
+    this.onInit();
   }
 
   setLoading($event: boolean) {
-    this.loading = $event
+    this.loading = $event;
   }
 
   getQueryArguments(): RequestParam {
     return {
-      id: this.id ? this.id : ''
-    }
+      id: this.id ? this.id : '',
+    };
   }
 
   setEntities($event: OrganizationGroup[]) {
-    this.children = $event
+    this.children = $event;
   }
 
   override setEntity(entity: OrganizationGroup) {
-    super.setEntity(entity)
+    super.setEntity(entity);
 
     this.entityList?.refreshData({
       queryArguments: this.getQueryArguments(),
-      queryName: 'recursiveByParentId'
-    })
+      queryName: 'recursiveByParentId',
+    });
 
-    this.entity?.getRelation<OrganizationGroup>('parent')
-      .subscribe({
-          next: (parent: OrganizationGroup) => {
-            this.parent = parent
-            this.parentLink = Entity.getRelativeSelfLinkHref(this.parent)
-          },
-          error: () => {
-          },
-          complete: () => {
-          }
-        }
-      )
+    this.entity?.getRelation<OrganizationGroup>('parent').subscribe({
+      next: (parent: OrganizationGroup) => {
+        this.parent = parent;
+        this.parentLink = Entity.getRelativeSelfLinkHref(this.parent);
+      },
+      error: () => {},
+      complete: () => {},
+    });
 
     if (this.entity) {
-      this.organizationGroupsService.getPathForOrganizationGroup(Utils.getIdFromSelfUrl(this.entity)).subscribe((response) => {
-        this.path = response.resources
-      })
+      this.organizationGroupsService
+        .getPathForOrganizationGroup(Utils.getIdFromSelfUrl(this.entity))
+        .subscribe((response) => {
+          this.path = response.resources;
+        });
     }
-
   }
 
   getSort(): Sort {
     return {
-      name: 'ASC'
-    }
+      name: 'ASC',
+    };
   }
 }

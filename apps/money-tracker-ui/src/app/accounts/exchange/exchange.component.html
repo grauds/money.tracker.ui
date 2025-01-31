@@ -1,127 +1,167 @@
-  <h4 *ngIf="this.report" class="header" [hidden]="loading">
-    <span><b>Sold:</b> {{(this.report.sourceAmount ? this.report.sourceAmount : 0) | currency:this.sourceCurrency.code}}, </span>
-    <span><b>Bought:</b> {{(this.report.destAmount ? this.report.destAmount : 0) | currency:this.destCurrency.code}}, </span>
-    <span><b>Average:</b> {{(this.report.avgRate ? 1 / this.report.avgRate : 0) | number: '1.6-8'}} , </span>
-    <span><b>Current:</b> {{(this.report.curRate ? 1 / this.report.curRate : 0) | number: '1.6-8'}} </span>
-  </h4>
+<h4 *ngIf="this.report" class="header" [hidden]="loading">
+  <span
+    ><b>Sold:</b>
+    {{
+      (this.report.sourceAmount ? this.report.sourceAmount : 0)
+        | currency : this.sourceCurrency.code
+    }},
+  </span>
+  <span
+    ><b>Bought:</b>
+    {{
+      (this.report.destAmount ? this.report.destAmount : 0)
+        | currency : this.destCurrency.code
+    }},
+  </span>
+  <span
+    ><b>Average:</b>
+    {{
+      (this.report.avgRate ? 1 / this.report.avgRate : 0) | number : '1.6-8'
+    }}
+    ,
+  </span>
+  <span
+    ><b>Current:</b>
+    {{ (this.report.curRate ? 1 / this.report.curRate : 0) | number : '1.6-8' }}
+  </span>
+</h4>
 
-  <h4 class="header" [hidden]="!(loading)">
-    <span><b>Loading...</b></span>
-  </h4>
+<h4 class="header" [hidden]="!loading">
+  <span><b>Loading...</b></span>
+</h4>
 
-  <app-money-type-selector
-    [label]="'Available source currencies'"
-    [disabled]="loading"
-    [currencies]="getSourceCurrencies()"
-    [currency]="sourceCurrency"
-    (currency$)="updatesSourceCurrency($event)"
-  ></app-money-type-selector>
+<app-money-type-selector
+  [label]="'Available source currencies'"
+  [disabled]="loading"
+  [currencies]="getSourceCurrencies()"
+  [currency]="sourceCurrency"
+  (currency$)="updatesSourceCurrency($event)"
+></app-money-type-selector>
 
-  <button mat-icon-button (click)="swapCurrencies()">
-    <mat-icon>swap_horiz</mat-icon>
-  </button>
+<button mat-icon-button (click)="swapCurrencies()">
+  <mat-icon>swap_horiz</mat-icon>
+</button>
 
-  <app-money-type-selector
-    [label]="'Available destination currencies'"
-    [disabled]="loading"
-    [currencies]="getDestCurrencies()"
-    [currency]="destCurrency"
-    (currency$)="updatesDestCurrency($event)"
-  ></app-money-type-selector>
+<app-money-type-selector
+  [label]="'Available destination currencies'"
+  [disabled]="loading"
+  [currencies]="getDestCurrencies()"
+  [currency]="destCurrency"
+  (currency$)="updatesDestCurrency($event)"
+></app-money-type-selector>
 
-  <div class="rubber timeHeader" *ngIf="this.report && this.report.delta"
-       [ngClass]="{
-              'positive' : this.report.delta > 0,
-              'negative' : this.report.delta < 0
-           }">
-    {{this.report.delta | currency: this.destCurrency.code}}
-  </div>
+<div
+  class="rubber timeHeader"
+  *ngIf="this.report && this.report.delta"
+  [ngClass]="{
+    positive: this.report.delta > 0,
+    negative: this.report.delta < 0
+  }"
+>
+  {{ this.report.delta | currency : this.destCurrency.code }}
+</div>
 
-  <ng-template #exchangeTable let-entities="entities">
+<ng-template #exchangeTable let-entities="entities">
+  <table mat-table [dataSource]="entities">
+    <ng-container matColumnDef="exchangedate">
+      <th mat-header-cell *matHeaderCellDef>Exchange Date</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.exchangeDate | date : 'fullDate' }}
+      </td>
+    </ng-container>
 
-        <table mat-table [dataSource]="entities">
+    <ng-container matColumnDef="from">
+      <th mat-header-cell *matHeaderCellDef>From</th>
+      <td mat-cell *matCellDef="let element">
+        <a
+          *ngIf="element.source && element.sourceLink"
+          routerLink="{{ element.sourceLink }}"
+        >
+          {{ element.source.name }}
+        </a>
 
-          <ng-container matColumnDef="exchangedate">
-            <th mat-header-cell *matHeaderCellDef> Exchange Date </th>
-            <td mat-cell *matCellDef="let element"> {{element.exchangeDate | date:'fullDate'}} </td>
-          </ng-container>
+        <div *ngIf="element.source && !element.sourceLink">
+          {{ element.source.name }}
+        </div>
+      </td>
+    </ng-container>
 
-          <ng-container matColumnDef="from">
-            <th mat-header-cell *matHeaderCellDef> From </th>
-            <td mat-cell *matCellDef="let element">
+    <ng-container matColumnDef="to">
+      <th mat-header-cell *matHeaderCellDef>To</th>
+      <td mat-cell *matCellDef="let element">
+        <a
+          *ngIf="element.dest && element.destLink"
+          routerLink="{{ element.destLink }}"
+        >
+          {{ element.dest.name }}</a
+        >
 
-              <a *ngIf="element.source && element.sourceLink"
-                 routerLink="{{element.sourceLink}}">
-                {{element.source.name}}
-              </a>
+        <div *ngIf="element.dest && !element.destLink">
+          {{ element.dest.name }}
+        </div>
+      </td>
+    </ng-container>
 
-              <div *ngIf="element.source && !element.sourceLink">
-                {{element.source.name}}
-              </div>
+    <ng-container matColumnDef="sourceamount">
+      <th mat-header-cell *matHeaderCellDef>Source Amount</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.sourceamount | currency : sourceCurrency.code }}
+      </td>
+    </ng-container>
 
-            </td>
-          </ng-container>
+    <ng-container matColumnDef="destamount">
+      <th mat-header-cell *matHeaderCellDef>Dest Amount</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.destamount | currency : destCurrency.code }}
+      </td>
+    </ng-container>
 
-          <ng-container matColumnDef="to">
-            <th mat-header-cell *matHeaderCellDef> To </th>
-            <td mat-cell *matCellDef="let element">
-              <a *ngIf="element.dest && element.destLink"
-                 routerLink="{{element.destLink}}">
-                {{element.dest.name}}</a>
+    <ng-container matColumnDef="rate">
+      <th mat-header-cell *matHeaderCellDef>Rate</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.rate | number : '1.6-8' }}
+      </td>
+    </ng-container>
 
-              <div *ngIf="element.dest && !element.destLink">
-                {{element.dest.name}}</div>
-            </td>
-          </ng-container>
+    <ng-container *ngIf="this.report" matColumnDef="ratedelta">
+      <th mat-header-cell *matHeaderCellDef>Rate Delta</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.rate - this.report.curRate | number : '1.6-8' }}
+      </td>
+    </ng-container>
 
-          <ng-container matColumnDef="sourceamount">
-            <th mat-header-cell *matHeaderCellDef> Source Amount </th>
-            <td mat-cell *matCellDef="let element"> {{element.sourceamount | currency: sourceCurrency.code}} </td>
-          </ng-container>
+    <ng-container *ngIf="this.report" matColumnDef="delta">
+      <th mat-header-cell *matHeaderCellDef>Delta</th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [ngClass]="{
+          positive:
+            element.sourceamount * (element.rate - this.report.curRate) > 0,
+          negative:
+            element.sourceamount * (element.rate - this.report.curRate) < 0
+        }"
+      >
+        {{
+          element.sourceamount * (element.rate - this.report.curRate)
+            | currency : destCurrency.code
+        }}
+      </td>
+    </ng-container>
 
-          <ng-container matColumnDef="destamount">
-            <th mat-header-cell *matHeaderCellDef> Dest Amount </th>
-            <td mat-cell *matCellDef="let element"> {{element.destamount | currency: destCurrency.code}} </td>
-          </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</ng-template>
 
-          <ng-container matColumnDef="rate">
-            <th mat-header-cell *matHeaderCellDef> Rate </th>
-            <td mat-cell *matCellDef="let element">
-              {{element.rate | number: '1.6-8'}}
-            </td>
-          </ng-container>
-
-          <ng-container *ngIf="this.report" matColumnDef="ratedelta">
-            <th mat-header-cell *matHeaderCellDef> Rate Delta</th>
-            <td mat-cell *matCellDef="let element">
-              {{(element.rate - this.report.curRate) | number: '1.6-8'}}
-            </td>
-          </ng-container>
-
-          <ng-container *ngIf="this.report" matColumnDef="delta">
-            <th mat-header-cell *matHeaderCellDef> Delta</th>
-            <td mat-cell *matCellDef="let element" [ngClass]="{
-              'positive' : element.sourceamount * (element.rate - this.report.curRate) > 0,
-              'negative' : element.sourceamount * (element.rate - this.report.curRate) < 0
-           }">
-              {{element.sourceamount * (element.rate - this.report.curRate) | currency: destCurrency.code}}
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-        </table>
-
-  </ng-template>
-
-  <app-entity-list [resultItemTemplate]="exchangeTable"
-                   [table]="true"
-                   [loadOnInit]="false"
-                   [searchRequest]="{
-                        queryArguments: getQueryArguments(),
-                        queryName: 'events'
-                    }"
-                   [sort]="getSort()"
-                   (loading$)="setLoading($event)"
-  ></app-entity-list>
+<app-entity-list
+  [resultItemTemplate]="exchangeTable"
+  [table]="true"
+  [loadOnInit]="false"
+  [searchRequest]="{
+    queryArguments: getQueryArguments(),
+    queryName: 'events'
+  }"
+  [sort]="getSort()"
+  (loading$)="setLoading($event)"
+></app-entity-list>

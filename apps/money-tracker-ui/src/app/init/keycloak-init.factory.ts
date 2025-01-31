@@ -1,5 +1,5 @@
 import { KeycloakEventType, KeycloakService } from 'keycloak-angular';
-import { EnvironmentService } from "@clematis-shared/shared-components";
+import { EnvironmentService } from '@clematis-shared/shared-components';
 
 export function initializeKeycloak(
   keycloak: KeycloakService,
@@ -10,12 +10,13 @@ export function initializeKeycloak(
       config: {
         url: environment.getValue('authUrl'),
         realm: 'clematis',
-        clientId: 'clematis-money-tracker-ui'
+        clientId: 'clematis-money-tracker-ui',
       },
       initOptions: {
         onLoad: 'check-sso',
-        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
-        checkLoginIframe: false
+        silentCheckSsoRedirectUri:
+          window.location.origin + '/assets/silent-check-sso.html',
+        checkLoginIframe: false,
       },
       bearerExcludedUrls: ['/assets', '/clients/public'],
       shouldUpdateToken: (request) => {
@@ -29,7 +30,7 @@ export function initializeKeycloak(
         if (e.type == KeycloakEventType.OnTokenExpired) {
           keycloak.updateToken(20);
         }
-      }
+      },
     });
-  }
+  };
 }

@@ -1,35 +1,43 @@
 <h4 class="header" [hidden]="totalsLoading">
-  <span><b>Week Ago:</b> {{ this.totalWeekAgo | currency: this.currency.code }}, </span>
-  <span><b>Current:</b> {{ this.total | currency: this.currency.code }}, </span>
-  <span><b>Delta:</b> {{(this.total - this.totalWeekAgo) | currency: this.currency.code }}</span>
+  <span
+    ><b>Week Ago:</b> {{ this.totalWeekAgo | currency : this.currency.code }},
+  </span>
+  <span
+    ><b>Current:</b> {{ this.total | currency : this.currency.code }},
+  </span>
+  <span
+    ><b>Delta:</b>
+    {{ this.total - this.totalWeekAgo | currency : this.currency.code }}</span
+  >
 </h4>
 
-<h4 class="header" [hidden]="!(totalsLoading)">
+<h4 class="header" [hidden]="!totalsLoading">
   <span><b>Loading...</b></span>
 </h4>
 
-  <app-money-type-selector
-    [label]="'Available currencies'"
-    [disabled]="this.loading"
-    [currencies]="currencies"
-    [currency]="currency"
-    (currency$)="updateCurrency($event)"
-  ></app-money-type-selector>
+<app-money-type-selector
+  [label]="'Available currencies'"
+  [disabled]="this.loading"
+  [currencies]="currencies"
+  [currency]="currency"
+  (currency$)="updateCurrency($event)"
+></app-money-type-selector>
 
-  <mat-checkbox
-      class="filter"
-      [(ngModel)]="filterZerosOut"
-      (change)="onFilterEvent($event.checked)"
-    >
-     Hide accounts with zero balance
-    </mat-checkbox>
+<mat-checkbox
+  class="filter"
+  [(ngModel)]="filterZerosOut"
+  (change)="onFilterEvent($event.checked)"
+>
+  Hide accounts with zero balance
+</mat-checkbox>
 
-  <div echarts
-       [options]="chart"
-       (chartClick)="onChartEvent($event, 'chartClick')"
-       [loading]="loading"
-       class="accounts-chart"
-       [style]="{
-            height: calculateBarHight()
-       }">
-  </div>
+<div
+  echarts
+  [options]="chart"
+  (chartClick)="onChartEvent($event, 'chartClick')"
+  [loading]="loading"
+  class="accounts-chart"
+  [style]="{
+    height: calculateBarHight()
+  }"
+></div>

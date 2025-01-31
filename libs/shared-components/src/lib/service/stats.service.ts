@@ -18,12 +18,10 @@ export class StatsService {
   }
 
   getIncomeTransactionsCount(): Observable<InfoAbout> {
-      return this.http.get<InfoAbout>(
-        this.getUrl('/about')
-      );
+    return this.http.get<InfoAbout>(this.getUrl('/about'));
   }
 
-  getUrl(url: string) :string {
-    return this.environmentService.getValue('infoUrl') + url
+  getUrl(url: string): string {
+    return this.environmentService.getValue('infoUrl') + url;
   }
 }

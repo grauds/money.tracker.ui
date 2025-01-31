@@ -1,13 +1,20 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
-import { MatDatepicker } from "@angular/material/datepicker";
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material/core";
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from "@angular/material-moment-adapter";
+import { MatDatepicker } from '@angular/material/datepicker';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MomentDateAdapter,
+} from '@angular/material-moment-adapter';
 
 import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
-import {default as _rollupMoment, Moment} from 'moment';
+import { default as _rollupMoment, Moment } from 'moment';
 const moment = _rollupMoment || _moment;
 
 // See the Moment.js docs for the meaning of these formats:
@@ -38,11 +45,10 @@ export const MY_FORMATS = {
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
 
-    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
 })
 export class DateRangeSelectorComponent {
-
   @Input() loading = false;
 
   startDate = new FormControl(moment().add(-6, 'M'));
@@ -53,9 +59,9 @@ export class DateRangeSelectorComponent {
 
   maxDate: Date;
 
-  @Output() startDate$: EventEmitter<Moment> = new EventEmitter<Moment>()
+  @Output() startDate$: EventEmitter<Moment> = new EventEmitter<Moment>();
 
-  @Output() endDate$: EventEmitter<Moment> = new EventEmitter<Moment>()
+  @Output() endDate$: EventEmitter<Moment> = new EventEmitter<Moment>();
 
   constructor() {
     const currentYear = new Date().getFullYear();
@@ -63,7 +69,10 @@ export class DateRangeSelectorComponent {
     this.maxDate = new Date(currentYear + 1, 11, 31);
   }
 
-  private setDate(normalizedMonthAndYear: moment.Moment, date: FormControl<any>) {
+  private setDate(
+    normalizedMonthAndYear: moment.Moment,
+    date: FormControl<any>
+  ) {
     const ctrlValue: Moment | undefined = date.value;
     if (ctrlValue) {
       ctrlValue.month(normalizedMonthAndYear.month());
@@ -72,16 +81,22 @@ export class DateRangeSelectorComponent {
     }
   }
 
-  setStartMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
-    datepicker.close()
-    this.setDate(normalizedMonthAndYear, this.startDate)
-    this.startDate$.next(normalizedMonthAndYear)    
+  setStartMonthAndYear(
+    normalizedMonthAndYear: Moment,
+    datepicker: MatDatepicker<Moment>
+  ) {
+    datepicker.close();
+    this.setDate(normalizedMonthAndYear, this.startDate);
+    this.startDate$.next(normalizedMonthAndYear);
   }
 
-  setEndMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
+  setEndMonthAndYear(
+    normalizedMonthAndYear: Moment,
+    datepicker: MatDatepicker<Moment>
+  ) {
     datepicker.close();
     this.setDate(normalizedMonthAndYear, this.endDate);
-    this.endDate$.next(normalizedMonthAndYear)    
+    this.endDate$.next(normalizedMonthAndYear);
   }
 
   minusSixMonths() {

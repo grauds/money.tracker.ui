@@ -9,9 +9,7 @@ describe('StatsTotalsComponentComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [StatsTotalsComponent],
-      imports: [
-        MatGridListModule
-      ],
+      imports: [MatGridListModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(StatsTotalsComponent);

@@ -7,11 +7,14 @@ import { KeycloakService } from 'keycloak-angular';
 import { PagedResourceCollection } from '@lagoshny/ngx-hateoas-client';
 
 import { AgentCommodities, MoneyType, Page } from '@clematis-shared/model';
-import { ExpenseItemsService, MoneyTypeService } from '@clematis-shared/shared-components';
+import {
+  ExpenseItemsService,
+  MoneyTypeService,
+} from '@clematis-shared/shared-components';
 
 import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
-import {default as _rollupMoment} from 'moment';
+import { default as _rollupMoment } from 'moment';
 
 const moment = _rollupMoment || _moment;
 
@@ -35,7 +38,6 @@ export const MY_FORMATS = {
   styleUrl: './agent-commodities.component.sass',
 })
 export class AgentCommoditiesComponent implements OnInit {
-
   chart: any;
 
   pageSubscription: Subscription;
@@ -58,42 +60,41 @@ export class AgentCommoditiesComponent implements OnInit {
 
   checkSubscription = this.showGroupsEvent.asObservable();
 
-  constructor(protected readonly keycloak: KeycloakService,
-              private readonly moneyTypeService: MoneyTypeService,
-              private readonly expenseItemsService: ExpenseItemsService,
-              private readonly router: Router,
-              private readonly route: ActivatedRoute,
-              private readonly title: Title) {
-
-    this.pageSubscription = route.queryParams.subscribe(
-      (queryParam: any) => {
-        this.initMoneyType(queryParam['currency'], 'RUB')
-          .subscribe((result: MoneyType) => {
-            this.currency = result;
-            this.loadData()
-          });
-      }
-    );
+  constructor(
+    protected readonly keycloak: KeycloakService,
+    private readonly moneyTypeService: MoneyTypeService,
+    private readonly expenseItemsService: ExpenseItemsService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly title: Title
+  ) {
+    this.pageSubscription = route.queryParams.subscribe((queryParam: any) => {
+      this.initMoneyType(queryParam['currency'], 'RUB').subscribe(
+        (result: MoneyType) => {
+          this.currency = result;
+          this.loadData();
+        }
+      );
+    });
 
     this.isLoggedIn = this.keycloak.isLoggedIn();
 
     this.checkSubscription.subscribe(() => {
       if (this.currency) {
         this.loading = true;
-        this.createChart(this.currency)
-            .subscribe(chart => {
-              this.chart = chart;
-              this.loading = false;
-            })
+        this.createChart(this.currency).subscribe((chart) => {
+          this.chart = chart;
+          this.loading = false;
+        });
       }
-    })
+    });
   }
 
   initMoneyType(destCurrency: string, fallback: string) {
     if (!destCurrency) {
-      destCurrency = fallback
+      destCurrency = fallback;
     }
-    return this.moneyTypeService.getCurrencyByCode(destCurrency)
+    return this.moneyTypeService.getCurrencyByCode(destCurrency);
   }
 
   onFilterEvent(data: boolean) {
@@ -101,14 +102,14 @@ export class AgentCommoditiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title.setTitle('Users Commodities')
+    this.title.setTitle('Users Commodities');
   }
 
   updateCurrency($event: MoneyType) {
     this.currency = $event;
 
     this.updateRoute().then(() => {
-      this.loadData()
+      this.loadData();
     });
   }
 
@@ -125,139 +126,155 @@ export class AgentCommoditiesComponent implements OnInit {
   }
 
   updateRoute() {
-    return this.router.navigate([], this.currency ? {
-      relativeTo: this.route,
-      queryParams: {
-        currency: this.currency.code
-      },
-      queryParamsHandling: 'merge',
-      skipLocationChange: false
-    } : {
-      relativeTo: this.route,
-      queryParamsHandling: 'merge',
-      skipLocationChange: false
-    })
+    return this.router.navigate(
+      [],
+      this.currency
+        ? {
+            relativeTo: this.route,
+            queryParams: {
+              currency: this.currency.code,
+            },
+            queryParamsHandling: 'merge',
+            skipLocationChange: false,
+          }
+        : {
+            relativeTo: this.route,
+            queryParamsHandling: 'merge',
+            skipLocationChange: false,
+          }
+    );
   }
 
   loadData() {
     this.loading = true;
 
-    this.moneyTypeService.getPage({
-      pageParams: {
-        page: 0,
-        size: 200
-      }
-    }).subscribe({
-      next: (response: PagedResourceCollection<MoneyType>) => {
-        this.currencies = response.resources;
-        if (this.currency) {
-          this.createChart(this.currency)
-            .subscribe(chart => {
+    this.moneyTypeService
+      .getPage({
+        pageParams: {
+          page: 0,
+          size: 200,
+        },
+      })
+      .subscribe({
+        next: (response: PagedResourceCollection<MoneyType>) => {
+          this.currencies = response.resources;
+          if (this.currency) {
+            this.createChart(this.currency).subscribe((chart) => {
               this.chart = chart;
               this.loading = false;
-            })
-        }
-      },
-      error: () => {
-      },
-      complete: () => {
-        this.loading = false;
-      }
-    });
-  }  
+            });
+          }
+        },
+        error: () => {},
+        complete: () => {
+          this.loading = false;
+        },
+      });
+  }
 
   private createChart(currency: MoneyType): Observable<any> {
     let chart = {};
 
-    let ticks: string[] = []
+    let ticks: string[] = [];
     let series: Map<string, AgentCommodities[]> = new Map();
 
-    return this.currency ? of(chart).pipe(
-      switchMap(() => {
-        return this.expenseItemsService.getAgentExpencesInCurrency(
-          currency,
-          this.startDate.month(), this.startDate.year(),
-          this.endDate.month(), this.endDate.year()
-        )        
-      }),
-      switchMap((response: Page<AgentCommodities>) => {
-        return of(response.content)
-      }),
-      switchMap((response: AgentCommodities[]) => {
-
-        // form series of data in the interval
-        response.forEach((month: AgentCommodities) => {
-          if (month.agent && month.commodityGroup) {
-            const key = month.agent + (this.showGroups ? (": " + month.commodityGroup) : "");
-            let values: AgentCommodities[] = []
-            if (series.get(key)) {
-              values = series.get(key)!
-            }
-            if (this.showGroups) {
-              values.push(month)
-            } else {
-              let found = false;
-              for (var i in values) {
-                if (values[i].agent == month.agent && values[i].an == month.an && values[i].mois == month.mois) {
-                   values[i].total += month.total;
-                   found = true;
-                   break;
+    return this.currency
+      ? of(chart).pipe(
+          switchMap(() => {
+            return this.expenseItemsService.getAgentExpencesInCurrency(
+              currency,
+              this.startDate.month(),
+              this.startDate.year(),
+              this.endDate.month(),
+              this.endDate.year()
+            );
+          }),
+          switchMap((response: Page<AgentCommodities>) => {
+            return of(response.content);
+          }),
+          switchMap((response: AgentCommodities[]) => {
+            // form series of data in the interval
+            response.forEach((month: AgentCommodities) => {
+              if (month.agent && month.commodityGroup) {
+                const key =
+                  month.agent +
+                  (this.showGroups ? ': ' + month.commodityGroup : '');
+                let values: AgentCommodities[] = [];
+                if (series.get(key)) {
+                  values = series.get(key)!;
                 }
+                if (this.showGroups) {
+                  values.push(month);
+                } else {
+                  let found = false;
+                  for (var i in values) {
+                    if (
+                      values[i].agent == month.agent &&
+                      values[i].an == month.an &&
+                      values[i].mois == month.mois
+                    ) {
+                      values[i].total += month.total;
+                      found = true;
+                      break;
+                    }
+                  }
+                  if (!found) {
+                    values.push(month);
+                  }
+                }
+                series.set(key, values);
               }
-              if (!found) {
-                values.push(month)
-              }
-            }        
-            series.set(key, values)
-          }
-        })
+            });
 
-        // form unique ticks
-        ticks = response.map((month: AgentCommodities) => {
-          return month.an + '/' + month.mois
-        }).filter((value, index, self) => self.indexOf(value) === index)
+            // form unique ticks
+            ticks = response
+              .map((month: AgentCommodities) => {
+                return month.an + '/' + month.mois;
+              })
+              .filter((value, index, self) => self.indexOf(value) === index);
 
-        return of(0)
-      }),
-      switchMap(() => {
-        return of(this.buildChart(ticks, series))
-      })
-    
-    ) : of (chart)
+            return of(0);
+          }),
+          switchMap(() => {
+            return of(this.buildChart(ticks, series));
+          })
+        )
+      : of(chart);
   }
 
-  private getChartsSeries(ticks: string[], series: Map<string, AgentCommodities[]>): any[] {
-    let chartSeries: any[] = []
+  private getChartsSeries(
+    ticks: string[],
+    series: Map<string, AgentCommodities[]>
+  ): any[] {
+    let chartSeries: any[] = [];
 
     series.forEach((commoditiesMonthly: AgentCommodities[], name: string) => {
       return chartSeries.push({
         name: name,
-        type: "line",
-        stack: "total",
+        type: 'line',
+        stack: 'total',
         areaStyle: {},
         emphasis: {
-          focus: "series",
+          focus: 'series',
           label: {
-            show: true
-          }
+            show: true,
+          },
         },
         data: ticks.map((tick) => {
-          const ac: AgentCommodities | undefined 
-           = commoditiesMonthly.find((value: AgentCommodities) => {
-            return (value.an + '/' + value.mois) === tick
-          })
-          return ac ? ac.total : 0
-        })
+          const ac: AgentCommodities | undefined = commoditiesMonthly.find(
+            (value: AgentCommodities) => {
+              return value.an + '/' + value.mois === tick;
+            }
+          );
+          return ac ? ac.total : 0;
+        }),
       });
-    })
-    
-    return chartSeries
+    });
+
+    return chartSeries;
   }
 
-  private buildChart(ticks: string[],
-                    series: Map<string, AgentCommodities[]>
-                  ) {
-  
+  private buildChart(ticks: string[], series: Map<string, AgentCommodities[]>) {
     return {
       legend: {
         backgroundColor: 'rgba(206,206,206,0.7)',
@@ -266,17 +283,22 @@ export class AgentCommoditiesComponent implements OnInit {
         top: 20,
         bottom: 20,
         data: (function () {
-          return [ ...series.keys() ].sort();
-        })()
+          return [...series.keys()].sort();
+        })(),
       },
       tooltip: {
         trigger: 'axis',
         axisPointer: {
-          type: 'cross'
+          type: 'cross',
         },
         backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        position: function (pos: number[], params: any, el: any, elRect: any, 
-          size: { viewSize: number[]; }) {
+        position: function (
+          pos: number[],
+          params: any,
+          el: any,
+          elRect: any,
+          size: { viewSize: number[] }
+        ) {
           let obj: any = { top: 10 };
           obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
           return obj;
@@ -285,8 +307,10 @@ export class AgentCommoditiesComponent implements OnInit {
         formatter: function (params: any[]) {
           let output = params[0].axisValueLabel + '<br/>';
           output += '<table class="w-full">';
-  
-          const sorted: any[] = params.sort((paramA, paramB) => paramB.value - paramA.value);
+
+          const sorted: any[] = params.sort(
+            (paramA, paramB) => paramB.value - paramA.value
+          );
           sorted.forEach(function (param) {
             if (param.value !== 0) {
               output += `<tr>
@@ -296,7 +320,7 @@ export class AgentCommoditiesComponent implements OnInit {
               </tr>`;
             }
           });
-  
+
           return output + '</table>';
         },
       },
@@ -304,22 +328,21 @@ export class AgentCommoditiesComponent implements OnInit {
         left: '3%',
         right: '4%',
         bottom: '3%',
-        containLabel: true
+        containLabel: true,
       },
       xAxis: [
         {
           type: 'category',
           boundaryGap: false,
-          data: ticks
-        }
+          data: ticks,
+        },
       ],
       yAxis: [
         {
-          type: 'value'
-        }
+          type: 'value',
+        },
       ],
-      series: this.getChartsSeries(ticks, series)
+      series: this.getChartsSeries(ticks, series),
     };
-
   }
 }

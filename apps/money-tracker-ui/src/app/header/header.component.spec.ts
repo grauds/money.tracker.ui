@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { KeycloakService } from "keycloak-angular";
+import { KeycloakService } from 'keycloak-angular';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 
@@ -15,21 +15,17 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ 
-        WorkspaceComponent,
-        HeaderComponent 
-      ],
+      declarations: [WorkspaceComponent, HeaderComponent],
       imports: [
         MatSidenavModule,
         BrowserAnimationsModule,
         MatSidenavModule,
         MatToolbarModule,
         MatIconModule,
-        MatListModule
+        MatListModule,
       ],
-      providers: [KeycloakService]
-    })
-    .compileComponents();
+      providers: [KeycloakService],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OrganizationGroupListComponent } from './organization-group-list.component';
-import { OrganizationGroupsService } from "@clematis-shared/shared-components";
+import { OrganizationGroupsService } from '@clematis-shared/shared-components';
 
 describe('OrganizationGroupListComponent', () => {
   let component: OrganizationGroupListComponent;
@@ -10,9 +10,7 @@ describe('OrganizationGroupListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [OrganizationGroupListComponent],
-      providers: [
-        OrganizationGroupsService
-      ]
+      providers: [OrganizationGroupsService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(OrganizationGroupListComponent);

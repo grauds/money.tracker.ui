@@ -6,7 +6,6 @@ import { SharedComponentsModule } from '@clematis-shared/shared-components';
 import { convertToParamMap, ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
-
 describe('CommodityGroupListComponent', () => {
   let component: CommodityGroupListComponent;
   let fixture: ComponentFixture<CommodityGroupListComponent>;
@@ -14,23 +13,20 @@ describe('CommodityGroupListComponent', () => {
   const fakeActivatedRoute = {
     queryParams: of({}),
     snapshot: {
-      paramMap: convertToParamMap({ })      
-    }
+      paramMap: convertToParamMap({}),
+    },
   } as ActivatedRoute;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CommodityGroupListComponent ],
-      imports: [
-        SharedComponentsModule
-      ],
+      declarations: [CommodityGroupListComponent],
+      imports: [SharedComponentsModule],
       providers: [
         HttpClient,
         HttpHandler,
-        {provide: ActivatedRoute, useValue: fakeActivatedRoute}
-       ]
-    })
-    .compileComponents();
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

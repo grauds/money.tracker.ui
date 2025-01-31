@@ -1,12 +1,13 @@
 <mat-form-field appearance="fill">
-  <mat-label>{{label}}</mat-label>
-  <mat-select [disabled]="disabled"
-              (valueChange)="onCurrencyChange($event)"
-              [compareWith]="compareFn"
-              [value]="currency"
+  <mat-label>{{ label }}</mat-label>
+  <mat-select
+    [disabled]="disabled"
+    (valueChange)="onCurrencyChange($event)"
+    [compareWith]="compareFn"
+    [value]="currency"
   >
     <mat-option *ngFor="let currency of currencies" [value]="currency">
-      {{currency.name}}
+      {{ currency.name }}
     </mat-option>
   </mat-select>
 </mat-form-field>

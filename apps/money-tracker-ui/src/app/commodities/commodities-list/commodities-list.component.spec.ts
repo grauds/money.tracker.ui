@@ -13,23 +13,20 @@ describe('CommoditiesListComponent', () => {
   const fakeActivatedRoute = {
     queryParams: of({}),
     snapshot: {
-      paramMap: convertToParamMap({ })      
-    }
+      paramMap: convertToParamMap({}),
+    },
   } as ActivatedRoute;
-  
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CommoditiesListComponent ],
-      imports: [ 
-        SharedComponentsModule
-      ],
+      declarations: [CommoditiesListComponent],
+      imports: [SharedComponentsModule],
       providers: [
         HttpClient,
         HttpHandler,
-        {provide: ActivatedRoute, useValue: fakeActivatedRoute}
-      ]
-    })
-    .compileComponents();
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

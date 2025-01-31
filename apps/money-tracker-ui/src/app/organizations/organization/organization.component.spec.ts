@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { OrganizationComponent } from './organization.component';
-import { HttpClient, HttpHandler } from "@angular/common/http";
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
-import { ActivatedRoute, convertToParamMap } from "@angular/router";
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
 import {
   ExpenseItemsService,
   OrganizationGroupsService,
   OrganizationsService,
-  SharedComponentsModule
-} from "@clematis-shared/shared-components";
+  SharedComponentsModule,
+} from '@clematis-shared/shared-components';
 
 describe('OrganizationComponent', () => {
   let component: OrganizationComponent;
@@ -19,24 +19,22 @@ describe('OrganizationComponent', () => {
   const fakeActivatedRoute = {
     queryParams: of({}),
     snapshot: {
-      paramMap: convertToParamMap({ })      
-    }
+      paramMap: convertToParamMap({}),
+    },
   } as ActivatedRoute;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [OrganizationComponent],
-      imports: [
-        SharedComponentsModule
-      ],
+      imports: [SharedComponentsModule],
       providers: [
         HttpClient,
         HttpHandler,
         ExpenseItemsService,
         OrganizationsService,
         OrganizationGroupsService,
-        {provide: ActivatedRoute, useValue: fakeActivatedRoute}
-      ]
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(OrganizationComponent);

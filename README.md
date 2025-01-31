@@ -10,15 +10,14 @@
 
 This application uses two Angular Typescript libraries from this repository, see documentation below:
 
-1. [Shared Model Library](./libs/model/README.md) - models the domain from the backend with the helps of entity bound classes and DTOs. 
+1. [Shared Model Library](./libs/model/README.md) - models the domain from the backend with the helps of entity bound classes and DTOs.
 2. [Shared Components Library](./libs/shared-components/README.md) - is focusing on search services and basic search components.
-
 
 ## Quick Start
 
 ### Dependencies
 
-This application depends on two other backend projects [Clematis Auth API](https://github.com/grauds/clematis.auth.api) and [Clematis Money Tracker API](https://github.com/grauds/money.tracker.api). Please refer to these projects' documentation to learn how to install them first. 
+This application depends on two other backend projects [Clematis Auth API](https://github.com/grauds/clematis.auth.api) and [Clematis Money Tracker API](https://github.com/grauds/money.tracker.api). Please refer to these projects' documentation to learn how to install them first.
 
 Once the mentioned backends are running, this application's configuration has to be updated with the new backend URLs.
 
@@ -27,7 +26,9 @@ Once the mentioned backends are running, this application's configuration has to
 ```Bash
 cp nginx-default.conf nginx-custom.conf
 ```
+
 2. Provide the following addresses and ports in 'nginx-custom.conf':
+
 ```NGINX
       location ~* ^/auth/ {
            proxy_http_version 1.1;
@@ -44,6 +45,7 @@ cp nginx-default.conf nginx-custom.conf
            proxy_pass http://[Money-Tracker-API-IP-Address]:[Tracker-API-Port]/$1;
       }
 ```
+
 3. Create your own docker compose file or change the existing one to provide the new mapping. In some cases it is better to provide an absolute path on the left of the column, for example, if the application is built in a dockerized Jenkins.
 
 ```Docker
@@ -58,24 +60,27 @@ Checkout the code and run the docker build, assuming that your computer has Dock
 ```
 git 'https://github.com/grauds/money.tracker.ui.git'
 ```
+
 ```
 docker build . -t money.tracker.ui -f Dockerfile
 ```
 
 Run the image with Docker compose:
+
 ```
 docker compose build
 ```
+
 ```
 docker compose up -d
 ```
 
 The application will be available at: http://localhost:18082 provided that the port 18082 is mapped in docker compose
 
-
 ## Development
 
 This is an Angular application with Typescript under the hood, the repository uses [nx](https://nx.dev/). Checkout the code and install node dependencies first:
+
 ```
 npm install
 ```
@@ -83,6 +88,7 @@ npm install
 ```
 nx serve
 ```
+
 The application will be available at: http://localhost:4200 and will automatically reload if you change any of the source files.
 
 ### Code scaffolding
@@ -105,18 +111,15 @@ Please consult Jenkins documentation on how to configure a Pipeline from Jenkins
 
 ### <img src="./images/piggy-bank.png" alt="drawing" width="25px"/> Accounts
 
-The page offers overview of accounts assets distribution in currencies registered in the database. The application assumes exchange rates are known for those currencies for each date, if not, the last known rate before the missing date is taken. This rule works for all views where values can be shown in different currencies. 
+The page offers overview of accounts assets distribution in currencies registered in the database. The application assumes exchange rates are known for those currencies for each date, if not, the last known rate before the missing date is taken. This rule works for all views where values can be shown in different currencies.
 
 <img src="./images/accounts.png" alt="drawing" width="50%" />
 
-
 ### <img src="./images/trending-up.png" alt="drawing" width="25px"/> Income
 
-
-Income report automatically finds the start and end dates when income is registered in the system and shows it as a bar chart. 
+Income report automatically finds the start and end dates when income is registered in the system and shows it as a bar chart.
 
 <img src="./images/income.png" alt="drawing" width="50%" />
-
 
 ### <img src="./images/scale-balance.png" alt="drawing" width="25px"/> Balance Monthly
 
@@ -124,27 +127,23 @@ Monthly balance shows how the amount of money changes over time on monthly basis
 
 <img src="./images/balance.png" alt="drawing" width="50%" />
 
-
 ### <img src="./images/trending-down.png" alt="drawing" width="25px"/> Expenses
 
 It is a simple log of all the operations for the database, sorted by time in descending order. The filter also allows specifying a date range.
 
 <img src="./images/expenses.png" alt="drawing" width="50%" />
 
-
 ### <img src="./images/history.png" alt="drawing" width="25px"/> History
 
-The list of commodities with a slightly different representation - all the commodities here are unique and sorted by the last time they were bought. For unique articles like bycicles or houses it may be a single appearance tens of years back. For periodic items like food or clothing it is usually the places at the top of the list. 
+The list of commodities with a slightly different representation - all the commodities here are unique and sorted by the last time they were bought. For unique articles like bycicles or houses it may be a single appearance tens of years back. For periodic items like food or clothing it is usually the places at the top of the list.
 
 <img src="./images/last-commodities.png" alt="drawing" width="50%" />
-
 
 ### <img src="./images/shopping-cart.png" alt="drawing" width="25px"/> Users' commodities
 
 Monthly breakdown of users' contributions to expenses in terms of money and commodities. It is required to be precise with agents attribution to expenses in the Money Tracker application.
 
 <img src="./images/users-commodities.png" alt="drawing" width="50%" />
-
 
 ### <img src="./images/currency-exchange.png" alt="drawing" width="25px"/> Currency Exchange
 
@@ -154,15 +153,13 @@ Currency exchange may come in handy to redistribute the money accross different 
 
 ### <img src="./images/trolley.png" alt="drawing" width="25px"/> Reselling
 
-This chart is useful for those who buy and sell often using the same commodity identifiers. System compares the amount of money for a commodity spent on it with the amount of money received in a operation like reselling or any other. 
+This chart is useful for those who buy and sell often using the same commodity identifiers. System compares the amount of money for a commodity spent on it with the amount of money received in a operation like reselling or any other.
 
-### Lists of commodities, organizations and their groups 
+### Lists of commodities, organizations and their groups
 
 The lists of all registered resources with clickable links leading to individual pages for commodities, organizations and their groups.
 
 <img src="./images/lists.png" alt="drawing" width="50%" />
-
-
 
 ### <img src="./images/about-icon.png" alt="drawing" width="25px"/> About
 

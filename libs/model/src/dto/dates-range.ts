@@ -1,6 +1,5 @@
 export interface DatesRange {
-    
-    start: Date;
+  start: Date;
 
-    end: Date;
+  end: Date;
 }

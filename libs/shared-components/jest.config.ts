@@ -13,7 +13,9 @@ export default {
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },
-  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|lodash-es|uri-templates-es)'],
+  transformIgnorePatterns: [
+    'node_modules/(?!.*\\.mjs$|lodash-es|uri-templates-es)',
+  ],
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',

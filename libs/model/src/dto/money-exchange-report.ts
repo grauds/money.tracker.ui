@@ -1,5 +1,4 @@
 export interface MoneyExchangeReport {
-
   curRate: number;
 
   avgRate: number;
@@ -9,6 +8,4 @@ export interface MoneyExchangeReport {
   sourceAmount: number;
 
   delta: number;
-
-
 }

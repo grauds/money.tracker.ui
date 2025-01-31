@@ -13,24 +13,20 @@ describe('ExpensesListComponent', () => {
   const fakeActivatedRoute = {
     queryParams: of({}),
     snapshot: {
-      paramMap: convertToParamMap({ })      
-    }
+      paramMap: convertToParamMap({}),
+    },
   } as ActivatedRoute;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ExpensesListComponent ],
-      imports: [
-        SharedComponentsModule
-      ],
+      declarations: [ExpensesListComponent],
+      imports: [SharedComponentsModule],
       providers: [
         HttpClient,
         HttpHandler,
-        {provide: ActivatedRoute, useValue: fakeActivatedRoute}
-
-      ]
-    })
-    .compileComponents();
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

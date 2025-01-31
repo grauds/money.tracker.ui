@@ -4,8 +4,7 @@ This library contains client services to work with Money Tracker REST backend, b
 
 ## Search service
 
-Services use inheritance pattern and the base class for all entity services is SearchService, which code is provided below. It is an abstract class and delegates the actual data loading to its descendants. Also, it uses environment service to select the current environment variables set, allows consumers to see the status of data loading by observing ```statusDescription$``` field (example below) and read loading status using ```_pageLoading``` field. 
-
+Services use inheritance pattern and the base class for all entity services is SearchService, which code is provided below. It is an abstract class and delegates the actual data loading to its descendants. Also, it uses environment service to select the current environment variables set, allows consumers to see the status of data loading by observing `statusDescription$` field (example below) and read loading status using `_pageLoading` field.
 
 ```typescript
 import { BehaviorSubject, Observable } from "rxjs";
@@ -45,16 +44,17 @@ export abstract class SearchService<T extends Resource> {
   setPostProcessingStream(handler: SearchPostProcessingHandler<T>): void {
     this.searchPostProcessingHandler = handler
   }
-  
+
   ...
 
 }
 ```
+
 The search method is used with search queries names from backend:
 
-```typescript 
+```typescript
 abstract searchPage(options?: PagedGetOption, queryName?: string | null) : Observable<PagedResourceCollection<T>>
-``` 
+```
 
 For example, it works with Spring Data REST endpoints like below:
 
@@ -74,19 +74,23 @@ public interface PagingAndSortingAndFilteringByNameRepository<T extends NamedEnt
 
 }
 ```
+
 In this case client code uses 'search by name' with one of the postfixes: 'Starting', 'Containing' or 'Ending', plus the value of the name itself:
 
 ```typescript
-    this.entityList.refreshData({
-      queryName: "findByName" + "Containing", // the name of the query from the backend
-      filterParams: { // parameters for the query
-        name: "Sample name"
-      },
-      queryArguments: getQueryArguments() // gather all other query arguments 
-    });
+this.entityList.refreshData({
+  queryName: 'findByName' + 'Containing', // the name of the query from the backend
+  filterParams: {
+    // parameters for the query
+    name: 'Sample name',
+  },
+  queryArguments: getQueryArguments(), // gather all other query arguments
+});
 ```
+
 Where query arguments could be a map including custom query and paging
 arguments:
+
 ```typescript
   getQueryArguments(): RequestParam {
     return {
@@ -97,16 +101,19 @@ arguments:
     }
   }
 ```
+
 All these arguments are merged into one set of HTTP query arguments further in the code before sending this to the server:
+
 ```
 /api/lastExpenseItems/search/findByNameStarting?name=Sample%20name&page=4&size=15&sort=name:ASC&id=16
 ```
+
 ### Search results post processing
 
-In many cases it is required to transform the search results or to query additional information from another endpoint. To achieve this use ```SearchPostProcessingHandler``` instances, any type which has a compatible method:
+In many cases it is required to transform the search results or to query additional information from another endpoint. To achieve this use `SearchPostProcessingHandler` instances, any type which has a compatible method:
 
 ```typescript
-(res: PagedResourceCollection<T>) => Observable<PagedResourceCollection<T>>
+(res: PagedResourceCollection<T>) => Observable<PagedResourceCollection<T>>;
 ```
 
 For instance, the following method invokes postprocessing and changes status text:
@@ -134,7 +141,7 @@ The search components also listens for the changes in the browser address bar to
 http://address:port/commodities?page=2&size=10&sort=name,ASC
 ```
 
-### Default and customised usage 
+### Default and customised usage
 
 The default search component is quite capable to provide search with pagination and filtering on its own with no additional parameters:
 
@@ -146,7 +153,7 @@ Also, some arguments can be given, like templates for result list entries or swi
 
 ```xml
 <app-search
-  [resultItemTemplate]="lastExpensesTable" 
+  [resultItemTemplate]="lastExpensesTable"
   [table]="true">
 </app-search>
 ```
@@ -163,8 +170,8 @@ The list of available arguments:
 
 ```typescript
 export class SearchRequest {
-  queryName: string | null = null
-  queryArguments: RequestParam = {}
+  queryName: string | null = null;
+  queryArguments: RequestParam = {};
   filterParams?: RequestParam = {};
 }
 ```
@@ -172,6 +179,7 @@ export class SearchRequest {
 ## Running unit tests
 
 Run `nx run shared-components:test` to execute the unit tests via [Jest](https://jestjs.io). However, the tests also can be run in a bundle with the other modules:
+
 ```bash
 nx run-many --target=test --all --coverage
 ```

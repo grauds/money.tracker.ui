@@ -17,7 +17,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import {MatGridListModule} from '@angular/material/grid-list';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 import { LastCommodityService } from './service/last-commodity.service';
 import { MoneyExchangeService } from './service/money-exchange.service';
@@ -30,8 +30,8 @@ import { CommoditiesService } from './service/commodities.service';
 import { CommodityGroupsService } from './service/commodity-groups.service';
 import { OrganizationGroupsService } from './service/organization-groups.service';
 import { ExpenseItemsService } from './service/expense-items.service';
-import { IncomeItemsService } from './service/income-items.service'
-import { StatsService } from './service/stats.service'
+import { IncomeItemsService } from './service/income-items.service';
+import { StatsService } from './service/stats.service';
 
 import { ErrorDialogService } from './error/error-dialog.service';
 import { GlobalErrorHandler } from './error/global-error-handler';
@@ -68,7 +68,7 @@ import { StatsTotalsComponent } from './components/stats-totals/stats-totals.com
     MatInputModule,
     MatOptionModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   exports: [
     EntityElementComponent,
@@ -77,7 +77,7 @@ import { StatsTotalsComponent } from './components/stats-totals/stats-totals.com
     EntityListFilteredComponent,
     MoneyTypeSelectorComponent,
     DateRangeSelectorComponent,
-    StatsTotalsComponent
+    StatsTotalsComponent,
   ],
   declarations: [
     EntityListComponent,
@@ -91,7 +91,7 @@ import { StatsTotalsComponent } from './components/stats-totals/stats-totals.com
     MoneyTypeSelectorComponent,
     MoneyTypeSelectorComponent,
     DateRangeSelectorComponent,
-    StatsTotalsComponent
+    StatsTotalsComponent,
   ],
   providers: [
     AccountsService,

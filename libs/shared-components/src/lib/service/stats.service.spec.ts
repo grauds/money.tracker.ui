@@ -9,10 +9,10 @@ describe('StatsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: StatsService, useValue: {  } },
+        { provide: StatsService, useValue: {} },
         HttpClient,
-        HttpHandler
-      ]
+        HttpHandler,
+      ],
     });
     service = TestBed.inject(StatsService);
   });

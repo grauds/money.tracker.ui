@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OrganizationGroupComponent } from './organization-group.component';
-import { HttpClient, HttpHandler } from "@angular/common/http";
-import { OrganizationGroupsService } from "@clematis-shared/shared-components";
-import { ActivatedRoute, convertToParamMap } from "@angular/router";
-import { of } from "rxjs";
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { OrganizationGroupsService } from '@clematis-shared/shared-components';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('OrganizationGroupComponent', () => {
   let component: OrganizationGroupComponent;
@@ -13,8 +13,8 @@ describe('OrganizationGroupComponent', () => {
   const fakeActivatedRoute = {
     queryParams: of({}),
     snapshot: {
-      paramMap: convertToParamMap({ 'id': 9})
-    }
+      paramMap: convertToParamMap({ id: 9 }),
+    },
   } as ActivatedRoute;
 
   beforeEach(async () => {
@@ -24,8 +24,8 @@ describe('OrganizationGroupComponent', () => {
         HttpClient,
         HttpHandler,
         OrganizationGroupsService,
-        {provide: ActivatedRoute, useValue: fakeActivatedRoute}
-      ]
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(OrganizationGroupComponent);

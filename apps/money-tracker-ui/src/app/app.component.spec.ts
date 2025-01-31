@@ -1,23 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { KeycloakService } from "keycloak-angular";
-import { ActivatedRoute, convertToParamMap } from "@angular/router";
+import { KeycloakService } from 'keycloak-angular';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
 describe('AppComponent', () => {
-
   const fakeActivatedRoute = {
-    snapshot: { paramMap: convertToParamMap({ 'id': 9}) }
+    snapshot: { paramMap: convertToParamMap({ id: 9 }) },
   } as ActivatedRoute;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
+      declarations: [AppComponent],
       providers: [
         KeycloakService,
-        {provide: ActivatedRoute, useValue: fakeActivatedRoute}
-      ]
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+      ],
     }).compileComponents();
   });
 

@@ -6,13 +6,11 @@ import { Component, Input } from '@angular/core';
   styleUrl: './stats-totals.component.css',
 })
 export class StatsTotalsComponent {
-   
   @Input() title: string | undefined;
-  
+
   @Input() value: string | undefined;
 
   @Input() background = 'var(--pink)';
 
   @Input() float = 'left';
-
 }

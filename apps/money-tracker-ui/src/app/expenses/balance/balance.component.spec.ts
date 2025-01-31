@@ -1,11 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { of } from "rxjs";
-import { HttpClient, HttpHandler } from "@angular/common/http";
-import { ActivatedRoute, convertToParamMap } from "@angular/router";
+import { of } from 'rxjs';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
-import { KeycloakService } from "keycloak-angular";
-import { AccountsService, MoneyTypeService } from "@clematis-shared/shared-components";
+import { KeycloakService } from 'keycloak-angular';
+import {
+  AccountsService,
+  MoneyTypeService,
+} from '@clematis-shared/shared-components';
 
 import { BalanceComponent } from './balance.component';
 
@@ -16,8 +19,8 @@ describe('BalanceComponent', () => {
   const fakeActivatedRoute = {
     queryParams: of({}),
     snapshot: {
-        paramMap: convertToParamMap({ 'id': 9})
-      }
+      paramMap: convertToParamMap({ id: 9 }),
+    },
   } as ActivatedRoute;
 
   beforeEach(async () => {
@@ -29,8 +32,8 @@ describe('BalanceComponent', () => {
         HttpHandler,
         KeycloakService,
         MoneyTypeService,
-        {provide: ActivatedRoute, useValue: fakeActivatedRoute}
-      ]
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BalanceComponent);

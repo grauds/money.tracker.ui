@@ -1,14 +1,20 @@
-<div class="row" [hidden]="total===0">
+<div class="row" [hidden]="total === 0">
   <div class="col-sm-12">
     <ul class="pagination">
       <li class="page-item" [ngClass]="prevPageDisabled()">
-        <a class="page-link" (click)="firstPage()">&laquo;&laquo; First&nbsp;</a>
+        <a class="page-link" (click)="firstPage()"
+          >&laquo;&laquo; First&nbsp;</a
+        >
       </li>
       <li class="page-item" [ngClass]="prevPageDisabled()">
         <a class="page-link" (click)="prevPage()">&laquo; Prev&nbsp;</a>
       </li>
-      <li class="page-item" *ngFor="let n of range()" [ngClass]="{active: n == currentPage}" >
-        <a class="page-link" (click)="setLocation(n)"> {{n}} </a>
+      <li
+        class="page-item"
+        *ngFor="let n of range()"
+        [ngClass]="{ active: n == currentPage }"
+      >
+        <a class="page-link" (click)="setLocation(n)"> {{ n }} </a>
       </li>
       <li class="page-item" [ngClass]="nextPageDisabled()">
         <a class="page-link" (click)="nextPage()">&nbsp;Next &raquo;</a>

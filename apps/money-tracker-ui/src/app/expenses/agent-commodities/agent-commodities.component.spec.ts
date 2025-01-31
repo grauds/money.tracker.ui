@@ -2,7 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AgentCommoditiesComponent } from './agent-commodities.component';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import { MoneyTypeService, ExpenseItemsService } from '@clematis-shared/shared-components';
+import {
+  MoneyTypeService,
+  ExpenseItemsService,
+} from '@clematis-shared/shared-components';
 import { KeycloakService } from 'keycloak-angular';
 import { of } from 'rxjs';
 
@@ -13,8 +16,8 @@ describe('AgentCommoditiesComponent', () => {
   const fakeActivatedRoute = {
     queryParams: of({}),
     snapshot: {
-        paramMap: convertToParamMap({ 'id': 9})
-      }
+      paramMap: convertToParamMap({ id: 9 }),
+    },
   } as ActivatedRoute;
 
   beforeEach(async () => {
@@ -26,8 +29,8 @@ describe('AgentCommoditiesComponent', () => {
         MoneyTypeService,
         KeycloakService,
         ExpenseItemsService,
-        {provide: ActivatedRoute, useValue: fakeActivatedRoute}
-      ]
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AgentCommoditiesComponent);
