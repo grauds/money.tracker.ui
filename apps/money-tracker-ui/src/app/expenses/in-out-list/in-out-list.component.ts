@@ -32,15 +32,15 @@ import {
 export class InOutListComponent implements OnInit {
   pageSubscription: Subscription;
 
-  isLoggedIn: boolean = false;
+  isLoggedIn = false;
 
   currency: MoneyType = new MoneyType();
 
   currencies: MoneyType[] = [];
 
-  loading: boolean = false;
+  loading = false;
 
-  total: number = 0;
+  total = 0;
 
   deltas: Array<InOutDelta> = [];
 
@@ -151,7 +151,9 @@ export class InOutListComponent implements OnInit {
           this.currencies = response.resources;
           this.getInOutDeltasInCurrency();
         },
-        error: () => {},
+        error: () => {
+          this.loading = false;
+        },
         complete: () => {
           this.loading = false;
         },
@@ -169,7 +171,9 @@ export class InOutListComponent implements OnInit {
           this.options = this.getDeltasChart(this.currency);
         }
       },
-      error: () => {},
+      error: () => {
+        this.loading = false;
+      },
       complete: () => {
         this.loading = false;
       },
@@ -246,8 +250,6 @@ export class InOutListComponent implements OnInit {
       ],
     };
   }
-
-  onChartEvent() {}
 
   onChartInit($event: any) {
     this.echartsInstance = $event;

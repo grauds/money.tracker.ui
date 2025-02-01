@@ -15,10 +15,10 @@ export class MainComponent implements OnInit {
   isLoggedIn?: boolean;
 
   // total number of elements
-  total: number = 0;
+  total = 0;
 
   // number of records per page
-  limit: number = 12;
+  limit = 12;
 
   // current page number counter
   n: number | undefined = undefined;
@@ -26,7 +26,7 @@ export class MainComponent implements OnInit {
   // subscribe for page updates in the address bar
   pageSubscription: Subscription;
 
-  message: string = '';
+  message = '';
 
   loading = false;
 
@@ -48,7 +48,7 @@ export class MainComponent implements OnInit {
       this.n = isNaN(page) ? undefined : page;
       const size = Number.parseInt(queryParam['size'], 10);
       this.limit = isNaN(size) ? 12 : size;
-      const currency: String = queryParam['currency'];
+      const currency: string = queryParam['currency'];
       if (currency) {
         this.currency = MoneyTypes[currency as keyof typeof MoneyTypes];
       }

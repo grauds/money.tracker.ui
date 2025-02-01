@@ -49,11 +49,11 @@ export class CommodityComponent
 
   path: Array<CommodityGroup> = [];
 
-  totalSum: number = 0;
+  totalSum = 0;
 
   expenses: ExpenseItem[] = [];
 
-  loading: boolean = false;
+  loading = false;
 
   averagePrice: number | undefined;
 

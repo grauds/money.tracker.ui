@@ -12,7 +12,7 @@ import { Entity } from '@clematis-shared/model';
 export class CommodityGroupCommoditiesComponent {
   @Input() id = '';
 
-  loading: boolean = false;
+  loading = false;
 
   children: Entity[] = [];
 

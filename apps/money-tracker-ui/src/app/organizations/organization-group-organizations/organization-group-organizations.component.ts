@@ -12,7 +12,7 @@ import { OrganizationsService } from '@clematis-shared/shared-components';
 export class OrganizationGroupOrganizationsComponent {
   @Input() id = '';
 
-  loading: boolean = false;
+  loading = false;
 
   children: Entity[] = [];
 

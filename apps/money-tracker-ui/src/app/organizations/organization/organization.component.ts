@@ -39,11 +39,11 @@ export class OrganizationComponent
 
   path: Array<OrganizationGroup> = [];
 
-  totalSum: number = 0;
+  totalSum = 0;
 
   expenses: ExpenseItem[] = [];
 
-  loading: boolean = false;
+  loading = false;
 
   option: any = {};
 

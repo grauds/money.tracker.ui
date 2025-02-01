@@ -21,13 +21,13 @@ export class AccountsDashboardComponent implements OnInit {
   chart: any;
 
   // total sum in the chosen currency
-  total: number = 0;
+  total = 0;
 
   // total sum week ago in the chosen currency
-  totalWeekAgo: number = 0;
+  totalWeekAgo = 0;
 
   // number of records per page
-  limit: number = 12;
+  limit = 12;
 
   // current page number counter
   n: number | undefined = undefined;
@@ -46,7 +46,7 @@ export class AccountsDashboardComponent implements OnInit {
 
   currencies: MoneyType[] = [];
 
-  filterZerosOut: boolean = true;
+  filterZerosOut = true;
 
   filterZerosOutEvent = new BehaviorSubject<boolean>(true);
 
@@ -152,7 +152,9 @@ export class AccountsDashboardComponent implements OnInit {
           this.currencies = response.resources;
           this.getAccountsBalanceInCurrency();
         },
-        error: () => {},
+        error: () => {
+          this.loading = false;
+        },
       });
   }
 
@@ -167,7 +169,9 @@ export class AccountsDashboardComponent implements OnInit {
         this.getAccountsTotalWeekAgoInCurrency();
         this.chart = this.getBalancesChart(this.currency);
       },
-      error: () => {},
+      error: () => {
+        this.loading = false;
+      },
       complete: () => {
         this.loading = false;
       },

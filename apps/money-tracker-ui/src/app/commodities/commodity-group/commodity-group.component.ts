@@ -32,7 +32,7 @@ export class CommodityGroupComponent
   @ViewChild(EntityListComponent)
   entityList!: EntityListComponent<CommodityGroup>;
 
-  loading: boolean = false;
+  loading = false;
 
   parent: CommodityGroup | undefined;
 

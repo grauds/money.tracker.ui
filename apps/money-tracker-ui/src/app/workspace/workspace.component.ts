@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './workspace.component.html',
   styleUrls: ['./workspace.component.sass'],
 })
-export class WorkspaceComponent {
-  constructor() {}
-}
+export class WorkspaceComponent {}

@@ -1,4 +1,3 @@
-// @ts-ignore
 import { EnvironmentInterface } from '@clematis-shared/shared-components';
 
 export const environment: EnvironmentInterface = {

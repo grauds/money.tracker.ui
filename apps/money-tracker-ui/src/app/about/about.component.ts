@@ -11,9 +11,9 @@ import { KeycloakService } from 'keycloak-angular';
   styleUrls: ['./about.component.sass'],
 })
 export class AboutComponent implements OnInit {
-  isLoggedIn: boolean = false;
+  isLoggedIn = false;
 
-  income: number = 0;
+  income = 0;
 
   infoAbout: InfoAbout | undefined;
 

@@ -17,13 +17,13 @@ export class LastCommodity extends Entity {
 
   organizationLink: string | undefined;
 
-  daysAgo: number = 0;
+  daysAgo = 0;
 
-  qty: number = 0;
+  qty = 0;
 
   unit: string | undefined;
 
-  price: number = 0;
+  price = 0;
 
   currency: string | undefined;
 }

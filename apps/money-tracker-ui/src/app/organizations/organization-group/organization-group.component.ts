@@ -36,7 +36,7 @@ export class OrganizationGroupComponent
   @ViewChild(EntityListComponent)
   entityList!: EntityListComponent<OrganizationGroup>;
 
-  loading: boolean = false;
+  loading = false;
 
   parent: OrganizationGroup | undefined;
 
@@ -88,8 +88,14 @@ export class OrganizationGroupComponent
         this.parent = parent;
         this.parentLink = Entity.getRelativeSelfLinkHref(this.parent);
       },
-      error: () => {},
-      complete: () => {},
+      error: () => {
+        this.parent = undefined;
+        this.parentLink = undefined;
+      },
+      complete: () => {
+        this.parent = undefined;
+        this.parentLink = undefined;
+      },
     });
 
     if (this.entity) {

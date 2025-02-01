@@ -79,7 +79,7 @@ export class IncomeMonthlyComponent implements OnInit {
 
   income: Array<IncomeMonthly> = [];
 
-  isLoggedIn: boolean = false;
+  isLoggedIn = false;
 
   constructor(
     protected readonly keycloak: KeycloakService,
@@ -156,21 +156,25 @@ export class IncomeMonthlyComponent implements OnInit {
       .subscribe({
         next: (response: PagedResourceCollection<MoneyType>) => {
           this.currencies = response.resources;
-          this.createChart(this.currency).subscribe((chart) => {
+          this.createChart().subscribe((chart) => {
             this.chart = chart;
             this.loading = false;
           });
         },
-        error: () => {},
-        complete: () => {},
+        error: () => {
+          this.currencies = [];
+        },
+        complete: () => {
+          this.currencies = [];
+        },
       });
   }
 
-  private createChart(moneyType: MoneyType): Observable<any> {
-    let chart = {};
+  private createChart(): Observable<any> {
+    const chart = {};
 
     let ticks: string[] = [];
-    let series: Map<string, IncomeMonthly[]> = new Map();
+    const series: Map<string, IncomeMonthly[]> = new Map();
 
     return of(chart).pipe(
       switchMap(() => {
@@ -189,10 +193,7 @@ export class IncomeMonthlyComponent implements OnInit {
         // form series of data in the interval
         resources.forEach((incomeMonthly: IncomeMonthly) => {
           if (incomeMonthly.name) {
-            let values: IncomeMonthly[] = [];
-            if (series.get(incomeMonthly.name)) {
-              values = series.get(incomeMonthly.name)!;
-            }
+            const values: IncomeMonthly[] = series.get(incomeMonthly.name) ?? [];
             values.push(incomeMonthly);
             series.set(incomeMonthly.name, values);
           }
@@ -208,7 +209,7 @@ export class IncomeMonthlyComponent implements OnInit {
         return of(0);
       }),
       switchMap(() => {
-        return of(this.buildChart(ticks, series, moneyType));
+        return of(this.buildChart(ticks, series));
       })
     );
   }
@@ -217,7 +218,7 @@ export class IncomeMonthlyComponent implements OnInit {
     ticks: string[],
     series: Map<string, IncomeMonthly[]>
   ): any[] {
-    let chartSeries: any[] = [];
+    const chartSeries: any[] = [];
     series.forEach((incomeMonthly: IncomeMonthly[], name: string) => {
       return chartSeries.push({
         name: name,
@@ -241,8 +242,7 @@ export class IncomeMonthlyComponent implements OnInit {
 
   private buildChart(
     ticks: string[],
-    series: Map<string, IncomeMonthly[]>,
-    moneyType: MoneyType
+    series: Map<string, IncomeMonthly[]>
   ) {
     return {
       legend: {
@@ -265,7 +265,7 @@ export class IncomeMonthlyComponent implements OnInit {
           elRect: any,
           size: { viewSize: number[] }
         ) {
-          var obj: any = { top: 10 };
+          const obj: any = { top: 10 };
           obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
           return obj;
         },

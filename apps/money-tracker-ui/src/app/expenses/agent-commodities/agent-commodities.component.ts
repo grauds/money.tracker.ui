@@ -42,7 +42,7 @@ export class AgentCommoditiesComponent implements OnInit {
 
   pageSubscription: Subscription;
 
-  isLoggedIn: boolean = false;
+  isLoggedIn = false;
 
   loading = false;
 
@@ -54,7 +54,7 @@ export class AgentCommoditiesComponent implements OnInit {
 
   endDate = moment().add(1, 'M');
 
-  showGroups: boolean = true;
+  showGroups = true;
 
   showGroupsEvent = new BehaviorSubject<boolean>(true);
 
@@ -165,7 +165,9 @@ export class AgentCommoditiesComponent implements OnInit {
             });
           }
         },
-        error: () => {},
+        error: () => {
+          this.loading = false;
+        },
         complete: () => {
           this.loading = false;
         },
@@ -173,10 +175,10 @@ export class AgentCommoditiesComponent implements OnInit {
   }
 
   private createChart(currency: MoneyType): Observable<any> {
-    let chart = {};
+    const chart = {};
 
     let ticks: string[] = [];
-    let series: Map<string, AgentCommodities[]> = new Map();
+    const series: Map<string, AgentCommodities[]> = new Map();
 
     return this.currency
       ? of(chart).pipe(
@@ -207,7 +209,7 @@ export class AgentCommoditiesComponent implements OnInit {
                   values.push(month);
                 } else {
                   let found = false;
-                  for (var i in values) {
+                  for (const i in values) {
                     if (
                       values[i].agent == month.agent &&
                       values[i].an == month.an &&
@@ -246,7 +248,7 @@ export class AgentCommoditiesComponent implements OnInit {
     ticks: string[],
     series: Map<string, AgentCommodities[]>
   ): any[] {
-    let chartSeries: any[] = [];
+    const chartSeries: any[] = [];
 
     series.forEach((commoditiesMonthly: AgentCommodities[], name: string) => {
       return chartSeries.push({
@@ -299,7 +301,7 @@ export class AgentCommoditiesComponent implements OnInit {
           elRect: any,
           size: { viewSize: number[] }
         ) {
-          let obj: any = { top: 10 };
+          const obj: any = { top: 10 };
           obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
           return obj;
         },

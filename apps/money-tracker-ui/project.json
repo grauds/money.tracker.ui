@@ -160,6 +160,16 @@
         "browserTarget": "money-tracker-ui:build"
       }
     },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/money-tracker-ui/**/*.ts",
+          "apps/money-tracker-ui/**/*.html"
+        ]
+      }
+    },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/money-tracker-ui"],

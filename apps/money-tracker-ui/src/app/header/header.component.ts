@@ -26,7 +26,7 @@ export class HeaderComponent {
     );
 
   // the header of the application
-  @Input() title: string = '';
+  @Input() title = '';
 
   @Input() userProfile?: KeycloakProfile;
 

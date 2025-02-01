@@ -55,7 +55,7 @@ export class ExchangeComponent implements OnInit, AfterViewInit {
 
   report?: MoneyExchangeReport;
 
-  private resetPages: boolean = false;
+  private resetPages = false;
 
   constructor(
     private moneyTypeService: MoneyTypeService,

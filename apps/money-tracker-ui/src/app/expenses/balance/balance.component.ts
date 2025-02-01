@@ -21,22 +21,23 @@ import { MoneyType, MonthlyDelta } from '@clematis-shared/model';
   styleUrls: ['./balance.component.sass'],
 })
 export class BalanceComponent implements OnInit {
+
   chart: any;
 
-  isLoggedIn: boolean = false;
+  isLoggedIn = false;
 
   // total number of elements
-  total: number = 0;
+  total = 0;
 
   // number of records per page
-  limit: number = 35;
+  limit = 35;
 
   // current page number counter
   n: number | undefined = undefined;
 
   pageSubscription: Subscription;
 
-  message: string = '';
+  message = '';
 
   loading = false;
 
@@ -44,9 +45,9 @@ export class BalanceComponent implements OnInit {
 
   currencies: MoneyType[] = [];
 
-  startDate: string = '';
+  startDate = '';
 
-  endDate: string = '';
+  endDate = '';
 
   constructor(
     private accountsService: AccountsService,
@@ -127,7 +128,9 @@ export class BalanceComponent implements OnInit {
             (chart) => (this.chart = chart)
           );
         },
-        error: () => {},
+        error: () => {
+          this.currencies = []
+        },
       });
   }
 
@@ -150,8 +153,8 @@ export class BalanceComponent implements OnInit {
           this.limit = response.pageSize;
           this.total = response.totalElements;
 
-          let totalPages = response.totalPages;
-          let n =
+          const totalPages = response.totalPages;
+          const n =
             this.n !== undefined && this.n < totalPages
               ? this.n
               : totalPages - 1;
@@ -201,17 +204,17 @@ export class BalanceComponent implements OnInit {
         tap((balance: number) => console.log('Frame balance: ' + balance)),
         switchMap((balance: number) => {
           let currentBalance = balance || 0;
-          let deltas: string[] = [];
-          let totals: string[] = [];
+          const deltas: string[] = [];
+          const totals: string[] = [];
 
           // https://github.com/apache/echarts/issues/11885
-          xAxis.forEach((tick: String) => {
-            let values = yAxis.filter(
+          xAxis.forEach((tick: string) => {
+            const values = yAxis.filter(
               (delta) => delta.year + '/' + delta.month === tick
             );
 
             if (values.length > 0) {
-              let value = values[0];
+              const value = values[0];
               deltas.push(value.delta.toString());
               currentBalance += value.delta;
             } else {
