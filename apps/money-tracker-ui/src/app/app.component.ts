@@ -28,17 +28,17 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // subscription to updates
     this.keycloak.keycloakEvents$.subscribe({
-      next: async (e) => {
+      next: (e) => {
         if (e.type == KeycloakEventType.OnAuthSuccess) {
           this.isLoggedIn = true;
-          await this.keycloak.loadUserProfile().then((profile) => {
+          this.keycloak.loadUserProfile().then((profile) => {
             this.userProfile = profile;
           });
           if (this.route.snapshot.queryParams['redirect']) {
             const params: HttpParams = Utils.moveQueryParametersFromRedirectUrl(
               this.route.snapshot.queryParams
             );
-            await this.router.navigate([params.get('redirect')], {
+            this.router.navigate([params.get('redirect')], {
               queryParams: Utils.parseRedirectParameters(params),
             });
           }
@@ -48,9 +48,9 @@ export class AppComponent implements OnInit {
         ) {
           this.isLoggedIn = false;
           this.userProfile = null;
-          await this.keycloak.login();
+          this.keycloak.login();
         } else if (e.type === KeycloakEventType.OnReady && !this.isLoggedIn) {
-          await this.keycloak.login();
+          this.keycloak.login();
         }
       },
     });

@@ -12,10 +12,6 @@ export default {
   coverageDirectory: '../../coverage/apps/money-tracker-ui/',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
-    /*    '\\.[jt]sx?$': ['ts-jest', {
-        tsconfig: '<rootDir>/tsconfig.spec.json',
-        stringifyContentPathRegex: '\\.(html|svg)$',
-    }]*/
   },
   transformIgnorePatterns: [
     'node_modules/(?!.*\\.mjs$|lodash-es|uri-templates-es)',
