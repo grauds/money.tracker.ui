@@ -10,6 +10,7 @@ import {
   CommodityGroup,
   Entity,
   OrganizationGroup,
+  Utils
 } from '@clematis-shared/model';
 
 import {
@@ -19,7 +20,6 @@ import {
 } from '@clematis-shared/shared-components';
 
 import { Title } from '@angular/platform-browser';
-import { Utils } from '@clematis-shared/model';
 
 @Component({
   selector: 'app-organization-group',
@@ -48,7 +48,7 @@ export class OrganizationGroupComponent
 
   constructor(
     resourceService: HateoasResourceService,
-    private organizationGroupsService: OrganizationGroupsService,
+    private readonly organizationGroupsService: OrganizationGroupsService,
     route: ActivatedRoute,
     router: Router,
     title: Title
