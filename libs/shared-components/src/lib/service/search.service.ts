@@ -11,16 +11,16 @@ export type SearchPostProcessingHandler<T extends Resource> = (
 ) => Observable<PagedResourceCollection<T>>;
 
 export abstract class SearchService<T extends Resource> {
-  private statusDescription$ = new BehaviorSubject<string>('search');
+  
+  private readonly statusDescription$ = new BehaviorSubject<string>('search');
 
-  private searchPostProcessingHandler: SearchPostProcessingHandler<T> | null =
-    null;
+  private searchPostProcessingHandler: SearchPostProcessingHandler<T> | null = null;
 
   environmentService: EnvironmentService;
 
   private _pageLoading = false;
 
-  protected constructor(environmentService: EnvironmentService) {
+  public constructor(environmentService: EnvironmentService) {
     this.environmentService = environmentService;
   }
 
@@ -49,7 +49,7 @@ export abstract class SearchService<T extends Resource> {
     return this.searchPostProcessingHandler;
   }
 
-  setPostProcessingStream(handler: SearchPostProcessingHandler<T>): void {
+  setPostProcessingStream(handler: SearchPostProcessingHandler<T> | null): void {
     this.searchPostProcessingHandler = handler;
   }
 

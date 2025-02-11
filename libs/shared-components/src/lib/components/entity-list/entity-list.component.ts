@@ -127,7 +127,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     }
   }
 
-  private loadData() {
+  public loadData() {
     this.loading$.next(true);
     this.searchRequest$.next(this.searchRequest);
   }
@@ -157,7 +157,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
             useCache: this.getUseCache(),
           };
 
-          return searchRequest && searchRequest.queryName
+          return searchRequest?.queryName
             ? this.searchService.searchPage(
                 {
                   ...params,
@@ -185,7 +185,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
       });
   }
 
-  private broadcastResults(page: PagedResourceCollection<T>): void {
+  public broadcastResults(page: PagedResourceCollection<T>): void {
     this.total = page.totalElements;
     this.limit = page.pageSize;
 
@@ -194,7 +194,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     this.entities$.next(page.resources);
   }
 
-  private executePostProcessing(
+  public executePostProcessing(
     searchResult: PagedResourceCollection<T>
   ): Observable<PagedResourceCollection<T>> {
     const handler = this.searchService.getPostProcessingStream();
