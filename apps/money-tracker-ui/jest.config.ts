@@ -3,15 +3,12 @@ export default {
   displayName: 'money-tracker-ui',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.spec.json',
-      stringifyContentPathRegex: '\\.(html|svg)$',
-    },
-  },
   coverageDirectory: '../../coverage/apps/money-tracker-ui/',
   transform: {
-    '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
+    '^.+\\.(ts|mjs|js|html)$': ['jest-preset-angular', {
+      tsconfig: '<rootDir>/tsconfig.spec.json',
+      stringifyContentPathRegex: '\\.(html|svg)$',
+    }],
   },
   transformIgnorePatterns: [
     'node_modules/(?!.*\\.mjs$|lodash-es|uri-templates-es)',

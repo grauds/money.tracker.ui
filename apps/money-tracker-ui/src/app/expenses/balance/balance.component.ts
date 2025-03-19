@@ -130,6 +130,7 @@ export class BalanceComponent implements OnInit {
         },
         error: () => {
           this.currencies = []
+          this.loading = false;
         },
       });
   }

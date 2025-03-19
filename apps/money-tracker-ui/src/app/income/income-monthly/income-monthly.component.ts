@@ -83,11 +83,11 @@ export class IncomeMonthlyComponent implements OnInit {
 
   constructor(
     protected readonly keycloak: KeycloakService,
-    private moneyTypeService: MoneyTypeService,
-    private incomeItemsService: IncomeItemsService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private title: Title
+    private readonly moneyTypeService: MoneyTypeService,
+    private readonly incomeItemsService: IncomeItemsService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly title: Title
   ) {
     this.isLoggedIn = this.keycloak.isLoggedIn();
 
@@ -161,12 +161,10 @@ export class IncomeMonthlyComponent implements OnInit {
             this.loading = false;
           });
         },
-        error: () => {
+        error: (e) => {
           this.currencies = [];
-        },
-        complete: () => {
-          this.currencies = [];
-        },
+          this.loading = false;
+        }
       });
   }
 
