@@ -30,9 +30,9 @@ cp nginx-default.conf nginx-custom.conf
 2. Provide the following addresses and ports in 'nginx-custom.conf':
 
 ```NGINX
-      location ~* ^/auth/ {
+      location ~* ^/auth/(.*) {
            proxy_http_version 1.1;
-           proxy_pass http://[Clematis-Auth-API-IP-Address]:[Auth-API-Port];
+           proxy_pass http://[Clematis-Auth-API-IP-Address]:[Auth-API-Port]/$1;
       }
 
       location ~* ^/api/ {
