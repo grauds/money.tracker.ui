@@ -1,15 +1,16 @@
 import { Component, Input } from '@angular/core';
-import { KeycloakService } from 'keycloak-angular';
 import { NavigationEnd, Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { KeycloakProfile } from 'keycloak-js';
+
+import Keycloak, { KeycloakProfile } from 'keycloak-js';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.sass'],
+  standalone: false,
 })
 export class HeaderComponent {
   isFullLayout$: Observable<boolean> = this.breakpointObserver
@@ -37,12 +38,12 @@ export class HeaderComponent {
 
   constructor(
     private readonly router: Router,
-    private readonly keycloak: KeycloakService,
+    private readonly keycloak: Keycloak,
     private readonly breakpointObserver: BreakpointObserver
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        // Hide progress spinner or progress bar
+        // Hide the progress spinner or progress bar
         this.currentRoute = event.urlAfterRedirects;
       }
     });

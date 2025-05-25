@@ -47,6 +47,7 @@ export const MY_FORMATS = {
 
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
+  standalone: false
 })
 export class DateRangeSelectorComponent {
   @Input() loading = false;

@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
   selector: 'app-page-size',
   templateUrl: './page-size.component.html',
   styleUrls: ['./page-size.component.css'],
+  standalone: false
 })
 export class PageSizeComponent implements OnInit, OnChanges {
   @Input() path = '';

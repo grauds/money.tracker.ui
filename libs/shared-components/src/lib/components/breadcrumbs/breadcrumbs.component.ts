@@ -5,6 +5,7 @@ import { Entity } from '@clematis-shared/model';
   selector: 'app-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.sass'],
+  standalone: false
 })
 export class BreadcrumbsComponent {
   @Input() path: Array<Entity> | null = null;

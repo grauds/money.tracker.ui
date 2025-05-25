@@ -8,6 +8,7 @@ import { LastCommodityService } from '@clematis-shared/shared-components';
   templateUrl: 'last-commodities-list.component.html',
   styleUrls: ['last-commodities-list.component.sass'],
   providers: [{ provide: 'searchService', useClass: LastCommodityService }],
+  standalone: false,
 })
 export class LastCommoditiesListComponent implements OnInit {
   displayedColumns: string[] = [

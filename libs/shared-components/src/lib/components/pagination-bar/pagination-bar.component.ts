@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
   selector: 'app-pagination-bar',
   templateUrl: './pagination-bar.component.html',
   styleUrls: ['./pagination-bar.component.css'],
+  standalone: false
 })
 export class PaginationBarComponent {
   @Input() path = '';

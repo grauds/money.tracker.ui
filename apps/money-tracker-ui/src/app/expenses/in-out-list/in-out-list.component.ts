@@ -28,6 +28,7 @@ import {
   selector: 'app-in-out-list',
   templateUrl: './in-out-list.component.html',
   styleUrls: ['./in-out-list.component.sass'],
+  standalone: false,
 })
 export class InOutListComponent implements OnInit {
   pageSubscription: Subscription;

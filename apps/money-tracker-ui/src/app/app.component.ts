@@ -1,39 +1,53 @@
-import { Component, OnInit } from '@angular/core';
-import { KeycloakEventType, KeycloakService } from 'keycloak-angular';
-import { KeycloakProfile } from 'keycloak-js';
+import { Component, effect, inject } from "@angular/core";
 import { ActivatedRoute, Router } from '@angular/router';
 import { Utils } from '@clematis-shared/model';
 import { HttpParams } from '@angular/common/http';
+import { CommonModule } from "@angular/common";
+
+import {
+  KEYCLOAK_EVENT_SIGNAL,
+  KeycloakEventType,
+  ReadyArgs,
+  typeEventArgs
+} from "keycloak-angular";
+import Keycloak, { KeycloakProfile } from 'keycloak-js';
+import { AppModule } from "./app.module";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
+  standalone: true,
+  imports: [
+    CommonModule,
+    AppModule
+  ]
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
+
   title = 'Money Tracker';
-
   isLoggedIn = false;
-
-  userProfile: KeycloakProfile | null = null;
-
+  userProfile: KeycloakProfile | undefined = undefined;
   loading = false;
+  private readonly keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
 
   constructor(
-    protected readonly keycloak: KeycloakService,
+    protected readonly keycloak: Keycloak,
     private readonly router: Router,
     private readonly route: ActivatedRoute
-  ) {}
+  ) {
 
-  ngOnInit() {
     // subscription to updates
-    this.keycloak.keycloakEvents$.subscribe({
-      next: (e) => {
-        if (e.type == KeycloakEventType.OnAuthSuccess) {
-          this.isLoggedIn = true;
+    effect(() => {
+      const keycloakEvent = this.keycloakSignal();
+      this.isLoggedIn = typeEventArgs<ReadyArgs>(keycloakEvent.args);
+
+        if (keycloakEvent.type == KeycloakEventType.AuthSuccess) {
+
           this.keycloak.loadUserProfile().then((profile) => {
             this.userProfile = profile;
           });
+
           if (this.route.snapshot.queryParams['redirect']) {
             const params: HttpParams = Utils.moveQueryParametersFromRedirectUrl(
               this.route.snapshot.queryParams
@@ -42,17 +56,18 @@ export class AppComponent implements OnInit {
               queryParams: Utils.parseRedirectParameters(params),
             });
           }
+
         } else if (
-          e.type == KeycloakEventType.OnAuthError ||
-          e.type == KeycloakEventType.OnAuthLogout
+             keycloakEvent.type == KeycloakEventType.AuthError
+              ||
+             keycloakEvent.type == KeycloakEventType.AuthLogout
         ) {
-          this.isLoggedIn = false;
-          this.userProfile = null;
+
+          this.userProfile = undefined;
           this.keycloak.login();
-        } else if (e.type === KeycloakEventType.OnReady && !this.isLoggedIn) {
-          this.keycloak.login();
+
         }
-      },
-    });
+      }
+    )
   }
 }

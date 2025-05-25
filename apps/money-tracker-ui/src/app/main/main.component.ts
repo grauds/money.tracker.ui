@@ -10,6 +10,7 @@ import { Title } from '@angular/platform-browser';
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.sass'],
+  standalone: false,
 })
 export class MainComponent implements OnInit {
   isLoggedIn?: boolean;

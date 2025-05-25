@@ -61,20 +61,18 @@ describe('AppComponent', () => {
     });
 
     it('should handle OnAuthSuccess event', async () => {
-      keycloakServiceMock.keycloakEvents$ = of({ type: KeycloakEventType.OnAuthSuccess });
+      keycloakServiceMock.keycloakEvents$ = of({ type: KeycloakEventType.AuthSuccess });
       const fixture = TestBed.createComponent(AppComponent);
       const app = fixture.componentInstance;
-      app.ngOnInit();
 
       expect(app.isLoggedIn).toBe(true);
       expect(keycloakServiceMock.loadUserProfile).toHaveBeenCalled();
     });
 
     it('should handle OnAuthError event', async () => {
-      keycloakServiceMock.keycloakEvents$ = of({ type: KeycloakEventType.OnAuthError });
+      keycloakServiceMock.keycloakEvents$ = of({ type: KeycloakEventType.AuthError });
       const fixture = TestBed.createComponent(AppComponent);
       const app = fixture.componentInstance;
-      app.ngOnInit();
 
       expect(app.isLoggedIn).toBe(false);
       expect(app.userProfile).toBeNull();
@@ -82,10 +80,9 @@ describe('AppComponent', () => {
     });
 
     it('should handle OnAuthLogout event', async () => {
-      keycloakServiceMock.keycloakEvents$ = of({ type: KeycloakEventType.OnAuthLogout });
+      keycloakServiceMock.keycloakEvents$ = of({ type: KeycloakEventType.AuthLogout });
       const fixture = TestBed.createComponent(AppComponent);
       const app = fixture.componentInstance;
-      app.ngOnInit();
 
       expect(app.isLoggedIn).toBe(false);
       expect(app.userProfile).toBeNull();
@@ -93,16 +90,15 @@ describe('AppComponent', () => {
     });
 
     it('should handle OnReady event when not logged in', async () => {
-      keycloakServiceMock.keycloakEvents$ = of({ type: KeycloakEventType.OnReady });
+      keycloakServiceMock.keycloakEvents$ = of({ type: KeycloakEventType.Ready });
       const fixture = TestBed.createComponent(AppComponent);
       const app = fixture.componentInstance;
-      app.ngOnInit();
 
       expect(keycloakServiceMock.login).toHaveBeenCalled();
     });
 
     it('should navigate to redirect URL if present in query params', async () => {
-      keycloakServiceMock.keycloakEvents$ = of({ type: KeycloakEventType.OnAuthSuccess });
+      keycloakServiceMock.keycloakEvents$ = of({ type: KeycloakEventType.AuthSuccess });
 
       const queryParams = { redirect: 'some-url' };
       const params = new HttpParams().set('redirect', 'some-url');
@@ -115,7 +111,6 @@ describe('AppComponent', () => {
 
       const fixture = TestBed.createComponent(AppComponent);
       const app = fixture.componentInstance;
-      app.ngOnInit();
 
       expect(routerMock.navigate).toHaveBeenCalledWith(['some-url'], {
           queryParams: parsedParams

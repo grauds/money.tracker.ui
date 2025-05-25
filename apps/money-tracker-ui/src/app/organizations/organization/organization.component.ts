@@ -26,6 +26,7 @@ import { formatDate } from '@angular/common';
   templateUrl: './organization.component.html',
   styleUrls: ['./organization.component.sass'],
   providers: [{ provide: 'searchService', useClass: ExpenseItemsService }],
+  standalone: false,
 })
 export class OrganizationComponent
   extends EntityComponent<Organization>

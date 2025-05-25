@@ -27,6 +27,7 @@ import { Observable, of, Subscription, switchMap, tap } from 'rxjs';
   templateUrl: './exchange.component.html',
   styleUrls: ['./exchange.component.sass'],
   providers: [{ provide: 'searchService', useClass: MoneyExchangeService }],
+  standalone: false,
 })
 export class ExchangeComponent implements OnInit, AfterViewInit {
   @ViewChild(EntityListComponent)

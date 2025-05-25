@@ -4,9 +4,9 @@ import { Entity, InOutDelta, MoneyType } from '@clematis-shared/model';
 import {
   HateoasResourceService,
   PagedResourceCollection,
+  PagedGetOption
 } from '@lagoshny/ngx-hateoas-client';
 import { EnvironmentService } from './environment.service';
-import { PagedGetOption } from '@lagoshny/ngx-hateoas-client/lib/model/declarations';
 import { Observable, of, switchMap } from 'rxjs';
 
 @Injectable()

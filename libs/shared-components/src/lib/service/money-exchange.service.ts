@@ -6,10 +6,10 @@ import {
   MoneyExchangeReport,
   MoneyType,
 } from '@clematis-shared/model';
-import { PagedGetOption } from '@lagoshny/ngx-hateoas-client/lib/model/declarations';
 import {
   HateoasResourceService,
   PagedResourceCollection,
+  PagedGetOption
 } from '@lagoshny/ngx-hateoas-client';
 import { HttpClient } from '@angular/common/http';
 import { EnvironmentService } from './environment.service';

@@ -5,6 +5,7 @@ import { MoneyExchange } from '@clematis-shared/model';
   selector: 'app-exchange-event-element',
   templateUrl: './exchange-event-element.component.html',
   styleUrls: ['./exchange-event-element.component.css'],
+  standalone: false,
 })
 export class ExchangeEventElementComponent {
   @Input() entity: MoneyExchange = new MoneyExchange();

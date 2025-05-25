@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, switchMap } from 'rxjs';
 import { Entity, LastCommodity } from '@clematis-shared/model';
-import { PagedGetOption } from '@lagoshny/ngx-hateoas-client/lib/model/declarations';
 import {
   HateoasResourceService,
   PagedResourceCollection,
+  PagedGetOption
 } from '@lagoshny/ngx-hateoas-client';
 import { SearchService } from './search.service';
 import { EnvironmentService } from './environment.service';

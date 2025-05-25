@@ -50,3 +50,6 @@ Thumbs.db
 .nx/
 /.nx/
 /.vscode/
+
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md

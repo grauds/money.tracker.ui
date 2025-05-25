@@ -19,6 +19,7 @@ import { MoneyType, MonthlyDelta } from '@clematis-shared/model';
   selector: 'app-balance',
   templateUrl: './balance.component.html',
   styleUrls: ['./balance.component.sass'],
+  standalone: false,
 })
 export class BalanceComponent implements OnInit {
 

@@ -7,6 +7,7 @@ import { CommodityGroupsService } from '@clematis-shared/shared-components';
   templateUrl: 'commodity-group-list.component.html',
   styleUrls: ['commodity-group-list.component.sass'],
   providers: [{ provide: 'searchService', useClass: CommodityGroupsService }],
+  standalone: false,
 })
 export class CommodityGroupListComponent implements OnInit {
   constructor(private title: Title) {}

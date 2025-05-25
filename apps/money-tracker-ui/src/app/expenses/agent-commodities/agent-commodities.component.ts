@@ -36,6 +36,7 @@ export const MY_FORMATS = {
   selector: 'app-agent-commodities',
   templateUrl: './agent-commodities.component.html',
   styleUrl: './agent-commodities.component.sass',
+  standalone: false,
 })
 export class AgentCommoditiesComponent implements OnInit {
   chart: any;

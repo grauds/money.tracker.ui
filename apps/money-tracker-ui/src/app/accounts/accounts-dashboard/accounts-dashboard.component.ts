@@ -16,6 +16,7 @@ import {
   selector: 'app-accounts-dashboard',
   templateUrl: './accounts-dashboard.component.html',
   styleUrls: ['./accounts-dashboard.component.sass'],
+  standalone: false,
 })
 export class AccountsDashboardComponent implements OnInit {
   chart: any;

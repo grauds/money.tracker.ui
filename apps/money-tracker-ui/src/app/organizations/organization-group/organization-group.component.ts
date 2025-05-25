@@ -28,6 +28,7 @@ import { Title } from '@angular/platform-browser';
   providers: [
     { provide: 'searchService', useClass: OrganizationGroupsService },
   ],
+  standalone: false,
 })
 export class OrganizationGroupComponent
   extends EntityComponent<OrganizationGroup>

@@ -61,6 +61,7 @@ export const MY_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class IncomeMonthlyComponent implements OnInit {
   chart: any;

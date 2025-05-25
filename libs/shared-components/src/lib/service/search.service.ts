@@ -2,8 +2,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import {
   PagedResourceCollection,
   Resource,
+  PagedGetOption
 } from '@lagoshny/ngx-hateoas-client';
-import { PagedGetOption } from '@lagoshny/ngx-hateoas-client/lib/model/declarations';
 import { EnvironmentService } from './environment.service';
 
 export type SearchPostProcessingHandler<T extends Resource> = (
@@ -11,7 +11,7 @@ export type SearchPostProcessingHandler<T extends Resource> = (
 ) => Observable<PagedResourceCollection<T>>;
 
 export abstract class SearchService<T extends Resource> {
-  
+
   private readonly statusDescription$ = new BehaviorSubject<string>('search');
 
   private searchPostProcessingHandler: SearchPostProcessingHandler<T> | null = null;
