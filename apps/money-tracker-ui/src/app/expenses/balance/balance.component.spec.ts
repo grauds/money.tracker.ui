@@ -4,7 +4,6 @@ import { of } from 'rxjs';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
-import { KeycloakService } from 'keycloak-angular';
 import {
   AccountsService,
   MoneyTypeService,
@@ -30,7 +29,6 @@ describe('BalanceComponent', () => {
         AccountsService,
         HttpClient,
         HttpHandler,
-        KeycloakService,
         MoneyTypeService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
       ],

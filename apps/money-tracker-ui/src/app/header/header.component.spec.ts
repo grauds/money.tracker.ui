@@ -2,16 +2,20 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { KeycloakService } from 'keycloak-angular';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 
 import { HeaderComponent } from './header.component';
 import { WorkspaceComponent } from '../workspace/workspace.component';
 
+import { MockKeycloak } from '../../mocks/mock_keycloak';
+import Keycloak from 'keycloak-js';
+
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
+
+  const keycloakServiceMock: MockKeycloak = new MockKeycloak();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -24,7 +28,9 @@ describe('HeaderComponent', () => {
         MatIconModule,
         MatListModule,
       ],
-      providers: [KeycloakService],
+      providers: [
+        { provide: Keycloak, useValue: keycloakServiceMock },
+      ],
     }).compileComponents();
   });
 

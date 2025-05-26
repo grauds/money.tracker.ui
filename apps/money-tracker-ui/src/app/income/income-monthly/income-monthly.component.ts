@@ -2,7 +2,6 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of, Subscription, switchMap } from 'rxjs';
-import { KeycloakService } from 'keycloak-angular';
 
 import {
   PagedResourceCollection,
@@ -80,18 +79,13 @@ export class IncomeMonthlyComponent implements OnInit {
 
   income: Array<IncomeMonthly> = [];
 
-  isLoggedIn = false;
-
   constructor(
-    protected readonly keycloak: KeycloakService,
     private readonly moneyTypeService: MoneyTypeService,
     private readonly incomeItemsService: IncomeItemsService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly title: Title
   ) {
-    this.isLoggedIn = this.keycloak.isLoggedIn();
-
     this.pageSubscription = route.queryParams.subscribe((queryParam: any) => {
       this.initMoneyType(queryParam['currency'], 'RUB').subscribe(
         (result: MoneyType) => {

@@ -6,6 +6,7 @@ import { CommonModule } from "@angular/common";
 
 import {
   KEYCLOAK_EVENT_SIGNAL,
+  KeycloakEvent,
   KeycloakEventType,
   ReadyArgs,
   typeEventArgs
@@ -39,14 +40,20 @@ export class AppComponent {
 
     // subscription to updates
     effect(() => {
-      const keycloakEvent = this.keycloakSignal();
-      this.isLoggedIn = typeEventArgs<ReadyArgs>(keycloakEvent.args);
+
+        const keycloakEvent: KeycloakEvent = this.keycloakSignal();
+
+        this.isLoggedIn = typeEventArgs<ReadyArgs>(keycloakEvent.args);
+        this.keycloak.loadUserProfile().then((profile) => {
+          this.userProfile = profile;
+        }).catch((error) => {
+          this.userProfile = undefined;
+          this.keycloak.login();
+        });
+
+        console.log(keycloakEvent);
 
         if (keycloakEvent.type == KeycloakEventType.AuthSuccess) {
-
-          this.keycloak.loadUserProfile().then((profile) => {
-            this.userProfile = profile;
-          });
 
           if (this.route.snapshot.queryParams['redirect']) {
             const params: HttpParams = Utils.moveQueryParametersFromRedirectUrl(
@@ -61,10 +68,12 @@ export class AppComponent {
              keycloakEvent.type == KeycloakEventType.AuthError
               ||
              keycloakEvent.type == KeycloakEventType.AuthLogout
+              ||
+             keycloakEvent.type == KeycloakEventType.TokenExpired
         ) {
 
           this.userProfile = undefined;
-          this.keycloak.login();
+          this.keycloak.logout();
 
         }
       }

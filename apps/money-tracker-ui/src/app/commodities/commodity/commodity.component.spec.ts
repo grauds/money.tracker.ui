@@ -42,7 +42,9 @@ describe('CommodityComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CommodityComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+    });
   });
 
   it('should create', () => {

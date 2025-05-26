@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { KeycloakService } from 'keycloak-angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import {
@@ -72,7 +71,6 @@ export class InOutListComponent implements OnInit {
 
   constructor(
     private inOutService: InOutService,
-    protected readonly keycloak: KeycloakService,
     private moneyTypeService: MoneyTypeService,
     private router: Router,
     private route: ActivatedRoute,
@@ -80,8 +78,6 @@ export class InOutListComponent implements OnInit {
     media: MediaMatcher,
     private breakpointObserver: BreakpointObserver
   ) {
-    this.isLoggedIn = this.keycloak.isLoggedIn();
-
     this.mobileQuery = media.matchMedia(Breakpoints.Handset);
     this._mobileQueryListener = () => {
       if (this.echartsInstance) {

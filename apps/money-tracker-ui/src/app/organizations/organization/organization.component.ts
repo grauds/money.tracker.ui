@@ -50,9 +50,8 @@ export class OrganizationComponent
 
   constructor(
     resourceService: HateoasResourceService,
-    private expenseItemsService: ExpenseItemsService,
-    private organizationsService: OrganizationsService,
-    private organizationGroupsService: OrganizationGroupsService,
+    private readonly organizationsService: OrganizationsService,
+    private readonly organizationGroupsService: OrganizationGroupsService,
     route: ActivatedRoute,
     router: Router,
     title: Title

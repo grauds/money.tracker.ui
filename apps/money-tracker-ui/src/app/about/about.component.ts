@@ -33,12 +33,12 @@ export class AboutComponent implements OnInit {
     effect(() => {
       const keycloakEvent = this.keycloakSignal();
 
-      if (keycloakEvent.type === KeycloakEventType.Ready) {
-        this.isLoggedIn = typeEventArgs<ReadyArgs>(keycloakEvent.args);
-      }
-
-      if (keycloakEvent.type === KeycloakEventType.AuthLogout) {
-        this.isLoggedIn = false;
+      if (keycloakEvent !== null) {
+        if (keycloakEvent.type === KeycloakEventType.Ready) {
+          this.isLoggedIn = typeEventArgs<ReadyArgs>(keycloakEvent.args);
+        } else if (keycloakEvent.type === KeycloakEventType.AuthLogout) {
+          this.isLoggedIn = false;
+        }
       }
     });
   }

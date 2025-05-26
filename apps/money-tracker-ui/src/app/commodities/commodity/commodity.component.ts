@@ -64,9 +64,8 @@ export class CommodityComponent
 
   constructor(
     resourceService: HateoasResourceService,
-    private expenseItemsService: ExpenseItemsService,
-    private commodityService: CommoditiesService,
-    private commodityGroupService: CommodityGroupService,
+    private readonly commodityService: CommoditiesService,
+    private readonly commodityGroupService: CommodityGroupService,
     route: ActivatedRoute,
     router: Router,
     title: Title

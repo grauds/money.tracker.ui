@@ -1,4 +1,9 @@
-import { enableProdMode, importProvidersFrom } from '@angular/core';
+import {
+  enableProdMode,
+  importProvidersFrom,
+  provideZoneChangeDetection
+} from "@angular/core";
+
 import { environment } from './environments/environment';
 import { bootstrapApplication } from '@angular/platform-browser';
 
@@ -10,13 +15,19 @@ import {
   ENVIRONMENT
 } from '@clematis-shared/shared-components';
 
-import { provideKeycloak } from 'keycloak-angular';
+import {
+  provideKeycloak,
+  createInterceptorCondition,
+  IncludeBearerTokenCondition,
+  INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
+  includeBearerTokenInterceptor
+} from "keycloak-angular";
 
 import { ContentLoaderModule } from '@ngneat/content-loader';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LayoutModule } from '@angular/cdk/layout';
 
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -52,6 +63,11 @@ const mapConfig: YaConfig = {
 if (environment.production) {
   enableProdMode();
 }
+
+const urlCondition = createInterceptorCondition<IncludeBearerTokenCondition>({
+  urlPattern: /^(.*\/api\/.*)?$/i,
+  bearerPrefix: 'Bearer'
+});
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -100,11 +116,17 @@ bootstrapApplication(AppComponent, {
         silentCheckSsoRedirectUri: `${window.location.origin}/assets/silent-check-sso.html`
       }
     }),
+    {
+      provide: INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
+      useValue: [urlCondition]
+    },
+    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     {
       provide: ENVIRONMENT,
       useValue: environment,
     },
+    provideHttpClient(withInterceptors([includeBearerTokenInterceptor]))
   ],
 }).catch((err) => console.error(err));
 

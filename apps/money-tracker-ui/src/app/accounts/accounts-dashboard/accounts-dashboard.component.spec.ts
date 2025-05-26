@@ -4,7 +4,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
-import { KeycloakService } from 'keycloak-angular';
 import { of } from 'rxjs';
 
 import { AccountsDashboardComponent } from './accounts-dashboard.component';
@@ -37,7 +36,6 @@ describe('AccountsDashboardComponent', () => {
         AccountsService,
         HttpClient,
         HttpHandler,
-        KeycloakService,
         MoneyTypeService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
       ],

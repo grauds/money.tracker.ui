@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WorkspaceComponent } from './workspace.component';
-import { KeycloakService } from 'keycloak-angular';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
 describe('WorkspaceComponent', () => {
@@ -16,7 +15,6 @@ describe('WorkspaceComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [WorkspaceComponent],
       providers: [
-        KeycloakService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
       ],
     }).compileComponents();

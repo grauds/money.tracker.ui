@@ -6,7 +6,6 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { of } from 'rxjs';
 
 import { ExchangeComponent } from './exchange.component';
-import { KeycloakService } from 'keycloak-angular';
 import {
   MoneyTypeService,
   SharedComponentsModule,
@@ -30,7 +29,6 @@ describe('ExchangeComponent', () => {
       providers: [
         HttpClient,
         HttpHandler,
-        KeycloakService,
         MoneyTypeService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
       ],
