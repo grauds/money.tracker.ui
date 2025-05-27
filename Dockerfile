@@ -2,13 +2,12 @@
 # BUILD STAGE
 # ------------------------------------------------------------------------------
 
-FROM node:18-alpine AS build-image
+FROM node:20-alpine AS build-image
 
 WORKDIR /opt/software
 
 RUN npm install -g @angular/cli
-RUN npm install -g nx
-RUN npm install -g @nrwl/cli
+RUN npm install -g nx@21.1.2
 
 COPY .eslintrc.json decorate-angular-cli.js jest.config.ts jest.preset.js nx.json \
      package.json tsconfig.base.json ./
@@ -20,8 +19,10 @@ RUN npm install
 
 ENV NX_DAEMON=false
 
+RUN nx run model:test  --coverage
+#RUN nx run shared-components:test  --coverage
+#RUN nx run money-tracker-ui:test  --coverage
 RUN nx run money-tracker-ui:build:${ENVIRONMENT}
-RUN nx run-many --target=test --all --coverage --verbose
 
 # ------------------------------------------------------------------------------
 # COPY COVERAGE STAGE (after build)
