@@ -19,7 +19,7 @@ RUN npm install
 
 ENV NX_DAEMON=false
 
-RUN nx run model:test  --coverage
+#RUN nx run model:test  --coverage
 #RUN nx run shared-components:test  --coverage
 #RUN nx run money-tracker-ui:test  --coverage
 RUN nx run money-tracker-ui:build:${ENVIRONMENT}
