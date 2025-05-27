@@ -18,7 +18,7 @@ export default {
     }]*/
   },
   transformIgnorePatterns: [
-    'node_modules/(?!.*\\.mjs$|lodash-es|uri-templates-es)',
+    'node_modules/(?!.*\\.mjs$|lodash-es|uri-templates-es|keycloak.js)',
   ],
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',

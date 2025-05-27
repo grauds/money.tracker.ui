@@ -3,7 +3,6 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, of, Subscription, switchMap } from 'rxjs';
 
-import { KeycloakService } from 'keycloak-angular';
 import { PagedResourceCollection } from '@lagoshny/ngx-hateoas-client';
 
 import { AgentCommodities, MoneyType, Page } from '@clematis-shared/model';
@@ -36,13 +35,12 @@ export const MY_FORMATS = {
   selector: 'app-agent-commodities',
   templateUrl: './agent-commodities.component.html',
   styleUrl: './agent-commodities.component.sass',
+  standalone: false,
 })
 export class AgentCommoditiesComponent implements OnInit {
   chart: any;
 
   pageSubscription: Subscription;
-
-  isLoggedIn = false;
 
   loading = false;
 
@@ -61,7 +59,6 @@ export class AgentCommoditiesComponent implements OnInit {
   checkSubscription = this.showGroupsEvent.asObservable();
 
   constructor(
-    protected readonly keycloak: KeycloakService,
     private readonly moneyTypeService: MoneyTypeService,
     private readonly expenseItemsService: ExpenseItemsService,
     private readonly router: Router,
@@ -76,8 +73,6 @@ export class AgentCommoditiesComponent implements OnInit {
         }
       );
     });
-
-    this.isLoggedIn = this.keycloak.isLoggedIn();
 
     this.checkSubscription.subscribe(() => {
       if (this.currency) {

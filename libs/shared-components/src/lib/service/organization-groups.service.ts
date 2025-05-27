@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { OrganizationGroup } from '@clematis-shared/model';
-import { PagedGetOption } from '@lagoshny/ngx-hateoas-client/lib/model/declarations';
 import {
   HateoasResourceService,
   PagedResourceCollection,
   ResourceCollection,
+  PagedGetOption
 } from '@lagoshny/ngx-hateoas-client';
 
 import { SearchService } from './search.service';

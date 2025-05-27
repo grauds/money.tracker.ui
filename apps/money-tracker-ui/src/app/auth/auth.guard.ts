@@ -1,42 +1,35 @@
-import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
-  Router,
+  CanActivateFn,
   RouterStateSnapshot,
+  UrlTree,
 } from '@angular/router';
-import { KeycloakAuthGuard, KeycloakService } from 'keycloak-angular';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class AuthGuard extends KeycloakAuthGuard {
-  constructor(
-    protected override router: Router,
-    protected override keycloakAngular: KeycloakService
-  ) {
-    super(router, keycloakAngular);
-  }
+import { AuthGuardData, createAuthGuard } from "keycloak-angular";
 
-  public async isAccessAllowed(
+const isAccessAllowed =  async (
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Promise<boolean> {
-    // Force the user to log in if currently unauthenticated.
-    if (!this.authenticated) {
-      await this.keycloakAngular.login({
-        redirectUri: window.location.origin + '/about?redirect=' + state.url,
-      });
-    }
+    state: RouterStateSnapshot,
+    authData: AuthGuardData
+  ): Promise<boolean | UrlTree> => {
+
+    const { authenticated, grantedRoles } = authData;
 
     // Get the roles required from the route.
-    const requiredRoles: [] = [];
+    const requiredRole = route.data['role'];
 
-    // Allow the user to proceed if no additional roles are required to access the route.
-    if (!(requiredRoles instanceof Array) || requiredRoles.length === 0) {
-      return true;
+    // Allow the user to proceed if no additional roles
+    // are required to access the route.
+    if (!requiredRole) {
+      return authenticated;
     }
 
-    // Allow the user to proceed if all the required roles are present.
-    return requiredRoles.every((role) => this.roles.includes(role));
+    const hasRequiredRole = (role: string): boolean =>
+        Object.values(grantedRoles.resourceRoles).some((roles) => roles.includes(role));
+
+    // Allow the user to proceed if all
+    // the required roles are present.
+    return authenticated && hasRequiredRole(requiredRole);
   }
-}
+
+export const canActivate = createAuthGuard<CanActivateFn>(isAccessAllowed);

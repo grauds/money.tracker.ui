@@ -5,12 +5,12 @@ import {
   HateoasResourceService,
   PagedResourceCollection,
   ResourceCollection,
+  PagedGetOption
 } from '@lagoshny/ngx-hateoas-client';
 
 import { SearchService } from './search.service';
 import { EnvironmentService } from './environment.service';
 import { Observable, of } from 'rxjs';
-import { PagedGetOption } from '@lagoshny/ngx-hateoas-client/lib/model/declarations';
 
 @Injectable()
 export class CommodityGroupService extends SearchService<CommodityGroup> {

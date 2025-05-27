@@ -48,6 +48,7 @@ import { ErrorDialogComponent } from './components/error-dialog/error-dialog.com
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { DateRangeSelectorComponent } from './components/date-range-selector/date-range-selector.component';
 import { StatsTotalsComponent } from './components/stats-totals/stats-totals.component';
+import { ErrorMessageComponent } from "./components/error-message/error-message.component";
 
 @NgModule({
   imports: [
@@ -69,6 +70,7 @@ import { StatsTotalsComponent } from './components/stats-totals/stats-totals.com
     MatOptionModule,
     MatSelectModule,
     ReactiveFormsModule,
+    ErrorMessageComponent
   ],
   exports: [
     EntityElementComponent,
@@ -88,7 +90,6 @@ import { StatsTotalsComponent } from './components/stats-totals/stats-totals.com
     EntityListFilteredComponent,
     ErrorDialogComponent,
     PageNotFoundComponent,
-    MoneyTypeSelectorComponent,
     MoneyTypeSelectorComponent,
     DateRangeSelectorComponent,
     StatsTotalsComponent,

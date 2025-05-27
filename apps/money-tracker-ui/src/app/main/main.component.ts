@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MoneyTypes } from '@clematis-shared/model';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 import { Subscription } from 'rxjs';
-import { KeycloakService } from 'keycloak-angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
@@ -10,9 +9,9 @@ import { Title } from '@angular/platform-browser';
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.sass'],
+  standalone: false,
 })
 export class MainComponent implements OnInit {
-  isLoggedIn?: boolean;
 
   // total number of elements
   total = 0;
@@ -36,12 +35,10 @@ export class MainComponent implements OnInit {
 
   constructor(
     private resourceService: HateoasResourceService,
-    protected readonly keycloak: KeycloakService,
     private router: Router,
     private route: ActivatedRoute,
     private title: Title
   ) {
-    this.isLoggedIn = this.keycloak.isLoggedIn();
 
     this.pageSubscription = route.queryParams.subscribe((queryParam: any) => {
       const page = Number.parseInt(queryParam['page'], 10);

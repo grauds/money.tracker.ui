@@ -6,11 +6,11 @@ import {
   MoneyType,
   Page,
 } from '@clematis-shared/model';
-import { PagedGetOption } from '@lagoshny/ngx-hateoas-client/lib/model/declarations';
 import {
   HateoasResourceService,
   PagedResourceCollection,
   ResourceCollection,
+  PagedGetOption
 } from '@lagoshny/ngx-hateoas-client';
 import { Observable, of, switchMap } from 'rxjs';
 import { SearchService } from './search.service';

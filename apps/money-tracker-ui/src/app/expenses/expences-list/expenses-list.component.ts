@@ -21,6 +21,7 @@ const moment = _rollupMoment || _moment;
   templateUrl: 'expenses-list.component.html',
   styleUrls: ['expenses-list.component.sass'],
   providers: [{ provide: 'searchService', useClass: ExpenseItemsService }],
+  standalone: false,
 })
 export class ExpensesListComponent implements OnInit {
   displayedColumns: string[] = [

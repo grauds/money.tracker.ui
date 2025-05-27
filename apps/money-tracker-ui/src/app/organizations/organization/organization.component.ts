@@ -26,6 +26,7 @@ import { formatDate } from '@angular/common';
   templateUrl: './organization.component.html',
   styleUrls: ['./organization.component.sass'],
   providers: [{ provide: 'searchService', useClass: ExpenseItemsService }],
+  standalone: false,
 })
 export class OrganizationComponent
   extends EntityComponent<Organization>
@@ -49,9 +50,8 @@ export class OrganizationComponent
 
   constructor(
     resourceService: HateoasResourceService,
-    private expenseItemsService: ExpenseItemsService,
-    private organizationsService: OrganizationsService,
-    private organizationGroupsService: OrganizationGroupsService,
+    private readonly organizationsService: OrganizationsService,
+    private readonly organizationGroupsService: OrganizationGroupsService,
     route: ActivatedRoute,
     router: Router,
     title: Title

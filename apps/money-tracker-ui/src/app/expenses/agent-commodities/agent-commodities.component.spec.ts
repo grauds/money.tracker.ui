@@ -6,7 +6,6 @@ import {
   MoneyTypeService,
   ExpenseItemsService,
 } from '@clematis-shared/shared-components';
-import { KeycloakService } from 'keycloak-angular';
 import { of } from 'rxjs';
 
 describe('AgentCommoditiesComponent', () => {
@@ -27,7 +26,6 @@ describe('AgentCommoditiesComponent', () => {
         HttpClient,
         HttpHandler,
         MoneyTypeService,
-        KeycloakService,
         ExpenseItemsService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
       ],

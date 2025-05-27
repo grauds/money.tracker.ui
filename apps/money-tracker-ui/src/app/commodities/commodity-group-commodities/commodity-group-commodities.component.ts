@@ -8,6 +8,7 @@ import { Entity } from '@clematis-shared/model';
   templateUrl: './commodity-group-commodities.component.html',
   styleUrls: ['./commodity-group-commodities.component.sass'],
   providers: [{ provide: 'searchService', useClass: CommoditiesService }],
+  standalone: false,
 })
 export class CommodityGroupCommoditiesComponent {
   @Input() id = '';

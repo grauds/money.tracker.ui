@@ -5,8 +5,8 @@ import {
   HateoasResourceService,
   PagedResourceCollection,
   ResourceCollection,
+  PagedGetOption
 } from '@lagoshny/ngx-hateoas-client';
-import { PagedGetOption } from '@lagoshny/ngx-hateoas-client/lib/model/declarations';
 
 import {
   Entity,

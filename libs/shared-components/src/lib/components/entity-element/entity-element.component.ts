@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
   selector: 'app-entity-element',
   templateUrl: './entity-element.component.html',
   styleUrls: ['./entity-element.component.sass'],
+  standalone: false
 })
 export class EntityElementComponent<T extends Entity> implements OnInit {
   @Input() entity?: T;

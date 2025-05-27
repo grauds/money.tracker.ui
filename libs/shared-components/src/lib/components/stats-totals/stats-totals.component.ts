@@ -4,6 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'app-stats-totals-component',
   templateUrl: './stats-totals.component.html',
   styleUrl: './stats-totals.component.css',
+  standalone: false
 })
 export class StatsTotalsComponent {
   @Input() title: string | undefined;

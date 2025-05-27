@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AccountBalance, MoneyType } from '@clematis-shared/model';
 import { HttpClient } from '@angular/common/http';
-import { PagedGetOption } from '@lagoshny/ngx-hateoas-client/lib/model/declarations';
 import {
   HateoasResourceService,
   PagedResourceCollection,
   ResourceCollection,
+  PagedGetOption
 } from '@lagoshny/ngx-hateoas-client';
 import { SearchService } from './search.service';
 import { EnvironmentService } from './environment.service';

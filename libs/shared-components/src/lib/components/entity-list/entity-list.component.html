@@ -2,9 +2,7 @@
 </mat-progress-bar>
 
 <div *ngIf="error">
-  <div class="alert alert-danger">
-    {{ error }}
-  </div>
+  <app-error-message [error]="error"></app-error-message>
 </div>
 
 <div *ngIf="!error">

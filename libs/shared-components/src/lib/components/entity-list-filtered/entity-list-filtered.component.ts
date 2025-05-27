@@ -26,6 +26,7 @@ import { MatSelectChange } from '@angular/material/select';
   selector: 'app-search',
   templateUrl: './entity-list-filtered.component.html',
   styleUrls: ['./entity-list-filtered.component.sass'],
+  standalone: false
 })
 export class EntityListFilteredComponent<T extends Entity>
   implements AfterViewInit

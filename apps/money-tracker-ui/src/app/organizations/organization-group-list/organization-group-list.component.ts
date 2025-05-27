@@ -9,6 +9,7 @@ import { OrganizationGroupsService } from '@clematis-shared/shared-components';
   providers: [
     { provide: 'searchService', useClass: OrganizationGroupsService },
   ],
+  standalone: false,
 })
 export class OrganizationGroupListComponent implements OnInit {
   constructor(private title: Title) {}

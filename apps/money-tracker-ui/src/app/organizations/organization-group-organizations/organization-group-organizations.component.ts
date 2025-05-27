@@ -8,6 +8,7 @@ import { OrganizationsService } from '@clematis-shared/shared-components';
   templateUrl: './organization-group-organizations.component.html',
   styleUrls: ['./organization-group-organizations.component.sass'],
   providers: [{ provide: 'searchService', useClass: OrganizationsService }],
+  standalone: false,
 })
 export class OrganizationGroupOrganizationsComponent {
   @Input() id = '';

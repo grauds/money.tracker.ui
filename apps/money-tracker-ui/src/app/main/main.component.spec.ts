@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MainComponent } from './main.component';
 import { HttpClient, HttpHandler } from '@angular/common/http';
-import { KeycloakService } from 'keycloak-angular';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
 
@@ -23,7 +22,6 @@ describe('MainComponent', () => {
       providers: [
         HttpClient,
         HttpHandler,
-        KeycloakService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
       ],
     }).compileComponents();

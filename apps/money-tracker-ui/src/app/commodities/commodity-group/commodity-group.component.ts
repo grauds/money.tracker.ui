@@ -24,6 +24,7 @@ import { Utils } from '@clematis-shared/model';
   templateUrl: './commodity-group.component.html',
   styleUrls: ['./commodity-group.component.sass'],
   providers: [{ provide: 'searchService', useClass: CommodityGroupService }],
+  standalone: false,
 })
 export class CommodityGroupComponent
   extends EntityComponent<CommodityGroup>

@@ -5,6 +5,7 @@ import { MoneyType } from '@clematis-shared/model';
   selector: 'app-money-type-selector',
   templateUrl: './money-type-selector.component.html',
   styleUrls: ['./money-type-selector.component.sass'],
+  standalone: false
 })
 export class MoneyTypeSelectorComponent {
   @Input() label = '';

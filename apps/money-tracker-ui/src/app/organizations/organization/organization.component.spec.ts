@@ -39,7 +39,9 @@ describe('OrganizationComponent', () => {
 
     fixture = TestBed.createComponent(OrganizationComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+    });
   });
 
   it('should create', () => {

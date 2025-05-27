@@ -13,4 +13,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: docker build . -t money.tracker.ui:$(date +%s) --build-arg="ENVIRONMENT=demo" -f Dockerfile
+        run: docker build . -m 4g -t money.tracker.ui:$(date +%s) --build-arg="ENVIRONMENT=demo" -f Dockerfile

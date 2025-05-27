@@ -1,13 +1,8 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule, Routes } from '@angular/router';
-import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
-import { initializeKeycloak } from './init/keycloak-init.factory';
 import { ContentLoaderModule } from '@ngneat/content-loader';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularYandexMapsModule, YaConfig } from 'angular8-yandex-maps';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -37,8 +32,6 @@ import {
   NgxHateoasClientModule,
 } from '@lagoshny/ngx-hateoas-client';
 
-import { AppComponent } from './app.component';
-import { AuthGuard } from './auth/auth.guard';
 import { HeaderComponent } from './header/header.component';
 import { MainComponent } from './main/main.component';
 
@@ -57,7 +50,6 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { OrganizationComponent } from './organizations/organization/organization.component';
 import { OrganizationGroupComponent } from './organizations/organization-group/organization-group.component';
 import { OrganizationGroupListComponent } from './organizations/organization-group-list/organization-group-list.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { AboutComponent } from './about/about.component';
 import { MatTableModule } from '@angular/material/table';
@@ -72,129 +64,26 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import {
-  ENVIRONMENT,
   EnvironmentService,
   SharedComponentsModule,
-  PageNotFoundComponent,
 } from '@clematis-shared/shared-components';
 
 import { AccountsDashboardComponent } from './accounts/accounts-dashboard/accounts-dashboard.component';
 import { LastCommoditiesListComponent } from './expenses/last-commodities-list/last-commodities-list.component';
 import { ExchangeComponent } from './accounts/exchange/exchange.component';
 import { ExchangeEventElementComponent } from './accounts/exchange-event-element/exchange-event-element.component';
-import { environment } from '../environments/environment';
 import { InOutListComponent } from './expenses/in-out-list/in-out-list.component';
 import { BalanceComponent } from './expenses/balance/balance.component';
 import { CommodityGroupCommoditiesComponent } from './commodities/commodity-group-commodities/commodity-group-commodities.component';
 import { OrganizationGroupOrganizationsComponent } from './organizations/organization-group-organizations/organization-group-organizations.component';
 import { IncomeMonthlyComponent } from './income/income-monthly/income-monthly.component';
 import { AgentCommoditiesComponent } from './expenses/agent-commodities/agent-commodities.component';
-
-const routes: Routes = [
-  {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: '/about',
-  },
-  {
-    path: 'about',
-    pathMatch: 'full',
-    component: AboutComponent,
-  },
-  {
-    path: 'main',
-    canActivate: [AuthGuard],
-    component: MainComponent,
-  },
-  {
-    path: 'balance',
-    canActivate: [AuthGuard],
-    component: BalanceComponent,
-  },
-  {
-    path: '',
-    canActivate: [AuthGuard],
-    component: WorkspaceComponent,
-    children: [
-      {
-        path: 'accounts',
-        component: AccountsDashboardComponent,
-        pathMatch: 'full',
-      },
-      {
-        path: 'commodities/:id',
-        component: CommodityComponent,
-      },
-      {
-        path: 'commodities',
-        component: CommoditiesListComponent,
-        pathMatch: 'full',
-      },
-      {
-        path: 'commodityGroups',
-        component: CommodityGroupListComponent,
-        pathMatch: 'full',
-      },
-      {
-        path: 'lastCommodities',
-        component: LastCommoditiesListComponent,
-        pathMatch: 'full',
-      },
-      {
-        path: 'commodityGroups/:id',
-        component: CommodityGroupComponent,
-      },
-      {
-        path: 'expenses',
-        component: ExpensesListComponent,
-      },
-      {
-        path: 'income',
-        component: IncomeMonthlyComponent,
-      },
-      {
-        path: 'commoditiesAgents',
-        component: AgentCommoditiesComponent,
-      },
-      {
-        path: 'inOut',
-        component: InOutListComponent,
-      },
-      {
-        path: 'exchange',
-        component: ExchangeComponent,
-      },
-      {
-        path: 'organizations',
-        component: OrganizationsListComponent,
-        pathMatch: 'full',
-      },
-      {
-        path: 'organizations/:id',
-        component: OrganizationComponent,
-      },
-      {
-        path: 'organizationGroups',
-        component: OrganizationGroupListComponent,
-        pathMatch: 'full',
-      },
-      {
-        path: 'organizationGroups/:id',
-        component: OrganizationGroupComponent,
-      },
-    ],
-  },
-  { path: '**', component: PageNotFoundComponent },
-];
-
-const mapConfig: YaConfig = {
-  apikey: 'API_KEY',
-  lang: 'en_US',
-};
+import { AngularYandexMapsModule } from "angular8-yandex-maps";
+import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
   declarations: [
-    AppComponent,
     HeaderComponent,
     MainComponent,
     CommodityGroupListComponent,
@@ -217,30 +106,26 @@ const mapConfig: YaConfig = {
     CommodityGroupCommoditiesComponent,
     OrganizationGroupOrganizationsComponent,
     IncomeMonthlyComponent,
-    AgentCommoditiesComponent,
+    AgentCommoditiesComponent
   ],
   imports: [
     HttpClientModule,
-    BrowserModule,
-    FontAwesomeModule,
-    KeycloakAngularModule,
-    RouterModule.forRoot(routes),
-    NgxHateoasClientModule.forRoot(),
+    AngularYandexMapsModule,
+    CommonModule,
     ContentLoaderModule,
+    FontAwesomeModule,
     FormsModule,
-    AngularYandexMapsModule.forRoot(mapConfig),
     NgxEchartsModule.forRoot({
-      echarts: () => import('echarts'),
+      echarts: () => import("echarts")
     }),
-    BrowserAnimationsModule,
+    NgxHateoasClientModule.forRoot(),
+    LayoutModule,
     MatToolbarModule,
     MatSidenavModule,
     MatButtonModule,
     MatListModule,
     MatIconModule,
-    LayoutModule,
     MatPaginatorModule,
-    SharedComponentsModule,
     MatTableModule,
     MatGridListModule,
     MatInputModule,
@@ -250,27 +135,18 @@ const mapConfig: YaConfig = {
     MatSortModule,
     MatDatepickerModule,
     MatMomentDateModule,
-    ReactiveFormsModule,
     MatProgressBarModule,
     MatCheckboxModule,
+    ReactiveFormsModule,
+    SharedComponentsModule,
+    RouterLink,
+    RouterOutlet,
+    RouterLinkActive
   ],
-  providers: [
-    {
-      provide: KeycloakService,
-      useClass: KeycloakService,
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeKeycloak,
-      multi: true,
-      deps: [KeycloakService, EnvironmentService],
-    },
-    {
-      provide: ENVIRONMENT,
-      useValue: environment,
-    },
+  exports: [
+    HeaderComponent
   ],
-  bootstrap: [AppComponent],
+  providers: []
 })
 export class AppModule {
   constructor(
@@ -301,3 +177,5 @@ export class AppModule {
     });
   }
 }
+
+export class AppComponentsModule {}

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { KeycloakService } from 'keycloak-angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import {
@@ -28,6 +27,7 @@ import {
   selector: 'app-in-out-list',
   templateUrl: './in-out-list.component.html',
   styleUrls: ['./in-out-list.component.sass'],
+  standalone: false,
 })
 export class InOutListComponent implements OnInit {
   pageSubscription: Subscription;
@@ -71,7 +71,6 @@ export class InOutListComponent implements OnInit {
 
   constructor(
     private inOutService: InOutService,
-    protected readonly keycloak: KeycloakService,
     private moneyTypeService: MoneyTypeService,
     private router: Router,
     private route: ActivatedRoute,
@@ -79,8 +78,6 @@ export class InOutListComponent implements OnInit {
     media: MediaMatcher,
     private breakpointObserver: BreakpointObserver
   ) {
-    this.isLoggedIn = this.keycloak.isLoggedIn();
-
     this.mobileQuery = media.matchMedia(Breakpoints.Handset);
     this._mobileQueryListener = () => {
       if (this.echartsInstance) {

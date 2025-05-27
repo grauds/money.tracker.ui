@@ -16,6 +16,6 @@ export class EnvironmentService {
   }
 
   getValue(key: string, defaultValue?: any): any {
-    return this.environment[key] || defaultValue;
+    return this.environment[key] ?? defaultValue;
   }
 }

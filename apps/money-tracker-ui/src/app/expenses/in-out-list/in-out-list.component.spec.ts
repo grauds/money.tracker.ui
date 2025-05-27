@@ -6,7 +6,6 @@ import {
   MoneyTypeService,
 } from '@clematis-shared/shared-components';
 import { HttpClient, HttpHandler } from '@angular/common/http';
-import { KeycloakService } from 'keycloak-angular';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { of } from 'rxjs';
@@ -29,7 +28,6 @@ describe('InOutListComponent', () => {
         InOutService,
         HttpClient,
         HttpHandler,
-        KeycloakService,
         MediaMatcher,
         MoneyTypeService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },

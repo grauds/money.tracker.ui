@@ -3,8 +3,8 @@ import { Commodity, MoneyTypes } from '@clematis-shared/model';
 import {
   HateoasResourceService,
   PagedResourceCollection,
+  PagedGetOption
 } from '@lagoshny/ngx-hateoas-client';
-import { PagedGetOption } from '@lagoshny/ngx-hateoas-client/lib/model/declarations';
 import { Observable, of } from 'rxjs';
 import { SearchService } from './search.service';
 import { HttpClient } from '@angular/common/http';

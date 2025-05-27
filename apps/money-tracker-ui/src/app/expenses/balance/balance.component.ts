@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { catchError, of, Subscription, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { KeycloakService } from 'keycloak-angular';
 
 import {
   HateoasResourceService,
@@ -19,12 +18,11 @@ import { MoneyType, MonthlyDelta } from '@clematis-shared/model';
   selector: 'app-balance',
   templateUrl: './balance.component.html',
   styleUrls: ['./balance.component.sass'],
+  standalone: false,
 })
 export class BalanceComponent implements OnInit {
 
   chart: any;
-
-  isLoggedIn = false;
 
   // total number of elements
   total = 0;
@@ -51,15 +49,12 @@ export class BalanceComponent implements OnInit {
 
   constructor(
     private accountsService: AccountsService,
-    protected readonly keycloak: KeycloakService,
     private resourceService: HateoasResourceService,
     private moneyTypeService: MoneyTypeService,
     private router: Router,
     private route: ActivatedRoute,
     private title: Title
   ) {
-    this.isLoggedIn = this.keycloak.isLoggedIn();
-
     this.pageSubscription = route.queryParams.subscribe((queryParam: any) => {
       const page = Number.parseInt(queryParam['page'], 10);
       this.n = isNaN(page) ? undefined : page;

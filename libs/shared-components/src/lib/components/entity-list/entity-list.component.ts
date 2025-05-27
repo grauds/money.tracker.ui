@@ -20,15 +20,17 @@ import { Entity, SearchRequest } from '@clematis-shared/model';
 import {
   PagedResourceCollection,
   Sort as RestSort,
-  SortOrder,
+  SortOrder
 } from '@lagoshny/ngx-hateoas-client';
-import { PageParam } from '@lagoshny/ngx-hateoas-client/lib/model/declarations';
+//import { PageParam } from '@lagoshny/ngx-hateoas-client/lib/model/declarations';
+
 import { SearchService } from '../../service/search.service';
 
 @Component({
   selector: 'app-entity-list',
   templateUrl: './entity-list.component.html',
   styleUrls: ['./entity-list.component.sass'],
+  standalone: false
 })
 export class EntityListComponent<T extends Entity> implements OnInit {
   @Input() resultItemTemplate: TemplateRef<any> | undefined;
@@ -178,6 +180,8 @@ export class EntityListComponent<T extends Entity> implements OnInit {
         error: (err: Error) => {
           this.error = err.message;
           this.entities$.error(err);
+          this.loading$.next(false);
+          throw new Error(err.message);
         },
         complete: () => {
           this.entities$.complete();
@@ -228,7 +232,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     };
   }
 
-  getPageParams(): PageParam {
+  getPageParams() {
     return {
       page: this.n,
       size: this.limit,
