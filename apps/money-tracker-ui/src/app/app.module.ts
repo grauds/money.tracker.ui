@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ContentLoaderModule } from '@ngneat/content-loader';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -33,7 +32,6 @@ import {
   NgxHateoasClientModule,
 } from '@lagoshny/ngx-hateoas-client';
 
-import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { MainComponent } from './main/main.component';
 
@@ -52,7 +50,6 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { OrganizationComponent } from './organizations/organization/organization.component';
 import { OrganizationGroupComponent } from './organizations/organization-group/organization-group.component';
 import { OrganizationGroupListComponent } from './organizations/organization-group-list/organization-group-list.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { AboutComponent } from './about/about.component';
 import { MatTableModule } from '@angular/material/table';
