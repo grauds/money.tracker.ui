@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "typeRoots": ["./types", "./node_modules/@types"],
     "rootDir": ".",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
@@ -11,13 +12,13 @@
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "bundler",
-    "emitDecoratorMetadata": true,
+    "isolatedModules": true,
+    "moduleResolution": "nodenext",
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022",
+    "module": "nodenext",
     "lib": ["es2021", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
@@ -35,8 +36,7 @@
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true,
-    "compilationMode": "partial"
+    "strictTemplates": true
   },
   "exclude": ["node_modules", "tmp"]
 }

@@ -1,35 +1,63 @@
 # ------------------------------------------------------------------------------
-# BUILD STAGE
+# TEST STAGE
 # ------------------------------------------------------------------------------
 
-FROM node:20-alpine AS build-image
+FROM node:22 AS test-image
 
 WORKDIR /opt/software
 
 RUN npm install -g @angular/cli
 RUN npm install -g nx@21.1.2
 
-COPY .eslintrc.json decorate-angular-cli.js jest.config.ts jest.preset.js nx.json \
-     package.json tsconfig.base.json ./
+COPY .babelrc .eslintignore .eslintrc.json decorate-angular-cli.js jest.config.ts jest.preset.js nx.json \
+     package.json package-lock.json tsconfig.base.json ./
+
+RUN npm install
 
 COPY apps apps
 COPY libs libs
 
+ENV NX_DAEMON=false
+
+RUN nx run-many --target=test --all --coverage --runInBand
+
+
+# ------------------------------------------------------------------------------
+# BUILD STAGE
+# ------------------------------------------------------------------------------
+
+FROM node:22 AS build-image
+
+WORKDIR /opt/software
+
+RUN npm install -g @angular/cli
+RUN npm install -g nx@21.1.2
+
+COPY .babelrc .eslintignore .eslintrc.json decorate-angular-cli.js jest.config.ts jest.preset.js nx.json \
+     package.json package-lock.json tsconfig.base.json ./
+
 RUN npm install
+
+COPY apps apps
+COPY libs libs
 
 ENV NX_DAEMON=false
 
-#RUN nx run model:test  --coverage
-#RUN nx run shared-components:test  --coverage
-#RUN nx run money-tracker-ui:test  --coverage
 RUN nx run money-tracker-ui:build:${ENVIRONMENT}
+
+# ------------------------------------------------------------------------------
+# DEBUG STAGE (after build)
+# ------------------------------------------------------------------------------
+
+#FROM build-image AS debug
+#CMD ["/bin/sh"]
 
 # ------------------------------------------------------------------------------
 # COPY COVERAGE STAGE (after build)
 # ------------------------------------------------------------------------------
 
 FROM scratch AS test-out
-COPY --from=build-image  /opt/software/coverage .
+COPY --from=test-image  /opt/software/coverage .
 
 # ------------------------------------------------------------------------------
 # RUNTIME STAGE (deployment)
@@ -54,7 +82,7 @@ ARG SOURCE_PATH=$WORK_DIR/dist/apps/$APP_NAME
 ARG APP_ROOT=/var/www/$APP_NAME
 
 RUN mkdir -p "$APP_ROOT"
-COPY --from=0 $SOURCE_PATH $APP_ROOT
+COPY --from=build-image $SOURCE_PATH $APP_ROOT
 # COPY ./apps/$APP_NAME/jenkins/nginx-default.conf /etc/nginx/conf.d/default.conf
 
 RUN ls -l "$APP_ROOT"

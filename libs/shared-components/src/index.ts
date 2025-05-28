@@ -4,7 +4,7 @@ export {
   EnvironmentService,
   ENVIRONMENT,
 } from './lib/service/environment.service';
-export { EnvironmentInterface } from './lib/service/environment-interface';
+export type { EnvironmentInterface } from './lib/service/environment-interface';
 
 export {} from './lib/components/page-not-found';
 
@@ -34,4 +34,4 @@ export { LastCommodityService } from './lib/service/last-commodity.service';
 export { MoneyExchangeService } from './lib/service/money-exchange.service';
 export { MoneyTypeService } from './lib/service/money-type.service';
 export { StatsService } from './lib/service/stats.service';
-export { SearchPostProcessingHandler } from './lib/service/search.service';
+export type { SearchPostProcessingHandler } from './lib/service/search.service';

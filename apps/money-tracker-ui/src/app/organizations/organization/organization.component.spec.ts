@@ -11,6 +11,8 @@ import {
   OrganizationsService,
   SharedComponentsModule,
 } from '@clematis-shared/shared-components';
+import { mockResizeObserver } from "../../../mocks/mock_resize_observer";
+import { NgxEchartsModule } from "ngx-echarts";
 
 describe('OrganizationComponent', () => {
   let component: OrganizationComponent;
@@ -24,9 +26,16 @@ describe('OrganizationComponent', () => {
   } as ActivatedRoute;
 
   beforeEach(async () => {
+    global.ResizeObserver = mockResizeObserver;
+
     await TestBed.configureTestingModule({
       declarations: [OrganizationComponent],
-      imports: [SharedComponentsModule],
+      imports: [
+        SharedComponentsModule,
+        NgxEchartsModule.forRoot({
+          echarts: () => import("echarts")
+        })
+      ],
       providers: [
         HttpClient,
         HttpHandler,
