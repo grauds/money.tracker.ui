@@ -11,6 +11,8 @@ import {
 } from '@clematis-shared/shared-components';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
+import { NgxEchartsModule } from "ngx-echarts";
+import { mockResizeObserver } from "../../../mocks/mock_resize_observer";
 
 describe('CommodityComponent', () => {
   let component: CommodityComponent;
@@ -24,9 +26,16 @@ describe('CommodityComponent', () => {
   } as ActivatedRoute;
 
   beforeEach(async () => {
+    global.ResizeObserver = mockResizeObserver;
+
     await TestBed.configureTestingModule({
       declarations: [CommodityComponent],
-      imports: [SharedComponentsModule],
+      imports: [
+        SharedComponentsModule,
+        NgxEchartsModule.forRoot({
+          echarts: () => import("echarts")
+        })
+      ],
       providers: [
         HttpClient,
         HttpHandler,

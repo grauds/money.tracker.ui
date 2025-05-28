@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, convertToParamMap, RouterModule } from "@angular/router";
 
 import { WorkspaceComponent } from './workspace.component';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
 describe('WorkspaceComponent', () => {
   let component: WorkspaceComponent;
@@ -14,6 +14,9 @@ describe('WorkspaceComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [WorkspaceComponent],
+      imports: [
+        RouterModule.forRoot([{ path: '', component: WorkspaceComponent }]),
+      ],
       providers: [
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
       ],

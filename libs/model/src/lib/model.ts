@@ -1,7 +1,7 @@
 export { AccountBalance } from '../model/account-balance';
 export { Commodity } from '../model/commodity';
 export { CommodityGroup } from '../model/commodity-group';
-export { DatesRange } from '../dto/dates-range';
+export type { DatesRange } from '../dto/dates-range';
 export { Entity } from '../model/entity';
 export { EntityCollection } from '../model/entity-collection';
 export { EntityGroup } from '../model/entity-group';
@@ -9,7 +9,7 @@ export { Expense } from '../model/expense';
 export { ExpenseItem } from '../model/expense-item';
 export { IncomeMonthly } from '../model/income-monthly';
 export { IncomeItem } from '../model/income-item';
-export { InfoAbout } from '../dto/info-about';
+export type { InfoAbout } from '../dto/info-about';
 export { InOutDelta } from '../model/in-out-delta';
 export { LastCommodity } from '../model/last-commodity';
 export { MoneyExchange } from '../model/money-exchange';
@@ -20,12 +20,12 @@ export { Organization } from '../model/organization';
 export { OrganizationGroup } from '../model/organization-group';
 export { UnitType } from '../model/unit-type';
 
-export { MoneyExchangeReport } from '../dto/money-exchange-report';
+export type { MoneyExchangeReport } from '../dto/money-exchange-report';
 
-export { AgentCommodities } from '../dto/agent-commodities';
+export type { AgentCommodities } from '../dto/agent-commodities';
 export { SearchRequest } from '../dto/search-request';
 export { SearchStringMode } from '../dto/search-string-mode';
 
 export { Page } from '../dto/page';
-export { HttpError } from '../model/http-error';
+export type { HttpError } from '../model/http-error';
 export { Utils } from '../utils/utils';

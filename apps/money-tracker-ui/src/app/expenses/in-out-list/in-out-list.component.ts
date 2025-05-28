@@ -52,18 +52,7 @@ export class InOutListComponent implements OnInit {
 
   private readonly _mobileQueryListener: () => void;
 
-  isFullLayout$: Observable<boolean> = this.breakpointObserver
-    .observe([
-      Breakpoints.Medium,
-      Breakpoints.Large,
-      Breakpoints.XLarge,
-      Breakpoints.TabletLandscape,
-      Breakpoints.WebLandscape,
-    ])
-    .pipe(
-      map((result: BreakpointState) => result.matches),
-      shareReplay()
-    );
+  isFullLayout$: Observable<boolean>;
 
   showLegend = true;
 
@@ -101,6 +90,19 @@ export class InOutListComponent implements OnInit {
           this.loadData();
         });
     });
+
+    this.isFullLayout$ = this.breakpointObserver
+      .observe([
+        Breakpoints.Medium,
+        Breakpoints.Large,
+        Breakpoints.XLarge,
+        Breakpoints.TabletLandscape,
+        Breakpoints.WebLandscape,
+      ])
+      .pipe(
+        map((result: BreakpointState) => result.matches),
+        shareReplay()
+      );
 
     this.isFullLayout$.subscribe((flag) => {
       this.showLegend = !flag;

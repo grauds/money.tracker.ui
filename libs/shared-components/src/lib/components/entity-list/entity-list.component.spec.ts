@@ -8,6 +8,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Entity } from '@clematis-shared/model';
 import { EntityListComponent } from './entity-list.component';
 import { SearchPostProcessingHandler } from '../../service/search.service';
+import { SharedComponentsModule } from '../../shared-components.module';
 
 
 class SearchService {
@@ -47,7 +48,10 @@ describe('EntityListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [EntityListComponent],
-      imports: [MatProgressBarModule],
+      imports: [
+        MatProgressBarModule,
+        SharedComponentsModule
+      ],
       providers: [
         {
           provide: 'searchService',

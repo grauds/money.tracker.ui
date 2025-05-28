@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EntityElementComponent } from './entity-element.component';
 import { Entity } from '@clematis-shared/model';
+import { RouterModule } from "@angular/router";
 
 describe('EntityElementComponent', () => {
   let component: EntityElementComponent<Entity>;
@@ -10,6 +11,9 @@ describe('EntityElementComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [EntityElementComponent],
+      imports: [
+        RouterModule.forRoot([{ path: '', component: EntityElementComponent }]),
+      ],
     }).compileComponents();
   });
 

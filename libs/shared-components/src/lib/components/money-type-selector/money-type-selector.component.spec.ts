@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatSelectModule } from '@angular/material/select';
 import { MoneyTypeSelectorComponent } from './money-type-selector.component';
 
 describe('MoneyTypeSelectorComponent', () => {
@@ -7,6 +8,7 @@ describe('MoneyTypeSelectorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MatSelectModule],
       declarations: [MoneyTypeSelectorComponent],
     }).compileComponents();
 

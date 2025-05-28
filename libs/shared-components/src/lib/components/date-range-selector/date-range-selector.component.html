@@ -15,12 +15,11 @@
     <mat-hint>MM/YYYY</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="dps"></mat-datepicker-toggle>
     <mat-datepicker
-      #dps
+      #dps="matDatepicker"
       [disabled]="loading"
       startView="multi-year"
       (monthSelected)="setStartMonthAndYear($event, dps)"
-      panelClass="example-month-picker"
-    >
+      panelClass="example-month-picker">
     </mat-datepicker>
   </mat-form-field>
   <mat-form-field appearance="fill">

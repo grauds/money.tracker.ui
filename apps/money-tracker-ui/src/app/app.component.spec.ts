@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { AppComponent } from './app.component';
+import { AppComponent } from './app.component.js';
+import { EnvironmentService } from "@clematis-shared/shared-components";
 
 import Keycloak from "keycloak-js";
-import { mockEventSignal, MockKeycloak } from "../mocks/mock_keycloak";
+import { mockEventSignal, MockKeycloak } from "../mocks/mock_keycloak.js";
 import { KEYCLOAK_EVENT_SIGNAL } from "keycloak-angular";
-import { EnvironmentService } from "@clematis-shared/shared-components";
 
 
 describe('AppComponent', () => {
