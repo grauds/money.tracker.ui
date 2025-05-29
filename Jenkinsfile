@@ -1,8 +1,13 @@
 pipeline {
 
   agent any
-
   tools {nodejs "Node18"}
+  environment {
+      // Store in workspace
+      CERT_PATH = "${WORKSPACE}/docker/nginx/ssl/certificate.crt"
+      KEY_PATH = "${WORKSPACE}/docker/nginx/ssl/private.key"
+  }
+
 
   stages {
 
@@ -20,12 +25,41 @@ pipeline {
       }
     }
 
+    stage('Prepare Directories') {
+        steps {
+            sh '''
+                mkdir -p ${WORKSPACE}/docker/nginx/ssl
+                chmod 700 ${WORKSPACE}/docker/nginx/ssl
+            '''
+        }
+    }
+
     stage('Get code') {
       steps {
         // Get the code from a GitHub repository
         git 'https://github.com/grauds/money.tracker.ui.git'
       }
     }
+
+    stage('Deploy Certificates') {
+      steps {
+          script {
+              // Using secret files
+              withCredentials([
+                  file(credentialsId: 'nginx-ssl-cert', variable: 'SSL_CERT'),
+                  file(credentialsId: 'nginx-ssl-key', variable: 'SSL_KEY')
+              ]) {
+                  sh """
+                      cp "\$SSL_CERT" "\$CERT_PATH"
+                      cp "\$SSL_KEY" "\$KEY_PATH"
+                      chmod 644 "\$CERT_PATH"
+                      chmod 600 "\$KEY_PATH"
+                  """
+              }
+          }
+      }
+  }
+
 
     stage('Dockerized build for UAT') {
       steps {
