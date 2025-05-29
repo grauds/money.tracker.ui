@@ -25,6 +25,13 @@ pipeline {
       }
     }
 
+    stage('Get code') {
+      steps {
+        // Get the code from a GitHub repository
+        git 'https://github.com/grauds/money.tracker.ui.git'
+      }
+    }
+
     stage('Prepare Directories') {
         steps {
             sh '''
@@ -32,13 +39,6 @@ pipeline {
                 chmod 700 ${WORKSPACE}/docker/nginx/ssl
             '''
         }
-    }
-
-    stage('Get code') {
-      steps {
-        // Get the code from a GitHub repository
-        git 'https://github.com/grauds/money.tracker.ui.git'
-      }
     }
 
     stage('Deploy Certificates') {
