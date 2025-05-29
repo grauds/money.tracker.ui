@@ -50,8 +50,8 @@ pipeline {
                   file(credentialsId: 'nginx-ssl-key', variable: 'SSL_KEY')
               ]) {
                   sh """
-                      cp "\$SSL_CERT" "\$CERT_PATH"
-                      cp "\$SSL_KEY" "\$KEY_PATH"
+                      cp "\$SSL_CERT" "\${WORKSPACE}/docker/nginx/ssl/"
+                      cp "\$SSL_KEY" "\${WORKSPACE}/docker/nginx/ssl/"
                       chmod 644 "\$CERT_PATH"
                       chmod 600 "\$KEY_PATH"
                   """
