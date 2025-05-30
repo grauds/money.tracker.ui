@@ -7,7 +7,7 @@ services:
       - '18081:80'
       - '18443:443'
     volumes:
-      - /home/clematis/mt-ui/nginx-default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx-default.conf:/etc/nginx/conf.d/default.conf
       - ssl_certs:/usr/local/openresty/nginx/ssl:ro
     networks:
       - clematis
@@ -19,7 +19,7 @@ services:
     ports:
       - '18082:80'
     volumes:
-      - /home/clematis/mt-ui/nginx-demo.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx-demo.conf:/etc/nginx/conf.d/default.conf
       - ssl_certs:/usr/local/openresty/nginx/ssl:ro
     networks:
       - clematis
