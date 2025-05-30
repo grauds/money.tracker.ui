@@ -3,13 +3,20 @@ pipeline {
   agent any
   tools {nodejs "Node18"}
   environment {
-      // Store in workspace
-      CERT_PATH = "${WORKSPACE}/docker/nginx/ssl/certificate.crt"
-      KEY_PATH = "${WORKSPACE}/docker/nginx/ssl/private.key"
+      CERT_DIR = "${WORKSPACE}/docker/nginx/ssl"
   }
 
 
   stages {
+
+
+    stage('Get code') {
+      steps {
+        // Get the code from a GitHub repository
+        git 'https://github.com/grauds/money.tracker.ui.git'
+      }
+    }
+
 
     stage("Verify tooling") {
       steps {
@@ -25,18 +32,13 @@ pipeline {
       }
     }
 
-    stage('Get code') {
-      steps {
-        // Get the code from a GitHub repository
-        git 'https://github.com/grauds/money.tracker.ui.git'
-      }
-    }
-
     stage('Prepare Directories') {
         steps {
             sh '''
-                mkdir -p ${WORKSPACE}/docker/nginx/ssl
-                chmod 700 ${WORKSPACE}/docker/nginx/ssl
+               # Create directory structure with proper permissions
+                mkdir -p "${CERT_DIR}"
+                chmod 700 "${CERT_DIR}"
+                ls -al "${CERT_DIR}"
             '''
         }
     }
@@ -50,10 +52,14 @@ pipeline {
                   file(credentialsId: 'nginx-ssl-key', variable: 'SSL_KEY')
               ]) {
                   sh """
-                      cp "\$SSL_CERT" "\${WORKSPACE}/docker/nginx/ssl/"
-                      cp "\$SSL_KEY" "\${WORKSPACE}/docker/nginx/ssl/"
-                      chmod 644 "\$CERT_PATH"
-                      chmod 600 "\$KEY_PATH"
+                      # Copy certificates
+                      cp "$SSL_CERT" "${CERT_DIR}/certificate.crt"
+                      cp "$SSL_KEY" "${CERT_DIR}/private.key"
+
+                      # Set proper permissions
+                      chmod 644 "${CERT_DIR}/certificate.crt"
+                      chmod 600 "${CERT_DIR}/private.key"
+
                   """
               }
           }
@@ -129,6 +135,31 @@ pipeline {
         '''
       }
     }
+
+    stage('Prepare SSL Volume') {
+        steps {
+            script {
+                sh '''
+                    # Create a temporary container to populate the volume
+                    docker run --rm -v ssl_certs:/ssl alpine sh -c "
+                        rm -rf /ssl/* && mkdir -p /sslmkdir -p /ssl
+                        cp ${CERT_DIR}/* /ssl/
+                        chmod 644 /ssl/certificate.crt
+                        chmod 600 /ssl/private.key
+                    "
+                '''
+            }
+        }
+    }
+
+  }
+  post {
+      always {
+          // Clean up sensitive files after use
+          sh '''
+              if [ -d "${CERT_DIR}" ]; then rm -rf "${CERT_DIR}"; fi
+          '''
+      }
   }
 
 }
