@@ -27,6 +27,8 @@ services:
 
 volumes:
   ssl_certs:
+    name: jenkins_ssl_certs    # the external volume name
+    external: true
 
 networks:
   clematis:
