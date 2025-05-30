@@ -140,13 +140,18 @@ pipeline {
         steps {
             script {
                 sh '''
-                    # Create a temporary container to populate the volume
+                    # First create or clear the volume
+                    docker run --rm -v ssl_certs:/ssl alpine sh -c "rm -rf /ssl/* && mkdir -p /ssl"
+
+                    # Then copy the certificates from the workspace
+                    docker cp "${CERT_DIR}/." $(docker create --rm -v ssl_certs:/ssl alpine sh):/ssl/
+
+                    # Finally set the permissions
                     docker run --rm -v ssl_certs:/ssl alpine sh -c "
-                        rm -rf /ssl/* && mkdir -p /sslmkdir -p /ssl
-                        cp ${CERT_DIR}/* /ssl/
-                        chmod 644 /ssl/certificate.crt
+                        chmod 644 /ssl/certificate.crt && \
                         chmod 600 /ssl/private.key
                     "
+
                 '''
             }
         }

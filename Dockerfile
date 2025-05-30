@@ -81,7 +81,9 @@ ARG SOURCE_PATH=$WORK_DIR/dist/apps/$APP_NAME
 # Path to application in docker. Used by nginx to serve static
 ARG APP_ROOT=/var/www/$APP_NAME
 
+RUN mkdir -p /usr/local/openresty/nginx/ssl
 RUN mkdir -p "$APP_ROOT"
+
 COPY --from=build-image $SOURCE_PATH $APP_ROOT
 # COPY ./apps/$APP_NAME/jenkins/nginx-default.conf /etc/nginx/conf.d/default.conf
 
