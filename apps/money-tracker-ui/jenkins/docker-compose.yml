@@ -6,7 +6,7 @@ services:
       - '18081:80'
       - '18443:443'
     volumes:
-      - /home/jenkins/workspace/${workspacePath}/apps/money-tracker-ui/jenkins/nginx-default.conf:/etc/nginx/conf.d/default.conf
+      - "/home/jenkins/workspace/Money Tracker UI Deployment/apps/money-tracker-ui/jenkins/nginx-default.conf:/etc/nginx/conf.d/default.conf"
       - ssl_certs:/usr/local/openresty/nginx/ssl:ro
     networks:
       - clematis
@@ -18,7 +18,7 @@ services:
     ports:
       - '18082:80'
     volumes:
-      - /home/jenkins/workspace/${workspacePath}/apps/money-tracker-ui/jenkins/nginx-demo.conf:/etc/nginx/conf.d/default.conf
+      - "/home/jenkins/workspace/Money Tracker UI Deployment/apps/money-tracker-ui/jenkins/nginx-demo.conf:/etc/nginx/conf.d/default.conf"
       - ssl_certs:/usr/local/openresty/nginx/ssl:ro
     networks:
       - clematis
