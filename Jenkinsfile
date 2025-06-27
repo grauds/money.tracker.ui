@@ -61,10 +61,10 @@ pipeline {
                       chmod 600 "${CERT_DIR}/private.key"
 
                   """
-              }
-          }
-      }
-  }
+                }
+            }
+        }
+    }
 
 
     stage('Dockerized build for UAT') {
