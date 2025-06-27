@@ -7,7 +7,7 @@ import { EnvironmentInterface } from '@clematis-shared/shared-components';
 export const environment: EnvironmentInterface = {
   apiUrl: '/api',
   infoUrl: '/info',
-  authUrl: 'https://192.168.1.157:443/',
+  authUrl: '/auth',
   production: false,
 };
 
