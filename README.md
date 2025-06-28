@@ -17,9 +17,9 @@ This application uses two Angular Typescript libraries from this repository, see
 
 ### Dependencies
 
-This application depends on two other backend projects [Clematis Auth API](https://github.com/grauds/clematis.auth.api) and [Clematis Money Tracker API](https://github.com/grauds/money.tracker.api). Please refer to these projects' documentation to learn how to install them first.
+This application depends on [Clematis Money Tracker API](https://github.com/grauds/money.tracker.api). Please refer to this project documentation to learn how to install it first.
 
-Once the mentioned backends are running, this application's configuration has to be updated with the new backend URLs.
+Once the mentioned backend is running, this application's configuration has to be updated with the new backend URLs.
 
 1. Add another nginx configuration file to [jenkins folder](https://github.com/grauds/money.tracker.ui/blob/df2b918ebf492087f5431b7f42ce43f933b9d6a0/apps/money-tracker-ui/jenkins), better by copying the existing one:
 
@@ -32,17 +32,17 @@ cp nginx-default.conf nginx-custom.conf
 ```NGINX
       location ~* ^/auth/(.*) {
            proxy_http_version 1.1;
-           proxy_pass http://[Clematis-Auth-API-IP-Address]:[Auth-API-Port]/$1;
+           proxy_pass https://[Keycloak-API-IP-Address]:[Keycloak-API-Port]/$1;
       }
 
       location ~* ^/api/ {
            proxy_http_version 1.1;
-           proxy_pass http://[Money-Tracker-API-IP-Address]:[Tracker-API-Port];
+           proxy_pass http://[Money-Tracker-API-IP-Address]:[Money-Tracker-API-Port];
       }
 
       location ~* ^/info/(.*) {
            proxy_http_version 1.1;
-           proxy_pass http://[Money-Tracker-API-IP-Address]:[Tracker-API-Port]/$1;
+           proxy_pass http://[Money-Tracker-API-IP-Address]:[Money-Tracker-API-Port]/$1;
       }
 ```
 

@@ -53,5 +53,8 @@ Thumbs.db
 
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
-tools/localhost.crt
-tools/localhost.key
+
+# Ignore local SSL certificate and private key
+/apps/money-tracker-ui/jenkins/localhost.crt
+/apps/money-tracker-ui/jenkins/localhost.key
+/apps/money-tracker-ui/jenkins/nginx-local.conf
