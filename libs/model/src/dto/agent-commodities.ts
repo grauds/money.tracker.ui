@@ -3,7 +3,7 @@ export interface AgentCommodities {
 
   commodityGroup: string;
 
-  total: 0;
+  total: number;
 
   mois: number;
 

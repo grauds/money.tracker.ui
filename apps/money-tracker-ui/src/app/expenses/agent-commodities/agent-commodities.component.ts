@@ -211,6 +211,7 @@ export class AgentCommoditiesComponent implements OnInit {
                       values[i].mois == month.mois
                     ) {
                       values[i].total += month.total;
+                      values[i].total = Number(values[i].total.toFixed(4));
                       found = true;
                       break;
                     }
