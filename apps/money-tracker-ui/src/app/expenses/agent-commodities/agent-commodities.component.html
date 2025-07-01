@@ -16,6 +16,7 @@
 
     <mat-checkbox
       class="filter"
+      [(ngModel)]="showGroups"
       (change)="onFilterEvent($event.checked)"
     >
       Break down to groups

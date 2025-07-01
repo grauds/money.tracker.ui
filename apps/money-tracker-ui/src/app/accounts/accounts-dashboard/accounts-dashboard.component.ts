@@ -54,11 +54,11 @@ export class AccountsDashboardComponent implements OnInit {
   checkSubscription = this.filterZerosOutEvent.asObservable();
 
   constructor(
-    private accountsService: AccountsService,
-    private moneyTypeService: MoneyTypeService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private title: Title
+    private readonly accountsService: AccountsService,
+    private readonly moneyTypeService: MoneyTypeService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly title: Title
   ) {
     this.pageSubscription = route.queryParams.subscribe((queryParam: any) => {
       const page = Number.parseInt(queryParam['page'], 10);
