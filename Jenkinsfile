@@ -1,27 +1,31 @@
 pipeline {
-
   agent any
-  tools {nodejs "Node18"}
+  tools { nodejs "Node18" }
+
   environment {
-      CERT_DIR = "${WORKSPACE}/docker/nginx/ssl"
+    CERT_DIR = "docker/nginx/ssl"
+    REMOTE_CERT_DIR = "/home/jenkins/workspace/certs"
   }
 
-
   stages {
-
-
     stage('Get code') {
       steps {
-        // Get the code from a GitHub repository
         git 'https://github.com/grauds/money.tracker.ui.git'
       }
     }
 
-
-    stage("Verify tooling") {
+    stage('Verify tooling') {
       steps {
-        sh '''
-              cd ./apps/money-tracker-ui/jenkins
+        withCredentials([usernamePassword(credentialsId: 'yoda-anton', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+          script {
+            def remote = [
+              name: 'Yoda',
+              host: '192.168.1.118',
+              user: USERNAME,
+              password: PASSWORD,
+              allowAnyHosts: true
+            ]
+            sshCommand remote: remote, command: '''
               docker version
               docker info
               docker compose version
@@ -29,67 +33,84 @@ pipeline {
               jq --version
               docker compose ps
             '''
-      }
-    }
-
-    stage('Prepare Directories') {
-        steps {
-            sh '''
-               # Create directory structure with proper permissions
-                mkdir -p "${CERT_DIR}"
-                chmod 700 "${CERT_DIR}"
-                ls -al "${CERT_DIR}"
-            '''
+          }
         }
+      }
     }
 
     stage('Deploy Certificates') {
       steps {
+        withCredentials([
+          usernamePassword(credentialsId: 'yoda-anton', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD'),
+          file(credentialsId: 'nginx-ssl-cert', variable: 'SSL_CERT'),
+          file(credentialsId: 'nginx-ssl-key', variable: 'SSL_KEY')
+        ]) {
           script {
-              // Using secret files
-              withCredentials([
-                  file(credentialsId: 'nginx-ssl-cert', variable: 'SSL_CERT'),
-                  file(credentialsId: 'nginx-ssl-key', variable: 'SSL_KEY')
-              ]) {
-                  sh """
-                      # Copy certificates
-                      cp "$SSL_CERT" "${CERT_DIR}/certificate.crt"
-                      cp "$SSL_KEY" "${CERT_DIR}/private.key"
+            def remote = [
+              name: 'Yoda',
+              host: '192.168.1.118',
+              user: USERNAME,
+              password: PASSWORD,
+              allowAnyHosts: true
+            ]
 
-                      # Set proper permissions
-                      chmod 644 "${CERT_DIR}/certificate.crt"
-                      chmod 600 "${CERT_DIR}/private.key"
+            sh "mkdir -p ${CERT_DIR}"
+            sh "cp $SSL_CERT ${CERT_DIR}/certificate.crt"
+            sh "cp $SSL_KEY ${CERT_DIR}/private.key"
 
-                  """
-                }
-            }
+            sshCommand remote: remote, command: "mkdir -p ${REMOTE_CERT_DIR}"
+            sshPut remote: remote, from: "${CERT_DIR}/certificate.crt", into: "${REMOTE_CERT_DIR}/certificate.crt"
+            sshPut remote: remote, from: "${CERT_DIR}/private.key", into: "${REMOTE_CERT_DIR}/private.key"
+            sshCommand remote: remote, command: """
+              chmod 644 ${REMOTE_CERT_DIR}/certificate.crt
+              chmod 600 ${REMOTE_CERT_DIR}/private.key
+            """
+          }
         }
-    }
-
-
-    stage('Dockerized build for UAT') {
-      steps {
-        sh '''
-           docker build . -t money.tracker.ui.uat -f Dockerfile --build-arg="ENVIRONMENT=uat"
-        '''
       }
     }
 
-    stage('Dockerized build for DEMO') {
+    stage('Dockerized build for UAT & DEMO') {
       steps {
-        sh '''
-           docker build . -t money.tracker.ui.demo -f Dockerfile --build-arg="ENVIRONMENT=demo"
-        '''
+        withCredentials([usernamePassword(credentialsId: 'yoda-anton', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+          script {
+            def remote = [
+              name: 'Yoda',
+              host: '192.168.1.118',
+              user: USERNAME,
+              password: PASSWORD,
+              allowAnyHosts: true
+            ]
+            sshCommand remote: remote, command: """
+              cd ~/money.tracker.ui/apps/money-tracker-ui/jenkins
+              docker build . -t money.tracker.ui.uat -f Dockerfile --build-arg="ENVIRONMENT=uat"
+              docker build . -t money.tracker.ui.demo -f Dockerfile --build-arg="ENVIRONMENT=demo"
+            """
+          }
+        }
       }
     }
 
     stage('Publish tests') {
       steps {
-        sh '''
-           export DOCKER_BUILDKIT=1
-           docker build --output "type=local,dest=${WORKSPACE}/coverage" --target test-out .
-           ls -l ./coverage
-        '''
+        withCredentials([usernamePassword(credentialsId: 'yoda-anton', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+          script {
+            def remote = [
+              name: 'Yoda',
+              host: '192.168.1.118',
+              user: USERNAME,
+              password: PASSWORD,
+              allowAnyHosts: true
+            ]
+            sshCommand remote: remote, command: '''
+              export DOCKER_BUILDKIT=1
+              cd ~/money.tracker.ui
+              docker build --output type=local,dest=./coverage --target test-out .
+            '''
+            sshGet remote: remote, from: "/home/${USERNAME}/money.tracker.ui/coverage", into: "coverage", override: true
+          }
+        }
+
         recordCoverage(
           tools: [[parser: 'COBERTURA', pattern: 'coverage/**/cobertura-coverage.xml']],
           id: 'cobertura',
@@ -104,67 +125,82 @@ pipeline {
       }
     }
 
-    stage ('Dependency-Check') {
-        steps {
-            sh '''
-              npm -version
+    stage('Dependency-Check') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'yoda-anton', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+          script {
+            def remote = [
+              name: 'Yoda',
+              host: '192.168.1.118',
+              user: USERNAME,
+              password: PASSWORD,
+              allowAnyHosts: true
+            ]
+            sshCommand remote: remote, command: '''
+              cd ~/money.tracker.ui
               npm install
+              ./node_modules/.bin/depcheck -o ./ -s ./ -f ALL -P depcheck.properties --prettyPrint
             '''
-            catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-              dependencyCheck additionalArguments: '''
-                  -o "./"
-                  -s "./"
-                  -f "ALL"
-                  -P "depcheck.properties"
-                  --prettyPrint''', nvdCredentialsId: 'NVD_API_Key', odcInstallation: 'Dependency Checker'
-
-              dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-            }
+            // You can add report pulling logic here too if needed
+          }
         }
+      }
     }
 
     stage('Prepare SSL Volume') {
-        steps {
-            script {
-                sh '''
-                    # First create or clear the volume
-                    docker run --rm -v jenkins_ssl_certs:/ssl alpine sh -c "rm -rf /ssl/* && mkdir -p /ssl"
-
-                    # Then copy the certificates from the workspace
-                    docker cp "${CERT_DIR}/." $(docker create --rm -v jenkins_ssl_certs:/ssl alpine sh):/ssl/
-
-                    # Finally set the permissions
-                    docker run --rm -v jenkins_ssl_certs:/ssl alpine sh -c "
-                        chmod 644 /ssl/certificate.crt && \
-                        chmod 600 /ssl/private.key
-                    "
-
-                '''
-            }
-        }
-    }
-
-    stage("Build and start docker compose services") {
       steps {
-        sh '''
-           cd ./apps/money-tracker-ui/jenkins
-           docker compose stop
-           docker stop clematis-money-tracker-ui || true && docker rm clematis-money-tracker-ui || true
-           docker stop clematis-money-tracker-ui-demo || true && docker rm clematis-money-tracker-ui-demo || true
-           docker compose build
-           docker compose up -d
-        '''
+        withCredentials([usernamePassword(credentialsId: 'yoda-anton', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+          script {
+            def remote = [
+              name: 'Yoda',
+              host: '192.168.1.118',
+              user: USERNAME,
+              password: PASSWORD,
+              allowAnyHosts: true
+            ]
+            sshCommand remote: remote, command: """
+              docker run --rm -v jenkins_ssl_certs:/ssl alpine sh -c "rm -rf /ssl/* && mkdir -p /ssl"
+              docker cp ${REMOTE_CERT_DIR}/. \$(docker create --rm -v jenkins_ssl_certs:/ssl alpine sh):/ssl/
+              docker run --rm -v jenkins_ssl_certs:/ssl alpine sh -c "
+                chmod 644 /ssl/certificate.crt && \
+                chmod 600 /ssl/private.key
+              "
+            """
+          }
+        }
       }
     }
 
-  }
-  post {
-      always {
-          // Clean up sensitive files after use
-          sh '''
-              if [ -d "${CERT_DIR}" ]; then rm -rf "${CERT_DIR}"; fi
-          '''
+    stage('Build and start docker compose services') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'yoda-anton', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+          script {
+            def remote = [
+              name: 'Yoda',
+              host: '192.168.1.118',
+              user: USERNAME,
+              password: PASSWORD,
+              allowAnyHosts: true
+            ]
+            sshCommand remote: remote, command: """
+              cd ~/money.tracker.ui/apps/money-tracker-ui/jenkins
+              docker compose stop
+              docker stop clematis-money-tracker-ui || true && docker rm clematis-money-tracker-ui || true
+              docker stop clematis-money-tracker-ui-demo || true && docker rm clematis-money-tracker-ui-demo || true
+              docker compose build
+              docker compose up -d
+            """
+          }
+        }
       }
+    }
   }
 
+  post {
+    always {
+      sh '''
+        if [ -d "docker/nginx/ssl" ]; then rm -rf docker/nginx/ssl; fi
+      '''
+    }
+  }
 }
