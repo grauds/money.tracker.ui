@@ -124,7 +124,7 @@ pipeline {
       steps {
         sshagent (credentials: ['yoda-anton-key']) {
           sh '''
-            ssh-keyscan -H 192.168.1.118 >> ~/.ssh/known_hosts
+            mkdir -p ~/.ssh
 
             scp -r ${CERT_DIR} ${SSH_DEST}:${REMOTE_APP_DIR}/certs
             scp docker_export/*.tar ${SSH_DEST}:${REMOTE_APP_DIR}/
@@ -133,6 +133,7 @@ pipeline {
         }
       }
     }
+
 
     stage('Deploy on Yoda') {
       steps {
