@@ -122,11 +122,15 @@ pipeline {
 
     stage('Transfer Files to Yoda') {
       steps {
-        sh '''
-          scp -r ${CERT_DIR} ${SSH_DEST}:${REMOTE_APP_DIR}/certs
-          scp docker_export/*.tar ${SSH_DEST}:${REMOTE_APP_DIR}/
-          scp apps/money-tracker-ui/jenkins/docker-compose.yml ${SSH_DEST}:${REMOTE_APP_DIR}/
-        '''
+        sshagent (credentials: ['yoda-anton']) {
+          sh '''
+            ssh-keyscan -H 192.168.1.118 >> ~/.ssh/known_hosts
+
+            scp -r ${CERT_DIR} ${SSH_DEST}:${REMOTE_APP_DIR}/certs
+            scp docker_export/*.tar ${SSH_DEST}:${REMOTE_APP_DIR}/
+            scp apps/money-tracker-ui/jenkins/docker-compose.yml ${SSH_DEST}:${REMOTE_APP_DIR}/
+          '''
+        }
       }
     }
 
