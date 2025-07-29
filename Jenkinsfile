@@ -136,7 +136,7 @@ pipeline {
 
     stage('Deploy on Yoda') {
       steps {
-        sshagent (credentials: ['yoda-anton']) {
+        sshagent (credentials: ['yoda-anton-key']) {
           sh '''
             ssh ${SSH_DEST} '
               docker load < ${REMOTE_APP_DIR}/uat.tar && \
