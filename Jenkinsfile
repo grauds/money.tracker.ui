@@ -61,7 +61,7 @@ pipeline {
 
     stage('Build Docker Images') {
       steps {
-        dir('apps/money-tracker-ui') {
+        dir('.') {
           sh '''
             docker build -t money.tracker.ui.uat -f Dockerfile --build-arg="ENVIRONMENT=uat" .
             docker build -t money.tracker.ui.demo -f Dockerfile --build-arg="ENVIRONMENT=demo" .
