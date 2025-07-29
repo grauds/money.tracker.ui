@@ -122,7 +122,7 @@ pipeline {
 
     stage('Transfer Files to Yoda') {
       steps {
-        sshagent (credentials: ['yoda-anton']) {
+        sshagent (credentials: ['yoda-anton-key']) {
           sh '''
             mkdir -p ~/.ssh
 
