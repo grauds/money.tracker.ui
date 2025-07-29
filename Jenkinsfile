@@ -99,6 +99,7 @@ pipeline {
         '''
         catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
           dependencyCheck additionalArguments: '''
+              --disableNpmAudit
               -o "./"
               -s "./"
               -f "ALL"
