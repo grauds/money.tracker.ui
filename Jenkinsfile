@@ -70,6 +70,46 @@ pipeline {
       }
     }
 
+    stage('Publish tests') {
+      steps {
+        sh '''
+           export DOCKER_BUILDKIT=1
+           docker build --output "type=local,dest=${WORKSPACE}/coverage" --target test-out .
+           ls -l ./coverage
+        '''
+        recordCoverage(
+          tools: [[parser: 'COBERTURA', pattern: 'coverage/**/cobertura-coverage.xml']],
+          id: 'cobertura',
+          name: 'Cobertura Coverage',
+          sourceCodeRetention: 'EVERY_BUILD',
+          ignoreParsingErrors: true,
+          qualityGates: [
+            [threshold: 60.0, metric: 'LINE', baseline: 'PROJECT', unstable: true],
+            [threshold: 60.0, metric: 'BRANCH', baseline: 'PROJECT', unstable: true]
+          ]
+        )
+      }
+    }
+
+    stage ('Dependency-Check') {
+      steps {
+        sh '''
+          npm -version
+          npm install
+        '''
+        catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+          dependencyCheck additionalArguments: '''
+              -o "./"
+              -s "./"
+              -f "ALL"
+              -P "depcheck.properties"
+              --prettyPrint''', nvdCredentialsId: 'NVD_API_Key', odcInstallation: 'Dependency Checker'
+
+          dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+        }
+      }
+    }
+
     stage('Export Docker Images') {
       steps {
         sh '''
