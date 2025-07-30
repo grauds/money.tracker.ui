@@ -5,9 +5,9 @@ pipeline {
   environment {
     CERT_DIR = "${WORKSPACE}/docker/nginx/ssl"
     REMOTE_HOST = "192.168.1.118"
-    REMOTE_USER = "clematis"
+    REMOTE_USER = "anton"
     SSH_DEST = "${REMOTE_USER}@${REMOTE_HOST}"
-    REMOTE_APP_DIR = "/home/clematis/money.tracker.ui"
+    REMOTE_APP_DIR = "/home/anton/deploy/mt"
   }
 
   stages {
