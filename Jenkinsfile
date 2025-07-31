@@ -124,12 +124,11 @@ pipeline {
       steps {
         sshagent (credentials: ['yoda-anton-key']) {
           sh '''
-            mkdir -p ~/.ssh
-
-            scp -o StrictHostKeyChecking=no -r ${CERT_DIR} ${SSH_DEST}:${REMOTE_APP_DIR}/certs
-            scp -o StrictHostKeyChecking=no docker_export/*.tar ${SSH_DEST}:${REMOTE_APP_DIR}/
-            scp -o StrictHostKeyChecking=no apps/money-tracker-ui/jenkins/docker-compose.yml ${SSH_DEST}:${REMOTE_APP_DIR}/
-          '''
+            [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
+            scp -o StrictHostKeyChecking=no -r "${CERT_DIR}" "${SSH_DEST}:${REMOTE_APP_DIR}/certs"
+            scp -o StrictHostKeyChecking=no docker_export/*.tar "${SSH_DEST}:${REMOTE_APP_DIR}/"
+            scp -o StrictHostKeyChecking=no "apps/money-tracker-ui/jenkins/docker-compose.yml" "${SSH_DEST}:${REMOTE_APP_DIR}/"
+           '''
         }
       }
     }
@@ -139,17 +138,16 @@ pipeline {
       steps {
         sshagent (credentials: ['yoda-anton-key']) {
           sh '''
-            ssh ${SSH_DEST} '
+            ssh ${SSH_DEST} "
+              docker rm -f clematis-money-tracker-ui clematis-money-tracker-ui-demo 2>/dev/null || true && \
               docker load < ${REMOTE_APP_DIR}/uat.tar && \
               docker load < ${REMOTE_APP_DIR}/demo.tar && \
-              docker compose -f ${REMOTE_APP_DIR}/docker-compose.yml down && \
               docker compose -f ${REMOTE_APP_DIR}/docker-compose.yml up -d
-            '
+            "
           '''
         }
       }
     }
-
   }
 
   post {
