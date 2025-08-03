@@ -128,6 +128,8 @@ pipeline {
             scp -o StrictHostKeyChecking=no -r "${CERT_DIR}" "${SSH_DEST}:${REMOTE_APP_DIR}/certs"
             scp -o StrictHostKeyChecking=no docker_export/*.tar "${SSH_DEST}:${REMOTE_APP_DIR}/"
             scp -o StrictHostKeyChecking=no "apps/money-tracker-ui/jenkins/docker-compose.yml" "${SSH_DEST}:${REMOTE_APP_DIR}/"
+            scp -o StrictHostKeyChecking=no "apps/money-tracker-ui/jenkins/nginx-default.conf" "${SSH_DEST}:${REMOTE_APP_DIR}/"
+            scp -o StrictHostKeyChecking=no "apps/money-tracker-ui/jenkins/nginx-demo.conf" "${SSH_DEST}:${REMOTE_APP_DIR}/"
            '''
         }
       }
