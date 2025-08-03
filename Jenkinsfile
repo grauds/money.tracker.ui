@@ -7,7 +7,7 @@ pipeline {
     REMOTE_HOST = "192.168.1.118"
     REMOTE_USER = "anton"
     SSH_DEST = "${REMOTE_USER}@${REMOTE_HOST}"
-    REMOTE_APP_DIR = "/home/anton/deploy/mt"
+    REMOTE_APP_DIR = "/home/anton/deploy/mt/ui"
   }
 
   stages {
