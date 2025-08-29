@@ -10,7 +10,7 @@ import { CommoditiesService } from '@clematis-shared/shared-components';
   standalone: false,
 })
 export class CommoditiesListComponent implements OnInit {
-  constructor(private title: Title) {}
+  constructor(private readonly title: Title) {}
 
   ngOnInit(): void {
     this.title.setTitle('Commodities');

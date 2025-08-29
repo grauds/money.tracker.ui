@@ -2,7 +2,6 @@
   <mat-form-field appearance="fill">
     <mat-label>Find by name</mat-label>
     <mat-select
-      [disabled]="this.loading"
       (selectionChange)="setFilterMode($event)"
       [formControl]="mode"
       (valueChange)="updateSearchMode($event)"
@@ -17,7 +16,7 @@
     <input
       matInput
       id="name"
-      (change)="setFilterAction($event)"
+      (change)="setFilterName($event)"
       [formControl]="name"
       type="text"
       placeholder="to find in name"
@@ -32,5 +31,5 @@
   [filterTemplate]="filter"
   [sort]="getSort()"
   (loading$)="setLoading($event)"
-  (filter$)="setFilter($event)"
+  (filter$)="setFilterListener($event)"
 ></app-entity-list>

@@ -22,7 +22,6 @@ import {
   Sort as RestSort,
   SortOrder
 } from '@lagoshny/ngx-hateoas-client';
-//import { PageParam } from '@lagoshny/ngx-hateoas-client/lib/model/declarations';
 
 import { SearchService } from '../../service/search.service';
 
@@ -223,7 +222,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     if (this.getFilter()) {
       queryParams = { ...queryParams, ...this.getFilterParams() };
     }
-
+    
     return {
       relativeTo: this.route,
       queryParams: queryParams,
@@ -248,7 +247,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
   }
 
   getSort(): RestSort {
-    return this.sort ? this.sort : {};
+    return this.sort ?? {};
   }
 
   getSortParams(): Params | null {
@@ -265,7 +264,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
   }
 
   setSort(sort: Sort) {
-    if (sort && sort.direction) {
+    if (sort?.direction) {
       this.sort = {
         [sort.active]: sort.direction.toUpperCase() as SortOrder,
       };

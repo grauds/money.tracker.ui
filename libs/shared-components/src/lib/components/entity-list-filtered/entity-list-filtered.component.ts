@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import {
   ActivatedRoute,
-  NavigationExtras,
   Params,
   Router,
 } from '@angular/router';
@@ -42,10 +41,10 @@ export class EntityListFilteredComponent<T extends Entity>
   // subscribe for page updates in the address bar
   pageSubscription: Subscription;
 
-  name: FormControl = new FormControl();
+  name: FormControl = new FormControl({ value: '', disabled: false });
 
-  mode: FormControl<SearchStringMode | null> =
-    new FormControl<SearchStringMode>(SearchStringMode.Starting);
+  mode: FormControl<SearchStringMode | null> = 
+    new FormControl<SearchStringMode>({ value: SearchStringMode.Starting, disabled: false });
 
   modes: SearchStringMode[] = [
     SearchStringMode.Starting,
@@ -69,7 +68,9 @@ export class EntityListFilteredComponent<T extends Entity>
 
         const mode = queryParams['mode'];
         if (mode) {
-          this.mode.setValue(mode);
+          // Convert string to enum value if possible
+          const enumValue = this.modes.find(m => m === mode);
+          this.mode.setValue(enumValue ?? SearchStringMode.Starting);
         }
       }
     );
@@ -79,62 +80,39 @@ export class EntityListFilteredComponent<T extends Entity>
     if (this.name.value) {
       this.entityList.setFilter('name', this.name.value);
     }
-  }
-
-  updateRoute() {
-    this.router.navigate([], this.getRouteParameters());
-  }
-
-  getRouteParameters(): NavigationExtras {
-    let queryParams: Params = {};
-
-    if (this.name.value) {
-      queryParams = {
-        ...queryParams,
-        ...{
-          name: this.name.value,
-        },
-      };
-    }
-
     if (this.mode.value) {
-      queryParams = {
-        ...queryParams,
-        ...{
-          mode: this.mode.value,
-        },
-      };
+      this.entityList.setFilter('mode', this.mode.value.toString());
     }
-
-    return {
-      relativeTo: this.route,
-      queryParams: queryParams,
-      queryParamsHandling: this.queryParamsMode,
-      skipLocationChange: false,
-    };
   }
 
-  setFilter($event: Map<string, string>) {
+  setFilterListener($event: Map<string, string>) {
+    // take the values we are interested in from the map
     this.name.setValue($event.get('name'));
-    this.refresh();
+    const modeValue = $event.get('mode');
+    const enumValue = this.modes.find(m => m === modeValue);
+    this.mode.setValue(enumValue ?? SearchStringMode.Starting);
+    // update
+    this.refresh()
   }
 
-  setFilterAction($event: Event) {
+  setFilterName($event: Event) {
     const element = $event.target as HTMLInputElement;
     if (element.value) {
       this.entityList.setFilter(element.id, element.value);
     } else {
       this.entityList.removeFilter(element.id);
     }
-    this.refresh();
   }
 
   setFilterMode($event: MatSelectChange) {
     if ($event.value) {
       this.mode.setValue($event.value as SearchStringMode);
     }
-    this.updateRoute();
-    this.refresh();
+    if (this.mode.value) {
+      this.entityList.setFilter('mode', this.mode.value.toString());
+    } else {
+      this.entityList.removeFilter('mode');
+    }
   }
 
   private refresh() {
@@ -151,6 +129,13 @@ export class EntityListFilteredComponent<T extends Entity>
 
   setLoading($event: boolean) {
     this.loading = $event.valueOf();
+    if (this.loading) {
+      this.name.disable();
+      this.mode.disable();
+    } else {
+      this.name.enable();
+      this.mode.enable();
+    }
   }
 
   updateSearchMode($event: SearchStringMode) {

@@ -59,11 +59,11 @@ export class ExchangeComponent implements OnInit, AfterViewInit {
   private resetPages = false;
 
   constructor(
-    private moneyTypeService: MoneyTypeService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private title: Title,
-    @Inject('searchService') private moneyExchangeService: MoneyExchangeService
+    private readonly moneyTypeService: MoneyTypeService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly title: Title,
+    @Inject('searchService') private readonly moneyExchangeService: MoneyExchangeService
   ) {
     this.moneyExchangeService.setPostProcessingStream(
       this.postProcessingHandler

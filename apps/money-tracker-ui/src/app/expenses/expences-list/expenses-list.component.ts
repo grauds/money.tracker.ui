@@ -38,7 +38,7 @@ export class ExpensesListComponent implements OnInit {
 
   endDate: FormControl<Date> = new FormControl();
 
-  constructor(private title: Title) {}
+  constructor(private readonly title: Title) {}
 
   ngOnInit(): void {
     this.title.setTitle('Expenses');
