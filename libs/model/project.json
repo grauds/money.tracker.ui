@@ -10,15 +10,14 @@
       "executor": "@nx/angular:package",
       "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
-        "project": "libs/model/ng-package.json"
+        "project": "libs/model/ng-package.json",
+        "tsConfig": "libs/model/tsconfig.lib.json"
       },
       "configurations": {
         "production": {
           "tsConfig": "libs/model/tsconfig.lib.prod.json"
         },
-        "development": {
-          "tsConfig": "libs/model/tsconfig.lib.json"
-        }
+        "development": {}
       },
       "defaultConfiguration": "production"
     },
@@ -34,7 +33,8 @@
       "outputs": ["{workspaceRoot}/coverage/libs/model"],
       "options": {
         "jestConfig": "libs/model/jest.config.ts",
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        "tsConfig": "libs/model/tsconfig.spec.json"
       }
     }
   }

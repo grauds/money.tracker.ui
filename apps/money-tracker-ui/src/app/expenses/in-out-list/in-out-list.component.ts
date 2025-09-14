@@ -15,7 +15,6 @@ import {
   MediaMatcher,
 } from '@angular/cdk/layout';
 import { map, shareReplay } from 'rxjs/operators';
-import { ECharts } from 'echarts';
 
 import { InOutDelta, MoneyType } from '@clematis-shared/model';
 import {
@@ -56,7 +55,7 @@ export class InOutListComponent implements OnInit {
 
   showLegend = true;
 
-  echartsInstance: ECharts | undefined;
+  echartsInstance: any;
 
   constructor(
     private inOutService: InOutService,

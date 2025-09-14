@@ -4,24 +4,25 @@
       <li class="page-item" [ngClass]="prevPageDisabled()">
         <a class="page-link" (click)="firstPage()"
           >&laquo;&laquo; First&nbsp;</a
-        >
-      </li>
-      <li class="page-item" [ngClass]="prevPageDisabled()">
-        <a class="page-link" (click)="prevPage()">&laquo; Prev&nbsp;</a>
-      </li>
-      <li
-        class="page-item"
-        *ngFor="let n of range()"
-        [ngClass]="{ active: n == currentPage }"
-      >
-        <a class="page-link" (click)="setLocation(n)"> {{ n }} </a>
-      </li>
-      <li class="page-item" [ngClass]="nextPageDisabled()">
-        <a class="page-link" (click)="nextPage()">&nbsp;Next &raquo;</a>
-      </li>
-      <li class="page-item" [ngClass]="nextPageDisabled()">
-        <a class="page-link" (click)="lastPage()">&nbsp;Last &raquo;&raquo;</a>
-      </li>
-    </ul>
+          >
+        </li>
+        <li class="page-item" [ngClass]="prevPageDisabled()">
+          <a class="page-link" (click)="prevPage()">&laquo; Prev&nbsp;</a>
+        </li>
+        @for (n of range(); track n) {
+          <li
+            class="page-item"
+            [ngClass]="{ active: n == currentPage }"
+            >
+            <a class="page-link" (click)="setLocation(n)"> {{ n }} </a>
+          </li>
+        }
+        <li class="page-item" [ngClass]="nextPageDisabled()">
+          <a class="page-link" (click)="nextPage()">&nbsp;Next &raquo;</a>
+        </li>
+        <li class="page-item" [ngClass]="nextPageDisabled()">
+          <a class="page-link" (click)="lastPage()">&nbsp;Last &raquo;&raquo;</a>
+        </li>
+      </ul>
+    </div>
   </div>
-</div>

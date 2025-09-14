@@ -2,14 +2,14 @@
   "name": "money-tracker-ui",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
+  "sourceRoot": "apps/money-tracker-ui/src",
+  "prefix": "app",
   "generators": {
     "@schematics/angular:application": {
       "strict": true,
       "style": "sass"
     }
   },
-  "sourceRoot": "apps/money-tracker-ui/src",
-  "prefix": "app",
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",

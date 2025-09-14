@@ -3,12 +3,13 @@
     <mat-form-field appearance="fill">
       <mat-label>Available currencies</mat-label>
       <mat-select [disabled]="this.loading" [value]="currency">
-        <mat-option
-          *ngFor="let currency of currencies | keyvalue"
-          [value]="currency.value"
-        >
-          {{ currency.value }}
-        </mat-option>
+        @for (currency of currencies | keyvalue; track currency) {
+          <mat-option
+            [value]="currency.value"
+            >
+            {{ currency.value }}
+          </mat-option>
+        }
       </mat-select>
     </mat-form-field>
   </div>

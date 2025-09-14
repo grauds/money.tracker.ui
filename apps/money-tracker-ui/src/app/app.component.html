@@ -1,12 +1,14 @@
-<app-header
-  *ngIf="userProfile"
-  [title]="title"
-  [userProfile]="userProfile"
-  [isLoggedIn]="isLoggedIn"
-></app-header>
+@if (userProfile) {
+  <app-header
+    [title]="title"
+    [userProfile]="userProfile"
+    [isLoggedIn]="isLoggedIn"
+  ></app-header>
+}
 
-<app-header
-  *ngIf="!userProfile"
-  [title]="title"
-  [isLoggedIn]="isLoggedIn"
-></app-header>
+@if (!userProfile) {
+  <app-header
+    [title]="title"
+    [isLoggedIn]="isLoggedIn"
+  ></app-header>
+}

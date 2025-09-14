@@ -2,7 +2,7 @@ import { Component, effect, inject } from "@angular/core";
 import { ActivatedRoute, Router } from '@angular/router';
 import { Utils } from '@clematis-shared/model';
 import { HttpParams } from '@angular/common/http';
-import { CommonModule } from "@angular/common";
+
 
 import {
   KEYCLOAK_EVENT_SIGNAL,
@@ -20,9 +20,8 @@ import { AppModule } from "./app.module";
   styleUrls: ["./app.component.css"],
   standalone: true,
   imports: [
-    CommonModule,
     AppModule
-  ]
+]
 })
 export class AppComponent {
 

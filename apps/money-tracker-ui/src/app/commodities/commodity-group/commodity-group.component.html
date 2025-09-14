@@ -1,31 +1,34 @@
-<app-breadcrumbs *ngIf="entity" [path]="path"></app-breadcrumbs>
-<div *ngIf="entity">
-  <div class="back-area">
-    <div class="jumbotron">
-      <h2 style="margin: 10px"></h2>
-      <h2>
-        {{ entity ? entity.name : '' }}
-      </h2>
-      <span style="max-height: 350px; margin: 10px; overflow: auto">
-        {{ entity ? entity.description : '' }}
-      </span>
-      <div>Total: {{ totalSum }} RUB</div>
+@if (entity) {
+  <app-breadcrumbs [path]="path"></app-breadcrumbs>
+}
+@if (entity) {
+  <div>
+    <div class="back-area">
+      <div class="jumbotron">
+        <h2 style="margin: 10px"></h2>
+        <h2>
+          {{ entity ? entity.name : '' }}
+        </h2>
+        <span style="max-height: 350px; margin: 10px; overflow: auto">
+          {{ entity ? entity.description : '' }}
+        </span>
+        <div>Total: {{ totalSum }} RUB</div>
+      </div>
     </div>
-  </div>
-
-  <app-entity-list
+    <app-entity-list
     [searchRequest]="{
       queryArguments: getQueryArguments(),
       queryName: 'recursiveByParentId'
     }"
-    (loading$)="setLoading($event)"
-    (entities$)="setEntities($event)"
-    [sort]="getSort()"
-  ></app-entity-list>
-
-  <app-commodity-group-commodities
-    *ngIf="!(children && children.length > 0)"
-    [id]="id"
-  >
-  </app-commodity-group-commodities>
-</div>
+      (loading$)="setLoading($event)"
+      (entities$)="setEntities($event)"
+      [sort]="getSort()"
+    ></app-entity-list>
+    @if (!(children && children.length > 0)) {
+      <app-commodity-group-commodities
+        [id]="id"
+        >
+      </app-commodity-group-commodities>
+    }
+  </div>
+}

@@ -1,16 +1,20 @@
 <div class="breadcrumbs">
   <div class="path-item"><mat-icon fontIcon="home"></mat-icon></div>
 
-  <div *ngFor="let item of path" class="path-item">
-    <div class="path-divider">&gt;</div>
-
-    <a
-      *ngIf="item.getSelfLinkHref()"
-      [routerLink]="parseResourceUrlToAppUrl(item)"
-      class="active-ctrl"
-    >
-      {{ item.name }}
-    </a>
-    <div *ngIf="!item.getSelfLinkHref()">{{ item.name }}</div>
-  </div>
+  @for (item of path; track item) {
+    <div class="path-item">
+      <div class="path-divider">&gt;</div>
+      @if (item.getSelfLinkHref()) {
+        <a
+          [routerLink]="parseResourceUrlToAppUrl(item)"
+          class="active-ctrl"
+          >
+          {{ item.name }}
+        </a>
+      }
+      @if (!item.getSelfLinkHref()) {
+        <div>{{ item.name }}</div>
+      }
+    </div>
+  }
 </div>

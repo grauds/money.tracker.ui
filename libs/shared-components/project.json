@@ -10,15 +10,14 @@
       "executor": "@nx/angular:package",
       "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
-        "project": "libs/shared-components/ng-package.json"
+        "project": "libs/shared-components/ng-package.json",
+        "tsConfig": "libs/shared-components/tsconfig.lib.json"
       },
       "configurations": {
         "production": {
           "tsConfig": "libs/shared-components/tsconfig.lib.prod.json"
         },
-        "development": {
-          "tsConfig": "libs/shared-components/tsconfig.lib.json"
-        }
+        "development": {}
       },
       "defaultConfiguration": "production"
     },
@@ -37,7 +36,8 @@
       "outputs": ["{workspaceRoot}/coverage/libs/shared-components"],
       "options": {
         "jestConfig": "libs/shared-components/jest.config.ts",
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        "tsConfig": "libs/shared-components/tsconfig.spec.json"
       }
     }
   }

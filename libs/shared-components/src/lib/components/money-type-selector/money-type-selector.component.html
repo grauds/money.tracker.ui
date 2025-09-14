@@ -5,9 +5,11 @@
     (valueChange)="onCurrencyChange($event)"
     [compareWith]="compareFn"
     [value]="currency"
-  >
-    <mat-option *ngFor="let currency of currencies" [value]="currency">
-      {{ currency.name }}
-    </mat-option>
+    >
+    @for (currency of currencies; track currency) {
+      <mat-option [value]="currency">
+        {{ currency.name }}
+      </mat-option>
+    }
   </mat-select>
 </mat-form-field>
