@@ -2,48 +2,44 @@
 # TEST STAGE
 # ------------------------------------------------------------------------------
 
-FROM node:22 AS test-image
+FROM node:20-bullseye AS test-image
 
 WORKDIR /opt/software
 
-RUN npm install -g @angular/cli
-RUN npm install -g nx@21.1.2
-
-COPY .babelrc .eslintignore .eslintrc.json decorate-angular-cli.js jest.config.ts jest.preset.js nx.json \
+COPY .babelrc .eslintignore .eslintrc.json decorate-angular-cli.js \
+     jest.config.ts jest.preset.js nx.json \
      package.json package-lock.json tsconfig.base.json ./
 
-RUN npm install
+RUN npm ci
 
 COPY apps apps
 COPY libs libs
 
 ENV NX_DAEMON=false
 
-RUN nx run-many --target=test --all --coverage --runInBand
-
+RUN npx nx run-many --target=test --all --coverage --runInBand
 
 # ------------------------------------------------------------------------------
 # BUILD STAGE
 # ------------------------------------------------------------------------------
 
-FROM node:22 AS build-image
+FROM node:20-bullseye AS build-image
 
 WORKDIR /opt/software
 
-RUN npm install -g @angular/cli
-RUN npm install -g nx@21.1.2
-
-COPY .babelrc .eslintignore .eslintrc.json decorate-angular-cli.js jest.config.ts jest.preset.js nx.json \
+COPY .babelrc .eslintignore .eslintrc.json decorate-angular-cli.js \
+     jest.config.ts jest.preset.js nx.json \
      package.json package-lock.json tsconfig.base.json ./
 
-RUN npm install
+RUN npm ci
 
 COPY apps apps
 COPY libs libs
 
 ENV NX_DAEMON=false
 
-RUN nx run money-tracker-ui:build:${ENVIRONMENT}
+ARG ENVIRONMENT
+RUN npx nx run money-tracker-ui:build:${ENVIRONMENT}
 
 # ------------------------------------------------------------------------------
 # DEBUG STAGE (after build)
