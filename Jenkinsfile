@@ -91,24 +91,34 @@ pipeline {
       }
     }
 
-    stage ('Dependency-Check') {
+  stage('Dependency-Check') {
       steps {
-        sh '''
-          npm -version
-          npm install
-        '''
-        catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-          dependencyCheck additionalArguments: '''
-              -o "./"
-              -s "./"
-              -f "ALL"
-              -P "depcheck.properties"
-              --prettyPrint''', nvdCredentialsId: 'NVD_API_Key', odcInstallation: 'Dependency Checker'
+          sh '''
+              node -v
+              npm -v
+              npm install
+          '''
 
-          dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-        }
+          catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+              // Run OWASP Dependency-Check
+              dependencyCheck additionalArguments: '''
+                  -s "./"                                # Source directory
+                  -o "./dependency-check-reports"        # Output directory
+                  -f "ALL"                               # Generate all report formats
+                  --prettyPrint                           # Make JSON report human-readable
+                  -P "depcheck.properties"               # Optional config/proxy file
+                  --suppression "dependency-check-suppressions.xml" # Suppress known false positives
+                  --exclude "./.nx/cache"                # Exclude Nx cache
+                  --exclude "./coverage"                 # Exclude test coverage output
+                  --exclude "./node_modules/@algolia/abtesting/dist" # Exclude noisy library scans
+              ''', nvdCredentialsId: 'NVD_API_Key', odcInstallation: 'Dependency Checker'
+
+              // Publish results in Jenkins
+              dependencyCheckPublisher pattern: 'dependency-check-reports/dependency-check-report.xml'
+          }
       }
-    }
+  }
+
 
     stage('Export Docker Images') {
       steps {
