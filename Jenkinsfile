@@ -108,6 +108,7 @@ pipeline {
                   --prettyPrint                           # Make JSON report human-readable
                   -P "depcheck.properties"               # Optional config/proxy file
                   --suppression "dependency-check-suppressions.xml" # Suppress known false positives
+                  --disableOssIndex
                   --exclude "./.nx/cache"                # Exclude Nx cache
                   --exclude "./coverage"                 # Exclude test coverage output
                   --exclude "./node_modules/@algolia/abtesting/dist" # Exclude noisy library scans
