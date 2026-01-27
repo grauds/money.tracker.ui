@@ -3,4 +3,5 @@ export interface EnvironmentInterface {
   apiUrl: string;
   infoUrl: string;
   authUrl: string;
+  authClientId: string;
 }

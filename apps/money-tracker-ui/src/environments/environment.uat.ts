@@ -5,4 +5,5 @@ export const environment: EnvironmentInterface = {
   apiUrl: '/api',
   infoUrl: '/info',
   authUrl: 'https://192.168.1.157:443/',
+  authClientId: 'clematis-money-tracker-ui'
 };

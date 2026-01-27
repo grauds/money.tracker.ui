@@ -107,7 +107,7 @@ bootstrapApplication(AppComponent, {
       config: {
         url: environment.authUrl,
         realm: 'clematis',
-        clientId: 'clematis-money-tracker-ui',
+        clientId: environment.authClientId,
       },
       initOptions: {
         onLoad: 'check-sso',
