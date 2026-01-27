@@ -10,7 +10,15 @@ COPY .babelrc .eslintignore .eslintrc.json decorate-angular-cli.js \
      jest.config.ts jest.preset.js nx.json \
      package.json package-lock.json tsconfig.base.json ./
 
-RUN npm ci
+ENV NODE_OPTIONS='--dns-result-order=ipv4first'
+
+RUN npm config set maxsockets 5 \
+ && npm config set fetch-retries 5 \
+ && npm config set fetch-retry-mintimeout 20000 \
+ && npm config set fetch-retry-maxtimeout 120000 \
+ && npm config set timeout 120000
+
+RUN npm ci --no-audit --no-fund
 
 COPY apps apps
 COPY libs libs
@@ -31,7 +39,15 @@ COPY .babelrc .eslintignore .eslintrc.json decorate-angular-cli.js \
      jest.config.ts jest.preset.js nx.json \
      package.json package-lock.json tsconfig.base.json ./
 
-RUN npm ci
+ENV NODE_OPTIONS='--dns-result-order=ipv4first'
+
+RUN npm config set maxsockets 5 \
+ && npm config set fetch-retries 5 \
+ && npm config set fetch-retry-mintimeout 20000 \
+ && npm config set fetch-retry-maxtimeout 120000 \
+ && npm config set timeout 120000
+
+RUN npm ci --no-audit --no-fund
 
 COPY apps apps
 COPY libs libs
