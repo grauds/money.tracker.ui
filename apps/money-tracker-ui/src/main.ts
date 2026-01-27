@@ -52,7 +52,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgxEchartsModule } from 'ngx-echarts';
 
 import { appRoutes as routes } from './routes';
-import { AppComponentsModule } from "./app/app.module";
+import { AppModule } from "./app/app.module";
 
 /*const mapConfig: YaConfig = {
   apikey: 'API_KEY',
@@ -101,7 +101,7 @@ bootstrapApplication(AppComponent, {
       }),
       ReactiveFormsModule,
       SharedComponentsModule,
-      AppComponentsModule
+      AppModule
     ),
     provideKeycloak({
       config: {

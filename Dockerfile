@@ -7,7 +7,7 @@ FROM node:22-bullseye AS test-image
 WORKDIR /opt/software
 
 COPY .babelrc .eslintignore .eslintrc.json decorate-angular-cli.js \
-     jest.config.ts jest.preset.js nx.json postcss.config.json \
+     jest.config.ts jest.preset.js nx.json postcss.config.json .postcssrc.json \
      package.json package-lock.json tsconfig.base.json ./
 
 ENV NODE_OPTIONS='--dns-result-order=ipv4first'
@@ -37,7 +37,7 @@ FROM node:22-bullseye AS build-image
 WORKDIR /opt/software
 
 COPY .babelrc .eslintignore .eslintrc.json decorate-angular-cli.js \
-     jest.config.ts jest.preset.js nx.json postcss.config.json \
+     jest.config.ts jest.preset.js nx.json postcss.config.json .postcssrc.json \
      package.json package-lock.json tsconfig.base.json ./
 
 ENV NODE_OPTIONS='--dns-result-order=ipv4first'
