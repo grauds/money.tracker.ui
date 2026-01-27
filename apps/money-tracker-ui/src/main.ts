@@ -31,7 +31,6 @@ import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularYandexMapsModule, YaConfig } from 'angular8-yandex-maps';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
@@ -55,10 +54,10 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { appRoutes as routes } from './routes';
 import { AppComponentsModule } from "./app/app.module";
 
-const mapConfig: YaConfig = {
+/*const mapConfig: YaConfig = {
   apikey: 'API_KEY',
   lang: 'en_US',
-};
+};*/
 
 if (environment.production) {
   enableProdMode();
@@ -75,7 +74,6 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(),
     provideAnimations(),
     importProvidersFrom(
-      AngularYandexMapsModule.forRoot(mapConfig),
       ContentLoaderModule,
       FontAwesomeModule,
       FormsModule,

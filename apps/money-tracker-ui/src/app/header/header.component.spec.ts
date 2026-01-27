@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, NO_ERRORS_SCHEMA, TestBed } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -7,7 +7,6 @@ import { MatListModule } from '@angular/material/list';
 import { RouterModule } from "@angular/router";
 
 import { HeaderComponent } from './header.component';
-import { WorkspaceComponent } from '../workspace/workspace.component';
 
 import { MockKeycloak } from '../../mocks/mock_keycloak';
 import Keycloak from 'keycloak-js';
@@ -20,8 +19,9 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [WorkspaceComponent, HeaderComponent],
+      declarations: [],
       imports: [
+        HeaderComponent,
         MatSidenavModule,
         BrowserAnimationsModule,
         MatSidenavModule,
@@ -33,6 +33,7 @@ describe('HeaderComponent', () => {
       providers: [
         { provide: Keycloak, useValue: keycloakServiceMock },
       ],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

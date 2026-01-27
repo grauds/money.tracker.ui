@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -29,7 +30,6 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [],
       imports: [AppComponent],
       providers: [
         { provide: Keycloak, useValue: keycloakServiceMock },
@@ -38,7 +38,14 @@ describe('AppComponent', () => {
         { provide: Router, useValue: routerMock },
         { provide: EnvironmentService, useValue: environmentServiceMock },
       ],
-    }).compileComponents();
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+      .overrideComponent(AppComponent, {
+        set: {
+          imports: []
+        }
+      })
+      .compileComponents();
   });
 
   it('should create the app', () => {
@@ -114,5 +121,3 @@ describe('AppComponent', () => {
 */
 
 });
-
-

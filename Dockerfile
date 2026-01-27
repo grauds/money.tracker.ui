@@ -2,7 +2,7 @@
 # TEST STAGE
 # ------------------------------------------------------------------------------
 
-FROM node:20-bullseye AS test-image
+FROM node:22-bullseye AS test-image
 
 WORKDIR /opt/software
 
@@ -23,7 +23,7 @@ RUN npx nx run-many --target=test --all --coverage --runInBand
 # BUILD STAGE
 # ------------------------------------------------------------------------------
 
-FROM node:20-bullseye AS build-image
+FROM node:22-bullseye AS build-image
 
 WORKDIR /opt/software
 

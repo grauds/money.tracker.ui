@@ -2,6 +2,7 @@ import { Component, effect, inject } from "@angular/core";
 import { ActivatedRoute, Router } from '@angular/router';
 import { Utils } from '@clematis-shared/model';
 import { HttpParams } from '@angular/common/http';
+import { HeaderComponent } from "./header/header.component";
 
 
 import {
@@ -12,16 +13,13 @@ import {
   typeEventArgs
 } from "keycloak-angular";
 import Keycloak, { KeycloakProfile } from 'keycloak-js';
-import { AppModule } from "./app.module";
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"],
   standalone: true,
-  imports: [
-    AppModule
-]
+  imports: [HeaderComponent]
 })
 export class AppComponent {
 

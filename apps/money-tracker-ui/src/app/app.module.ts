@@ -32,7 +32,6 @@ import {
   NgxHateoasClientModule,
 } from '@lagoshny/ngx-hateoas-client';
 
-import { HeaderComponent } from './header/header.component';
 import { MainComponent } from './main/main.component';
 
 // lists
@@ -50,7 +49,6 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { OrganizationComponent } from './organizations/organization/organization.component';
 import { OrganizationGroupComponent } from './organizations/organization-group/organization-group.component';
 import { OrganizationGroupListComponent } from './organizations/organization-group-list/organization-group-list.component';
-import { WorkspaceComponent } from './workspace/workspace.component';
 import { AboutComponent } from './about/about.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -78,13 +76,11 @@ import { CommodityGroupCommoditiesComponent } from './commodities/commodity-grou
 import { OrganizationGroupOrganizationsComponent } from './organizations/organization-group-organizations/organization-group-organizations.component';
 import { IncomeMonthlyComponent } from './income/income-monthly/income-monthly.component';
 import { AgentCommoditiesComponent } from './expenses/agent-commodities/agent-commodities.component';
-import { AngularYandexMapsModule } from "angular8-yandex-maps";
 import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { CommonModule } from "@angular/common";
 
 @NgModule({
   declarations: [
-    HeaderComponent,
     MainComponent,
     CommodityGroupListComponent,
     CommoditiesListComponent,
@@ -95,7 +91,6 @@ import { CommonModule } from "@angular/common";
     OrganizationComponent,
     OrganizationGroupComponent,
     OrganizationGroupListComponent,
-    WorkspaceComponent,
     AboutComponent,
     AccountsDashboardComponent,
     LastCommoditiesListComponent,
@@ -110,7 +105,6 @@ import { CommonModule } from "@angular/common";
   ],
   imports: [
     HttpClientModule,
-    AngularYandexMapsModule,
     CommonModule,
     ContentLoaderModule,
     FontAwesomeModule,
@@ -143,9 +137,7 @@ import { CommonModule } from "@angular/common";
     RouterOutlet,
     RouterLinkActive
   ],
-  exports: [
-    HeaderComponent
-  ],
+  exports: [],
   providers: []
 })
 export class AppModule {
