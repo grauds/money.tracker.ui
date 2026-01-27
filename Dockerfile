@@ -14,9 +14,10 @@ ENV NODE_OPTIONS='--dns-result-order=ipv4first'
 
 RUN npm config set maxsockets 5 \
  && npm config set fetch-retries 5 \
+ && npm config set fetch-retry-factor 2 \
  && npm config set fetch-retry-mintimeout 20000 \
  && npm config set fetch-retry-maxtimeout 120000 \
- && npm config set timeout 120000
+ && npm config set registry https://registry.npmjs.org/
 
 RUN npm ci --no-audit --no-fund
 
@@ -43,9 +44,10 @@ ENV NODE_OPTIONS='--dns-result-order=ipv4first'
 
 RUN npm config set maxsockets 5 \
  && npm config set fetch-retries 5 \
+ && npm config set fetch-retry-factor 2 \
  && npm config set fetch-retry-mintimeout 20000 \
  && npm config set fetch-retry-maxtimeout 120000 \
- && npm config set timeout 120000
+ && npm config set registry https://registry.npmjs.org/
 
 RUN npm ci --no-audit --no-fund
 
