@@ -64,14 +64,12 @@ if (environment.production) {
 }
 
 const urlCondition = createInterceptorCondition<IncludeBearerTokenCondition>({
-  urlPattern: /^(.*\/api\/.*)?$/i,
+  urlPattern: /^\/api\/.*$/i,
   bearerPrefix: 'Bearer'
 });
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideRouter(routes),
-    provideHttpClient(),
     provideAnimations(),
     importProvidersFrom(
       ContentLoaderModule,
