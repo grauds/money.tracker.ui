@@ -9,6 +9,12 @@ export class GlobalErrorHandler implements ErrorHandler {
   ) {}
 
   handleError(error: any) {
+
+    if (error?.message?.includes('keycloak') || error?.message?.includes('Keycloak')) {
+      console.error('Keycloak error suppressed from dialog:', error);
+      return;
+    }
+
     this.zone.run(() =>
       this.errorDialogService.open(
         error?.message || 'Undefined client error',
