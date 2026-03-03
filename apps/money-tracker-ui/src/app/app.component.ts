@@ -65,8 +65,6 @@ export class AppComponent {
              keycloakEvent.type == KeycloakEventType.AuthError
               ||
              keycloakEvent.type == KeycloakEventType.AuthLogout
-              ||
-             keycloakEvent.type == KeycloakEventType.TokenExpired
         ) {
 
           this.userProfile = undefined;

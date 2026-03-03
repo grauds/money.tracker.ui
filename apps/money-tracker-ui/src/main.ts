@@ -65,7 +65,10 @@ if (environment.production) {
 
 const urlCondition = createInterceptorCondition<IncludeBearerTokenCondition>({
   urlPattern: /^(\/api\/.*|https?:\/\/[^/]+\/api\/.*)$/i,
-  bearerPrefix: 'Bearer'
+  bearerPrefix: 'Bearer',
+  shouldUpdateToken(request) {
+    return !request.url.includes('/assets/');
+  }
 });
 
 bootstrapApplication(AppComponent, {
