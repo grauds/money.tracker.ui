@@ -8,9 +8,11 @@
         <h2>
           {{ entity ? entity.name : '' }}
         </h2>
-        <span style="max-height: 350px; margin: 10px; overflow: auto">
-          {{ entity ? entity.description : '' }}
-        </span>
+        @if (entity.description) {
+          <div style="max-height: 350px; margin: 10px; overflow: auto">
+            {{ entity ? entity.description : '' }}
+          </div>
+        }
       </div>
     </div>
     <app-entity-list
