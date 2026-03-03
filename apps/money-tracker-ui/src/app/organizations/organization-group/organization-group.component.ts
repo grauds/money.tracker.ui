@@ -20,6 +20,7 @@ import {
 } from '@clematis-shared/shared-components';
 
 import { Title } from '@angular/platform-browser';
+import { catchError, EMPTY } from "rxjs";
 
 @Component({
   selector: 'app-organization-group',
@@ -84,19 +85,33 @@ export class OrganizationGroupComponent
       queryName: 'recursiveByParentId',
     });
 
-    this.entity?.getRelation<OrganizationGroup>('parent').subscribe({
-      next: (parent: OrganizationGroup) => {
-        this.parent = parent;
-        this.parentLink = Entity.getRelativeSelfLinkHref(this.parent);
-      },
-      error: () => {
-        this.parent = undefined;
-        this.parentLink = undefined;
-      },
-      complete: () => {
-        this.parent = undefined;
-        this.parentLink = undefined;
-      },
+    this.entity
+      ?.getRelation<OrganizationGroup>('parent')
+      .pipe(
+        catchError((err) => {
+          if (err?.status === 404) {
+            // No parent is a valid state → don’t show an error to the user
+            this.parent = undefined;
+            this.parentLink = undefined;
+            return EMPTY;
+          }
+          // Other errors are real problems → let them propagate (or handle differently)
+          throw err;
+        })
+      )
+      .subscribe({
+        next: (parent: OrganizationGroup) => {
+          this.parent = parent;
+          this.parentLink = Entity.getRelativeSelfLinkHref(this.parent);
+        },
+        error: () => {
+          this.parent = undefined;
+          this.parentLink = undefined;
+        },
+        complete: () => {
+          this.parent = undefined;
+          this.parentLink = undefined;
+        },
     });
 
     if (this.entity) {

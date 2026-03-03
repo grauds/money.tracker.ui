@@ -18,6 +18,7 @@ import {
 } from '@clematis-shared/shared-components';
 import { Title } from '@angular/platform-browser';
 import { Utils } from '@clematis-shared/model';
+import { catchError, EMPTY } from "rxjs";
 
 @Component({
   selector: 'app-commodity-group',
@@ -84,6 +85,18 @@ export class CommodityGroupComponent
 
     this.entity
       ?.getRelation<CommodityGroup>('parent')
+      .pipe(
+        catchError((err) => {
+          if (err?.status === 404) {
+            // No parent is a valid state → don’t show an error to the user
+            this.parent = undefined;
+            this.parentLink = undefined;
+            return EMPTY;
+          }
+          // Other errors are real problems → let them propagate (or handle differently)
+          throw err;
+        })
+      )
       .subscribe((parent: CommodityGroup) => {
         this.parent = parent;
         this.parentLink = Entity.getRelativeSelfLinkHref(this.parent);
