@@ -23,10 +23,25 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
         return event;
       }),
       catchError((error: HttpErrorResponse) => {
-        const authUrl = this.environmentService.getValue('authUrl');
-        if (authUrl && request.url.startsWith(authUrl)) {
+
+        // Expected case: The interceptor does not handle keycloak auth errors.
+        const authUrlRaw = this.environmentService.getValue('authUrl');
+        const reqUrl = new URL(request.url, window.location.origin).href.replace(/\/+$/, '');
+        const authUrl = authUrlRaw
+          ? new URL(authUrlRaw, window.location.origin).href.replace(/\/+$/, '')
+          : '';
+
+        if (authUrl && reqUrl.startsWith(authUrl)) {
+          // Don't show a dialog for auth server calls
           return throwError(() => error);
         }
+
+        // Expected case: relations / optional resources may legitimately return 404.
+        // Don't bother the user with a dialog for that.
+        if (request.method === 'GET' && error.status === 404) {
+          return throwError(() => error);
+        }
+
         const data = {
           reason:
             error && error.error && error.error.reason
@@ -34,6 +49,7 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
               : error.message,
           status: error.status,
         };
+
         this.errorDialogService.open(data.reason, data.status);
         return throwError(() => error);
       })
