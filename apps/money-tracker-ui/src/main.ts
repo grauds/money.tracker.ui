@@ -64,7 +64,7 @@ if (environment.production) {
 }
 
 const urlCondition = createInterceptorCondition<IncludeBearerTokenCondition>({
-  urlPattern: /^\/api\/.*$/i,
+  urlPattern: /^(\/api\/.*|https?:\/\/[^/]+\/api\/.*)$/i,
   bearerPrefix: 'Bearer'
 });
 
