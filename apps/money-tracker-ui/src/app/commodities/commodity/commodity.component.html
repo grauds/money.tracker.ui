@@ -16,9 +16,11 @@
       </div>
       <div>Quantity: {{ totalQty }} {{ defaultUnit }}</div>
       <div>Total: {{ totalSum | currency : defaultMoneyType?.code }}</div>
-      <div style="max-height: 350px; margin: 10px; overflow: auto">
-        {{ entity ? entity.description : '' }}
-      </div>
+      @if (entity.description) {
+        <div style="max-height: 350px; margin: 10px; overflow: auto">
+          {{ entity ? entity.description : '' }}
+        </div>
+      }
     </div>
   </div>
 }
