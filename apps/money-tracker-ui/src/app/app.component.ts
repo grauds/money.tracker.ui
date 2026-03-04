@@ -39,18 +39,23 @@ export class AppComponent {
     effect(() => {
 
         const keycloakEvent: KeycloakEvent = this.keycloakSignal();
-
-        this.isLoggedIn = typeEventArgs<ReadyArgs>(keycloakEvent.args);
-        this.keycloak.loadUserProfile().then((profile) => {
-          this.userProfile = profile;
-        }).catch((error) => {
-          this.userProfile = undefined;
-          this.keycloak.login();
-        });
-
         console.log(keycloakEvent);
 
-        if (keycloakEvent.type == KeycloakEventType.AuthSuccess) {
+        if (keycloakEvent.type == KeycloakEventType.Ready) {
+
+          this.isLoggedIn = typeEventArgs<ReadyArgs>(keycloakEvent.args);
+          if (this.isLoggedIn) {
+            this.keycloak.loadUserProfile().then((profile) => {
+              this.userProfile = profile;
+            });
+          }
+
+        } else if (keycloakEvent.type == KeycloakEventType.AuthSuccess) {
+
+          this.isLoggedIn = true;
+          this.keycloak.loadUserProfile().then((profile) => {
+            this.userProfile = profile;
+          });
 
           if (this.route.snapshot.queryParams['redirect']) {
             const params: HttpParams = Utils.moveQueryParametersFromRedirectUrl(
@@ -67,9 +72,14 @@ export class AppComponent {
              keycloakEvent.type == KeycloakEventType.AuthLogout
         ) {
 
+          this.isLoggedIn = false;
           this.userProfile = undefined;
-          this.keycloak.logout();
 
+        } else if (keycloakEvent.type == KeycloakEventType.TokenExpired) {
+          // No action needed here, as we have shouldUpdateToken
+          // configured in the interceptor.
+          // And we don't want to force logout if the token can be refreshed.
+          console.log('Token expired event received');
         }
       }
     )

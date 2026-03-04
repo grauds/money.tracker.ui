@@ -20,7 +20,8 @@ import {
   createInterceptorCondition,
   IncludeBearerTokenCondition,
   INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
-  includeBearerTokenInterceptor
+  includeBearerTokenInterceptor,
+  withAutoRefreshToken
 } from "keycloak-angular";
 
 import { ContentLoaderModule } from '@ngneat/content-loader';
@@ -113,7 +114,13 @@ bootstrapApplication(AppComponent, {
       initOptions: {
         onLoad: 'check-sso',
         silentCheckSsoRedirectUri: `${window.location.origin}/assets/silent-check-sso.html`
-      }
+      },
+      features: [
+        withAutoRefreshToken({
+          sessionTimeout: 300000, // 5 minutes in milliseconds
+          onInactivityTimeout: 'logout' // Can be 'logout', 'login', or 'none'
+        })
+      ]
     }),
     {
       provide: INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
