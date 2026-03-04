@@ -17,6 +17,8 @@ import {
 
 import {
   provideKeycloak,
+  AutoRefreshTokenService,
+  UserActivityService,
   createInterceptorCondition,
   IncludeBearerTokenCondition,
   INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
@@ -122,6 +124,8 @@ bootstrapApplication(AppComponent, {
         })
       ]
     }),
+    AutoRefreshTokenService,
+    UserActivityService,
     {
       provide: INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
       useValue: [urlCondition]
