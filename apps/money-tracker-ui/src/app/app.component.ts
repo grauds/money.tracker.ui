@@ -39,6 +39,7 @@ export class AppComponent {
     effect(() => {
 
         const keycloakEvent: KeycloakEvent = this.keycloakSignal();
+        console.log(`${keycloakEvent.type} event received`);
         console.log(keycloakEvent);
 
         if (keycloakEvent.type == KeycloakEventType.Ready) {
@@ -71,7 +72,6 @@ export class AppComponent {
               ||
              keycloakEvent.type == KeycloakEventType.AuthLogout
         ) {
-
           this.isLoggedIn = false;
           this.userProfile = undefined;
 
@@ -79,7 +79,6 @@ export class AppComponent {
           // No action needed here, as we have shouldUpdateToken
           // configured in the interceptor.
           // And we don't want to force logout if the token can be refreshed.
-          console.log('Token expired event received');
         }
       }
     )

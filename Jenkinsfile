@@ -1,7 +1,7 @@
 pipeline {
 
   agent any
-  tools { nodejs "Node18" }
+  tools { nodejs "Node22" }
   environment {
     CERT_DIR = "${WORKSPACE}/docker/nginx/ssl"
     REMOTE_HOST = "192.168.1.118"
@@ -50,10 +50,10 @@ pipeline {
           file(credentialsId: 'nginx-ssl-key', variable: 'SSL_KEY')
         ]) {
           sh '''
-            cp "$SSL_CERT" "${CERT_DIR}/certificate.crt"
-            cp "$SSL_KEY" "${CERT_DIR}/private.key"
-            chmod 644 "${CERT_DIR}/certificate.crt"
-            chmod 600 "${CERT_DIR}/private.key"
+            cp "$SSL_CERT" "${CERT_DIR}/clematis-mt-ssl-cert.crt"
+            cp "$SSL_KEY" "${CERT_DIR}/clematis-mt-ssl-key.key"
+            chmod 644 "${CERT_DIR}/clematis-mt-ssl-cert.crt"
+            chmod 600 "${CERT_DIR}/clematis-mt-ssl-key.key"
           '''
         }
       }
@@ -93,15 +93,8 @@ pipeline {
 
   stage('Dependency-Check') {
       steps {
-          sh '''
-              node -v
-              npm -v
-              npm install
-          '''
-
           catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-              // Run OWASP Dependency-Check
-              dependencyCheck additionalArguments: '''
+            dependencyCheck additionalArguments: '''
                   -s "./"                                # Source directory
                   -o "./dependency-check-reports"        # Output directory
                   -f "ALL"                               # Generate all report formats
@@ -114,12 +107,10 @@ pipeline {
                   --exclude "./node_modules/@algolia/abtesting/dist" # Exclude noisy library scans
               ''', nvdCredentialsId: 'NVD_API_Key', odcInstallation: 'Dependency Checker'
 
-              // Publish results in Jenkins
-              dependencyCheckPublisher pattern: 'dependency-check-reports/dependency-check-report.xml'
+            dependencyCheckPublisher pattern: 'dependency-check-reports/dependency-check-report.xml'
           }
       }
   }
-
 
     stage('Export Docker Images') {
       steps {
@@ -146,6 +137,22 @@ pipeline {
       }
     }
 
+    stage('Prepare SSL Volume') {
+      steps {
+        sshagent (credentials: ['yoda-anton-key']) {
+          sh '''
+            # 1. Ensure the volume exists (does nothing if it already exists)
+            ssh ${SSH_DEST} "docker volume create jenkins_ssl_certs"
+
+            # 2. Stream and overwrite files (tar overwrites by default)
+            tar -C "${CERT_DIR}" -cf - . | ssh ${SSH_DEST} "docker run --rm -i -v jenkins_ssl_certs:/ssl alpine tar -C /ssl -xf -"
+
+            # 3. Update permissions on the new/updated files
+            ssh ${SSH_DEST} "docker run --rm -v jenkins_ssl_certs:/ssl alpine sh -c 'chmod 644 /ssl/clematis-mt-ssl-cert.crt && chmod 600 /ssl/clematis-mt-ssl-key.key'"
+          '''
+        }
+      }
+    }
 
     stage('Deploy on Yoda') {
       steps {
