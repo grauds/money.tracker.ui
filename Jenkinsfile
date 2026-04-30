@@ -58,11 +58,11 @@ pipeline {
           docker build \
             --build-arg HTTP_PROXY=http://192.168.1.174:7890 \
             --build-arg HTTPS_PROXY=http://192.168.1.174:7890 \
-            . -t money.tracker.ui.uat -f Dockerfile --build-arg="ENVIRONMENT=uat" .
+            . -t money.tracker.ui.uat -f Dockerfile --build-arg="ENVIRONMENT=uat"
           docker build \
             --build-arg HTTP_PROXY=http://192.168.1.174:7890 \
             --build-arg HTTPS_PROXY=http://192.168.1.174:7890 \
-            . -t money.tracker.ui.demo -f Dockerfile --build-arg="ENVIRONMENT=demo" .
+            . -t money.tracker.ui.demo -f Dockerfile --build-arg="ENVIRONMENT=demo"
         '''
       }
     }
