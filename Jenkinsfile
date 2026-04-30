@@ -11,13 +11,6 @@ pipeline {
   }
 
   stages {
-
-    stage('Checkout') {
-      steps {
-        git 'https://github.com/grauds/money.tracker.ui.git'
-      }
-    }
-
     stage('Verify tooling') {
       steps {
         dir('apps/money-tracker-ui/jenkins') {
@@ -27,7 +20,7 @@ pipeline {
             docker compose version
             curl --version
             jq --version
-            docker compose ps || true
+            docker compose ps
           '''
         }
       }
@@ -61,12 +54,16 @@ pipeline {
 
     stage('Build Docker Images') {
       steps {
-        dir('.') {
-          sh '''
-            docker build -t money.tracker.ui.uat -f Dockerfile --build-arg="ENVIRONMENT=uat" .
-            docker build -t money.tracker.ui.demo -f Dockerfile --build-arg="ENVIRONMENT=demo" .
-          '''
-        }
+        sh '''
+          docker build \
+            --build-arg HTTP_PROXY=http://192.168.1.174:7890 \
+            --build-arg HTTPS_PROXY=http://192.168.1.174:7890 \
+            . -t money.tracker.ui.uat -f Dockerfile --build-arg="ENVIRONMENT=uat" .
+          docker build \
+            --build-arg HTTP_PROXY=http://192.168.1.174:7890 \
+            --build-arg HTTPS_PROXY=http://192.168.1.174:7890 \
+            . -t money.tracker.ui.demo -f Dockerfile --build-arg="ENVIRONMENT=demo" .
+        '''
       }
     }
 
@@ -74,7 +71,10 @@ pipeline {
       steps {
         sh '''
            export DOCKER_BUILDKIT=1
-           docker build --output "type=local,dest=${WORKSPACE}/coverage" --target test-out .
+           docker build \
+              --build-arg HTTP_PROXY=http://192.168.1.174:7890 \
+              --build-arg HTTPS_PROXY=http://192.168.1.174:7890 \
+              --output "type=local,dest=${WORKSPACE}/coverage" --target test-out .
            ls -l ./coverage
         '''
         recordCoverage(
