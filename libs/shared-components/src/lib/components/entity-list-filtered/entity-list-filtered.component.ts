@@ -14,8 +14,6 @@ import {
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { Sort } from '@lagoshny/ngx-hateoas-client';
-
 import { Entity, SearchStringMode } from '@clematis-shared/model';
 import { EntityListComponent } from '../entity-list/entity-list.component';
 import { SearchService } from '../../service/search.service';
@@ -32,6 +30,8 @@ export class EntityListFilteredComponent<T extends Entity>
 {
   @ViewChild(EntityListComponent) entityList!: EntityListComponent<T>;
 
+  @Input() filterTemplate: TemplateRef<any> | undefined;
+
   @Input() resultItemTemplate: TemplateRef<any> | undefined;
 
   @Input() table = false;
@@ -43,8 +43,10 @@ export class EntityListFilteredComponent<T extends Entity>
 
   name: FormControl = new FormControl({ value: '', disabled: false });
 
-  mode: FormControl<SearchStringMode | null> = 
-    new FormControl<SearchStringMode>({ value: SearchStringMode.Starting, disabled: false });
+  mode: FormControl<SearchStringMode | null> =
+    new FormControl<SearchStringMode>(
+      { value: SearchStringMode.Containing, disabled: false }
+    );
 
   modes: SearchStringMode[] = [
     SearchStringMode.Starting,
@@ -70,7 +72,7 @@ export class EntityListFilteredComponent<T extends Entity>
         if (mode) {
           // Convert string to enum value if possible
           const enumValue = this.modes.find(m => m === mode);
-          this.mode.setValue(enumValue ?? SearchStringMode.Starting);
+          this.mode.setValue(enumValue ?? SearchStringMode.Containing);
         }
       }
     );
@@ -79,9 +81,13 @@ export class EntityListFilteredComponent<T extends Entity>
   ngAfterViewInit(): void {
     if (this.name.value) {
       this.entityList.setFilter('name', this.name.value);
+    } else {
+      this.entityList.removeFilter('name');
     }
     if (this.mode.value) {
       this.entityList.setFilter('mode', this.mode.value.toString());
+    } else {
+      this.entityList.removeFilter('mode');
     }
   }
 
@@ -90,7 +96,7 @@ export class EntityListFilteredComponent<T extends Entity>
     this.name.setValue($event.get('name'));
     const modeValue = $event.get('mode');
     const enumValue = this.modes.find(m => m === modeValue);
-    this.mode.setValue(enumValue ?? SearchStringMode.Starting);
+    this.mode.setValue(enumValue ?? SearchStringMode.Containing);
     // update
     this.refresh()
   }
@@ -115,6 +121,10 @@ export class EntityListFilteredComponent<T extends Entity>
     }
   }
 
+  updateSearchMode($event: SearchStringMode) {
+    this.mode.setValue($event);
+  }
+
   private refresh() {
     this.entityList.refreshData({
       queryName: this.name.value ? 'findByName' + this.mode.value : null,
@@ -136,15 +146,5 @@ export class EntityListFilteredComponent<T extends Entity>
       this.name.enable();
       this.mode.enable();
     }
-  }
-
-  updateSearchMode($event: SearchStringMode) {
-    this.mode.setValue($event);
-  }
-
-  getSort(): Sort {
-    return {
-      name: 'ASC',
-    };
   }
 }

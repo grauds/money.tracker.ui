@@ -15,29 +15,16 @@
   <span><b>Loading...</b></span>
 </h4>
 
-<app-money-type-selector
-  [label]="'Available currencies'"
-  [disabled]="this.loading"
-  [currencies]="currencies"
-  [currency]="currency"
-  (currency$)="updateCurrency($event)"
-></app-money-type-selector>
+<ng-template #filter>
+  <app-money-type-selector
+    [label]="'Available currencies'"
+    [disabled]="this.loading"
+    [currencies]="currencies"
+    [currency]="currency"
+    (currency$)="updateCurrency($event)"
+  ></app-money-type-selector>
+</ng-template>
 
-<mat-checkbox
-  class="filter"
-  [(ngModel)]="filterZerosOut"
-  (change)="onFilterEvent($event.checked)"
->
-  Hide accounts with zero balance
-</mat-checkbox>
-
-<div
-  echarts
-  [options]="chart"
-  (chartClick)="onChartEvent($event, 'chartClick')"
-  [loading]="loading"
-  class="accounts-chart"
-  [style]="{
-    height: calculateBarHight()
-  }"
-></div>
+<app-search
+  [filterTemplate]="filter"
+></app-search>

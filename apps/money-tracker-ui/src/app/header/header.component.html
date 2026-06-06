@@ -13,88 +13,145 @@
     </div>
     <mat-toolbar> Clematis / {{ title }}</mat-toolbar>
     <mat-nav-list>
+      <a mat-list-item
+         routerLinkActive="active-link"
+         routerLink="/about">
+        <mat-icon fontIcon="home"></mat-icon>
+        Home
+      </a>
       @if (isLoggedIn) {
-        <div>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/accounts">
-            <mat-icon fontIcon="savings"></mat-icon>
-            Accounts</a
-          >
-          <a mat-list-item routerLinkActive="active-link" routerLink="/income">
-            <mat-icon fontIcon="trending_up"></mat-icon>
-            Income</a
-          >
-          <a mat-list-item routerLinkActive="active-link" routerLink="/balance">
-            <mat-icon fontIcon="balance"></mat-icon>
-            Balance Monthly
-          </a>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/expenses">
-            <mat-icon fontIcon="trending_down"></mat-icon>
-            Expenses</a
-          >
-          <a
-            mat-list-item
-            routerLinkActive="active-link"
-            routerLink="/lastCommodities"
-          >
-            <mat-icon fontIcon="history"></mat-icon>
-            History</a
-          >
-          <a
-            mat-list-item
-            routerLinkActive="active-link"
-            routerLink="/commoditiesAgents"
-          >
-            <mat-icon fontIcon="local_grocery_store"></mat-icon>
-            Users'
-            Commodities</a
-          >
-          <a mat-list-item routerLinkActive="active-link" routerLink="/exchange">
-            <mat-icon fontIcon="currency_exchange"></mat-icon>
-            Currency Exchange
-          </a>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/inOut">
-            <mat-icon fontIcon="trolley"></mat-icon>
-            Reselling
-          </a>
-          <a
-            mat-list-item
-            routerLinkActive="active-link"
-            routerLink="/commodities"
-          >
-            <mat-icon fontIcon="shopping_bag"></mat-icon>
-            Commodities</a
-          >
-          <a
-            mat-list-item
-            routerLinkActive="active-link"
-            routerLink="/commodityGroups"
-          >
-            <mat-icon fontIcon="shopping_basket"></mat-icon>
-            Commodities Groups</a
-          >
-          <a
-            mat-list-item
-            routerLinkActive="active-link"
-            routerLink="/organizations"
-          >
-            <mat-icon fontIcon="store"></mat-icon>
-            Organizations</a
-          >
-          <a
-            mat-list-item
-            routerLinkActive="active-link"
-            routerLink="/organizationGroups"
-          >
-            <mat-icon fontIcon="corporate_fare"></mat-icon>
-            Organizations
-            Groups</a
-          >
-        </div>
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon fontIcon="money"></mat-icon>
+                &nbsp;Cash&nbsp;Flow
+              </mat-panel-title>
+              <mat-panel-description></mat-panel-description>
+            </mat-expansion-panel-header>
+
+              <a mat-list-item routerLinkActive="active-link" routerLink="/income">
+                <mat-icon fontIcon="trending_up"></mat-icon>
+                Income</a
+              >
+              <a mat-list-item routerLinkActive="active-link" routerLink="/expenses">
+                <mat-icon fontIcon="trending_down"></mat-icon>
+                Expenses</a
+              >
+              <a
+                mat-list-item
+                routerLinkActive="active-link"
+                routerLink="/lastCommodities"
+              >
+                <mat-icon fontIcon="history"></mat-icon>
+                History</a
+              >
+              <a mat-list-item routerLinkActive="active-link" routerLink="/balance">
+                <mat-icon fontIcon="balance"></mat-icon>
+                Balance Monthly
+              </a>
+              <a
+                mat-list-item
+                routerLinkActive="active-link"
+                routerLink="/commoditiesAgents"
+              >
+                <mat-icon fontIcon="local_grocery_store"></mat-icon>
+                Users' Commodities</a
+              >
+              <a mat-list-item routerLinkActive="active-link" routerLink="/exchange">
+                <mat-icon fontIcon="currency_exchange"></mat-icon>
+                Currency Exchange
+              </a>
+              <a mat-list-item routerLinkActive="active-link" routerLink="/inOut">
+                <mat-icon fontIcon="trolley"></mat-icon>
+                Reselling
+              </a>
+          </mat-expansion-panel>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon fontIcon="table"></mat-icon>&nbsp;Catalogs
+              </mat-panel-title>
+              <mat-panel-description></mat-panel-description>
+            </mat-expansion-panel-header>
+            <a mat-list-item
+               routerLinkActive="active-link"
+               routerLink="/accounts"
+               [queryParams]="{ sort: 'name,ASC' }"
+               [routerLinkActiveOptions]="{
+                 matrixParams: 'ignored',
+                 queryParams: 'ignored',
+                 paths: 'exact',
+                 fragment: 'ignored'
+               }"
+            >
+              <mat-icon fontIcon="savings"></mat-icon>
+              Accounts</a
+            >
+            <a
+              mat-list-item
+              routerLinkActive="active-link"
+              routerLink="/commodities"
+              [queryParams]="{ sort: 'name,ASC' }"
+              [routerLinkActiveOptions]="{
+                 matrixParams: 'ignored',
+                 queryParams: 'ignored',
+                 paths: 'exact',
+                 fragment: 'ignored'
+               }"
+            >
+              <mat-icon fontIcon="shopping_bag"></mat-icon>
+              Commodities</a
+            >
+            <a
+              mat-list-item
+              routerLinkActive="active-link"
+              routerLink="/commodityGroups"
+              [queryParams]="{ sort: 'name,ASC' }"
+              [routerLinkActiveOptions]="{
+                 matrixParams: 'ignored',
+                 queryParams: 'ignored',
+                 paths: 'exact',
+                 fragment: 'ignored'
+               }"
+            >
+              <mat-icon fontIcon="shopping_basket"></mat-icon>
+              Commodities Groups</a
+            >
+            <a
+              mat-list-item
+              routerLinkActive="active-link"
+              routerLink="/organizations"
+              [queryParams]="{ sort: 'name,ASC' }"
+              [routerLinkActiveOptions]="{
+                 matrixParams: 'ignored',
+                 queryParams: 'ignored',
+                 paths: 'exact',
+                 fragment: 'ignored'
+               }"
+            >
+              <mat-icon fontIcon="store"></mat-icon>
+              Organizations</a
+            >
+            <a
+              mat-list-item
+              routerLinkActive="active-link"
+              routerLink="/organizationGroups"
+              [queryParams]="{ sort: 'name,ASC' }"
+              [routerLinkActiveOptions]="{
+                 matrixParams: 'ignored',
+                 queryParams: 'ignored',
+                 paths: 'exact',
+                 fragment: 'ignored'
+               }"
+            >
+              <mat-icon fontIcon="corporate_fare"></mat-icon>
+              Organizations
+              Groups</a
+            >
+          </mat-expansion-panel>
+          </mat-accordion>
       }
-      <a mat-list-item routerLinkActive="/about" routerLink="/about">
-        <mat-icon fontIcon="info"></mat-icon>
-        About</a
-      >
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

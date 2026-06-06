@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountBalance, MoneyType } from '@clematis-shared/model';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import {
   PagedResourceCollection,
   ResourceCollection,
@@ -16,22 +16,16 @@ import {
   selector: 'app-accounts-dashboard',
   templateUrl: './accounts-dashboard.component.html',
   styleUrls: ['./accounts-dashboard.component.sass'],
+  providers: [{ provide: 'searchService', useClass: AccountsService }],
   standalone: false,
 })
 export class AccountsDashboardComponent implements OnInit {
-  chart: any;
 
   // total sum in the chosen currency
   total = 0;
 
   // total sum week ago in the chosen currency
   totalWeekAgo = 0;
-
-  // number of records per page
-  limit = 12;
-
-  // current page number counter
-  n: number | undefined = undefined;
 
   accountsBalances: AccountBalance[] = [];
 
@@ -47,12 +41,6 @@ export class AccountsDashboardComponent implements OnInit {
 
   currencies: MoneyType[] = [];
 
-  filterZerosOut = true;
-
-  filterZerosOutEvent = new BehaviorSubject<boolean>(true);
-
-  checkSubscription = this.filterZerosOutEvent.asObservable();
-
   constructor(
     private readonly accountsService: AccountsService,
     private readonly moneyTypeService: MoneyTypeService,
@@ -60,12 +48,8 @@ export class AccountsDashboardComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly title: Title
   ) {
-    this.pageSubscription = route.queryParams.subscribe((queryParam: any) => {
-      const page = Number.parseInt(queryParam['page'], 10);
-      this.n = isNaN(page) ? undefined : page;
-      const size = Number.parseInt(queryParam['size'], 10);
-      this.limit = isNaN(size) ? 12 : size;
-      this.initMoneyType(queryParam['currency'], 'RUB').subscribe(
+    this.pageSubscription = route.queryParams.subscribe((queryParams: any) => {
+      this.initMoneyType(queryParams['currency'], 'RUB').subscribe(
         (result: MoneyType) => {
           this.currency = result;
           this.loadData();
@@ -73,9 +57,6 @@ export class AccountsDashboardComponent implements OnInit {
       );
     });
 
-    this.checkSubscription.subscribe(() => {
-      this.chart = this.getBalancesChart(this.currency);
-    });
   }
 
   initMoneyType(destCurrency: string, fallback: string) {
@@ -85,38 +66,19 @@ export class AccountsDashboardComponent implements OnInit {
     return this.moneyTypeService.getCurrencyByCode(destCurrency);
   }
 
-  onChartEvent(event: any, type: string) {
-    console.log('chart event:', type, event);
-  }
-
-  onFilterEvent(data: boolean) {
-    this.filterZerosOutEvent.next(data);
-  }
-
   ngOnInit(): void {
     this.title.setTitle('Accounts');
   }
 
-  calculateBarHight(): string {
-    const filtered = this.filter();
-
-    if (filtered) {
-      if (filtered.length > 0 && filtered.length < 6) {
-        return filtered.length * 40 + 'px';
-      } else if (filtered.length >= 6 && filtered.length <= 25) {
-        return filtered.length * 30 + 'px';
-      } else {
-        return filtered.length * 20 + 'px';
-      }
-    } else {
-      return '600px';
-    }
-  }
-
-  setCurrentPage(pageIndex: number, pageSize: number) {
-    this.n = pageIndex;
-    this.limit = pageSize;
-    this.updateCurrency(this.currency);
+  updateRoute() {
+    return this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        currency: this.currency.code,
+      },
+      queryParamsHandling: 'merge',
+      skipLocationChange: false,
+    });
   }
 
   updateCurrency($event: MoneyType) {
@@ -124,19 +86,6 @@ export class AccountsDashboardComponent implements OnInit {
 
     this.updateRoute().then(() => {
       this.loadData();
-    });
-  }
-
-  updateRoute() {
-    return this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        page: this.n,
-        size: this.limit,
-        currency: this.currency.code,
-      },
-      queryParamsHandling: 'merge',
-      skipLocationChange: false,
     });
   }
 
@@ -157,26 +106,6 @@ export class AccountsDashboardComponent implements OnInit {
           this.loading = false;
         },
       });
-  }
-
-  private getAccountsBalanceInCurrency() {
-    this.loading = true;
-    this.totalsLoading = true;
-
-    this.accountsService.getAccountsBalanceInCurrency(this.currency).subscribe({
-      next: (response: ResourceCollection<AccountBalance>) => {
-        this.accountsBalances = response.resources;
-        this.getAccountsTotalInCurrency();
-        this.getAccountsTotalWeekAgoInCurrency();
-        this.chart = this.getBalancesChart(this.currency);
-      },
-      error: () => {
-        this.loading = false;
-      },
-      complete: () => {
-        this.loading = false;
-      },
-    });
   }
 
   private getAccountsTotalInCurrency() {
@@ -211,76 +140,26 @@ export class AccountsDashboardComponent implements OnInit {
       });
   }
 
-  private getBalancesChart(moneyType: MoneyType) {
-    return {
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow',
-        },
-      },
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: false,
-      },
-      xAxis: {
-        type: 'value',
-        position: 'top',
-        splitLine: {
-          lineStyle: {
-            type: 'dashed',
-          },
-        },
-      },
-      yAxis: {
-        type: 'category',
-        axisLine: { show: false },
-        axisLabel: { show: false },
-        axisTick: { show: true },
-        splitLine: { show: false },
-        data: this.filter().map((accountBalance) => {
-          return accountBalance.name;
-        }),
-      },
-      series: [
-        {
-          name: moneyType.name,
-          type: 'bar',
-          stack: 'Total',
-          label: {
-            position: 'right',
-            show: true,
-            formatter: '{c} - {b}',
-          },
-          select: {
-            itemStyle: {
-              shadowColor: 'rgba(0, 0, 0, 0.5)',
-              shadowBlur: 10,
-            },
-          },
-          selectedMode: 'single',
-          data: this.filter().map((accountBalance: AccountBalance) => {
-            return {
-              value: accountBalance.balance,
-            };
-          }),
-        },
-      ],
-    };
+  private setAccountsBalances(accountsBalances: AccountBalance[]) {
+    this.accountsBalances = accountsBalances;
   }
 
-  private filter() {
-    return this.accountsBalances.filter((accountBalance: AccountBalance) => {
-      return this._filter(accountBalance);
+  private getAccountsBalanceInCurrency() {
+    this.loading = true;
+    this.totalsLoading = true;
+
+    this.accountsService.getAccountsBalanceInCurrency(this.currency).subscribe({
+      next: (response: ResourceCollection<AccountBalance>) => {
+        this.setAccountsBalances(response.resources);
+        this.getAccountsTotalInCurrency();
+        this.getAccountsTotalWeekAgoInCurrency();
+      },
+      error: () => {
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
     });
-  }
-
-  private _filter(accountBalance: AccountBalance): boolean {
-    return (
-      (!this.filterZerosOut && accountBalance.balance == 0) ||
-      accountBalance.balance != 0
-    );
   }
 }

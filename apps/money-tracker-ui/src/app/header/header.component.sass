@@ -87,6 +87,29 @@
 .active-link
   background: #c2c3c4
 
+a.mat-mdc-list-item.active-link
+  background-color: rgba(63, 81, 181, 0.12) !important
+  font-weight: bold
+
+  --mdc-list-list-item-label-text-color: #3f51b5
+  --mdc-list-list-item-leading-icon-color: #3f51b5
+
+  .mat-line, .mat-list-text, mat-icon
+    color: #3f51b5 !important
+
+:host
+  ::ng-deep
+    // Target the specific list item with your active class
+    a.mat-mdc-list-item.active-link
+      background-color: rgba(63, 81, 181, 0.15) !important // Persistent background color
+      font-weight: bold !important
+
+      --mdc-list-list-item-label-text-color: #3f51b5
+      --mdc-list-list-item-leading-icon-color: #3f51b5
+
+      mat-icon, .mat-line, .mat-list-text
+        color: #3f51b5 !important
+
 .mat-mdc-form-field-bottom-align
   width: 0 !important
 

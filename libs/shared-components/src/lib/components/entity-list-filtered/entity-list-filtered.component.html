@@ -1,27 +1,17 @@
 <ng-template #filter>
-  <mat-form-field appearance="fill">
-    <mat-label>Find by name</mat-label>
-    <mat-select
-      (selectionChange)="setFilterMode($event)"
-      [formControl]="mode"
-      (valueChange)="updateSearchMode($event)"
-      >
-      @for (mode of modes | keyvalue; track mode) {
-        <mat-option [value]="mode.value">
-          {{ mode.value }}
-        </mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+  @if (filterTemplate) {
+    <ng-container *ngTemplateOutlet="filterTemplate"></ng-container>
+  }
   <mat-form-field>
-    <mat-label>Text</mat-label>
+    <mat-label>Search</mat-label>
     <input
       matInput
       id="name"
       (change)="setFilterName($event)"
       [formControl]="name"
       type="text"
-      placeholder="to find in name"
+      placeholder="in the names"
+      autocomplete="off"
       />
     <mat-hint>Start typing, Enter to search</mat-hint>
   </mat-form-field>
@@ -31,7 +21,6 @@
   [resultItemTemplate]="resultItemTemplate"
   [table]="table"
   [filterTemplate]="filter"
-  [sort]="getSort()"
   (loading$)="setLoading($event)"
   (filter$)="setFilterListener($event)"
 ></app-entity-list>

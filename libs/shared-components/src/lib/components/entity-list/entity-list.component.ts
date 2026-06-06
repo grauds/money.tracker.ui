@@ -104,9 +104,12 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     const size: number = Number.parseInt(queryParams['size'], 10);
     this.limit = isNaN(size) ? 10 : size;
 
-    const sort: string = queryParams['sort'];
+    const sort = queryParams['sort'];
     if (sort) {
-      const s: string[] = sort.split(',');
+      // Ensure we are working with a string
+      const sortString: string = Array.isArray(sort) ? sort[0] : sort;
+
+      const s: string[] = sortString.split(',');
       if (s.length === 2) {
         this.sort = { [s[0]]: s[1] as SortOrder };
       }
@@ -219,10 +222,24 @@ export class EntityListComponent<T extends Entity> implements OnInit {
       queryParams = { ...queryParams, ...this.getSortParams() };
     }
 
-    if (this.getFilter()) {
-      queryParams = { ...queryParams, ...this.getFilterParams() };
+    const filterParams = this.getFilterParams();
+    if (filterParams) {
+      queryParams = { ...queryParams, ...filterParams };
     }
-    
+
+    if (this.queryParamsMode === 'merge') {
+      this.route.snapshot.queryParamMap?.keys.forEach((key) => {
+        if (
+          key !== 'page' &&
+          key !== 'size' &&
+          key !== 'sort' &&
+          !this.filter.has(key)
+        ) {
+          queryParams[key] = null;
+        }
+      });
+    }
+
     return {
       relativeTo: this.route,
       queryParams: queryParams,
@@ -276,10 +293,6 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     });
   }
 
-  getFilter(): Map<string, string> {
-    return this.filter ? this.filter : new Map<string, string>();
-  }
-
   getFilterParams(): Params | null {
     if (this.filter !== null) {
       const queryParams: Params = {};
@@ -295,12 +308,12 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     if (id && value) {
       this.filter$.next(this.filter.set(id, value));
     } else {
-      this.filter$.next(this.filter);
+      this.removeFilter(id);
     }
   }
 
-  removeFilter(id: string) {
-    if (this.filter.delete(id)) {
+  removeFilter(id?: string) {
+    if (id && this.filter.delete(id)) {
       this.filter$.next(this.filter);
     }
   }

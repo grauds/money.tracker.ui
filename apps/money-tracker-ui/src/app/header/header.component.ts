@@ -12,6 +12,13 @@ import { MatButtonModule } from '@angular/material/button';
 import Keycloak, { KeycloakProfile } from 'keycloak-js';
 import { AsyncPipe } from "@angular/common";
 import { WorkspaceComponent } from "../workspace/workspace.component";
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelDescription,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle
+} from "@angular/material/expansion";
 
 @Component({
   selector: 'app-header',
@@ -27,7 +34,12 @@ import { WorkspaceComponent } from "../workspace/workspace.component";
     RouterLink,
     RouterLinkActive,
     AsyncPipe,
-    WorkspaceComponent
+    WorkspaceComponent,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatAccordion,
+    MatExpansionPanelDescription
   ]
 })
 export class HeaderComponent {
