@@ -81,9 +81,9 @@ FROM openresty/openresty:alpine-fat
 
 RUN mkdir /var/log/nginx
 
-RUN apk add --no-cache openssl-dev
-RUN apk add --no-cache git
-RUN apk add --no-cache gcc
+RUN sed -i 's/https/http/g' /etc/apk/repositories && \
+    apk add --no-cache openssl-dev git gcc
+
 RUN luarocks install lua-resty-openidc
 
 ARG APP_NAME=money-tracker-ui
