@@ -1,5 +1,12 @@
 <div>
   <div>
+
+    <app-date-range-selector
+      [loading]="loading"
+      (startDate$)="updateStartDate($event)"
+      (endDate$)="updateEndDate($event)"
+    ></app-date-range-selector>
+
     <app-money-type-selector
       [label]="'Available currencies'"
       [disabled]="loading"
@@ -7,12 +14,6 @@
       [currency]="currency"
       (currency$)="updateCurrency($event)"
     ></app-money-type-selector>
-
-    <app-date-range-selector
-      [loading]="loading"
-      (startDate$)="updateStartDate($event)"
-      (endDate$)="updateEndDate($event)"
-    ></app-date-range-selector>
 
     <mat-checkbox
       class="filter"

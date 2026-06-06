@@ -47,3 +47,21 @@
 
 .selectable-result-item
   @apply cursor-pointer hover:bg-blue-50
+
+.container.filter
+  display: flex
+  align-items: center /* Vertically aligns the search bar and buttons */
+  gap: 12px           /* Adds a clean space between the input and buttons */
+  width: 100%         /* Spans the container across the page */
+  justify-content: flex-end
+
+/* Target the template content (where your mat-form-field lives) */
+.container.filter ng-container,
+.container.filter mat-form-field
+  flex: 1             /* Forces the search field to stretch and take up all remaining space */
+  width: 100%
+
+.filterButtons
+  display: flex
+  align-items: center
+  flex-shrink: 0      /* Prevents the buttons from squishing when the screen gets narrow */

@@ -1,5 +1,11 @@
 <div>
   <div>
+    <app-date-range-selector
+      [loading]="loading"
+      (startDate$)="updateStartDate($event)"
+      (endDate$)="updateEndDate($event)"
+    ></app-date-range-selector>
+
     <app-money-type-selector
       [label]="'Available currencies'"
       [disabled]="this.loading"
@@ -8,11 +14,6 @@
       (currency$)="updateCurrency($event)"
     ></app-money-type-selector>
 
-    <app-date-range-selector
-      [loading]="loading"
-      (startDate$)="updateStartDate($event)"
-      (endDate$)="updateEndDate($event)"
-    ></app-date-range-selector>
   </div>
 
   <div echarts [options]="chart" class="income-chart" [loading]="loading"></div>
