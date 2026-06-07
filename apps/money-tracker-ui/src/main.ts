@@ -1,6 +1,7 @@
 import {
   enableProdMode,
   importProvidersFrom,
+  inject,
   provideZoneChangeDetection
 } from "@angular/core";
 
@@ -14,6 +15,8 @@ import {
   SharedComponentsModule,
   ENVIRONMENT
 } from '@clematis-shared/shared-components';
+
+import Keycloak from 'keycloak-js';
 
 import {
   provideKeycloak,
@@ -30,7 +33,11 @@ import { ContentLoaderModule } from '@ngneat/content-loader';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LayoutModule } from '@angular/cdk/layout';
 
-import { provideHttpClient, withInterceptors } from "@angular/common/http";
+import { provideHttpClient,
+  HttpErrorResponse,
+  HttpInterceptorFn,
+  withInterceptors
+} from "@angular/common/http";
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -54,6 +61,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgxEchartsModule } from 'ngx-echarts';
 
+import { catchError, throwError } from 'rxjs';
+
 import { appRoutes as routes } from './routes';
 import { AppModule } from "./app/app.module";
 
@@ -73,6 +82,30 @@ const urlCondition = createInterceptorCondition<IncludeBearerTokenCondition>({
     return !request.url.includes('/assets/');
   }
 });
+
+const authRecoveryInterceptor: HttpInterceptorFn = (request, next) => {
+  const keycloak = inject(Keycloak) as Keycloak;
+
+  return next(request).pipe(
+    catchError((error: unknown) => {
+      const isApiRequest = /^(\/api\/.*|https?:\/\/[^/]+\/api\/.*)$/i.test(
+        request.url
+      );
+
+      if (
+        error instanceof HttpErrorResponse &&
+        error.status === 401 &&
+        isApiRequest
+      ) {
+        void keycloak.login({
+          redirectUri: window.location.href,
+        });
+      }
+
+      return throwError(() => error);
+    })
+  );
+};
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -120,7 +153,7 @@ bootstrapApplication(AppComponent, {
       features: [
         withAutoRefreshToken({
           sessionTimeout: 300000, // 5 minutes in milliseconds
-          onInactivityTimeout: 'login' // Can be 'logout', 'login', or 'none'
+          onInactivityTimeout: 'logout' // Can be 'login', 'login', or 'none'
         })
       ]
     }),
@@ -136,6 +169,9 @@ bootstrapApplication(AppComponent, {
       provide: ENVIRONMENT,
       useValue: environment,
     },
+    provideHttpClient(
+      withInterceptors([authRecoveryInterceptor, includeBearerTokenInterceptor])
+    ),
     provideHttpClient(withInterceptors([includeBearerTokenInterceptor]))
   ],
 }).catch((err) => console.error(err));
