@@ -148,7 +148,8 @@ bootstrapApplication(AppComponent, {
       },
       initOptions: {
         onLoad: 'check-sso',
-        silentCheckSsoRedirectUri: `${window.location.origin}/assets/silent-check-sso.html`
+        silentCheckSsoRedirectUri: `${window.location.origin}/assets/silent-check-sso.html`,
+        checkLoginIframe: false // do not checj iframe since we have modern withAutoRefreshToken
       },
       features: [
         withAutoRefreshToken({
