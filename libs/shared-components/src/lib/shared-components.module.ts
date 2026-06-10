@@ -49,6 +49,9 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { DateRangeSelectorComponent } from './components/date-range-selector/date-range-selector.component';
 import { StatsTotalsComponent } from './components/stats-totals/stats-totals.component';
 import { ErrorMessageComponent } from "./components/error-message/error-message.component";
+import { PhotoUploaderComponent } from "./components/photo-uploader/photo-uploader.component";
+import { CurrencySpacePipe } from "./components/currency-space-pipe/currency-space-pipe";
+import { EntityThumbnailComponent } from "./components/entity-thumbnail/entity-thumbnail.component";
 
 @NgModule({
   imports: [
@@ -70,7 +73,10 @@ import { ErrorMessageComponent } from "./components/error-message/error-message.
     MatOptionModule,
     MatSelectModule,
     ReactiveFormsModule,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    PhotoUploaderComponent,
+    CurrencySpacePipe,
+    EntityThumbnailComponent
   ],
   exports: [
     EntityElementComponent,
@@ -80,6 +86,7 @@ import { ErrorMessageComponent } from "./components/error-message/error-message.
     MoneyTypeSelectorComponent,
     DateRangeSelectorComponent,
     StatsTotalsComponent,
+    PhotoUploaderComponent,
   ],
   declarations: [
     EntityListComponent,
@@ -117,7 +124,7 @@ import { ErrorMessageComponent } from "./components/error-message/error-message.
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorHandlerInterceptor,
       multi: true,
-    },
+    }
   ],
 })
 export class SharedComponentsModule {}

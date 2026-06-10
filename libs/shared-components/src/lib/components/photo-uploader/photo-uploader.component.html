@@ -1,0 +1,99 @@
+<div class="photo-component-grid">
+
+  <!-- LEFT PANEL: 400x400 Zero-Padding Image Area -->
+  <div class="image-viewport-wrapper">
+
+    <!-- STATE 1: Default view frame state -->
+    @if (!isCroppingMode) {
+      <div
+        class="view-frame"
+        [class.drag-highlight]="isDraggingOver"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)">
+        <img [ngSrc]="(getImageUrl() | authImage | async) ?? 'assets/product-placeholder.png'"
+             width="400"
+             height="400"
+             alt="Photo"
+             class="full-bleed-image"
+        />
+      </div>
+    }
+    <!-- STATE 2: Active Cropper Workspace with manual panning gestures -->
+    @if (isCroppingMode) {
+      <div
+        class="cropper-frame interactive-grab-canvas"
+        (mousedown)="startPanning($event)">
+        <image-cropper
+          [imageFile]="imageFileToCrop"
+          [maintainAspectRatio]="true"
+          [aspectRatio]="1"
+          [resizeToWidth]="400"
+          [resizeToHeight]="400"
+          [cropperStaticWidth]="400"
+          [cropperStaticHeight]="400"
+          [containWithinAspectRatio]="true"
+          [(transform)]="transform"
+          format="jpeg"
+          (imageCropped)="onImageCropped($event)">
+        </image-cropper>
+
+        <!-- Zoom Slider Overlay Tray -->
+        <div class="inline-zoom-tray" (mousedown)="$event.stopPropagation()">
+          <input
+            type="range" min="1" max="5" step="0.05"
+            [value]="scaleValue" (input)="onZoomChange($event)"
+            class="zoom-slider" />
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- RIGHT PANEL: Sidebar Actions with Complete Tooltips -->
+  <div class="sidebar-actions">
+    @if (isCroppingMode) {
+      <ng-container>
+        <button class="btn btn-icon-only" (click)="onUpload()" [disabled]="!croppedBlob" title="Upload New Image">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+          </svg>
+        </button>
+
+        <label for="side-file-swap" class="btn btn-icon-only file-label" title="Choose a Different Image File">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+        </label>
+        <input id="side-file-swap" type="file" accept="image/*" (change)="onFileChange($event)" style="display:none;" />
+
+        <button class="btn btn-icon-only" (click)="cancelEditing()" title="Cancel and Discard Changes">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </ng-container>
+    }
+
+    @if (!isCroppingMode) {
+      <ng-container>
+        <label for="side-file-init" class="btn btn-icon-only file-label" title="Replace / Add Image">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+        </label>
+        <input id="side-file-init" type="file" accept="image/*" (change)="onFileChange($event)" style="display:none;" />
+
+        <button class="btn btn-icon-only" (click)="onDelete()" title="Delete Image Permanently">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+        </button>
+      </ng-container>
+    }
+  </div>
+
+</div>

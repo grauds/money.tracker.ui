@@ -4,4 +4,5 @@ export interface EnvironmentInterface {
   infoUrl: string;
   authUrl: string;
   authClientId: string;
+  storageUrl: string;
 }

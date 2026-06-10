@@ -21,7 +21,7 @@
       queryName: 'recursiveByParentId'
     }"
       (loading$)="setLoading($event)"
-      (entities$)="setEntities($event)"
+      (entitiesChange$)="setEntities($event)"
       [sort]="getSort()"
     ></app-entity-list>
     @if (!(children && children.length > 0)) {

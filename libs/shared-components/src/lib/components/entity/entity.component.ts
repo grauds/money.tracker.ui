@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 
 /**
  * Basic component for a REST resource which parsers URLs like /entities/[id]
- * and loads the resource on initialisation.
+ * and loads the resource on initialization.
  */
 export abstract class EntityComponent<T extends Entity> {
   entity: T | undefined;

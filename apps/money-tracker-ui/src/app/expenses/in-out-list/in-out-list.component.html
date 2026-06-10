@@ -28,7 +28,7 @@
       "
       [hidden]="this.loading"
     >
-      {{ this.total | currency : this.currency.code }}
+      {{ this.total | currencySpace : this.currency.code : 'symbol' }}
     </span>
 
     <span

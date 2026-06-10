@@ -25,6 +25,8 @@ import {
 
 import { SearchService } from '../../service/search.service';
 
+export type ViewRepresentation = 'list' | 'table' | 'thumbnail';
+
 @Component({
   selector: 'app-entity-list',
   templateUrl: './entity-list.component.html',
@@ -32,11 +34,16 @@ import { SearchService } from '../../service/search.service';
   standalone: false
 })
 export class EntityListComponent<T extends Entity> implements OnInit {
-  @Input() resultItemTemplate: TemplateRef<any> | undefined;
+
+  @Input() defaultView: ViewRepresentation = 'list';
+
+  @Input() currentView: ViewRepresentation = 'list';
+
+  @Input() listTemplate?: TemplateRef<any>;
+  @Input() tableTemplate?: TemplateRef<any>;
+  @Input() thumbnailTemplate?: TemplateRef<any>;
 
   @Input() filterTemplate: TemplateRef<any> | undefined;
-
-  @Input() table = false;
 
   @Input() sort: RestSort | null = null;
 
@@ -60,7 +67,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
   @Output() statusDescription$: Observable<string> | undefined;
 
-  @Output() entities$: EventEmitter<T[]> = new EventEmitter<T[]>();
+  @Output() entitiesChange$: EventEmitter<T[]> = new EventEmitter<T[]>();
 
   entities: T[] | null = [];
 
@@ -87,7 +94,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
       }
     );
 
-    this.entities$.subscribe((entities: T[] | null) => {
+    this.entitiesChange$.subscribe((entities: T[] | null) => {
       this.entities = entities;
     });
 
@@ -126,9 +133,49 @@ export class EntityListComponent<T extends Entity> implements OnInit {
   ngOnInit(): void {
     this.statusDescription$ = this.searchService.getStatusDescription();
     this.subscribeToSearchRequests();
+
+    if (this.hasTemplate(this.defaultView)) {
+      this.currentView = this.defaultView;
+    } else if (this.listTemplate) {
+      this.currentView = 'list';
+    }
+    else if (this.tableTemplate) {
+      this.currentView = 'table';
+    }
+    else if (this.thumbnailTemplate) {
+      this.currentView = 'thumbnail';
+    }
+
     if (this.loadOnInit) {
       this.loadData();
     }
+  }
+
+  get providedTemplatesCount(): number {
+    let count = 0;
+    if (this.listTemplate) {
+      count++;
+    }
+    if (this.tableTemplate) {
+      count++;
+    }
+    if (this.thumbnailTemplate) {
+      count++;
+    }
+    return count;
+  }
+
+  private hasTemplate(view: ViewRepresentation): boolean {
+    if (view === 'list') {
+      return !!this.listTemplate;
+    }
+    if (view === 'table') {
+      return !!this.tableTemplate;
+    }
+    if (view === 'thumbnail') {
+      return !!this.thumbnailTemplate;
+    }
+    return false;
   }
 
   public loadData() {
@@ -181,12 +228,12 @@ export class EntityListComponent<T extends Entity> implements OnInit {
         next: this.broadcastResults.bind(this),
         error: (err: Error) => {
           this.error = err.message;
-          this.entities$.error(err);
+          this.entitiesChange$.error(err);
           this.loading$.next(false);
           throw new Error(err.message);
         },
         complete: () => {
-          this.entities$.complete();
+          this.entitiesChange$.complete();
         },
       });
   }
@@ -197,7 +244,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
     this.error = undefined;
     this.loading$.next(false);
-    this.entities$.next(page.resources);
+    this.entitiesChange$.next(page.resources);
   }
 
   public executePostProcessing(
@@ -261,6 +308,10 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     this.updateRoute().then(() => {
       this.loadData();
     });
+  }
+
+  setView(view: ViewRepresentation) {
+    this.currentView = view;
   }
 
   getSort(): RestSort {

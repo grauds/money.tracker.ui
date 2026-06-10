@@ -1,13 +1,13 @@
 <h4 class="header" [hidden]="totalsLoading">
   <span
-    ><b>Week Ago:</b> {{ this.totalWeekAgo | currency : this.currency.code }},
+    ><b>Week Ago:</b> {{ this.totalWeekAgo | currencySpace : this.currency.code :'symbol' }},
   </span>
   <span
-    ><b>Current:</b> {{ this.total | currency : this.currency.code }},
+    ><b>Current:</b> {{ this.total | currencySpace : this.currency.code :'symbol' }},
   </span>
   <span
     ><b>Delta:</b>
-    {{ this.total - this.totalWeekAgo | currency : this.currency.code }}</span
+    {{ this.total - this.totalWeekAgo | currencySpace : this.currency.code :'symbol' }}</span
   >
 </h4>
 

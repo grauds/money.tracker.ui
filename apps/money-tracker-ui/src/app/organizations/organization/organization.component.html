@@ -10,7 +10,7 @@
         </h2>
       </div>
       <div>
-        Total: {{ totalSum | currency : 'RUB' }}
+        Total: {{ totalSum | currencySpace : 'RUB' : 'symbol' }}
         <!-- hard coded currency, as well as in the query -->
       </div>
     </div>
@@ -59,7 +59,7 @@
       <ng-container matColumnDef="price">
         <th mat-header-cell *matHeaderCellDef>Price</th>
         <td mat-cell *matCellDef="let element">
-          {{ element.price | currency : element.expense.moneyType?.code }}
+          {{ element.price | currencySpace : element.expense.moneyType?.code : 'symbol' }}
         </td>
       </ng-container>
 
@@ -77,12 +77,11 @@
   </ng-template>
 
   <app-entity-list
-    [resultItemTemplate]="expensesTable"
-    [table]="true"
-  [searchRequest]="{
-    queryArguments: getQueryArguments(),
-    queryName: 'tradeplace'
-  }"
-    (loading$)="setLoading($event)"
-    (entities$)="setEntities($event)"
+    [tableTemplate]="expensesTable"
+    [searchRequest]="{
+      queryArguments: getQueryArguments(),
+      queryName: 'tradeplace'
+    }"
+      (loading$)="setLoading($event)"
+      (entitiesChange$)="setEntities($event)"
   ></app-entity-list>

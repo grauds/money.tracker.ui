@@ -15,7 +15,7 @@ import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { Entity, SearchStringMode } from '@clematis-shared/model';
-import { EntityListComponent } from '../entity-list/entity-list.component';
+import { EntityListComponent, ViewRepresentation } from "../entity-list/entity-list.component";
 import { SearchService } from '../../service/search.service';
 import { MatSelectChange } from '@angular/material/select';
 
@@ -32,9 +32,11 @@ export class EntityListFilteredComponent<T extends Entity>
 
   @Input() filterTemplate: TemplateRef<any> | undefined;
 
-  @Input() resultItemTemplate: TemplateRef<any> | undefined;
+  @Input() listTemplate?: TemplateRef<any>;
+  @Input() tableTemplate?: TemplateRef<any>;
+  @Input() thumbnailTemplate?: TemplateRef<any>;
 
-  @Input() table = false;
+  @Input() currentView: ViewRepresentation = 'list';
 
   @Input() queryParamsMode: 'merge' | 'preserve' | '' | null = 'merge';
 

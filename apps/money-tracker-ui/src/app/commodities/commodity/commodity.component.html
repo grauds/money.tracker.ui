@@ -2,34 +2,61 @@
   <app-breadcrumbs [path]="path"></app-breadcrumbs>
 }
 @if (entity) {
-  <div>
-    <div class="jumbotron">
-      <div>
-        <h2 style="margin: 10px"></h2>
-        <h2>
-          {{ entity ? entity.name : 'Not loaded' }}
-        </h2>
+  <div class="product-container jumbotron" style="display: flex; gap: 24px; align-items: flex-start; max-width: 100%; overflow: hidden;">
+
+    <!-- Right Side: Image Control -->
+    <div class="product-media" style="flex-shrink: 0; background: #ffffff; padding: 12px; border: 1px solid #dee2e6; border-radius: 6px;">
+      <app-photo-uploader
+        [entityName]="'commodities'"
+        [entityId]="id"
+        [extraPath]="'main'"
+      ></app-photo-uploader>
+    </div>
+
+    <!-- Left Side: Product Information -->
+    <!-- Note: Added min-width: 0 to force flex containment -->
+    <div class="product-info" style="flex: 1; min-width: 0;">
+      <h2 style="margin: 0 0 12px 0; font-size: 1.5rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+        {{ entity ? entity.name : 'Not loaded' }}
+      </h2>
+
+      <div class="product-meta" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; font-size: 0.95rem; color: #495057;">
+        <div><strong>Average Price:</strong>
+          {{ averagePrice | currencySpace :  defaultMoneyType?.code  :'symbol' }} / {{ defaultUnit }}
+        </div>
+        <div><strong>Quantity:</strong> {{ totalQty }} {{ defaultUnit }}</div>
+        <div style="font-size: 1.1rem; margin-top: 4px; color: #212529;">
+          <strong>Total:</strong>
+          {{ totalSum | currencySpace :  defaultMoneyType?.code  :'symbol' }}
+        </div>
       </div>
-      <div>
-        Average Price: {{ averagePrice | currency : defaultMoneyType?.code }} /
-        {{ defaultUnit }}
-      </div>
-      <div>Quantity: {{ totalQty }} {{ defaultUnit }}</div>
-      <div>Total: {{ totalSum | currency : defaultMoneyType?.code }}</div>
+
       @if (entity.description) {
-        <div style="max-height: 350px; margin: 10px; overflow: auto">
-          {{ entity ? entity.description : '' }}
+        <div class="product-description" style="max-height: 200px; overflow-y: auto; font-size: 0.9rem; color: #6c757d; line-height: 1.5; border-top: 1px solid #dee2e6; padding-top: 12px;">
+          {{ entity.description }}
         </div>
       }
     </div>
+
   </div>
 }
 
-<div class="row">
-  <div class="col-12">
-    <div echarts [options]="option" [loading]="loading"></div>
+@if (entity && this.expenses.length > 1) {
+  <div class="d-flex align-items: center; margin: 32px 0 16px 0; padding-left: 12px; border-left: 4px solid #0d6efd;">
+    <div>
+      <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+        Price & Analytics Trends
+      </h3>
+      <small style="color: #6c757d; font-size: 0.85rem;">Historical data and purchase distribution</small>
+    </div>
   </div>
-</div>
+
+  <div class="row">
+    <div class="col-12">
+      <div echarts [options]="option" [loading]="loading"></div>
+    </div>
+  </div>
+}
 
 <ng-template #expensesTable let-entities="entities">
   <table mat-table [dataSource]="entities">
@@ -43,7 +70,7 @@
     <ng-container matColumnDef="price">
       <th mat-header-cell *matHeaderCellDef>Price</th>
       <td mat-cell *matCellDef="let element">
-        {{ element.price | currency : element.expense.moneyType?.code }}
+        {{ element.price | currencySpace : element.expense.moneyType?.code : 'symbol' }}
       </td>
     </ng-container>
 
@@ -80,12 +107,11 @@
   </ng-template>
 
   <app-entity-list
-    [resultItemTemplate]="expensesTable"
-    [table]="true"
-  [searchRequest]="{
-    queryArguments: getQueryArguments(),
-    queryName: 'commodity'
-  }"
-    (loading$)="setLoading($event)"
-    (entities$)="setEntities($event)"
+    [tableTemplate]="expensesTable"
+    [searchRequest]="{
+      queryArguments: getQueryArguments(),
+      queryName: 'commodity'
+    }"
+      (loading$)="setLoading($event)"
+      (entitiesChange$)="setEntities($event)"
   ></app-entity-list>

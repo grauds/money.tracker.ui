@@ -1,0 +1,121 @@
+.photo-component-grid {
+  display: grid;
+  grid-template-columns: 400px 60px;
+  gap: 15px;
+  width: 475px;
+  margin: 20px auto;
+  font-family: sans-serif;
+  box-sizing: border-box;
+}
+
+.image-viewport-wrapper {
+  width: 400px;
+  height: 400px;
+  background-color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0;
+}
+
+.view-frame, .cropper-frame {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Switches the cursor indicator into an active sliding grab hand icon */
+.interactive-grab-canvas {
+  cursor: grab;
+}
+.interactive-grab-canvas:active {
+  cursor: grabbing;
+}
+
+.view-frame.drag-highlight {
+  outline: 3px dashed #a0a0a0;
+  outline-offset: -3px;
+}
+
+.full-bleed-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.inline-zoom-tray {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 35px;
+  background: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.zoom-slider {
+  width: 85%;
+  cursor: pointer;
+}
+
+.sidebar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: flex-start;
+  padding-top: 5px;
+}
+
+.btn-icon-only {
+  background-color: #f2f2f2;
+  color: #555555;
+  border: 1px solid #dcdcdc;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.btn-icon-only:hover {
+  background-color: #e6e6e6;
+  color: #111111;
+}
+
+.btn-icon-only:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background-color: #f9f9f9;
+}
+
+.file-label {
+  display: flex;
+}
+
+/* BYPASS RESIZE HANDLES:
+   Forces the library frame and handles to be click-through,
+   allowing your mouse gestures to trigger the component's panning listeners. */
+.cropper-frame ::ng-deep .ngx-ic-overlay,
+.cropper-frame ::ng-deep .ngx-ic-cropper {
+  pointer-events: none !important;
+}
+
+.cropper-frame ::ng-deep .ngx-ic-cropper-wrapper {
+  padding: 0 !important;
+  width: 400px !important;
+  height: 400px !important;
+}
+
+.cropper-frame ::ng-deep .ngx-ic-source-image {
+  object-fit: cover !important;
+}

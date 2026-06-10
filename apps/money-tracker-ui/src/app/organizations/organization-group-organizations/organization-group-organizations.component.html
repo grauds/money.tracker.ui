@@ -4,6 +4,6 @@
     queryName: 'recursiveByParentGroupId'
   }"
   (loading$)="setLoading($event)"
-  (entities$)="setEntities($event)"
+  (entitiesChange$)="setEntities($event)"
   [sort]="getSort()"
 ></app-entity-list>

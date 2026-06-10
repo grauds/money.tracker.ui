@@ -4,14 +4,14 @@
       ><b>Sold:</b>
       {{
       (this.report.sourceAmount ? this.report.sourceAmount : 0)
-      | currency : this.sourceCurrency.code
+        | currencySpace : this.sourceCurrency.code :'symbol'
       }},
     </span>
     <span
       ><b>Bought:</b>
       {{
       (this.report.destAmount ? this.report.destAmount : 0)
-      | currency : this.destCurrency.code
+        | currencySpace : this.destCurrency.code :'symbol'
       }},
     </span>
     <span
@@ -60,7 +60,7 @@
     negative: this.report.delta < 0
   }"
     >
-    {{ this.report.delta | currency : this.destCurrency.code }}
+    {{ this.report.delta | currencySpace : this.destCurrency.code :'symbol' }}
   </div>
 }
 
@@ -114,14 +114,14 @@
       <ng-container matColumnDef="sourceamount">
         <th mat-header-cell *matHeaderCellDef>Source Amount</th>
         <td mat-cell *matCellDef="let element">
-          {{ element.sourceamount | currency : sourceCurrency.code }}
+          {{ element.sourceamount | currencySpace : this.sourceCurrency.code :'symbol' }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="destamount">
         <th mat-header-cell *matHeaderCellDef>Dest Amount</th>
         <td mat-cell *matCellDef="let element">
-          {{ element.destamount | currency : destCurrency.code }}
+          {{ element.destamount | currencySpace : this.destCurrency.code :'symbol' }}
         </td>
       </ng-container>
 
@@ -156,7 +156,7 @@
             >
             {{
             element.sourceamount * (element.rate - this.report.curRate)
-            | currency : destCurrency.code
+              | currencySpace : this.destCurrency.code :'symbol'
             }}
           </td>
         </ng-container>
@@ -168,8 +168,7 @@
   </ng-template>
 
   <app-entity-list
-    [resultItemTemplate]="exchangeTable"
-    [table]="true"
+    [tableTemplate]="exchangeTable"
     [loadOnInit]="false"
   [searchRequest]="{
     queryArguments: getQueryArguments(),

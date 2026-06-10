@@ -4,6 +4,7 @@
     queryName: 'recursiveCommoditiesByGroupId'
   }"
   (loading$)="setLoading($event)"
-  (entities$)="setEntities($event)"
+  (entitiesChange$)="setEntities($event)"
   [sort]="getSort()"
+  [currentView]="'thumbnail'"
 ></app-entity-list>

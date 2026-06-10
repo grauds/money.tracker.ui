@@ -66,11 +66,6 @@ import { catchError, throwError } from 'rxjs';
 import { appRoutes as routes } from './routes';
 import { AppModule } from "./app/app.module";
 
-/*const mapConfig: YaConfig = {
-  apikey: 'API_KEY',
-  lang: 'en_US',
-};*/
-
 if (environment.production) {
   enableProdMode();
 }
@@ -79,9 +74,11 @@ const urlCondition = createInterceptorCondition<IncludeBearerTokenCondition>({
   urlPattern: /^(\/api\/.*|https?:\/\/[^/]+\/api\/.*)$/i,
   bearerPrefix: 'Bearer',
   shouldUpdateToken(request) {
-    return !request.url.includes('/assets/');
+    return !request.url.startsWith('./assets/') && !request.url.startsWith('assets/');
   }
 });
+
+let loginRedirectInProgress = false;
 
 const authRecoveryInterceptor: HttpInterceptorFn = (request, next) => {
   const keycloak = inject(Keycloak) as Keycloak;
@@ -95,10 +92,13 @@ const authRecoveryInterceptor: HttpInterceptorFn = (request, next) => {
       if (
         error instanceof HttpErrorResponse &&
         error.status === 401 &&
-        isApiRequest
+        isApiRequest &&
+        !loginRedirectInProgress
       ) {
+        loginRedirectInProgress = true;
+
         void keycloak.login({
-          redirectUri: window.location.href,
+          redirectUri: window.location.origin,
         });
       }
 
@@ -148,8 +148,7 @@ bootstrapApplication(AppComponent, {
       },
       initOptions: {
         onLoad: 'check-sso',
-        silentCheckSsoRedirectUri: `${window.location.origin}/assets/silent-check-sso.html`,
-        checkLoginIframe: false // do not checj iframe since we have modern withAutoRefreshToken
+        silentCheckSsoRedirectUri: `${window.location.origin}/assets/silent-check-sso.html`
       },
       features: [
         withAutoRefreshToken({
@@ -172,8 +171,7 @@ bootstrapApplication(AppComponent, {
     },
     provideHttpClient(
       withInterceptors([authRecoveryInterceptor, includeBearerTokenInterceptor])
-    ),
-    provideHttpClient(withInterceptors([includeBearerTokenInterceptor]))
+    )
   ],
 }).catch((err) => console.error(err));
 

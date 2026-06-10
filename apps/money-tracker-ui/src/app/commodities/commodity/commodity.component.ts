@@ -18,6 +18,8 @@ import {
   CommodityGroupService,
   EntityComponent,
   ExpenseItemsService,
+  StorageService,
+  PhotoUploaderComponent
 } from '@clematis-shared/shared-components';
 import { Title } from '@angular/platform-browser';
 import { formatDate } from '@angular/common';
@@ -27,13 +29,14 @@ import { catchError, EMPTY } from "rxjs";
   selector: 'app-commodity',
   templateUrl: './commodity.component.html',
   styleUrls: ['./commodity.component.sass'],
-  providers: [{ provide: 'searchService', useClass: ExpenseItemsService }],
+  providers: [
+    { provide: 'searchService', useClass: ExpenseItemsService }
+  ],
   standalone: false,
 })
-export class CommodityComponent
-  extends EntityComponent<Commodity>
-  implements OnInit
-{
+export class CommodityComponent extends EntityComponent<Commodity>
+  implements OnInit {
+
   displayedColumns: string[] = [
     'transferdate',
     'price',
@@ -46,6 +49,8 @@ export class CommodityComponent
   defaultMoneyType: MoneyType | undefined;
 
   parent: CommodityGroup | undefined;
+
+  image: PhotoUploaderComponent | undefined;
 
   parentLink: string | undefined;
 
@@ -67,11 +72,14 @@ export class CommodityComponent
     resourceService: HateoasResourceService,
     private readonly commodityService: CommoditiesService,
     private readonly commodityGroupService: CommodityGroupService,
+    private readonly uploadService: StorageService,
     route: ActivatedRoute,
     router: Router,
     title: Title
   ) {
     super(Commodity, resourceService, route, router, title);
+
+    this.image = new PhotoUploaderComponent(this.uploadService);
   }
 
   ngOnInit(): void {
@@ -84,14 +92,12 @@ export class CommodityComponent
 
     this.defaultUnit = this.entity?.unittype?.shortName;
 
-    this.entity
-      ?.getRelation<MoneyType>('defaultMoneyType')
+    this.entity?.getRelation<MoneyType>('defaultMoneyType')
       .subscribe((defaultMoneyType: MoneyType) => {
         this.defaultMoneyType = defaultMoneyType;
       });
 
-    this.entity
-      ?.getRelation<CommodityGroup>('parent')
+    this.entity?.getRelation<CommodityGroup>('parent')
       .pipe(
         catchError((err) => {
           if (err?.status === 404) {
@@ -135,7 +141,9 @@ export class CommodityComponent
   }
 
   setLoading($event: boolean) {
-    this.loading = $event;
+    setTimeout(() => {
+      this.loading = $event;
+    });
   }
 
   getQueryArguments(): RequestParam {
@@ -168,6 +176,10 @@ export class CommodityComponent
           }
           return 'No params';
         },
+      },
+      legend: {
+        data: ['Total', 'Price'],
+        bottom: 0
       },
       xAxis: {
         type: 'category',

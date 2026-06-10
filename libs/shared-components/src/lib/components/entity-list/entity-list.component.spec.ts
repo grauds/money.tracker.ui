@@ -239,14 +239,14 @@ describe('EntityListComponent', () => {
     } as PagedResourceCollection<Entity>;
 
     jest.spyOn(component.loading$, 'next');
-    jest.spyOn(component.entities$, 'next');
+    jest.spyOn(component.entitiesChange$, 'next');
 
     component.broadcastResults(page);
 
     expect(component.total).toBe(100);
     expect(component.limit).toBe(10);
     expect(component.loading$.next).toHaveBeenCalledWith(false);
-    expect(component.entities$.next).toHaveBeenCalledWith(page.resources);
+    expect(component.entitiesChange$.next).toHaveBeenCalledWith(page.resources);
   });
 
   it('should execute post processing if handler is set', () => {

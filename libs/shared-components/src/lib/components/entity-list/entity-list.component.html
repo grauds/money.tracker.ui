@@ -24,75 +24,136 @@
         </div>
       </div>
     }
-    @if (entities && entities.length > 0) {
+    @if (entities) {
       <div class="container search-results">
-        <mat-paginator
-          [length]="total"
-          [pageSize]="limit"
-          [pageSizeOptions]="[5, 10, 25, 100]"
-          [pageIndex]="n"
-          (page)="setCurrentPage($event)"
-          [showFirstLastButtons]="true"
-          [disabled]="loading"
-          aria-label="Select page"
+
+        @if (providedTemplatesCount >= 2) {
+          <div class="view-switcher-container">
+            <mat-button-toggle-group [value]="currentView" (change)="setView($event.value)">
+              @if (listTemplate) {
+                <mat-button-toggle value="list">
+                  <mat-icon>view_list</mat-icon> List
+                </mat-button-toggle>
+              }
+              @if (tableTemplate) {
+                <mat-button-toggle value="table">
+                  <mat-icon>table_chart</mat-icon> Table
+                </mat-button-toggle>
+              }
+              @if (thumbnailTemplate) {
+                <mat-button-toggle value="thumbnail">
+                  <mat-icon>grid_view</mat-icon> Thumbnails
+                </mat-button-toggle>
+              }
+            </mat-button-toggle-group>
+          </div>
+        }
+
+        @if (entities.length > 5) {
+          <mat-paginator
+            [length]="total"
+            [pageSize]="limit"
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            [pageIndex]="n"
+            (page)="setCurrentPage($event)"
+            [showFirstLastButtons]="true"
+            [disabled]="loading"
+            aria-label="Select page"
           >
-        </mat-paginator>
-        <div class="area">
+          </mat-paginator>
+        }
+
+        @if (loading || entities.length > 0) {
+          <div class="area">
           <!-- custom list -->
-          @if (resultItemTemplate) {
+          @if (providedTemplatesCount > 0) {
             <div>
-              @if (!table) {
-                <div>
-                  @for (a of entities; track a) {
+              @switch (currentView) {
+                @case ('list') {
+                  @if (listTemplate) {
                     <div>
-                      <ng-container
-                        *ngTemplateOutlet="resultItemTemplate; context: { a }"
-                      ></ng-container>
+                      @for (a of entities; track a) {
+                        <div>
+                          <ng-container *ngTemplateOutlet="listTemplate; context: { a }"></ng-container>
+                        </div>
+                      }
                     </div>
                   }
-                </div>
-              }
-              @if (table) {
-                <div>
-                  <ng-container
-                    *ngTemplateOutlet="resultItemTemplate; context: { entities }"
-                  ></ng-container>
-                </div>
+                }
+                @case ('table') {
+                  @if (tableTemplate) {
+                    <div>
+                      <ng-container *ngTemplateOutlet="tableTemplate; context: { entities }"></ng-container>
+                    </div>
+                  }
+                }
+                @case ('thumbnail') {
+                  @if (thumbnailTemplate) {
+                    <div class="thumbnail-grid">
+                      @for (a of entities; track a) {
+                        <ng-container *ngTemplateOutlet="thumbnailTemplate; context: { a }"></ng-container>
+                      }
+                    </div>
+                  }
+                }
               }
             </div>
           }
-          <!-- fallback to simple list -->
-          @if (!resultItemTemplate) {
+
+          @if (providedTemplatesCount == 0) {
             <div>
-              @for (a of entities; track a) {
-                <div>
-                  <app-entity-element [entity]="a"></app-entity-element>
-                </div>
+              @switch (currentView) {
+                @case ('list') {
+                  @for (a of entities; track a) {
+                    <div>
+                      <app-entity-element [entity]="a"></app-entity-element>
+                    </div>
+                  }
+                }
+                @case ('table') {
+
+                }
+                @case ('thumbnail') {
+                  <div class="thumbnail-grid">
+                    @for (a of entities; track a) {
+                      <app-entity-thumbnail [entity]="a"></app-entity-thumbnail>
+                    }
+                  </div>
+                }
               }
             </div>
           }
+
           <!-- loading veil -->
           @if (loading) {
             <div class="processing-indicator">
-              <div><mat-spinner diameter="33"></mat-spinner></div>
-              <div class="pt-5 text-black text-center">
+              <div>
+                <mat-spinner diameter="33"></mat-spinner>
+              </div>
+              <div class="text-black text-center">
                 {{ statusDescription$ | async }} ...
               </div>
             </div>
           }
         </div>
-        <mat-paginator
-          [length]="total"
-          [pageSize]="limit"
-          [pageSizeOptions]="[5, 10, 25, 100]"
-          [pageIndex]="n"
-          (page)="setCurrentPage($event)"
-          [showFirstLastButtons]="true"
-          [disabled]="loading"
-          aria-label="Select page"
-          >
-        </mat-paginator>
+        }
+
+        @if (entities.length > 5) {
+          <mat-paginator
+            [length]="total"
+            [pageSize]="limit"
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            [pageIndex]="n"
+            (page)="setCurrentPage($event)"
+            [showFirstLastButtons]="true"
+            [disabled]="loading"
+            aria-label="Select page"
+            >
+          </mat-paginator>
+        }
+
       </div>
     }
+
   </div>
 }

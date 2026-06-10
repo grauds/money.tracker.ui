@@ -75,7 +75,7 @@
       <ng-container matColumnDef="price">
         <th mat-header-cell mat-sort-header="price" *matHeaderCellDef>Price</th>
         <td mat-cell *matCellDef="let element">
-          {{ element.price | currency : element.expense.moneyType?.code }}
+          {{ element.price | currencySpace : element.expense.moneyType?.code : 'symbol' }}
         </td>
       </ng-container>
 
@@ -112,14 +112,13 @@
     </ng-template>
 
     <app-entity-list
-      [resultItemTemplate]="expensesTable"
-      [table]="true"
-  [searchRequest]="{
-    queryArguments: {},
-    queryName: getQueryName()
-  }"
-      [sort]="getSort()"
-      [filterTemplate]="filter"
-      (filter$)="setFilter($event)"
+      [tableTemplate]="expensesTable"
+      [searchRequest]="{
+        queryArguments: {},
+        queryName: getQueryName()
+      }"
+        [sort]="getSort()"
+        [filterTemplate]="filter"
+        (filter$)="setFilter($event)"
       >
     </app-entity-list>

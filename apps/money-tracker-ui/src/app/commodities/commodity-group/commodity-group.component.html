@@ -4,32 +4,62 @@
 @if (entity) {
   <div>
     <div class="back-area">
-      <div class="jumbotron">
-        <h2>
-          {{ entity ? entity.name : '' }}
-        </h2>
-        <div>Total: {{ totalSum }} RUB</div>
-        @if (entity.description) {
-          <div style="max-height: 350px; margin: 10px; overflow: auto">
-            {{ entity ? entity.description : '' }}
-          </div>
-        }
+      <div class="jumbotron summary-header">
+
+        <!-- Left Side: Title and Description -->
+        <div class="summary-details">
+          <h2 style="margin: 0; font-size: 1.75rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+            {{ entity ? entity.name : '' }}
+          </h2>
+          @if (entity?.description) {
+            <div class="description-box">
+              {{ entity.description }}
+            </div>
+          }
+        </div>
+
+        <!-- Right Side: Total Display -->
+        <div class="summary-total">
+          <span class="total-label">Total</span>
+          <span class="total-amount">RUB {{ totalSum }} </span>
+        </div>
+
       </div>
     </div>
-    <app-entity-list
-    [searchRequest]="{
-      queryArguments: getQueryArguments(),
-      queryName: 'recursiveByParentId'
-    }"
-      (loading$)="setLoading($event)"
-      (entities$)="setEntities($event)"
-      [sort]="getSort()"
-    ></app-entity-list>
+
     @if (!(children && children.length > 0)) {
+      <div class="d-flex align-items: center; margin: 32px 0 16px 0; padding-left: 12px; border-left: 4px solid #0d6efd;">
+        <div>
+          <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+            Commodities In This Category
+          </h3>
+          <small style="color: #6c757d; font-size: 0.85rem;">Financial history for each commodity</small>
+        </div>
+      </div>
       <app-commodity-group-commodities
         [id]="id"
         >
       </app-commodity-group-commodities>
     }
+
+    <div class="d-flex align-items: center; margin: 32px 0 16px 0; padding-left: 12px; border-left: 4px solid #0d6efd;">
+      <div>
+        <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+          More Groups In This Category
+        </h3>
+        <small style="color: #6c757d; font-size: 0.85rem;">Nested commodity groups</small>
+      </div>
+    </div>
+
+    <app-entity-list
+      [searchRequest]="{
+        queryArguments: getQueryArguments(),
+        queryName: 'recursiveByParentId'
+      }"
+      (loading$)="setLoading($event)"
+      (entitiesChange$)="setEntities($event)"
+      [sort]="getSort()"
+    ></app-entity-list>
+
   </div>
 }

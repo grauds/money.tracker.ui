@@ -1,3 +1,5 @@
+import { CurrencySpacePipe } from "./lib/components/currency-space-pipe/currency-space-pipe";
+
 export * from './lib/shared-components.module';
 
 export {
@@ -17,6 +19,8 @@ export { EntityListComponent } from './lib/components/entity-list/entity-list.co
 export { MoneyTypeSelectorComponent } from './lib/components/money-type-selector/money-type-selector.component';
 export { DateRangeSelectorComponent } from './lib/components/date-range-selector/date-range-selector.component';
 export { StatsTotalsComponent } from './lib/components/stats-totals/stats-totals.component';
+export { PhotoUploaderComponent } from './lib/components/photo-uploader/photo-uploader.component';
+export { CurrencySpacePipe } from './lib/components/currency-space-pipe/currency-space-pipe';
 
 export { AccountsService } from './lib/service/accounts.service';
 export { SearchService } from './lib/service/search.service';
@@ -32,4 +36,5 @@ export { LastCommodityService } from './lib/service/last-commodity.service';
 export { MoneyExchangeService } from './lib/service/money-exchange.service';
 export { MoneyTypeService } from './lib/service/money-type.service';
 export { StatsService } from './lib/service/stats.service';
+export { StorageService } from './lib/service/storage.service';
 export type { SearchPostProcessingHandler } from './lib/service/search.service';

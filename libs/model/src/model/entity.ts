@@ -19,4 +19,8 @@ export class Entity extends Resource {
       return Utils.parseResourceUrlToAppUrl(resource);
     } else return '';
   }
+
+  getId(): string {
+    return Utils.getIdFromSelfUrl(this);
+  }
 }

@@ -62,9 +62,10 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import {
+  CurrencySpacePipe,
   EnvironmentService,
-  SharedComponentsModule,
-} from '@clematis-shared/shared-components';
+  SharedComponentsModule
+} from "@clematis-shared/shared-components";
 
 import { AccountsDashboardComponent } from './accounts/accounts-dashboard/accounts-dashboard.component';
 import { LastCommoditiesListComponent } from './expenses/last-commodities-list/last-commodities-list.component';
@@ -77,7 +78,7 @@ import { OrganizationGroupOrganizationsComponent } from './organizations/organiz
 import { IncomeMonthlyComponent } from './income/income-monthly/income-monthly.component';
 import { AgentCommoditiesComponent } from './expenses/agent-commodities/agent-commodities.component';
 import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
-import { CommonModule } from "@angular/common";
+import { CommonModule, CurrencyPipe } from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -101,7 +102,7 @@ import { CommonModule } from "@angular/common";
     CommodityGroupCommoditiesComponent,
     OrganizationGroupOrganizationsComponent,
     IncomeMonthlyComponent,
-    AgentCommoditiesComponent
+    AgentCommoditiesComponent,
   ],
   imports: [
     HttpClientModule,
@@ -135,10 +136,11 @@ import { CommonModule } from "@angular/common";
     SharedComponentsModule,
     RouterLink,
     RouterOutlet,
-    RouterLinkActive
+    RouterLinkActive,
+    CurrencySpacePipe
   ],
   exports: [],
-  providers: []
+  providers: [CurrencyPipe]
 })
 export class AppModule {
   constructor(

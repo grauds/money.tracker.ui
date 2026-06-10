@@ -18,8 +18,10 @@
 </ng-template>
 
 <app-entity-list
-  [resultItemTemplate]="resultItemTemplate"
-  [table]="table"
+  [listTemplate]="listTemplate"
+  [tableTemplate]="tableTemplate"
+  [thumbnailTemplate]="thumbnailTemplate"
+  [currentView]="currentView"
   [filterTemplate]="filter"
   (loading$)="setLoading($event)"
   (filter$)="setFilterListener($event)"
