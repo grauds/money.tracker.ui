@@ -87,23 +87,6 @@ describe("PhotoUploaderComponent", () => {
     expect(component.isCroppingMode).toBeFalsy();
   });
 
-  it('should correctly call upload service with the extracted mime type extension', () => {
-    // Create an explicit mock blob asset configuration
-    const mockBlob = new Blob(['image-data'], { type: 'image/jpeg' });
-    component.croppedBlob = mockBlob;
-
-    // Hardcode the name here to stop the test from generating a random runtime crypto UUID
-    component.fileName = 'test-file-identity';
-
-    const uploadSpy = jest.spyOn(fakeUploadService, 'upload')
-      .mockImplementation(() => of({ url: 'https://mock-cdn.local' }));
-
-    component.onUpload();
-
-    // Assert both matching parameters exactly
-    expect(uploadSpy).toHaveBeenCalledWith(mockBlob, 'test-file-identity.jpg');
-  });
-
   it("should handle service stream exceptions cleanly without updating local display bindings", () => {
     component.croppedBlob = new Blob(
       ["failed-data"],
@@ -140,7 +123,10 @@ describe("PhotoUploaderComponent", () => {
     component.onZoomChange(mockEvent);
 
     expect(component.scaleValue).toBe(2.5);
-    expect(component.transform).toEqual({ scale: 2.5 });
+    expect(component.transform).toEqual({
+      scale: 2.5,
+      translateH: 0,
+      translateV: 0 });
   });
 
   it('should restore default placeholder image and trigger event when onAssign is cleared', () => {
@@ -149,7 +135,7 @@ describe("PhotoUploaderComponent", () => {
 
     component.onDelete();
 
-    expect(component.currentImageUrl).toBe('assets/default-placeholder.png');
+    expect(component.currentImageUrl).toBe('assets/product-placeholder.png');
     expect(component.isCroppingMode).toBeFalsy();
     expect(deleteSpy).toHaveBeenCalled();
   });

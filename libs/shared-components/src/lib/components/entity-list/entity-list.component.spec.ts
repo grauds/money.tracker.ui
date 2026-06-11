@@ -5,6 +5,10 @@ import { NgZone } from '@angular/core';
 import { PagedResourceCollection } from '@lagoshny/ngx-hateoas-client';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
+if (typeof window.URL.createObjectURL === 'undefined') {
+  window.URL.createObjectURL = jest.fn(() => 'blob:mock-url');
+}
+
 import { Entity } from '@clematis-shared/model';
 import { EntityListComponent } from './entity-list.component';
 import { SearchPostProcessingHandler } from '../../service/search.service';

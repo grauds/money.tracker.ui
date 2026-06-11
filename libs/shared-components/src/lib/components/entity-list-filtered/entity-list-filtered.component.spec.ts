@@ -4,6 +4,10 @@ import { Entity } from '@clematis-shared/model';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
 
+if (typeof window.URL.createObjectURL === 'undefined') {
+  window.URL.createObjectURL = jest.fn(() => 'blob:mock-url');
+}
+
 import { EntityListFilteredComponent } from './entity-list-filtered.component';
 import { SharedComponentsModule } from '../../shared-components.module';
 
