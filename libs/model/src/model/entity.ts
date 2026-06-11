@@ -20,7 +20,10 @@ export class Entity extends Resource {
     } else return '';
   }
 
-  getId(): string {
-    return Utils.getIdFromSelfUrl(this);
+  static getId(resource: Entity | undefined): string {
+    if (!resource) {
+      return '';
+    }
+    return Utils.getIdFromSelfUrl(resource);
   }
 }

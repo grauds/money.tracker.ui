@@ -31,7 +31,7 @@ export class EntityThumbnailComponent<T extends Entity> implements OnInit {
 
   ngOnInit(): void {
     this.entityLink = Entity.getRelativeSelfLinkHref(this.entity);
-    this.id = this.entity.getId();
+    this.id = Entity.getId(this.entity);
   }
 
   navigate = () => {
