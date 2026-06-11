@@ -1,11 +1,17 @@
+import { CurrencyPipe } from "@angular/common";
+
+if (typeof window.URL.createObjectURL === 'undefined') {
+  window.URL.createObjectURL = jest.fn(() => 'blob:mock-url');
+}
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InOutListComponent } from './in-out-list.component';
 import {
+  CurrencySpacePipe,
   InOutService,
   MoneyTypeService,
-  SharedComponentsModule,
-} from '@clematis-shared/shared-components';
+  SharedComponentsModule
+} from "@clematis-shared/shared-components";
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { MediaMatcher } from '@angular/cdk/layout';
@@ -50,6 +56,7 @@ describe('InOutListComponent', () => {
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
+        CurrencySpacePipe,
         NgxEchartsModule.forRoot({
           echarts: () => import("echarts")
         }),
@@ -60,6 +67,7 @@ describe('InOutListComponent', () => {
         HttpHandler,
         MediaMatcher,
         MoneyTypeService,
+        CurrencyPipe,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
       ],
     }).compileComponents();

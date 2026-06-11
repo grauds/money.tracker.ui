@@ -1,6 +1,8 @@
+if (typeof window.URL.createObjectURL === 'undefined') {
+  window.URL.createObjectURL = jest.fn(() => 'blob:mock-url');
+}
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { of } from 'rxjs';
@@ -25,7 +27,7 @@ describe('ExchangeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ExchangeComponent],
-      imports: [SharedComponentsModule, BrowserAnimationsModule, MatIconModule],
+      imports: [SharedComponentsModule, MatIconModule],
       providers: [
         HttpClient,
         HttpHandler,

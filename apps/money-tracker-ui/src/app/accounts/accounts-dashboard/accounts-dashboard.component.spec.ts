@@ -1,11 +1,14 @@
+import { CurrencyPipe } from "@angular/common";
+
+if (typeof window.URL.createObjectURL === 'undefined') {
+  window.URL.createObjectURL = jest.fn(() => 'blob:mock-url');
+}
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClient, HttpHandler } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { NgxEchartsModule } from 'ngx-echarts';
-
 
 import { of } from 'rxjs';
 
@@ -14,6 +17,7 @@ import {
   AccountsService,
   MoneyTypeService,
   SharedComponentsModule,
+  CurrencySpacePipe
 } from '@clematis-shared/shared-components';
 import { mockResizeObserver } from '../../../mocks/mock_resize_observer';
 
@@ -36,9 +40,9 @@ describe('AccountsDashboardComponent', () => {
       declarations: [AccountsDashboardComponent],
       imports: [
         SharedComponentsModule,
-        BrowserAnimationsModule,
         MatCheckboxModule,
         FormsModule,
+        CurrencySpacePipe,
         NgxEchartsModule.forRoot({
           echarts: () => import("echarts")
         }),
@@ -48,6 +52,8 @@ describe('AccountsDashboardComponent', () => {
         HttpClient,
         HttpHandler,
         MoneyTypeService,
+        CurrencyPipe,
+        CurrencySpacePipe,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
       ],
     }).compileComponents();
