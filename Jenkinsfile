@@ -56,13 +56,8 @@ pipeline {
       steps {
         sh '''
           docker build \
-            --network=host \
-            --build-arg HTTP_PROXY=http://192.168.1.174:7890 \
-            --build-arg HTTPS_PROXY=http://192.168.1.174:7890 \
             . -t money.tracker.ui.uat -f Dockerfile --build-arg="ENVIRONMENT=uat"
           docker build \
-            --build-arg HTTP_PROXY=http://192.168.1.174:7890 \
-            --build-arg HTTPS_PROXY=http://192.168.1.174:7890 \
             . -t money.tracker.ui.demo -f Dockerfile --build-arg="ENVIRONMENT=demo"
         '''
       }
@@ -73,9 +68,6 @@ pipeline {
         sh '''
            export DOCKER_BUILDKIT=1
            docker build \
-              --network=host \
-              --build-arg HTTP_PROXY=http://192.168.1.174:7890 \
-              --build-arg HTTPS_PROXY=http://192.168.1.174:7890 \
               --output "type=local,dest=${WORKSPACE}/coverage" --target test-out .
            ls -l ./coverage
         '''
