@@ -27,6 +27,9 @@ const isAccessAllowed =  async (
 
     try {
       await keycloak.updateToken(30);
+      await keycloak.login({
+        redirectUri: `${window.location.origin}${state.url}`,
+      });
     } catch {
       return false;
     }

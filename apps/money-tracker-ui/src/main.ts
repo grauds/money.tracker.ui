@@ -152,8 +152,8 @@ bootstrapApplication(AppComponent, {
       },
       features: [
         withAutoRefreshToken({
-          sessionTimeout: 300000, // 5 minutes in milliseconds
-          onInactivityTimeout: 'logout' // Can be 'login', 'login', or 'none'
+          sessionTimeout: 900000, // 15 minutes in milliseconds
+          onInactivityTimeout: 'none' // Can be 'login', 'login', or 'none'
         })
       ]
     }),
