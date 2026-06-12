@@ -64,6 +64,7 @@ export class AppComponent {
             );
             this.router.navigate([params.get('redirect')], {
               queryParams: Utils.parseRedirectParameters(params),
+              replaceUrl: true,
             });
           }
 

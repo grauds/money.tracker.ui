@@ -97,9 +97,13 @@ const authRecoveryInterceptor: HttpInterceptorFn = (request, next) => {
       ) {
         loginRedirectInProgress = true;
 
-        void keycloak.login({
-          redirectUri: window.location.origin,
-        });
+        void keycloak
+          .createLoginUrl({
+            redirectUri: window.location.origin,
+          })
+          .then((loginUrl) => {
+            window.location.replace(loginUrl);
+          });
       }
 
       return throwError(() => error);

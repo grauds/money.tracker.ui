@@ -18,19 +18,22 @@ const isAccessAllowed =  async (
     const { authenticated, grantedRoles } = authData;
 
     if (!authenticated) {
-      await keycloak.login({
+      const loginUrl = await keycloak.createLoginUrl({
         redirectUri: `${window.location.origin}${state.url}`,
       });
 
+      window.location.replace(loginUrl);
       return false;
     }
 
     try {
       await keycloak.updateToken(30);
     } catch {
-      await keycloak.login({
+      const loginUrl = await keycloak.createLoginUrl({
         redirectUri: `${window.location.origin}${state.url}`,
       });
+
+      window.location.replace(loginUrl);
       return false;
     }
 
