@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostListener, signal, computed } from "@angular/core";
 import { CommonModule, NgOptimizedImage } from "@angular/common";
 import { ImageCropperComponent, ImageCroppedEvent, ImageTransform } from 'ngx-image-cropper';
 import { StorageService } from '../../service/storage.service';
@@ -18,7 +18,7 @@ export class PhotoUploaderComponent {
   @Input() entityId!: string;
   @Input() extraPath: string | undefined
 
-  @Input() currentImageUrl: string | null = 'assets/product-placeholder.png';
+  private imageTrigger = signal<string | null>(null);
   @Output() imageDeleted = new EventEmitter<void>();
 
   imageFileToCrop: File | undefined = undefined;
@@ -38,6 +38,22 @@ export class PhotoUploaderComponent {
   private originalTranslateV = 0;
 
   constructor(private storageService: StorageService) {}
+
+  readonly imageUrl = computed(() => {
+    const trigger = this.imageTrigger();
+    if (trigger === 'RESET') {
+      return 'assets/product-placeholder.png';
+    }
+    if (this.entityName && this.entityId) {
+      return trigger && trigger.includes('&t=')
+        ? trigger
+        : this.storageService.getURL(
+          this.entityName, this.entityId, this.extraPath
+        );
+    }
+
+    return 'assets/product-placeholder.png';
+  });
 
   onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -158,18 +174,13 @@ export class PhotoUploaderComponent {
     ).subscribe({
       next: (response) => {
         console.log('Upload successful!', response);
-
-        // Break browser cache by appending a fresh timestamp to the image URL
         const timestamp = new Date().getTime();
         const baseApiUrl = this.storageService.getURL(
           this.entityName,
           this.entityId,
           this.extraPath
         );
-
-        // This will force your template image to refresh instantly
-        this.currentImageUrl = `${baseApiUrl}&t=${timestamp}`;
-
+        this.imageTrigger.set(`${baseApiUrl}&t=${timestamp}`);
         this.resetCropper();
       },
       error: (err) => {
@@ -191,9 +202,25 @@ export class PhotoUploaderComponent {
   }
 
   onDelete(): void {
-    this.currentImageUrl = 'assets/product-placeholder.png';
-    this.resetCropper();
-    this.imageDeleted.emit();
+    if (!this.entityName || !this.entityId) {
+      return;
+    }
+
+    this.storageService.delete(
+      this.entityName,
+      this.entityId,
+      this.extraPath
+    ).subscribe({
+      next: () => {
+        console.log('Successfully deleted from server');
+        this.imageTrigger.set('RESET');
+        this.resetCropper();
+        this.imageDeleted.emit();
+      },
+      error: (err) => {
+        console.error('Failed to delete image:', err);
+      }
+    });
   }
 
   cancelEditing(): void {

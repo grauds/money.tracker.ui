@@ -93,7 +93,15 @@ export class CommodityComponent extends EntityComponent<Commodity>
     this.defaultUnit = this.entity?.unittype?.shortName;
 
     this.entity?.getRelation<MoneyType>('defaultMoneyType')
-      .subscribe((defaultMoneyType: MoneyType) => {
+      .pipe(
+        catchError((err) => {
+          if (err?.status === 404) {
+            // this item is in the planning state, to real transaction (yet)
+            return EMPTY;
+          }
+          throw err;
+        })
+      ).subscribe((defaultMoneyType: MoneyType) => {
         this.defaultMoneyType = defaultMoneyType;
       });
 
@@ -125,7 +133,15 @@ export class CommodityComponent extends EntityComponent<Commodity>
 
     this.commodityService
       .getTotalQtyForCommodity(this.id)
-      .subscribe((response) => {
+      .pipe(
+        catchError((err) => {
+          if (err?.status === 404) {
+             // this item is in the planning state, to real transaction (yet)
+            return EMPTY;
+          }
+          throw err;
+        })
+      ).subscribe((response) => {
         this.totalQty = response;
 
         this.commodityService

@@ -10,7 +10,7 @@ import { PhotoUploaderComponent } from "./photo-uploader.component";
 import { StorageService } from "../../service/storage.service";
 
 // Mock class implementation to isolate the network layer without Jasmine utilities
-class FakePhotoUploadService {
+class MockStorageService {
   // Local variable pointer allows our test blocks to mock specific server responses dynamically
   responseStream$ = of({ url: "https://mock-cdn.local" });
 
@@ -18,15 +18,19 @@ class FakePhotoUploadService {
   upload(_blob: Blob, _name: string) {
     return this.responseStream$;
   }
+
+  delete() {
+    return this.responseStream$
+  }
 }
 
 describe("PhotoUploaderComponent", () => {
   let component: PhotoUploaderComponent;
   let fixture: ComponentFixture<PhotoUploaderComponent>;
-  let fakeUploadService: FakePhotoUploadService;
+  let mockStorageService: MockStorageService;
 
   beforeEach(async () => {
-    fakeUploadService = new FakePhotoUploadService();
+    mockStorageService = new MockStorageService();
 
     await TestBed.configureTestingModule({
       declarations: [],
@@ -36,8 +40,7 @@ describe("PhotoUploaderComponent", () => {
         PhotoUploaderComponent
       ],
       providers: [
-        // Inject our localized class fake directly into the test container context
-        { provide: StorageService, useValue: fakeUploadService }
+        { provide: StorageService, useValue: mockStorageService }
       ]
     }).compileComponents();
 
@@ -93,7 +96,6 @@ describe("PhotoUploaderComponent", () => {
       { type: "image/jpeg" }
     );
     component.isCroppingMode = true;
-    component.currentImageUrl = "initial-fallback-image.png";
 
     // Mock Jest console tracking to ensure test outputs remain completely silent
     const errorSpy = jest.spyOn(console, "error")
@@ -101,13 +103,12 @@ describe("PhotoUploaderComponent", () => {
       });
 
     // Inject a throwing observable stream directly into the fake service layer instance
-    fakeUploadService.responseStream$ = throwError(
+    mockStorageService.responseStream$ = throwError(
       () => new Error("Simulated HTTP Failure")
     );
 
     component.onUpload();
 
-    expect(component.currentImageUrl).toBe("initial-fallback-image.png");
     expect(component.isCroppingMode).toBeTruthy();
     expect(errorSpy).toHaveBeenCalled();
 
@@ -129,14 +130,23 @@ describe("PhotoUploaderComponent", () => {
       translateV: 0 });
   });
 
-  it('should restore default placeholder image and trigger event when onAssign is cleared', () => {
-    const deleteSpy = jest.spyOn(component.imageDeleted, 'emit');
-    component.currentImageUrl = 'https://mock-cdn.local';
+  it('should restore default placeholder image ' +
+    'and trigger event when image is deleted', () => {
+
+    component.entityName = 'products';
+    component.entityId = '123';
+    component.isCroppingMode = true;
+
+    jest.spyOn(mockStorageService, 'delete')
+      .mockReturnValue(of({ url: 'some-url' }));
+
+    const deleteSpy
+      = jest.spyOn(component.imageDeleted, 'emit');
 
     component.onDelete();
 
-    expect(component.currentImageUrl).toBe('assets/product-placeholder.png');
     expect(component.isCroppingMode).toBeFalsy();
     expect(deleteSpy).toHaveBeenCalled();
+    expect((component as any).imageTrigger()).toBe('RESET');
   });
 });

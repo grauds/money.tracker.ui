@@ -11,7 +11,7 @@
         (dragover)="onDragOver($event)"
         (dragleave)="onDragLeave($event)"
         (drop)="onDrop($event)">
-        <img [ngSrc]="(getImageUrl() | authImage | async) ?? 'assets/product-placeholder.png'"
+        <img [ngSrc]="(imageUrl() | authImage | async) ?? 'assets/product-placeholder.png'"
              width="400"
              height="400"
              alt="Photo"
