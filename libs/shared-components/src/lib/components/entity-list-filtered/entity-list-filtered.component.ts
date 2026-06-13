@@ -136,7 +136,7 @@ export class EntityListFilteredComponent<T extends Entity>
             name: this.name.value,
           }
         : {},
-    });
+    }, false);
   }
 
   setLoading($event: boolean) {

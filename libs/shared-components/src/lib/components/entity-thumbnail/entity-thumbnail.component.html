@@ -1,9 +1,10 @@
 <div class="thumbnail-card">
   <img [ngSrc]="(getImageUrl() | authImage | async) ?? 'assets/product-placeholder.png'"
-       width="150"
-       height="150"
+       width="170"
+       height="170"
        alt="Photo"
        class="full-bleed-image"
+       priority
   />
   <span class="thumbnail-name">
     <a routerLink="{{ entityLink }}">{{

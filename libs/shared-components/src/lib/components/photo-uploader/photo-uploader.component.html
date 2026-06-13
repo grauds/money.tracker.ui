@@ -28,14 +28,15 @@
           [imageFile]="imageFileToCrop"
           [maintainAspectRatio]="true"
           [aspectRatio]="1"
-          [resizeToWidth]="1000"
-          [resizeToHeight]="1000"
+          [resizeToWidth]="600"
+          [resizeToHeight]="600"
           [cropperStaticWidth]="400"
           [cropperStaticHeight]="400"
           [containWithinAspectRatio]="true"
           [(transform)]="transform"
           format="png"
-          [imageQuality]="100">
+          [imageQuality]="100"
+          (imageCropped)="onImageCropped($event)">
         </image-cropper>
 
         <!-- Zoom Slider Overlay Tray -->
