@@ -1,206 +1,114 @@
-<!-- Toolbar -->
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" [hasBackdrop]="false">
   <mat-sidenav
     #drawer
     class="sidenav"
+    [style.width]="isCollapsed ? '68px' : '250px'"
     fixedInViewport
-    [attr.role]="(isFullLayout$ | async) ? 'navigation' : 'dialog'"
-    [mode]="(isFullLayout$ | async) ? 'side' : 'over'"
-    [opened]="(isFullLayout$ | async) === true"
+    [attr.role]="'navigation'"
+    mode="over"
+    [opened]="true"
+    (mouseenter)="setCollapse(false)"
+    (mouseleave)="setCollapse(true)"
   >
-    <div style="padding-left: 30px; padding-right: 30px; padding-top: 15px">
-      <img src="assets/clematis.png" width="100" height="100"  alt=""/>
+    <!-- Brand Area -->
+    <div class="logo-container">
+      <img ngSrc="assets/clematis.png" alt="Logo" class="logo-img" height="600" width="600" />
+      @if (!isCollapsed) {
+        <span class="brand-text">Clematis</span>
+      }
     </div>
-    <mat-toolbar> Clematis / {{ title }}</mat-toolbar>
-    <mat-nav-list>
-      <a mat-list-item
-         routerLinkActive="active-link"
-         routerLink="/about">
-        <mat-icon fontIcon="home"></mat-icon>
-        Home
-      </a>
-      @if (isLoggedIn) {
-        <mat-accordion>
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <mat-icon fontIcon="money"></mat-icon>
-                &nbsp;Cash&nbsp;Flow
-              </mat-panel-title>
-              <mat-panel-description></mat-panel-description>
-            </mat-expansion-panel-header>
 
-              <a mat-list-item routerLinkActive="active-link" routerLink="/income">
-                <mat-icon fontIcon="trending_up"></mat-icon>
-                Income</a
-              >
-              <a mat-list-item routerLinkActive="active-link" routerLink="/expenses">
-                <mat-icon fontIcon="trending_down"></mat-icon>
-                Expenses</a
-              >
-              <a
-                mat-list-item
-                routerLinkActive="active-link"
-                routerLink="/lastCommodities"
-              >
-                <mat-icon fontIcon="history"></mat-icon>
-                History</a
-              >
-              <a mat-list-item routerLinkActive="active-link" routerLink="/balance">
-                <mat-icon fontIcon="balance"></mat-icon>
-                Balance Monthly
-              </a>
-              <a
-                mat-list-item
-                routerLinkActive="active-link"
-                routerLink="/commoditiesAgents"
-              >
-                <mat-icon fontIcon="local_grocery_store"></mat-icon>
-                Users' Commodities</a
-              >
-              <a mat-list-item routerLinkActive="active-link" routerLink="/exchange">
-                <mat-icon fontIcon="currency_exchange"></mat-icon>
-                Currency Exchange
-              </a>
-              <a mat-list-item routerLinkActive="active-link" routerLink="/inOut">
-                <mat-icon fontIcon="trolley"></mat-icon>
-                Reselling
-              </a>
-          </mat-expansion-panel>
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <mat-icon fontIcon="table"></mat-icon>&nbsp;Catalogs
-              </mat-panel-title>
-              <mat-panel-description></mat-panel-description>
-            </mat-expansion-panel-header>
-            <a mat-list-item
-               routerLinkActive="active-link"
-               routerLink="/accounts"
-               [queryParams]="{ sort: 'name,ASC' }"
-               [routerLinkActiveOptions]="{
-                 matrixParams: 'ignored',
-                 queryParams: 'ignored',
-                 paths: 'exact',
-                 fragment: 'ignored'
-               }"
-            >
-              <mat-icon fontIcon="savings"></mat-icon>
-              Accounts</a
-            >
-            <a
-              mat-list-item
-              routerLinkActive="active-link"
-              routerLink="/commodities"
-              [queryParams]="{ sort: 'name,ASC' }"
-              [routerLinkActiveOptions]="{
-                 matrixParams: 'ignored',
-                 queryParams: 'ignored',
-                 paths: 'exact',
-                 fragment: 'ignored'
-               }"
-            >
-              <mat-icon fontIcon="shopping_bag"></mat-icon>
-              Commodities</a
-            >
-            <a
-              mat-list-item
-              routerLinkActive="active-link"
-              routerLink="/commodityGroups"
-              [queryParams]="{ sort: 'name,ASC' }"
-              [routerLinkActiveOptions]="{
-                 matrixParams: 'ignored',
-                 queryParams: 'ignored',
-                 paths: 'exact',
-                 fragment: 'ignored'
-               }"
-            >
-              <mat-icon fontIcon="shopping_basket"></mat-icon>
-              Commodities Groups</a
-            >
-            <a
-              mat-list-item
-              routerLinkActive="active-link"
-              routerLink="/organizations"
-              [queryParams]="{ sort: 'name,ASC' }"
-              [routerLinkActiveOptions]="{
-                 matrixParams: 'ignored',
-                 queryParams: 'ignored',
-                 paths: 'exact',
-                 fragment: 'ignored'
-               }"
-            >
-              <mat-icon fontIcon="store"></mat-icon>
-              Organizations</a
-            >
-            <a
-              mat-list-item
-              routerLinkActive="active-link"
-              routerLink="/organizationGroups"
-              [queryParams]="{ sort: 'name,ASC' }"
-              [routerLinkActiveOptions]="{
-                 matrixParams: 'ignored',
-                 queryParams: 'ignored',
-                 paths: 'exact',
-                 fragment: 'ignored'
-               }"
-            >
-              <mat-icon fontIcon="corporate_fare"></mat-icon>
-              Organizations
-              Groups</a
-            >
-          </mat-expansion-panel>
-          </mat-accordion>
+    <mat-nav-list>
+      <!-- Home Link -->
+      <a mat-list-item routerLinkActive="active-link" routerLink="/about" matTooltip="Home" [matTooltipDisabled]="!isCollapsed">
+        <mat-icon fontIcon="home"></mat-icon>
+        @if (!isCollapsed) {
+          <span class="menu-text">Home</span>
+        }
+      </a>
+
+      @if (isLoggedIn) {
+        <!-- Section: Cash Flow -->
+        @if (!isCollapsed) {
+          <div class="menu-divider">Cash Flow</div>
+        }
+
+        <a mat-list-item routerLinkActive="active-link" routerLink="/income" matTooltip="Income" [matTooltipDisabled]="!isCollapsed">
+          <mat-icon fontIcon="trending_up"></mat-icon>
+          @if (!isCollapsed) { <span class="menu-text">Income</span> }
+        </a>
+        <a mat-list-item routerLinkActive="active-link" routerLink="/expenses" matTooltip="Expenses" [matTooltipDisabled]="!isCollapsed">
+          <mat-icon fontIcon="trending_down"></mat-icon>
+          @if (!isCollapsed) { <span class="menu-text">Expenses</span> }
+        </a>
+        <a mat-list-item routerLinkActive="active-link" routerLink="/lastCommodities" matTooltip="History" [matTooltipDisabled]="!isCollapsed">
+          <mat-icon fontIcon="history"></mat-icon>
+          @if (!isCollapsed) { <span class="menu-text">History</span> }
+        </a>
+        <a mat-list-item routerLinkActive="active-link" routerLink="/balance" matTooltip="Balance Monthly" [matTooltipDisabled]="!isCollapsed">
+          <mat-icon fontIcon="balance"></mat-icon>
+          @if (!isCollapsed) { <span class="menu-text">Balance Monthly</span> }
+        </a>
+        <a mat-list-item routerLinkActive="active-link" routerLink="/commoditiesAgents" matTooltip="Users' Commodities" [matTooltipDisabled]="!isCollapsed">
+          <mat-icon fontIcon="local_grocery_store"></mat-icon>
+          @if (!isCollapsed) { <span class="menu-text">Users' Commodities</span> }
+        </a>
+        <a mat-list-item routerLinkActive="active-link" routerLink="/exchange" matTooltip="Currency Exchange" [matTooltipDisabled]="!isCollapsed">
+          <mat-icon fontIcon="currency_exchange"></mat-icon>
+          @if (!isCollapsed) { <span class="menu-text">Currency Exchange</span> }
+        </a>
+        <a mat-list-item routerLinkActive="active-link" routerLink="/inOut" matTooltip="Reselling" [matTooltipDisabled]="!isCollapsed">
+          <mat-icon fontIcon="trolley"></mat-icon>
+          @if (!isCollapsed) { <span class="menu-text">Reselling</span> }
+        </a>
+
+        <!-- Section: Catalogs -->
+        @if (!isCollapsed) {
+          <div class="menu-divider">Catalogs</div>
+        }
+
+        <a mat-list-item routerLinkActive="active-link" routerLink="/accounts" [queryParams]="{ sort: 'name,ASC' }" [routerLinkActiveOptions]="{ matrixParams: 'ignored', queryParams: 'ignored', paths: 'exact', fragment: 'ignored' }" matTooltip="Accounts" [matTooltipDisabled]="!isCollapsed">
+          <mat-icon fontIcon="savings"></mat-icon>
+          @if (!isCollapsed) { <span class="menu-text">Accounts</span> }
+        </a>
+        <a mat-list-item routerLinkActive="active-link" routerLink="/commodities" [queryParams]="{ sort: 'name,ASC' }" [routerLinkActiveOptions]="{ matrixParams: 'ignored', queryParams: 'ignored', paths: 'exact', fragment: 'ignored' }" matTooltip="Commodities" [matTooltipDisabled]="!isCollapsed">
+          <mat-icon fontIcon="shopping_bag"></mat-icon>
+          @if (!isCollapsed) { <span class="menu-text">Commodities</span> }
+        </a>
+        <a mat-list-item routerLinkActive="active-link" routerLink="/commodityGroups" [queryParams]="{ sort: 'name,ASC' }" [routerLinkActiveOptions]="{ matrixParams: 'ignored', queryParams: 'ignored', paths: 'exact', fragment: 'ignored' }" matTooltip="Commodities Groups" [matTooltipDisabled]="!isCollapsed">
+          <mat-icon fontIcon="shopping_basket"></mat-icon>
+          @if (!isCollapsed) { <span class="menu-text">Commodities Groups</span> }
+        </a>
+        <a mat-list-item routerLinkActive="active-link" routerLink="/organizations" [queryParams]="{ sort: 'name,ASC' }" [routerLinkActiveOptions]="{ matrixParams: 'ignored', queryParams: 'ignored', paths: 'exact', fragment: 'ignored' }" matTooltip="Organizations" [matTooltipDisabled]="!isCollapsed">
+          <mat-icon fontIcon="store"></mat-icon>
+          @if (!isCollapsed) { <span class="menu-text">Organizations</span> }
+        </a>
+        <a mat-list-item routerLinkActive="active-link" routerLink="/organizationGroups" [queryParams]="{ sort: 'name,ASC' }" [routerLinkActiveOptions]="{ matrixParams: 'ignored', queryParams: 'ignored', paths: 'exact', fragment: 'ignored' }" matTooltip="Organizations Groups" [matTooltipDisabled]="!isCollapsed">
+          <mat-icon fontIcon="corporate_fare"></mat-icon>
+          @if (!isCollapsed) { <span class="menu-text">Organizations Groups</span> }
+        </a>
       }
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar color="primary" class="mat-elevation-z6">
-      @if (!(isFullLayout$ | async)) {
-        <button
-          type="button"
-          aria-label="Toggle sidenav"
-          mat-icon-button
-          (click)="drawer.toggle()"
-        >
-          <mat-icon fontIcon="menu"></mat-icon>
-        </button>
-      }
-      @if (!(isFullLayout$ | async)) {
-        <span>{{ title }}</span>
-      }
+
+  <!-- The content area container transforms into a static, locked viewport column -->
+  <mat-sidenav-content class="main-content-area">
+    <mat-toolbar color="primary" class="mat-elevation-z3 compact-toolbar">
+      <span class="page-title">{{ title }}</span>
       <span class="header-spacer"></span>
-      @if (isLoggedIn && (isFullLayout$ | async)) {
-        <span
-          class="navbar-username"
-        >
-                              {{ getUserInfo() }}
-                            </span>
+
+      @if (isLoggedIn) {
+        <span class="navbar-username">{{ getUserInfo() }}</span>
       }
-      <span
-        class="navbar-brand"
-        style="border-left: 2px solid white; font-size: 20px"
-      >
-        @if (isLoggedIn) {
-          <button
-            mat-icon-button
-            type="button"
-            (click)="logout()"
-          >
-            <mat-icon fontIcon="logout"></mat-icon>
-          </button>
-        }
-        @if (!isLoggedIn) {
-          <button
-            mat-icon-button
-            type="button"
-            (click)="login()"
-          >
-            <mat-icon fontIcon="login"></mat-icon>
-          </button>
-        }
-      </span>
+
+      <button mat-icon-button type="button" (click)="isLoggedIn ? logout() : login()">
+        <mat-icon [fontIcon]="isLoggedIn ? 'logout' : 'login'"></mat-icon>
+      </button>
     </mat-toolbar>
-    <app-workspace></app-workspace>
+
+    <!-- This isolated nested layer safely takes all component scrolling actions -->
+    <div class="scrollable-body">
+      <app-workspace></app-workspace>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

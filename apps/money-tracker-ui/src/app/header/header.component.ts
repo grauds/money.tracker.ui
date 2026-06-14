@@ -1,8 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject, ChangeDetectorRef } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
@@ -10,15 +7,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
 import Keycloak, { KeycloakProfile } from 'keycloak-js';
-import { AsyncPipe } from "@angular/common";
+import { NgOptimizedImage } from "@angular/common";
 import { WorkspaceComponent } from "../workspace/workspace.component";
-import {
-  MatAccordion,
-  MatExpansionPanel,
-  MatExpansionPanelDescription,
-  MatExpansionPanelHeader,
-  MatExpansionPanelTitle
-} from "@angular/material/expansion";
+import { MatTooltip } from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-header',
@@ -33,28 +24,12 @@ import {
     MatButtonModule,
     RouterLink,
     RouterLinkActive,
-    AsyncPipe,
     WorkspaceComponent,
-    MatExpansionPanel,
-    MatExpansionPanelHeader,
-    MatExpansionPanelTitle,
-    MatAccordion,
-    MatExpansionPanelDescription
+    MatTooltip,
+    NgOptimizedImage
   ]
 })
 export class HeaderComponent {
-  isFullLayout$: Observable<boolean> = this.breakpointObserver
-    .observe([
-      Breakpoints.Medium,
-      Breakpoints.Large,
-      Breakpoints.XLarge,
-      Breakpoints.TabletLandscape,
-      Breakpoints.WebLandscape,
-    ])
-    .pipe(
-      map((result) => result.matches),
-      shareReplay()
-    );
 
   // the header of the application
   @Input() title = '';
@@ -63,13 +38,15 @@ export class HeaderComponent {
 
   @Input() isLoggedIn?: boolean;
 
+  public isCollapsed = true;
+  private cdr = inject(ChangeDetectorRef);
+
   // current route of the application
   currentRoute = '';
 
   constructor(
     private readonly router: Router,
     private readonly keycloak: Keycloak,
-    private readonly breakpointObserver: BreakpointObserver
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -77,6 +54,11 @@ export class HeaderComponent {
         this.currentRoute = event.urlAfterRedirects;
       }
     });
+  }
+
+  public setCollapse(value: boolean): void {
+    this.isCollapsed = value;
+    this.cdr.detectChanges();
   }
 
   public login() {
