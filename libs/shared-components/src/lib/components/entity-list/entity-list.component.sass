@@ -101,17 +101,21 @@
   margin-bottom: 1rem
 
 .thumbnail-grid
-  display: grid
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr))
+  display: flex
+  flex-wrap: wrap
+  justify-content: center  /* Centers items horizontally in the row */
   gap: 26px
   padding: 16px 0
   width: 100%
   min-width: 320px
-  overflow-x: auto
 
-.thumbnail-grid > div
-  min-width: 0
-  width: 100%
-  max-width: 100%
+.thumbnail-grid > *
+  flex: 0 1 200px /* Do not grow past 160px */
+  width: 200px     /* Set a default width */
   box-sizing: border-box
 
+  /* Centers content inside each individual cell */
+  display: flex
+  flex-direction: column   /* Aligns content vertically */
+  align-items: center      /* Centers content horizontally */
+  text-align: center       /* Centers text lines */
