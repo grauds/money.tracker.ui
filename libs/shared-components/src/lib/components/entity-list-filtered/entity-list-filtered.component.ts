@@ -65,16 +65,27 @@ export class EntityListFilteredComponent<T extends Entity>
   ) {
     this.pageSubscription = route.queryParams.subscribe(
       (queryParams: Params) => {
-        const name = queryParams['name'];
-        if (name) {
-          this.name.setValue(name);
-        }
+        const name = queryParams['name'] ?? '';
+        this.name.setValue(name);
 
         const mode = queryParams['mode'];
-        if (mode) {
-          // Convert string to enum value if possible
-          const enumValue = this.modes.find(m => m === mode);
-          this.mode.setValue(enumValue ?? SearchStringMode.Containing);
+        const enumValue = this.modes.find(m => m === mode);
+        this.mode.setValue(enumValue ?? SearchStringMode.Containing);
+
+        if (this.entityList) {
+          if (name) {
+            this.entityList.setFilter('name', name);
+          } else {
+            this.entityList.removeFilter('name');
+          }
+
+          if (this.mode.value) {
+            this.entityList.setFilter('mode', this.mode.value.toString());
+          } else {
+            this.entityList.removeFilter('mode');
+          }
+
+          this.refresh();
         }
       }
     );
