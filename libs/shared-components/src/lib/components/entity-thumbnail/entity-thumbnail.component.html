@@ -1,11 +1,30 @@
 <div class="thumbnail-card">
-  <img [ngSrc]="(getImageUrl() | authImage | async) ?? 'assets/product-placeholder.png'"
-       width="170"
-       height="170"
-       alt="Photo"
-       class="full-bleed-image"
-       priority
-  />
+
+  <div class="image-container">
+    @if ((getImageUrl() | authImage | async); as resolvedUrl) {
+      <img [src]="resolvedUrl"
+           width="170"
+           height="170"
+           alt="Photo"
+           class="full-bleed-image"
+           (load)="onImageLoad()"
+      />
+      @if (isImageLoading) {
+        <div class="loader-overlay">
+          <div class="loader"></div>
+        </div>
+      }
+    } @else {
+      <img [ngSrc]="'assets/coming-soon.png'"
+           width="170"
+           height="170"
+           alt="Placeholder"
+           class="full-bleed-image placeholder-fallback"
+           priority
+      />
+    }
+  </div>
+
   <span class="thumbnail-name">
     <a routerLink="{{ entityLink }}">{{
         entity ? entity.name : entityLink

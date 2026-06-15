@@ -1,6 +1,8 @@
 @if (loading) {
   <mat-progress-bar color="accent" mode="indeterminate">
   </mat-progress-bar>
+} @else {
+  <div style="height: 4px"></div>
 }
 
 @if (error) {

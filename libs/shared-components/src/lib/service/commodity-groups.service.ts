@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { SearchService } from './search.service';
 import { CommodityGroup } from '@clematis-shared/model';
-import { Observable } from 'rxjs';
 import {
   HateoasResourceService,
   PagedResourceCollection,
   PagedGetOption
 } from '@lagoshny/ngx-hateoas-client';
+import { Observable } from 'rxjs';
+import { SearchService } from './search.service';
 import { HttpClient } from '@angular/common/http';
 import { EnvironmentService } from './environment.service';
 

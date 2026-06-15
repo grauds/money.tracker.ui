@@ -96,7 +96,7 @@ export class CommodityComponent extends EntityComponent<Commodity>
       .pipe(
         catchError((err) => {
           if (err?.status === 404) {
-            // this item is in the planning state, to real transaction (yet)
+            // this item in the planning state, to real transaction (yet)
             return EMPTY;
           }
           throw err;
@@ -136,7 +136,7 @@ export class CommodityComponent extends EntityComponent<Commodity>
       .pipe(
         catchError((err) => {
           if (err?.status === 404) {
-             // this item is in the planning state, to real transaction (yet)
+             // this item in the planning state, to real transaction (yet)
             return EMPTY;
           }
           throw err;
