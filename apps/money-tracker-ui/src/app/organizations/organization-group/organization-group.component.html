@@ -4,32 +4,35 @@
 @if (entity) {
   <div>
     <div class="back-area">
-      <div class="jumbotron">
-        <h2>
-          {{ entity ? entity.name : '' }}
-        </h2>
-        @if (entity.description) {
-          <div style="max-height: 350px; margin: 10px; overflow: auto">
-            {{ entity ? entity.description : '' }}
-          </div>
-        }
+      <div class="jumbotron summary-header">
+
+        <!-- Left Side: Title and Description -->
+        <div class="summary-details">
+          <h2 style="margin: 0; font-size: 1.75rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+            {{ entity ? entity.name : '' }}
+          </h2>
+        </div>
+
       </div>
     </div>
+
     <app-entity-list
-    [searchRequest]="{
-      queryArguments: getQueryArguments(),
-      queryName: 'recursiveByParentId'
-    }"
+      [searchRequest]="{
+        queryArguments: getQueryArguments(),
+        queryName: 'recursiveByParentId'
+      }"
       (loading$)="setLoading($event)"
       (entitiesChange$)="setEntities($event)"
       [sort]="getSort()"
     ></app-entity-list>
+
     @if (!(children && children.length > 0)) {
       <app-organization-group-organizations
         [id]="id"
         >
       </app-organization-group-organizations>
     }
+
     <div>
       <!--ya-map [center]="[55.751952, 37.600739]" [zoom]="12">
         <ya-placemark [geometry]="[55.751952, 37.600739]"></ya-placemark>

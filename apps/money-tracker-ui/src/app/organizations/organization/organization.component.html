@@ -3,15 +3,22 @@
 }
 @if (entity) {
   <div>
-    <div class="jumbotron">
-      <div>
-        <h2>
-          {{ entity ? entity.name : 'Not loaded' }}
-        </h2>
-      </div>
-      <div>
-        Total: {{ totalSum | currencySpace : 'RUB' : 'symbol' }}
-        <!-- hard coded currency, as well as in the query -->
+    <div class="back-area">
+      <div class="jumbotron summary-header">
+
+        <!-- Left Side: Title and Description -->
+        <div class="summary-details">
+          <h2 style="margin: 0; font-size: 1.75rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+            {{ entity ? entity.name : '' }}
+          </h2>
+        </div>
+
+        <!-- Right Side: Total Display -->
+        <div class="summary-total">
+          <span class="total-label">Total</span>
+          <span class="total-amount">{{ totalSum | currencySpace : 'RUB' :'symbol'  }} </span>
+        </div>
+
       </div>
     </div>
     <div>
@@ -22,11 +29,22 @@
   </div>
 }
 
-<div class="row">
-  <div class="col-12">
-    <div echarts [options]="option" [loading]="loading"></div>
+@if (entity && this.expenses.length > 1) {
+  <div class="d-flex align-items: center; margin: 32px 0 16px 0; padding-left: 12px; border-left: 4px solid #0d6efd;">
+    <div>
+      <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+        Price & Analytics Trends
+      </h3>
+      <small style="color: #6c757d; font-size: 0.85rem;">Historical data and purchase distribution</small>
+    </div>
   </div>
-</div>
+
+  <div class="row">
+    <div class="col-12">
+      <div echarts [options]="option" [loading]="loading"></div>
+    </div>
+  </div>
+}
 
 <ng-template #expensesTable let-entities="entities">
   <table mat-table [dataSource]="entities">

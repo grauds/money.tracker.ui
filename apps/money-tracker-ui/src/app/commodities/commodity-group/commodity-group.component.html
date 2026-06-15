@@ -21,35 +21,18 @@
         <!-- Right Side: Total Display -->
         <div class="summary-total">
           <span class="total-label">Total</span>
-          <span class="total-amount">RUB {{ totalSum }} </span>
+          <span class="total-amount">{{ totalSum | currencySpace : 'RUB' :'symbol' }} </span>
         </div>
 
       </div>
     </div>
 
     @if (!(children && children.length > 0)) {
-      <div class="d-flex align-items: center; margin: 32px 0 16px 0; padding-left: 12px; border-left: 4px solid #0d6efd;">
-        <div>
-          <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
-            Commodities In This Category
-          </h3>
-          <small style="color: #6c757d; font-size: 0.85rem;">Financial history for each commodity</small>
-        </div>
-      </div>
       <app-commodity-group-commodities
         [id]="id"
         >
       </app-commodity-group-commodities>
     }
-
-    <div class="d-flex align-items: center; margin: 32px 0 16px 0; padding-left: 12px; border-left: 4px solid #0d6efd;">
-      <div>
-        <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
-          More Groups In This Category
-        </h3>
-        <small style="color: #6c757d; font-size: 0.85rem;">Nested commodity groups</small>
-      </div>
-    </div>
 
     <app-entity-list
       [searchRequest]="{

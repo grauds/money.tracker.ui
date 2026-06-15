@@ -97,7 +97,14 @@ export class OrganizationComponent
 
     this.organizationsService
       .getTotalsForOrganization(this.id, MoneyTypes.RUB)
-      .subscribe((response) => {
+      .pipe(
+        catchError((err) => {
+          if (err?.status === 404) {
+            return EMPTY;
+          }
+          throw err;
+        })
+      ).subscribe((response) => {
         this.totalSum = response;
       });
   }

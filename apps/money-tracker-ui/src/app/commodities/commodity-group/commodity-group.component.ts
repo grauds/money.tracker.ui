@@ -72,7 +72,9 @@ export class CommodityGroupComponent
   }
 
   setEntities($event: ExpenseItem[]) {
-    this.children = $event;
+    setTimeout(() => {
+      this.children = $event;
+    });
   }
 
   override setEntity(entity: CommodityGroup) {
@@ -112,7 +114,14 @@ export class CommodityGroupComponent
 
     this.commodityGroupService
       .getTotalsForCommodityGroup(this.id, MoneyTypes.RUB)
-      .subscribe((response) => {
+      .pipe(
+        catchError((err) => {
+          if (err?.status === 404) {
+            return EMPTY;
+          }
+          throw err;
+        })
+      ).subscribe((response) => {
         this.totalSum = response;
         this.loading = false;
       });
