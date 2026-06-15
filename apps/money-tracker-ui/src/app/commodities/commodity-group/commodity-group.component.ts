@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   HateoasResourceService,
   RequestParam,
   Sort,
 } from '@lagoshny/ngx-hateoas-client';
-import { ActivatedRoute, Router } from '@angular/router';
 import {
   CommodityGroup,
   MoneyTypes,
@@ -18,13 +18,15 @@ import {
 } from '@clematis-shared/shared-components';
 import { Title } from '@angular/platform-browser';
 import { Utils } from '@clematis-shared/model';
-import { catchError, EMPTY } from "rxjs";
+import { catchError, EMPTY, forkJoin } from "rxjs";
 
 @Component({
   selector: 'app-commodity-group',
   templateUrl: './commodity-group.component.html',
   styleUrls: ['./commodity-group.component.sass'],
-  providers: [{ provide: 'searchService', useClass: CommodityGroupService }],
+  providers: [
+    { provide: 'searchService', useClass: CommodityGroupService }
+  ],
   standalone: false,
 })
 export class CommodityGroupComponent
@@ -48,7 +50,7 @@ export class CommodityGroupComponent
 
   constructor(
     resourceService: HateoasResourceService,
-    private commodityGroupService: CommodityGroupService,
+    private readonly commodityGroupService: CommodityGroupService,
     route: ActivatedRoute,
     router: Router,
     title: Title
@@ -61,32 +63,21 @@ export class CommodityGroupComponent
     this.onInit();
   }
 
-  setLoading($event: boolean) {
-    this.loading = $event;
-  }
-
-  getQueryArguments(): RequestParam {
-    return {
-      id: this.id ? this.id : '',
-    };
-  }
-
-  setEntities($event: ExpenseItem[]) {
-    setTimeout(() => {
-      this.children = $event;
-    });
-  }
-
   override setEntity(entity: CommodityGroup) {
     super.setEntity(entity);
+
+    this.clearPreviousData();
+
+    if (!this.entity) {
+      return;
+    }
 
     this.entityList?.refreshData({
       queryArguments: this.getQueryArguments(),
       queryName: 'recursiveByParentId',
     });
 
-    this.entity
-      ?.getRelation<CommodityGroup>('parent')
+    const parent$ = this.entity?.getRelation<CommodityGroup>('parent')
       .pipe(
         catchError((err) => {
           if (err?.status === 404) {
@@ -98,21 +89,9 @@ export class CommodityGroupComponent
           // Other errors are real problems → let them propagate (or handle differently)
           throw err;
         })
-      )
-      .subscribe((parent: CommodityGroup) => {
-        this.parent = parent;
-        this.parentLink = Entity.getRelativeSelfLinkHref(this.parent);
-      });
+      );
 
-    if (this.entity) {
-      this.commodityGroupService
-        .getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.entity))
-        .subscribe((response) => {
-          this.path = response.resources.reverse();
-        });
-    }
-
-    this.commodityGroupService
+    const totals$ = this.commodityGroupService
       .getTotalsForCommodityGroup(this.id, MoneyTypes.RUB)
       .pipe(
         catchError((err) => {
@@ -121,10 +100,55 @@ export class CommodityGroupComponent
           }
           throw err;
         })
-      ).subscribe((response) => {
-        this.totalSum = response;
-        this.loading = false;
+      );
+
+    this.commodityGroupService
+      .getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.entity))
+      .subscribe((response) => {
+        this.path = response.resources.reverse();
       });
+
+    forkJoin({
+      parent: parent$,
+      totals: totals$
+    }).subscribe({
+      next: (result) => {
+        if (result.parent) {
+          this.parent = result.parent;
+          this.parentLink = Entity.getRelativeSelfLinkHref(result.parent);
+        }
+        if (result.totals) {
+          this.totalSum = result.totals;
+          this.loading = false;
+        }
+      },
+      error: (err) => console.error('An error occurred loading commodity group data', err)
+    });
+  }
+
+  private clearPreviousData() {
+    this.parent = undefined;
+    this.parentLink = undefined;
+    this.path = [];
+    this.totalSum = undefined;
+  }
+
+  setLoading($event: boolean) {
+    setTimeout(() => {
+      this.loading = $event;
+    });
+  }
+
+  getQueryArguments(): RequestParam {
+    return {
+      id: this.id ? this.id : '',
+    };
+  }
+
+  setEntities($event: ExpenseItem[]) {
+    setTimeout(() => {
+      this.children = $event;
+    })
   }
 
   getSort(): Sort {

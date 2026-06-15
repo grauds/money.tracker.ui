@@ -9,9 +9,8 @@ import {
   MoneyType,
   CommodityGroup,
   MoneyTypes,
-  ExpenseItem,
   Entity,
-  Utils,
+  ExpenseItem,
 } from '@clematis-shared/model';
 import {
   CommoditiesService,
@@ -23,7 +22,7 @@ import {
 } from '@clematis-shared/shared-components';
 import { Title } from '@angular/platform-browser';
 import { formatDate } from '@angular/common';
-import { catchError, EMPTY } from "rxjs";
+import { catchError, EMPTY, forkJoin } from "rxjs";
 
 @Component({
   selector: 'app-commodity',
@@ -54,8 +53,6 @@ export class CommodityComponent extends EntityComponent<Commodity>
 
   parentLink: string | undefined;
 
-  path: Array<CommodityGroup> = [];
-
   totalSum = 0;
 
   expenses: ExpenseItem[] = [];
@@ -67,6 +64,8 @@ export class CommodityComponent extends EntityComponent<Commodity>
   totalQty: number | undefined;
 
   option: any = {};
+
+  path: Array<CommodityGroup> = [];
 
   constructor(
     resourceService: HateoasResourceService,
@@ -90,22 +89,25 @@ export class CommodityComponent extends EntityComponent<Commodity>
   override setEntity(entity: Commodity) {
     super.setEntity(entity);
 
+    this.clearPreviousData();
+
+    if (!this.entity) {
+      return;
+    }
+
     this.defaultUnit = this.entity?.unittype?.shortName;
 
-    this.entity?.getRelation<MoneyType>('defaultMoneyType')
+    const moneyType$ = this.entity?.getRelation<MoneyType>('defaultMoneyType')
       .pipe(
         catchError((err) => {
           if (err?.status === 404) {
-            // this item in the planning state, to real transaction (yet)
             return EMPTY;
           }
           throw err;
         })
-      ).subscribe((defaultMoneyType: MoneyType) => {
-        this.defaultMoneyType = defaultMoneyType;
-      });
+      );
 
-    this.entity?.getRelation<CommodityGroup>('parent')
+    const parent$ = this.entity?.getRelation<CommodityGroup>('parent')
       .pipe(
         catchError((err) => {
           if (err?.status === 404) {
@@ -117,43 +119,57 @@ export class CommodityComponent extends EntityComponent<Commodity>
           // Other errors are real problems → let them propagate (or handle differently)
           throw err;
         })
-      )
-      .subscribe((parent: CommodityGroup) => {
-        this.parent = parent;
-        this.parentLink = Entity.getRelativeSelfLinkHref(this.parent);
-        this.commodityGroupService
-          .getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.parent))
-          .subscribe((response) => {
-            this.path = response.resources.reverse();
-            if (this.parent) {
-              this.path.push(this.parent);
-            }
-          });
-      });
+      );
 
-    this.commodityService
+    const totals$ = this.commodityService
       .getTotalQtyForCommodity(this.id)
       .pipe(
         catchError((err) => {
           if (err?.status === 404) {
-             // this item in the planning state, to real transaction (yet)
             return EMPTY;
           }
           throw err;
         })
-      ).subscribe((response) => {
-        this.totalQty = response;
+      );
 
-        this.commodityService
-          .getTotalsForCommodity(this.id, MoneyTypes.RUB)
-          .subscribe((response) => {
-            this.totalSum = response;
+    forkJoin({
+      moneyType: moneyType$,
+      parent: parent$,
+      totals: totals$
+    }).subscribe({
+      next: (result) => {
+        if (result.moneyType) {
+          this.defaultMoneyType = result.moneyType;
+        }
+        if (result.parent) {
+          this.parent = result.parent;
+          this.parentLink = Entity.getRelativeSelfLinkHref(result.parent);
+        }
+        if (result.totals) {
+          this.totalQty = result.totals;
+          this.commodityService
+            .getTotalsForCommodity(this.id, MoneyTypes.RUB)
+            .subscribe((response) => {
+              this.totalSum = response;
+              if (this.totalQty) {
+                this.averagePrice = this.totalSum / this.totalQty;
+              }
+            });
+        }
+      },
+      error: (err) => console.error('An error occurred loading commodity data', err)
+    });
+  }
 
-            if (this.totalQty) {
-              this.averagePrice = this.totalSum / this.totalQty;
-            }
-          });
-      });
+  private clearPreviousData() {
+    this.defaultUnit = undefined;
+    this.defaultMoneyType = undefined;
+    this.parent = undefined;
+    this.parentLink = undefined;
+    this.path = [];
+    this.totalQty = undefined;
+    this.totalSum = 0;
+    this.averagePrice = undefined;
   }
 
   setLoading($event: boolean) {
