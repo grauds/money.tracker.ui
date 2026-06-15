@@ -292,6 +292,7 @@ export class EntityListComponent<T extends Entity> implements OnInit {
       queryParams: queryParams,
       queryParamsHandling: this.queryParamsMode,
       skipLocationChange: false,
+      replaceUrl: true,
     };
   }
 
