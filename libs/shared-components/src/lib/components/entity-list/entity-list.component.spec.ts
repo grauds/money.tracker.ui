@@ -134,12 +134,14 @@ describe('EntityListComponent', () => {
 
   it('should update route query params', () => {
     zone?.run(() => {
+      component.updateRouterState = true;
+
       jest.spyOn(component, 'updateFromParameters');
 
       // current page is 2
       component.limit = 25;
       component.n = 2;
-      component.updateRoute().then(() => {
+      component.conditionalRouteUpdate().then(() => {
         expect(component.updateFromParameters).toHaveBeenCalledWith({
           page: 3,
           size: 25,
