@@ -12,7 +12,7 @@
       type="text"
       placeholder="in the names"
       autocomplete="off"
-      />
+    />
     <mat-hint>Start typing, Enter to search</mat-hint>
   </mat-form-field>
 </ng-template>
@@ -21,6 +21,7 @@
   [listTemplate]="listTemplate"
   [tableTemplate]="tableTemplate"
   [thumbnailTemplate]="thumbnailTemplate"
+  [searchServiceOverride]="searchServiceOverride"
   [currentView]="currentView"
   [filterTemplate]="filter"
   (loading$)="setLoading($event)"

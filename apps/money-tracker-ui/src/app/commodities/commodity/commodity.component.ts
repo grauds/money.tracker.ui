@@ -10,12 +10,15 @@ import {
   CommodityGroup,
   MoneyTypes,
   Entity,
+  IncomeItem,
   ExpenseItem,
-} from '@clematis-shared/model';
+  Utils,
+} from "@clematis-shared/model";
 import {
   CommoditiesService,
   CommodityGroupService,
   EntityComponent,
+  IncomeItemsService,
   ExpenseItemsService,
   StorageService,
   PhotoUploaderComponent
@@ -28,9 +31,7 @@ import { catchError, EMPTY, forkJoin } from "rxjs";
   selector: 'app-commodity',
   templateUrl: './commodity.component.html',
   styleUrls: ['./commodity.component.sass'],
-  providers: [
-    { provide: 'searchService', useClass: ExpenseItemsService }
-  ],
+  providers: [],
   standalone: false,
 })
 export class CommodityComponent extends EntityComponent<Commodity>
@@ -53,15 +54,26 @@ export class CommodityComponent extends EntityComponent<Commodity>
 
   parentLink: string | undefined;
 
-  totalSum = 0;
+
+  income: IncomeItem[] = [];
+
+  totalIncomeSum = 0;
+
+  averageIncomePrice: number | undefined;
+
+  totalIncomeQty: number | undefined;
+
 
   expenses: ExpenseItem[] = [];
 
-  loading = false;
+  totalSum = 0;
 
   averagePrice: number | undefined;
 
   totalQty: number | undefined;
+
+
+  loading = false;
 
   option: any = {};
 
@@ -69,6 +81,8 @@ export class CommodityComponent extends EntityComponent<Commodity>
 
   constructor(
     resourceService: HateoasResourceService,
+    public readonly expenseService: ExpenseItemsService,
+    public readonly incomeService: IncomeItemsService,
     private readonly commodityService: CommoditiesService,
     private readonly commodityGroupService: CommodityGroupService,
     private readonly uploadService: StorageService,
@@ -97,27 +111,39 @@ export class CommodityComponent extends EntityComponent<Commodity>
 
     this.defaultUnit = this.entity?.unittype?.shortName;
 
+    const income$ = this.commodityService
+      .getTotalIncomeForCommodity(this.id, MoneyTypes.RUB)
+      .pipe(
+        catchError((err) => {
+          console.log(err)
+          return EMPTY;
+        })
+      );
+
+    const outcome$ = this.commodityService
+      .getTotalExpenseForCommodity(this.id, MoneyTypes.RUB)
+      .pipe(
+        catchError((err) => {
+          console.log(err)
+          return EMPTY;
+        })
+      );
+
     const moneyType$ = this.entity?.getRelation<MoneyType>('defaultMoneyType')
       .pipe(
         catchError((err) => {
-          if (err?.status === 404) {
-            return EMPTY;
-          }
-          throw err;
+          console.log(err)
+          return EMPTY;
         })
       );
 
     const parent$ = this.entity?.getRelation<CommodityGroup>('parent')
       .pipe(
         catchError((err) => {
-          if (err?.status === 404) {
-            // No parent is a valid state → don’t show an error to the user
-            this.parent = undefined;
-            this.parentLink = undefined;
-            return EMPTY;
-          }
-          // Other errors are real problems → let them propagate (or handle differently)
-          throw err;
+          console.log(err)
+          this.parent = undefined;
+          this.parentLink = undefined;
+          return EMPTY;
         })
       );
 
@@ -125,36 +151,45 @@ export class CommodityComponent extends EntityComponent<Commodity>
       .getTotalQtyForCommodity(this.id)
       .pipe(
         catchError((err) => {
-          if (err?.status === 404) {
-            return EMPTY;
-          }
-          throw err;
+          console.log(err)
+          return EMPTY;
         })
       );
 
     forkJoin({
       moneyType: moneyType$,
       parent: parent$,
-      totals: totals$
+      totals: totals$,
+      outcome: outcome$,
     }).subscribe({
       next: (result) => {
+
         if (result.moneyType) {
           this.defaultMoneyType = result.moneyType;
         }
+
         if (result.parent) {
           this.parent = result.parent;
           this.parentLink = Entity.getRelativeSelfLinkHref(result.parent);
-        }
-        if (result.totals) {
-          this.totalQty = result.totals;
-          this.commodityService
-            .getTotalsForCommodity(this.id, MoneyTypes.RUB)
+          this.commodityGroupService
+            .getPathForCommodityGroup(Utils.getIdFromSelfUrl(result.parent))
             .subscribe((response) => {
-              this.totalSum = response;
-              if (this.totalQty) {
-                this.averagePrice = this.totalSum / this.totalQty;
+              this.path = response.resources.reverse();
+              if (result.parent) {
+                this.path.push(result.parent);
               }
             });
+        }
+
+        if (result.totals) {
+          this.totalQty = result.totals;
+        }
+
+        if (result.outcome) {
+          this.totalSum = result.outcome;
+          if (this.totalQty) {
+            this.averagePrice = this.totalSum / this.totalQty;
+          }
         }
       },
       error: (err) => console.error('An error occurred loading commodity data', err)
@@ -187,6 +222,13 @@ export class CommodityComponent extends EntityComponent<Commodity>
   setEntities($event: ExpenseItem[]) {
     setTimeout(() => {
       this.expenses = $event;
+      this.option = this.getData();
+    })
+  }
+
+  setIncomeEntities($event: IncomeItem[]) {
+    setTimeout(() => {
+      this.income = $event;
       this.option = this.getData();
     })
   }

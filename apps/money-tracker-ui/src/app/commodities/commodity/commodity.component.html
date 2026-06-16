@@ -64,7 +64,7 @@
   </div>
 }
 
-<ng-template #expensesTable let-entities="entities">
+<ng-template #operationsTable let-entities="entities">
   <table mat-table [dataSource]="entities">
     <ng-container matColumnDef="transferdate">
       <th mat-header-cell *matHeaderCellDef>Transfer Date</th>
@@ -113,11 +113,14 @@
   </ng-template>
 
   <app-entity-list
-    [tableTemplate]="expensesTable"
+    [tableTemplate]="operationsTable"
+    [updateRouterState]="false"
+    [searchServiceOverride]="expenseService"
+    [cookieStateKey]="'commodity-expense'"
     [searchRequest]="{
       queryArguments: getQueryArguments(),
       queryName: 'commodity'
     }"
-      (loading$)="setLoading($event)"
-      (entitiesChange$)="setEntities($event)"
+    (loading$)="setLoading($event)"
+    (entitiesChange$)="setEntities($event)"
   ></app-entity-list>

@@ -37,7 +37,22 @@ export class CommoditiesService extends SearchService<Commodity> {
     return this.hateoasService.getPage<Commodity>(Commodity, options);
   }
 
-  getTotalsForCommodity(commodityId: string | null, moneyCode: MoneyTypes) {
+  getTotalIncomeForCommodity(commodityId: string | null, moneyCode: MoneyTypes) {
+    if (commodityId) {
+      return this.http.get<number>(
+        this.getUrl('/incomeItems/search/sumCommodityIncome'),
+        {
+          params: {
+            commodityId: commodityId,
+            moneyCode: moneyCode,
+          },
+        }
+      );
+    }
+    return of(0);
+  }
+
+  getTotalExpenseForCommodity(commodityId: string | null, moneyCode: MoneyTypes) {
     if (commodityId) {
       return this.http.get<number>(
         this.getUrl('/expenseItems/search/sumCommodityExpenses'),

@@ -2,12 +2,13 @@ import { Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import {
   Component,
   EventEmitter,
-  Inject,
+  Injector,
   Input,
+  OnDestroy,
   OnInit,
   Output,
-  TemplateRef,
-} from '@angular/core';
+  TemplateRef
+} from "@angular/core";
 import {
   ActivatedRoute,
   NavigationExtras,
@@ -33,67 +34,54 @@ export type ViewRepresentation = 'list' | 'table' | 'thumbnail';
   styleUrls: ['./entity-list.component.sass'],
   standalone: false
 })
-export class EntityListComponent<T extends Entity> implements OnInit {
+export class EntityListComponent<T extends Entity> implements OnInit, OnDestroy {
+
+  @Input() searchServiceOverride?: SearchService<T>;
 
   @Input() defaultView: ViewRepresentation = 'list';
-
   @Input() currentView: ViewRepresentation = 'list';
 
   @Input() listTemplate?: TemplateRef<any>;
   @Input() tableTemplate?: TemplateRef<any>;
   @Input() thumbnailTemplate?: TemplateRef<any>;
-
   @Input() filterTemplate: TemplateRef<any> | undefined;
 
   @Input() sort: RestSort | null = null;
-
   @Input() queryParamsMode: 'merge' | 'preserve' | '' | null = 'merge';
-
   @Input() loadOnInit = true;
-
   @Input() searchRequest?: SearchRequest;
 
+  @Input() updateRouterState = true;
+  @Input() cookieStateKey?: string;
+
+  @Input() searchService!: SearchService<T>;
   searchRequest$: EventEmitter<SearchRequest | undefined> = new EventEmitter<
     SearchRequest | undefined
   >();
-
-  pageSubscription: Subscription;
+  pageSubscription?: Subscription;
 
   @Output() filter$: EventEmitter<Map<string, string>> = new EventEmitter<
     Map<string, string>
   >();
-
   filter: Map<string, string> = new Map<string, string>();
 
   @Output() statusDescription$: Observable<string> | undefined;
-
   @Output() entitiesChange$: EventEmitter<T[]> = new EventEmitter<T[]>();
-
   entities: T[] | null = [];
 
   @Output() loading$: EventEmitter<boolean> = new EventEmitter<boolean>();
-
   loading = false;
 
   total: number | undefined;
-
   limit = 10;
-
   n = 0;
-
   error: string | undefined;
 
   public constructor(
-    @Inject('searchService') private readonly searchService: SearchService<T>,
+    private readonly injector: Injector,
     protected router: Router,
     protected route: ActivatedRoute
   ) {
-    this.pageSubscription = route.queryParams.subscribe(
-      (queryParams: Params) => {
-        this.updateFromParameters(queryParams);
-      }
-    );
-
     this.entitiesChange$.subscribe((entities: T[] | null) => {
       this.entities = entities;
     });
@@ -103,8 +91,69 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     });
   }
 
+  /**
+   * Safe service resolution order:
+   * 1. Check for the new SEARCH_SERVICE_TOKEN (Directive approach)
+   * 2. Fall back to the legacy 'searchService'
+   * string token (Legacy Page-level provider)
+   */
+  private resolveSearchService(): void {
+    if (this.searchServiceOverride) {
+      this.searchService = this.searchServiceOverride;
+      return;
+    }
+    const legacyService
+      = this.injector.get<SearchService<T>>('searchService', null);
+    if (!legacyService) {
+      throw new Error(
+        `EntityListComponent configuration missing.
+        Please provide a search service instance
+        either by implementing [searchServiceOverride] or
+        via providers: [{ provide: 'searchService', ... }].`
+      );
+    }
+    this.searchService = legacyService;
+  }
+
+  ngOnInit(): void {
+
+    this.resolveSearchService();
+
+    this.statusDescription$ = this.searchService.getStatusDescription();
+    this.subscribeToSearchRequests();
+
+    let stateLoadedFromCookie = false;
+    if (this.cookieStateKey) {
+      stateLoadedFromCookie = this.loadStateFromCookie();
+    }
+
+    if (this.updateRouterState) {
+      this.pageSubscription = this.route.queryParams
+        .subscribe((queryParams: Params) => {
+        if (stateLoadedFromCookie) {
+          stateLoadedFromCookie = false;
+          return;
+        }
+        this.updateFromParameters(queryParams);
+      });
+    }
+
+    if (this.hasTemplate(this.defaultView)) {
+      this.currentView = this.defaultView;
+    } else if (this.listTemplate) {
+      this.currentView = 'list';
+    } else if (this.tableTemplate) {
+      this.currentView = 'table';
+    } else if (this.thumbnailTemplate) {
+      this.currentView = 'thumbnail';
+    }
+
+    if (this.loadOnInit) {
+      this.loadData();
+    }
+  }
+
   updateFromParameters(queryParams: Params) {
-    // parse page, limit and sort information
     const page: number = Number.parseInt(queryParams['page'], 10);
     this.n = isNaN(page) ? 0 : page;
 
@@ -113,16 +162,13 @@ export class EntityListComponent<T extends Entity> implements OnInit {
 
     const sort = queryParams['sort'];
     if (sort) {
-      // Ensure we are working with a string
       const sortString: string = Array.isArray(sort) ? sort[0] : sort;
-
       const s: string[] = sortString.split(',');
       if (s.length === 2) {
         this.sort = { [s[0]]: s[1] as SortOrder };
       }
     }
 
-    // add the rest of the url search parameters as filters
     Object.keys(queryParams).forEach((k) => {
       if (k !== 'page' && k !== 'size' && k !== 'sort') {
         this.filter.set(k, queryParams[k]);
@@ -130,24 +176,62 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.statusDescription$ = this.searchService.getStatusDescription();
-    this.subscribeToSearchRequests();
-
-    if (this.hasTemplate(this.defaultView)) {
-      this.currentView = this.defaultView;
-    } else if (this.listTemplate) {
-      this.currentView = 'list';
-    }
-    else if (this.tableTemplate) {
-      this.currentView = 'table';
-    }
-    else if (this.thumbnailTemplate) {
-      this.currentView = 'thumbnail';
+  /**
+   * Generates a completely unique cookie key string per page route.
+   * Strips dynamic queries and transforms slashes to safe underscores.
+   */
+  private getRouteIsolatedCookieKey(): string | null {
+    if (!this.cookieStateKey) {
+      return null;
     }
 
-    if (this.loadOnInit) {
-      this.loadData();
+    // Extract base pathname without URL query params
+    const basePath = this.router.url.split('?')[0];
+
+    // Standardize key name format (e.g., 'app_state__admin_users_dashboard')
+    const sanitizedPath = basePath.replace(/\//g, '_');
+    return `${this.cookieStateKey}_${sanitizedPath}`;
+  }
+
+  private saveStateToCookie(): void {
+    const uniqueKey = this.getRouteIsolatedCookieKey();
+    if (!uniqueKey) {
+      return;
+    }
+    const state = {
+      n: this.n,
+      limit: this.limit,
+      sort: this.sort,
+      filter: Array.from(this.filter.entries())
+    };
+    document.cookie
+      = `${uniqueKey}=${encodeURIComponent(JSON.stringify(state))}; path=/; SameSite=Strict`;
+  }
+
+  private loadStateFromCookie(): boolean {
+    const uniqueKey = this.getRouteIsolatedCookieKey();
+    if (!uniqueKey) {
+      return false;
+    }
+
+    const match
+      = document.cookie.match(
+        new RegExp('(^| )' + uniqueKey + '=([^;]+)')
+    );
+    if (!match) {
+      return false;
+    }
+
+    try {
+      const state = JSON.parse(decodeURIComponent(match[2]));
+      this.n = state.n ?? 0;
+      this.limit = state.limit ?? 10;
+      this.sort = state.sort ?? null;
+      this.filter = new Map<string, string>(state.filter ?? []);
+      return true;
+    } catch (e) {
+      console.error('Failed parsing state cookie structure', e);
+      return false;
     }
   }
 
@@ -190,7 +274,8 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     if (searchRequest) {
       this.searchRequest = searchRequest;
     }
-    this.updateRoute().then(() => {
+    this.saveStateToCookie();
+    this.conditionalRouteUpdate().then(() => {
       this.loadData();
     });
   }
@@ -241,7 +326,6 @@ export class EntityListComponent<T extends Entity> implements OnInit {
   public broadcastResults(page: PagedResourceCollection<T>): void {
     this.total = page.totalElements;
     this.limit = page.pageSize;
-
     this.error = undefined;
     this.loading$.next(false);
     this.entitiesChange$.next(page.resources);
@@ -250,7 +334,8 @@ export class EntityListComponent<T extends Entity> implements OnInit {
   public executePostProcessing(
     searchResult: PagedResourceCollection<T>
   ): Observable<PagedResourceCollection<T>> {
-    const handler = this.searchService.getPostProcessingStream();
+    const handler
+      = this.searchService.getPostProcessingStream();
     if (handler) {
       this.searchService.setProcessingStatusDescription('post processing');
       return handler(searchResult);
@@ -258,8 +343,11 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     return of(searchResult);
   }
 
-  updateRoute(): Promise<boolean> {
-    return this.router.navigate([], this.getRouteParameters());
+  conditionalRouteUpdate(): Promise<boolean> {
+    if (this.updateRouterState) {
+      return this.router.navigate([], this.getRouteParameters());
+    }
+    return Promise.resolve(true);
   }
 
   getRouteParameters(): NavigationExtras {
@@ -306,7 +394,8 @@ export class EntityListComponent<T extends Entity> implements OnInit {
   setCurrentPage(event: PageEvent) {
     this.n = event.pageIndex;
     this.limit = event.pageSize;
-    this.updateRoute().then(() => {
+    this.saveStateToCookie();
+    this.conditionalRouteUpdate().then(() => {
       this.loadData();
     });
   }
@@ -340,7 +429,8 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     } else {
       this.sort = null;
     }
-    this.updateRoute().then(() => {
+    this.saveStateToCookie();
+    this.conditionalRouteUpdate().then(() => {
       this.loadData();
     });
   }
@@ -362,20 +452,29 @@ export class EntityListComponent<T extends Entity> implements OnInit {
     } else {
       this.removeFilter(id);
     }
+    this.saveStateToCookie();
   }
 
   removeFilter(id?: string) {
     if (id && this.filter.delete(id)) {
       this.filter$.next(this.filter);
+      this.saveStateToCookie();
     }
   }
 
   clearFilter() {
     this.filter = new Map<string, string>();
     this.filter$.next(this.filter);
+    this.saveStateToCookie();
   }
 
   getUseCache(): boolean {
     return true;
+  }
+
+  ngOnDestroy(): void {
+    if (this.pageSubscription) {
+      this.pageSubscription.unsubscribe();
+    }
   }
 }

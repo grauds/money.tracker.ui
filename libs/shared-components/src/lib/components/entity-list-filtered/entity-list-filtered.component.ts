@@ -1,10 +1,11 @@
 import {
   AfterViewInit,
   Component,
-  Inject,
   Input,
   TemplateRef,
   ViewChild,
+  Injector,
+  OnDestroy,
 } from '@angular/core';
 import {
   ActivatedRoute,
@@ -26,25 +27,26 @@ import { MatSelectChange } from '@angular/material/select';
   standalone: false
 })
 export class EntityListFilteredComponent<T extends Entity>
-  implements AfterViewInit
+  implements AfterViewInit, OnDestroy
 {
+  @Input() searchServiceOverride?: SearchService<T>;
+
   @ViewChild(EntityListComponent) entityList!: EntityListComponent<T>;
 
   @Input() filterTemplate: TemplateRef<any> | undefined;
-
   @Input() listTemplate?: TemplateRef<any>;
   @Input() tableTemplate?: TemplateRef<any>;
   @Input() thumbnailTemplate?: TemplateRef<any>;
 
   @Input() currentView: ViewRepresentation = 'list';
-
   @Input() queryParamsMode: 'merge' | 'preserve' | '' | null = 'merge';
 
-  // subscribe for page updates in the address bar
-  pageSubscription: Subscription;
+  @Input() updateRouterState = true;
+  @Input() cookieStateKey?: string;
+
+  pageSubscription?: Subscription;
 
   name: FormControl = new FormControl({ value: '', disabled: false });
-
   mode: FormControl<SearchStringMode | null> =
     new FormControl<SearchStringMode>(
       { value: SearchStringMode.Containing, disabled: false }
@@ -59,44 +61,53 @@ export class EntityListFilteredComponent<T extends Entity>
   loading = false;
 
   public constructor(
-    @Inject('searchService') private readonly searchService: SearchService<T>,
+    private readonly injector: Injector,
     protected router: Router,
     protected route: ActivatedRoute
-  ) {
-    this.pageSubscription = route.queryParams.subscribe(
-      (queryParams: Params) => {
-        const name = queryParams['name'] ?? '';
-        this.name.setValue(name);
+  ) {}
 
-        const mode = queryParams['mode'];
-        const enumValue = this.modes.find(m => m === mode);
-        this.mode.setValue(enumValue ?? SearchStringMode.Containing);
-
-        if (this.entityList) {
-          if (name) {
-            this.entityList.setFilter('name', name);
-          } else {
-            this.entityList.removeFilter('name');
-          }
-
-          if (this.mode.value) {
-            this.entityList.setFilter('mode', this.mode.value.toString());
-          } else {
-            this.entityList.removeFilter('mode');
-          }
-
-          this.refresh();
-        }
-      }
-    );
+  ngOnInit(): void {
+    if (this.updateRouterState) {
+      this.pageSubscription = this.route.queryParams.subscribe((queryParams: Params) => {
+        this.updateFromParams(queryParams);
+      });
+    }
   }
 
   ngAfterViewInit(): void {
+    if (!this.updateRouterState && this.cookieStateKey) {
+      const nameVal = this.entityList.filter.get('name') ?? '';
+      const modeVal = this.entityList.filter.get('mode') as SearchStringMode
+        ?? SearchStringMode.Containing;
+
+      this.name.setValue(nameVal);
+      this.mode.setValue(modeVal);
+      this.refresh();
+    }
+  }
+
+  private updateFromParams(queryParams: Params): void {
+    this.name.setValue(queryParams['name'] ?? '');
+    const enumValue = this.modes.find(m => m === queryParams['mode']);
+    this.mode.setValue(enumValue ?? SearchStringMode.Containing);
+
+    if (this.entityList) {
+      this.syncFiltersToComponent();
+      this.refresh();
+    }
+  }
+
+  private syncFiltersToComponent(): void {
+    if (!this.entityList) {
+      return;
+    }
+
     if (this.name.value) {
       this.entityList.setFilter('name', this.name.value);
     } else {
       this.entityList.removeFilter('name');
     }
+
     if (this.mode.value) {
       this.entityList.setFilter('mode', this.mode.value.toString());
     } else {
@@ -104,13 +115,20 @@ export class EntityListFilteredComponent<T extends Entity>
     }
   }
 
+  private getRouteIsolatedCookieKey(): string | null {
+    if (!this.cookieStateKey) {
+      return null;
+    }
+    const basePath = this.router.url.split('?')[0];
+    const sanitizedPath = basePath.replace(/\//g, '_');
+    return `${this.cookieStateKey}_filter_${sanitizedPath}`;
+  }
+
   setFilterListener($event: Map<string, string>) {
-    // take the values we are interested in from the map
     this.name.setValue($event.get('name'));
     const modeValue = $event.get('mode');
     const enumValue = this.modes.find(m => m === modeValue);
     this.mode.setValue(enumValue ?? SearchStringMode.Containing);
-    // update
     this.refresh()
   }
 
@@ -160,4 +178,11 @@ export class EntityListFilteredComponent<T extends Entity>
       this.mode.enable();
     }
   }
+
+  ngOnDestroy(): void {
+    if (this.pageSubscription) {
+      this.pageSubscription.unsubscribe();
+    }
+  }
+
 }
