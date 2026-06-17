@@ -163,7 +163,7 @@ describe('EntityListComponent', () => {
     component['updateFromParameters'](queryParams);
 
     expect(component.n).toBe(1);
-    expect(component.limit).toBe(20);
+    expect(component.limit).toBe(10);
     expect(component.sort).toEqual({ name: 'asc' });
     expect(component.filter.get('filter1')).toBe('value1');
     expect(component.filter.get('filter2')).toBe('value2');
