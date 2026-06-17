@@ -76,7 +76,7 @@
                     <div>
                       @for (a of entities; track a) {
                         <div>
-                          <ng-container *ngTemplateOutlet="listTemplate; context: { a }"></ng-container>
+                          <ng-container *ngTemplateOutlet="listTemplate; context: { $implicit: a }"></ng-container>
                         </div>
                       }
                     </div>
@@ -85,7 +85,7 @@
                 @case ('table') {
                   @if (tableTemplate) {
                     <div>
-                      <ng-container *ngTemplateOutlet="tableTemplate; context: { entities }"></ng-container>
+                      <ng-container *ngTemplateOutlet="tableTemplate; context: { $implicit: entities, entities: entities }"></ng-container>
                     </div>
                   }
                 }
@@ -93,7 +93,7 @@
                   @if (thumbnailTemplate) {
                     <div class="thumbnail-grid">
                       @for (a of entities; track a) {
-                        <ng-container *ngTemplateOutlet="thumbnailTemplate; context: { a }"></ng-container>
+                        <ng-container *ngTemplateOutlet="thumbnailTemplate; context: { $implicit: a }"></ng-container>
                       }
                     </div>
                   }
