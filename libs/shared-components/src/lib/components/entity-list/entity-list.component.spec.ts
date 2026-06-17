@@ -73,7 +73,7 @@ describe('EntityListComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [EntityListComponent],
-      imports: [], // Remove heavy UI modules here to isolate logic bugs
+      imports: [],
       providers: [
         { provide: CookieService, useValue: mockCookieService },
         { provide: 'searchService', useClass: MockSearchService },

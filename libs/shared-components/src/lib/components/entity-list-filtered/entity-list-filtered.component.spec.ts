@@ -10,10 +10,12 @@ if (typeof window.URL.createObjectURL === 'undefined') {
 
 import { EntityListFilteredComponent } from './entity-list-filtered.component';
 import { SharedComponentsModule } from '../../shared-components.module';
+import { CookieService } from "../../service/cookie.service";
 
 describe('SearchComponent', () => {
   let component: EntityListFilteredComponent<Entity>;
   let fixture: ComponentFixture<EntityListFilteredComponent<Entity>>;
+  let mockCookieService: jest.Mocked<Partial<CookieService>>;
 
   const fakeActivatedRoute = {
     queryParams: of({}),
@@ -23,6 +25,12 @@ describe('SearchComponent', () => {
   } as ActivatedRoute;
 
   beforeEach(async () => {
+
+    mockCookieService = {
+      setState: jest.fn(),
+      getState: jest.fn().mockReturnValue(null)
+    };
+
     await TestBed.configureTestingModule({
       declarations: [EntityListFilteredComponent],
       imports: [
@@ -38,6 +46,7 @@ describe('SearchComponent', () => {
           },
         },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: CookieService, useValue: mockCookieService },
       ],
     }).compileComponents();
   });
