@@ -1,6 +1,3 @@
-if (typeof window.URL.createObjectURL === 'undefined') {
-  window.URL.createObjectURL = jest.fn(() => 'blob:mock-url');
-}
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';

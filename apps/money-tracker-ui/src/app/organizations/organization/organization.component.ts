@@ -120,8 +120,10 @@ export class OrganizationComponent
   }
 
   setEntities($event: ExpenseItem[]) {
-    this.expenses = $event;
-    this.option = this.getData();
+    setTimeout(() => {
+      this.expenses = $event;
+      this.option = this.getData();
+    })
   }
 
   getData() {

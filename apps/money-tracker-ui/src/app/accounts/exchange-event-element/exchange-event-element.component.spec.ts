@@ -1,8 +1,4 @@
-if (typeof window.URL.createObjectURL === 'undefined') {
-  window.URL.createObjectURL = jest.fn(() => 'blob:mock-url');
-}
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ExchangeEventElementComponent } from './exchange-event-element.component';
 
 describe('ExchangeEventElementComponent', () => {

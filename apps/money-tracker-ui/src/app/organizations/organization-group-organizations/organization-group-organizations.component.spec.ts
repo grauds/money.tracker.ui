@@ -1,6 +1,3 @@
-if (typeof window.URL.createObjectURL === 'undefined') {
-  window.URL.createObjectURL = jest.fn(() => 'blob:mock-url');
-}
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedComponentsModule } from "@clematis-shared/shared-components";
 import { OrganizationGroupOrganizationsComponent } from './organization-group-organizations.component';
