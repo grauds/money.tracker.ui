@@ -27,6 +27,7 @@ import { SearchService } from '../../service/search.service';
 import { CookieStatePersistence } from "./cookie-state-persistence";
 import { SearchRequestHandler } from "./search-request-handler";
 import { UrlStateAdapter } from "./url-state-adapter";
+import { CookieService } from "../../service/cookie.service";
 
 export type ViewRepresentation = 'list' | 'table' | 'thumbnail';
 
@@ -154,6 +155,7 @@ export class EntityListComponent<T extends Entity> implements OnInit, OnDestroy 
 
   public constructor(
     private readonly injector: Injector,
+    private readonly cookieService: CookieService,
     protected router: Router,
     protected route: ActivatedRoute
   ) {
@@ -190,7 +192,7 @@ export class EntityListComponent<T extends Entity> implements OnInit, OnDestroy 
 
     this.statusDescription$ = this.searchService.getStatusDescription();
     this.cookiePersistence = new CookieStatePersistence(
-      this.router, this.cookieStateKey
+      this.router, this.cookieService, this.cookieStateKey
     );
 
     this.pipelineSubscription = new SearchRequestHandler(this.searchService)

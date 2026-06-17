@@ -2,6 +2,7 @@ import { Router } from '@angular/router';
 import {
   Sort as RestSort,
 } from '@lagoshny/ngx-hateoas-client';
+import { CookieService } from "../../service/cookie.service";
 
 /**
  * Represents the state of a component with properties for pagination, sorting, and filtering.
@@ -28,6 +29,7 @@ export interface ComponentState {
 export class CookieStatePersistence {
   constructor(
     private router: Router,
+    private cookieService: CookieService,
     private cookieStateKey?: string
   ) {}
 
@@ -75,7 +77,7 @@ export class CookieStatePersistence {
       sort,
       filter: Array.from(filter.entries())
     };
-    document.cookie = `${uniqueKey}=${encodeURIComponent(JSON.stringify(state))}; path=/; SameSite=Strict`;
+    this.cookieService.setState(uniqueKey, state);
   }
 
   /**
@@ -93,14 +95,6 @@ export class CookieStatePersistence {
     const uniqueKey = this.getRouteIsolatedCookieKey();
     if (!uniqueKey) return null;
 
-    const match = document.cookie.match(new RegExp('(^| )' + uniqueKey + '=([^;]+)'));
-    if (!match) return null;
-
-    try {
-      return JSON.parse(decodeURIComponent(match[2])) as ComponentState;
-    } catch (e) {
-      console.error('Failed parsing state cookie structure', e);
-      return null;
-    }
+    return this.cookieService.getState<ComponentState>(uniqueKey);
   }
 }

@@ -7,6 +7,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Entity } from '@clematis-shared/model';
 import { EntityListComponent } from './entity-list.component';
 import { BrowserTestingModule, platformBrowserTesting } from "@angular/platform-browser/testing";
+import { CookieService } from "../../service/cookie.service";
 
 
 try {
@@ -48,6 +49,7 @@ describe('EntityListComponent', () => {
   let fixture: ComponentFixture<EntityListComponent<Entity>>;
   let zone: NgZone | null;
   let mockRouter: any;
+  let mockCookieService: jest.Mocked<Partial<CookieService>>;
 
   const fakeActivatedRoute = {
     queryParams: of({}),
@@ -58,6 +60,12 @@ describe('EntityListComponent', () => {
   } as unknown as ActivatedRoute;
 
   beforeEach(async () => {
+
+    mockCookieService = {
+      setState: jest.fn(),
+      getState: jest.fn().mockReturnValue(null)
+    };
+
     mockRouter = {
       url: '/mock-route',
       navigate: jest.fn().mockResolvedValue(true)
@@ -67,6 +75,7 @@ describe('EntityListComponent', () => {
       declarations: [EntityListComponent],
       imports: [], // Remove heavy UI modules here to isolate logic bugs
       providers: [
+        { provide: CookieService, useValue: mockCookieService },
         { provide: 'searchService', useClass: MockSearchService },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useValue: mockRouter }
