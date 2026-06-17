@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { ErrorDialogService } from '../../error/error-dialog.service';
+import { ErrorDialogService } from './error-dialog.service';
 import { HttpError } from '@clematis-shared/model';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 

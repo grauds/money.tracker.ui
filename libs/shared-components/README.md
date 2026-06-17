@@ -143,7 +143,7 @@ http://address:port/commodities?page=2&size=10&sort=name,ASC
 
 ### Default and customised usage
 
-The default search component is quite capable to provide search with pagination and filtering on its own with no additional parameters:
+The default search component is quite capable of providing search with pagination and filtering on its own with no additional parameters:
 
 ```xml
 <app-search></app-search>

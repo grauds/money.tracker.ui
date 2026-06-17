@@ -29,7 +29,8 @@ import { Observable, of, Subscription, switchMap, tap } from 'rxjs';
   providers: [{ provide: 'searchService', useClass: MoneyExchangeService }],
   standalone: false,
 })
-export class ExchangeComponent implements OnInit, AfterViewInit {
+export class ExchangeComponent implements OnInit {
+
   @ViewChild(EntityListComponent)
   entityList!: EntityListComponent<MoneyExchange>;
 
@@ -72,9 +73,6 @@ export class ExchangeComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.title.setTitle('Currency Exchange');
-  }
-
-  ngAfterViewInit(): void {
     setTimeout(() => {
       this.moneyTypeService
         .getPage({
@@ -184,7 +182,9 @@ export class ExchangeComponent implements OnInit, AfterViewInit {
   }
 
   setLoading($event: boolean) {
-    this.loading = $event;
+    setTimeout(() => {
+      this.loading = $event;
+    })
   }
 
   postProcessingHandler = (

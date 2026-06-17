@@ -62,7 +62,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import {
-  CurrencySpacePipe,
+  CurrencySpacePipe, EntityListComponent,
   EnvironmentService,
   SharedComponentsModule
 } from "@clematis-shared/shared-components";
@@ -133,11 +133,11 @@ import { CommonModule, CurrencyPipe } from "@angular/common";
     MatProgressBarModule,
     MatCheckboxModule,
     ReactiveFormsModule,
-    SharedComponentsModule,
     RouterLink,
     RouterOutlet,
     RouterLinkActive,
-    CurrencySpacePipe
+    CurrencySpacePipe,
+    SharedComponentsModule,
   ],
   exports: [],
   providers: [CurrencyPipe]

@@ -1,7 +1,7 @@
 import { EventEmitter } from "@angular/core";
 import { Observable, of } from 'rxjs';
 import { tap, switchMap } from 'rxjs/operators';
-import { SearchService } from "../../service/search.service";
+import { SearchService } from "../../../service/search.service";
 import { Entity, SearchRequest } from "@clematis-shared/model";
 import {
   PagedResourceCollection,
@@ -34,9 +34,14 @@ export class SearchRequestHandler<T extends Entity> {
         tap(() => this.searchService.setProcessingStatusDescription('search')),
         switchMap((searchRequest) => {
           const state = stateProvider();
+
+          const filterParams: Record<string, string> = {};
+          state.filter.forEach((v, k) => { filterParams[k] = v; });
+
           const baseParams = {
             pageParams: { page: state.n, size: state.limit },
             sort: state.sort ?? {},
+            params: filterParams,
             useCache: true
           };
 

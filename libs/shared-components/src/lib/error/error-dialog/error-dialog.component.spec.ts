@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ErrorDialogComponent } from './error-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { ErrorDialogService } from '../../error/error-dialog.service';
+import { ErrorDialogService } from './error-dialog.service';
 
 describe('ErrorDialogComponent', () => {
   let component: ErrorDialogComponent;

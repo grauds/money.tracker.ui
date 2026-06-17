@@ -2,7 +2,7 @@ import { Router } from '@angular/router';
 import {
   Sort as RestSort,
 } from '@lagoshny/ngx-hateoas-client';
-import { CookieService } from "../../service/cookie.service";
+import { CookieService } from "../../../service/cookie.service";
 
 /**
  * Represents the state of a component with properties for pagination, sorting, and filtering.

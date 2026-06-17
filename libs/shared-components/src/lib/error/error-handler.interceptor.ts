@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { ErrorDialogService } from './error-dialog.service';
+import { ErrorDialogService } from './error-dialog/error-dialog.service';
 import { EnvironmentService } from "../service/environment.service";
 
 @Injectable({

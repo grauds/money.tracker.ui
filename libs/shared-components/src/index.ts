@@ -1,5 +1,3 @@
-import { CurrencySpacePipe } from "./lib/components/currency-space-pipe/currency-space-pipe";
-
 export * from './lib/shared-components.module';
 
 export {
@@ -9,11 +7,10 @@ export {
 export type { EnvironmentInterface } from './lib/service/environment-interface';
 
 export { BreadcrumbsComponent } from './lib/components/breadcrumbs/breadcrumbs.component';
-export { EntityElementComponent } from './lib/components/entity-element/entity-element.component';
+export { EntityElementComponent } from './lib/components/entity-list/entity-element/entity-element.component';
 export { PaginationBarComponent } from './lib/components/pagination-bar/pagination-bar.component';
 export { PageSizeComponent } from './lib/components/page-size/page-size.component';
-export { PageNotFoundComponent } from './lib/components/page-not-found/page-not-found.component';
-export { EntityListFilteredComponent } from './lib/components/entity-list-filtered/entity-list-filtered.component';
+export { PageNotFoundComponent } from './lib/pages/page-not-found/page-not-found.component';
 export { EntityComponent } from './lib/components/entity/entity.component';
 export { EntityListComponent } from './lib/components/entity-list/entity-list.component';
 export { MoneyTypeSelectorComponent } from './lib/components/money-type-selector/money-type-selector.component';
@@ -21,6 +18,7 @@ export { DateRangeSelectorComponent } from './lib/components/date-range-selector
 export { StatsTotalsComponent } from './lib/components/stats-totals/stats-totals.component';
 export { PhotoUploaderComponent } from './lib/components/photo-uploader/photo-uploader.component';
 export { CurrencySpacePipe } from './lib/components/currency-space-pipe/currency-space-pipe';
+export { EntityNameFilterComponent } from './lib/components/entity-list/entity-name-filter/entity-name-filter.component';
 
 export { AccountsService } from './lib/service/accounts.service';
 export { SearchService } from './lib/service/search.service';

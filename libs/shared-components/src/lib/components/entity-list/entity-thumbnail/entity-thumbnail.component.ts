@@ -3,8 +3,8 @@ import { Entity } from '@clematis-shared/model';
 import { Router, RouterLink } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { NgOptimizedImage } from '@angular/common';
-import { AuthImagePipe } from "../photo-uploader/AuthImagePipe";
-import { StorageService } from "../../service/storage.service";
+import { AuthImagePipe } from "../../photo-uploader/AuthImagePipe";
+import { StorageService } from "../../../service/storage.service";
 
 @Component({
   selector: "app-entity-thumbnail",

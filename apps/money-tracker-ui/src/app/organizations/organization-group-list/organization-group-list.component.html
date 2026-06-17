@@ -1,1 +1,8 @@
-<app-search></app-search>
+<ng-template #filter>
+  <app-entity-name-filter [entityList]="entityList"></app-entity-name-filter>
+</ng-template>
+
+<app-entity-list
+  #entityList
+  [filterTemplate]="filter"
+></app-entity-list>

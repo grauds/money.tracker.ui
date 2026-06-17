@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { ComponentState, CookieStatePersistence } from "./cookie-state-persistence";
-import { CookieService } from "../../service/cookie.service";
+import { CookieService } from "../../../service/cookie.service";
 
 describe('CookieStatePersistence', () => {
   let mockRouter: Partial<Router>;

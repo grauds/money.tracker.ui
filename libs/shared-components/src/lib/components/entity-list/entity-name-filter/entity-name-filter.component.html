@@ -1,0 +1,13 @@
+<mat-form-field class="full-width-search">
+  <mat-label>Search</mat-label>
+  <input
+    matInput
+    id="name"
+    [formControl]="name"
+    type="text"
+    placeholder="in the names"
+    autocomplete="off"
+    (change)="setFilterName($event)"
+  />
+  <mat-hint>Start typing, Enter to search</mat-hint>
+</mat-form-field>

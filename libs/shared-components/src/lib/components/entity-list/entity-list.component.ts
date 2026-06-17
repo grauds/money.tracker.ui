@@ -23,10 +23,11 @@ import {
   SortOrder
 } from '@lagoshny/ngx-hateoas-client';
 
+import { CookieStatePersistence } from "./cookie-state-persistence/cookie-state-persistence";
+import { SearchRequestHandler } from "./search-request-handler/search-request-handler";
+import { UrlStateAdapter } from "./url-state-adapter/url-state-adapter";
+
 import { SearchService } from '../../service/search.service';
-import { CookieStatePersistence } from "./cookie-state-persistence";
-import { SearchRequestHandler } from "./search-request-handler";
-import { UrlStateAdapter } from "./url-state-adapter";
 import { CookieService } from "../../service/cookie.service";
 
 export type ViewRepresentation = 'list' | 'table' | 'thumbnail';
@@ -254,6 +255,9 @@ export class EntityListComponent<T extends Entity> implements OnInit, OnDestroy 
     this.limit = parsed.limit;
     this.sort = parsed.sort;
     this.filter = parsed.filter;
+    if (this.loadOnInit) {
+      this.loadData();
+    }
   }
 
   private loadStateFromCookie(): boolean {
@@ -280,8 +284,7 @@ export class EntityListComponent<T extends Entity> implements OnInit, OnDestroy 
     if (searchRequest) {
       this.searchRequest = searchRequest;
     }
-    this.cookiePersistence.saveState(this.n, this.limit, this.sort, this.filter);
-    this.conditionalRouteUpdate().then(() => this.loadData());
+    this.saveAndUpdateData();
   }
 
   conditionalRouteUpdate(): Promise<boolean> {
@@ -322,21 +325,10 @@ export class EntityListComponent<T extends Entity> implements OnInit, OnDestroy 
     this.entitiesChange$.next(page.resources);
   }
 
-  getPageParams() {
-    return {
-      page: this.n,
-      size: this.limit,
-    };
-  }
-
   setCurrentPage(event: PageEvent) {
     this.n = event.pageIndex;
     this.limit = event.pageSize;
-    this.cookiePersistence.saveState(this.n, this.limit, this.sort, this.filter);
-
-    this.conditionalRouteUpdate().then(() => {
-      this.loadData();
-    });
+    this.saveAndUpdateData();
   }
 
   setSort(sort: Sort) {
@@ -347,10 +339,7 @@ export class EntityListComponent<T extends Entity> implements OnInit, OnDestroy 
     } else {
       this.sort = null;
     }
-    this.cookiePersistence.saveState(this.n, this.limit, this.sort, this.filter);
-    this.conditionalRouteUpdate().then(() => {
-      this.loadData();
-    });
+    this.saveAndUpdateData();
   }
 
   setFilter(id?: string, value?: string) {
@@ -359,48 +348,35 @@ export class EntityListComponent<T extends Entity> implements OnInit, OnDestroy 
     } else {
       this.removeFilter(id);
     }
-    this.cookiePersistence.saveState(this.n, this.limit, this.sort, this.filter);
+    this.saveAndUpdateData();
   }
 
   removeFilter(id?: string) {
     if (id && this.filter.delete(id)) {
       this.filter$.next(this.filter);
-      this.cookiePersistence.saveState(this.n, this.limit, this.sort, this.filter);
+      this.saveAndUpdateData();
     }
   }
 
   clearFilter() {
     this.filter = new Map<string, string>();
     this.filter$.next(this.filter);
-    this.cookiePersistence.saveState(this.n, this.limit, this.sort, this.filter);
+    this.saveAndUpdateData();
+  }
+
+  trackEntity(entity: T): string {
+    return entity.getSelfLinkHref();
   }
 
   setView(view: ViewRepresentation) {
     this.currentView = view;
   }
 
-  getSortParams(): Params | null {
-    if (this.sort !== null) {
-      return {
-        sort: Object.keys(this.sort)
-          .map((k) => {
-            return [k, this.sort !== null ? this.sort[k] : ''];
-          })
-          .join(','),
-      };
-    }
-    return null;
-  }
-
-  getFilterParams(): Params | null {
-    if (this.filter !== null) {
-      const queryParams: Params = {};
-      this.filter.forEach((value, key) => {
-        queryParams[key] = value;
-      });
-      return queryParams;
-    }
-    return null;
+  private saveAndUpdateData() {
+    this.cookiePersistence.saveState(this.n, this.limit, this.sort, this.filter);
+    this.conditionalRouteUpdate().then(() => {
+      this.loadData();
+    });
   }
 
   ngOnDestroy(): void {

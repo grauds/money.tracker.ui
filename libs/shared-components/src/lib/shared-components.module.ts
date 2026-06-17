@@ -33,25 +33,25 @@ import { ExpenseItemsService } from './service/expense-items.service';
 import { IncomeItemsService } from './service/income-items.service';
 import { StatsService } from './service/stats.service';
 
-import { ErrorDialogService } from './error/error-dialog.service';
+import { ErrorDialogService } from './error/error-dialog/error-dialog.service';
 import { GlobalErrorHandler } from './error/global-error-handler';
 import { ErrorHandlerInterceptor } from './error/error-handler.interceptor';
 
 import { PageSizeComponent } from './components/page-size/page-size.component';
 import { EntityListComponent } from './components/entity-list/entity-list.component';
-import { EntityListFilteredComponent } from './components/entity-list-filtered/entity-list-filtered.component';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
-import { EntityElementComponent } from './components/entity-element/entity-element.component';
+import { EntityElementComponent } from './components/entity-list/entity-element/entity-element.component';
 import { PaginationBarComponent } from './components/pagination-bar/pagination-bar.component';
 import { MoneyTypeSelectorComponent } from './components/money-type-selector/money-type-selector.component';
-import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { ErrorDialogComponent } from './error/error-dialog/error-dialog.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { DateRangeSelectorComponent } from './components/date-range-selector/date-range-selector.component';
 import { StatsTotalsComponent } from './components/stats-totals/stats-totals.component';
-import { ErrorMessageComponent } from "./components/error-message/error-message.component";
+import { ErrorMessageComponent } from "./error/error-message/error-message.component";
 import { PhotoUploaderComponent } from "./components/photo-uploader/photo-uploader.component";
 import { CurrencySpacePipe } from "./components/currency-space-pipe/currency-space-pipe";
-import { EntityThumbnailComponent } from "./components/entity-thumbnail/entity-thumbnail.component";
+import { EntityThumbnailComponent } from "./components/entity-list/entity-thumbnail/entity-thumbnail.component";
+import { EntityNameFilterComponent } from "./components/entity-list/entity-name-filter/entity-name-filter.component";
 
 @NgModule({
   imports: [
@@ -82,11 +82,11 @@ import { EntityThumbnailComponent } from "./components/entity-thumbnail/entity-t
     EntityElementComponent,
     BreadcrumbsComponent,
     EntityListComponent,
-    EntityListFilteredComponent,
     MoneyTypeSelectorComponent,
     DateRangeSelectorComponent,
     StatsTotalsComponent,
     PhotoUploaderComponent,
+    EntityNameFilterComponent
   ],
   declarations: [
     EntityListComponent,
@@ -94,12 +94,12 @@ import { EntityThumbnailComponent } from "./components/entity-thumbnail/entity-t
     EntityElementComponent,
     PaginationBarComponent,
     PageSizeComponent,
-    EntityListFilteredComponent,
     ErrorDialogComponent,
     PageNotFoundComponent,
     MoneyTypeSelectorComponent,
     DateRangeSelectorComponent,
     StatsTotalsComponent,
+    EntityNameFilterComponent
   ],
   providers: [
     AccountsService,

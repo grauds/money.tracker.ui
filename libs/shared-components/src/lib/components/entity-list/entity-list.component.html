@@ -74,7 +74,7 @@
                 @case ('list') {
                   @if (listTemplate) {
                     <div>
-                      @for (a of entities; track a) {
+                      @for (a of entities; track trackEntity(a)) {
                         <div>
                           <ng-container *ngTemplateOutlet="listTemplate; context: { $implicit: a }"></ng-container>
                         </div>
@@ -92,7 +92,7 @@
                 @case ('thumbnail') {
                   @if (thumbnailTemplate) {
                     <div class="thumbnail-grid">
-                      @for (a of entities; track a) {
+                      @for (a of entities; track trackEntity(a)) {
                         <ng-container *ngTemplateOutlet="thumbnailTemplate; context: { $implicit: a }"></ng-container>
                       }
                     </div>
@@ -106,7 +106,7 @@
             <div>
               @switch (currentView) {
                 @case ('list') {
-                  @for (a of entities; track a) {
+                  @for (a of entities; track trackEntity(a)) {
                     <div>
                       <app-entity-element [entity]="a"></app-entity-element>
                     </div>
@@ -117,7 +117,7 @@
                 }
                 @case ('thumbnail') {
                   <div class="thumbnail-grid">
-                    @for (a of entities; track a) {
+                    @for (a of entities; track trackEntity(a)) {
                       <app-entity-thumbnail [entity]="a"></app-entity-thumbnail>
                     }
                   </div>
