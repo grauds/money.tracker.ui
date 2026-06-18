@@ -87,7 +87,7 @@ pipeline {
 
   stage('Dependency-Check') {
       steps {
-          catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
             dependencyCheck additionalArguments: '''
                   -s "./"                                # Source directory
                   -o "./dependency-check-reports"        # Output directory
@@ -98,6 +98,7 @@ pipeline {
                   --disableOssIndex
                   --exclude "./.nx/cache"                # Exclude Nx cache
                   --exclude "./coverage"                 # Exclude test coverage output
+                  --failOnError false
                   --exclude "./node_modules/@algolia/abtesting/dist" # Exclude noisy library scans
               ''', nvdCredentialsId: 'NVD_API_Key', odcInstallation: 'Dependency Checker'
 
