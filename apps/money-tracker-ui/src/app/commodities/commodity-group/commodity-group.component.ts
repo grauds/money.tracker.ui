@@ -18,7 +18,6 @@ import {
   PARENT_RESOURCE_TYPE
 } from "@clematis-shared/shared-components";
 import { Title } from '@angular/platform-browser';
-import { Utils } from '@clematis-shared/model';
 
 @Component({
   selector: 'app-commodity-group',
@@ -61,13 +60,6 @@ export class CommodityGroupComponent
       queryArguments: this.getQueryArguments(),
       queryName: 'recursiveByParentId',
     });
-
-    this.commodityGroupService
-      .getPath(Utils.getIdFromSelfUrl(entity))
-      .subscribe((response) => {
-        this.path = response.resources.reverse();
-      });
-
   }
 
   getQueryArguments(): RequestParam {
