@@ -33,6 +33,13 @@ export { InOutService } from './lib/service/in-out.service';
 export { LastCommodityService } from './lib/service/last-commodity.service';
 export { MoneyExchangeService } from './lib/service/money-exchange.service';
 export { MoneyTypeService } from './lib/service/money-type.service';
+
+export { EntityService } from './lib/service/entity.service';
+
 export { StatsService } from './lib/service/stats.service';
 export { StorageService } from './lib/service/storage.service';
+
 export type { SearchPostProcessingHandler } from './lib/service/search.service';
+
+export { RESOURCE_TYPE } from './lib/service/entity-resource-type.token';
+export { PARENT_RESOURCE_TYPE } from './lib/service/entity-resource-type.token';

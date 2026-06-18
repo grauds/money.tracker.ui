@@ -1,51 +1,45 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   HateoasResourceService,
   RequestParam,
 } from '@lagoshny/ngx-hateoas-client';
 import {
-  Entity,
+  CommodityGroup,
   ExpenseItem,
-  MoneyTypes,
   Organization,
-  OrganizationGroup,
-} from '@clematis-shared/model';
+  OrganizationGroup
+} from "@clematis-shared/model";
 import {
-  EntityComponent,
+  EntityComponent, EntityService,
   ExpenseItemsService,
   OrganizationGroupsService,
   OrganizationsService,
-} from '@clematis-shared/shared-components';
+  PARENT_RESOURCE_TYPE,
+  RESOURCE_TYPE
+} from "@clematis-shared/shared-components";
 import { Title } from '@angular/platform-browser';
-import { Utils } from '@clematis-shared/model';
 import { formatDate } from '@angular/common';
-import { catchError, EMPTY } from "rxjs";
 
 @Component({
   selector: 'app-organization',
   templateUrl: './organization.component.html',
   styleUrls: ['./organization.component.sass'],
-  providers: [{ provide: 'searchService', useClass: ExpenseItemsService }],
+  providers: [
+    { provide: 'searchService', useClass: ExpenseItemsService },
+    EntityService,
+    { provide: PARENT_RESOURCE_TYPE, useValue: CommodityGroup },
+    { provide: RESOURCE_TYPE, useValue: Organization }
+  ],
   standalone: false,
 })
 export class OrganizationComponent
-  extends EntityComponent<Organization>
-  implements OnInit
+  extends EntityComponent<Organization, OrganizationGroup>
+  implements OnInit, OnDestroy
 {
   displayedColumns: string[] = ['transferdate', 'name', 'price', 'qty'];
 
-  parent: OrganizationGroup | undefined;
-
-  parentLink: string | undefined;
-
-  path: Array<OrganizationGroup> = [];
-
-  totalSum = 0;
-
   expenses: ExpenseItem[] = [];
-
-  loading = false;
 
   option: any = {};
 
@@ -53,69 +47,17 @@ export class OrganizationComponent
     resourceService: HateoasResourceService,
     private readonly organizationsService: OrganizationsService,
     private readonly organizationGroupsService: OrganizationGroupsService,
+    entityService: EntityService<Organization, OrganizationGroup>,
     route: ActivatedRoute,
     router: Router,
     title: Title
   ) {
-    super(Organization, resourceService, route, router, title);
-  }
-
-  ngOnInit(): void {
-    this.loading = true;
-    this.onInit();
-  }
-
-  override setEntity(entity: Organization) {
-    super.setEntity(entity);
-
-    this.entity
-      ?.getRelation<OrganizationGroup>('parent')
-      .pipe(
-        catchError((err) => {
-          if (err?.status === 404) {
-            // No parent is a valid state → don’t show an error to the user
-            this.parent = undefined;
-            this.parentLink = undefined;
-            return EMPTY;
-          }
-          // Other errors are real problems → let them propagate (or handle differently)
-          throw err;
-        })
-      )
-      .subscribe((parent: OrganizationGroup) => {
-        this.parent = parent;
-        this.parentLink = Entity.getRelativeSelfLinkHref(this.parent);
-        this.organizationGroupsService
-          .getPathForOrganizationGroup(Utils.getIdFromSelfUrl(this.parent))
-          .subscribe((response) => {
-            this.path = response.resources.reverse();
-            if (this.parent) {
-              this.path.push(this.parent);
-            }
-          });
-      });
-
-    this.organizationsService
-      .getTotalsForOrganization(this.id, MoneyTypes.RUB)
-      .pipe(
-        catchError((err) => {
-          if (err?.status === 404) {
-            return EMPTY;
-          }
-          throw err;
-        })
-      ).subscribe((response) => {
-        this.totalSum = response;
-      });
-  }
-
-  setLoading($event: boolean) {
-    this.loading = $event;
+    super(Organization, resourceService, route, router, title, entityService);
   }
 
   getQueryArguments(): RequestParam {
     return {
-      tradeplaceId: this.id ? this.id : '',
+      id: this.id ? this.id : '',
     };
   }
 
@@ -124,6 +66,10 @@ export class OrganizationComponent
       this.expenses = $event;
       this.option = this.getData();
     })
+  }
+
+  override ngOnDestroy(): void {
+    super.ngOnDestroy();
   }
 
   getData() {
@@ -145,6 +91,10 @@ export class OrganizationComponent
           }
           return 'No params';
         },
+      },
+      legend: {
+        data: ['Total', 'Price'],
+        bottom: 0
       },
       xAxis: {
         type: 'category',

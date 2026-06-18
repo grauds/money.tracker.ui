@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   HateoasResourceService,
@@ -8,34 +8,41 @@ import {
   Commodity,
   MoneyType,
   CommodityGroup,
-  MoneyTypes,
-  Entity,
-  IncomeItem,
   ExpenseItem,
-  Utils,
 } from "@clematis-shared/model";
 import {
   CommoditiesService,
-  CommodityGroupService,
   EntityComponent,
-  IncomeItemsService,
   ExpenseItemsService,
   StorageService,
-  PhotoUploaderComponent
-} from '@clematis-shared/shared-components';
+  PhotoUploaderComponent,
+  RESOURCE_TYPE,
+  PARENT_RESOURCE_TYPE,
+  EntityService
+} from "@clematis-shared/shared-components";
 import { Title } from '@angular/platform-browser';
 import { formatDate } from '@angular/common';
-import { catchError, EMPTY, forkJoin } from "rxjs";
+import {
+  takeUntil,
+  catchError,
+  EMPTY,
+  forkJoin
+} from "rxjs";
 
 @Component({
   selector: 'app-commodity',
   templateUrl: './commodity.component.html',
   styleUrls: ['./commodity.component.sass'],
-  providers: [],
+  providers: [
+    EntityService,
+    { provide: RESOURCE_TYPE, useValue: Commodity },
+    { provide: PARENT_RESOURCE_TYPE, useValue: CommodityGroup }
+  ],
   standalone: false,
 })
-export class CommodityComponent extends EntityComponent<Commodity>
-  implements OnInit {
+export class CommodityComponent
+  extends EntityComponent<Commodity, CommodityGroup>
+  implements OnDestroy {
 
   displayedColumns: string[] = [
     'transferdate',
@@ -48,101 +55,40 @@ export class CommodityComponent extends EntityComponent<Commodity>
 
   defaultMoneyType: MoneyType | undefined;
 
-  parent: CommodityGroup | undefined;
-
   image: PhotoUploaderComponent | undefined;
 
-  parentLink: string | undefined;
-
-
-  income: IncomeItem[] = [];
-
-  totalIncomeSum = 0;
-
-  averageIncomePrice: number | undefined;
-
-  totalIncomeQty: number | undefined;
-
-
   expenses: ExpenseItem[] = [];
-
-  totalSum = 0;
 
   averagePrice: number | undefined;
 
   totalQty: number | undefined;
 
-
-  loading = false;
-
   option: any = {};
-
-  path: Array<CommodityGroup> = [];
 
   constructor(
     resourceService: HateoasResourceService,
     public readonly expenseService: ExpenseItemsService,
-    public readonly incomeService: IncomeItemsService,
     private readonly commodityService: CommoditiesService,
-    private readonly commodityGroupService: CommodityGroupService,
     private readonly uploadService: StorageService,
+    entityService: EntityService<Commodity, CommodityGroup>,
     route: ActivatedRoute,
     router: Router,
     title: Title
   ) {
-    super(Commodity, resourceService, route, router, title);
-
+    super(Commodity, resourceService, route, router, title, entityService);
     this.image = new PhotoUploaderComponent(this.uploadService);
   }
 
-  ngOnInit(): void {
-    this.loading = true;
-    this.onInit();
-  }
-
-  override setEntity(entity: Commodity) {
-    super.setEntity(entity);
-
-    this.clearPreviousData();
-
-    if (!this.entity) {
+  override onEntityLoaded(entity: Commodity) {
+    if (!entity) {
       return;
     }
 
-    this.defaultUnit = this.entity?.unittype?.shortName;
-
-    const income$ = this.commodityService
-      .getTotalIncomeForCommodity(this.id, MoneyTypes.RUB)
+    this.defaultUnit = entity.unittype?.shortName;
+    const moneyType$ = entity.getRelation<MoneyType>('defaultMoneyType')
       .pipe(
         catchError((err) => {
           console.log(err)
-          return EMPTY;
-        })
-      );
-
-    const outcome$ = this.commodityService
-      .getTotalExpenseForCommodity(this.id, MoneyTypes.RUB)
-      .pipe(
-        catchError((err) => {
-          console.log(err)
-          return EMPTY;
-        })
-      );
-
-    const moneyType$ = this.entity?.getRelation<MoneyType>('defaultMoneyType')
-      .pipe(
-        catchError((err) => {
-          console.log(err)
-          return EMPTY;
-        })
-      );
-
-    const parent$ = this.entity?.getRelation<CommodityGroup>('parent')
-      .pipe(
-        catchError((err) => {
-          console.log(err)
-          this.parent = undefined;
-          this.parentLink = undefined;
           return EMPTY;
         })
       );
@@ -158,64 +104,41 @@ export class CommodityComponent extends EntityComponent<Commodity>
 
     forkJoin({
       moneyType: moneyType$,
-      parent: parent$,
       totals: totals$,
-      outcome: outcome$,
-    }).subscribe({
+    }).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
       next: (result) => {
 
         if (result.moneyType) {
           this.defaultMoneyType = result.moneyType;
         }
 
-        if (result.parent) {
-          this.parent = result.parent;
-          this.parentLink = Entity.getRelativeSelfLinkHref(result.parent);
-          this.commodityGroupService
-            .getPathForCommodityGroup(Utils.getIdFromSelfUrl(result.parent))
-            .subscribe((response) => {
-              this.path = response.resources.reverse();
-              if (result.parent) {
-                this.path.push(result.parent);
-              }
-            });
-        }
-
         if (result.totals) {
           this.totalQty = result.totals;
-        }
-
-        if (result.outcome) {
-          this.totalSum = result.outcome;
           if (this.totalQty) {
-            this.averagePrice = this.totalSum / this.totalQty;
+            this.averagePrice = this.expensesSum / this.totalQty;
           }
         }
       },
-      error: (err) => console.error('An error occurred loading commodity data', err)
+      error: (err) => console.error(
+        'An error occurred loading commodity data', err
+      )
     });
   }
 
-  private clearPreviousData() {
+  override clearPreviousData() {
+    super.clearPreviousData();
+
     this.defaultUnit = undefined;
     this.defaultMoneyType = undefined;
-    this.parent = undefined;
-    this.parentLink = undefined;
-    this.path = [];
     this.totalQty = undefined;
-    this.totalSum = 0;
     this.averagePrice = undefined;
-  }
-
-  setLoading($event: boolean) {
-    setTimeout(() => {
-      this.loading = $event;
-    });
   }
 
   getQueryArguments(): RequestParam {
     return {
-      commodityId: this.id ? this.id : '',
+      id: this.id ? this.id : '',
     };
   }
 
@@ -226,11 +149,8 @@ export class CommodityComponent extends EntityComponent<Commodity>
     })
   }
 
-  setIncomeEntities($event: IncomeItem[]) {
-    setTimeout(() => {
-      this.income = $event;
-      this.option = this.getData();
-    })
+  override ngOnDestroy(): void {
+    super.ngOnDestroy();
   }
 
   getData() {

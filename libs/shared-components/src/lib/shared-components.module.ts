@@ -52,6 +52,7 @@ import { PhotoUploaderComponent } from "./components/photo-uploader/photo-upload
 import { CurrencySpacePipe } from "./components/currency-space-pipe/currency-space-pipe";
 import { EntityThumbnailComponent } from "./components/entity-list/entity-thumbnail/entity-thumbnail.component";
 import { EntityNameFilterComponent } from "./components/entity-list/entity-name-filter/entity-name-filter.component";
+import { EntityService } from "./service/entity.service";
 
 @NgModule({
   imports: [
@@ -86,7 +87,7 @@ import { EntityNameFilterComponent } from "./components/entity-list/entity-name-
     DateRangeSelectorComponent,
     StatsTotalsComponent,
     PhotoUploaderComponent,
-    EntityNameFilterComponent
+    EntityNameFilterComponent,
   ],
   declarations: [
     EntityListComponent,
@@ -115,6 +116,7 @@ import { EntityNameFilterComponent } from "./components/entity-list/entity-name-
     MoneyExchangeService,
     MoneyTypeService,
     StatsService,
+    EntityService,
     ErrorDialogService,
     {
       provide: ErrorHandler,

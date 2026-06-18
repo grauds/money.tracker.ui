@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Commodity, MoneyTypes } from '@clematis-shared/model';
+import { Commodity } from '@clematis-shared/model';
 import {
   HateoasResourceService,
   PagedResourceCollection,
@@ -37,43 +37,13 @@ export class CommoditiesService extends SearchService<Commodity> {
     return this.hateoasService.getPage<Commodity>(Commodity, options);
   }
 
-  getTotalIncomeForCommodity(commodityId: string | null, moneyCode: MoneyTypes) {
-    if (commodityId) {
-      return this.http.get<number>(
-        this.getUrl('/incomeItems/search/sumCommodityIncome'),
-        {
-          params: {
-            commodityId: commodityId,
-            moneyCode: moneyCode,
-          },
-        }
-      );
-    }
-    return of(0);
-  }
-
-  getTotalExpenseForCommodity(commodityId: string | null, moneyCode: MoneyTypes) {
-    if (commodityId) {
-      return this.http.get<number>(
-        this.getUrl('/expenseItems/search/sumCommodityExpenses'),
-        {
-          params: {
-            commodityId: commodityId,
-            moneyCode: moneyCode,
-          },
-        }
-      );
-    }
-    return of(0);
-  }
-
   getTotalQtyForCommodity(commodityId: string | null): Observable<number> {
     if (commodityId) {
       return this.http.get<number>(
         this.getUrl('/expenseItems/search/sumCommodityQuantity'),
         {
           params: {
-            commodityId: commodityId,
+            id: commodityId,
           },
         }
       );

@@ -39,7 +39,7 @@ export class CommodityGroupService extends SearchService<CommodityGroup> {
     return this.hateoasService.getPage<CommodityGroup>(CommodityGroup, options);
   }
 
-  getPathForCommodityGroup(
+  getPath(
     commodityGroupId: string | null
   ): Observable<ResourceCollection<CommodityGroup>> {
     if (commodityGroupId) {
@@ -56,7 +56,7 @@ export class CommodityGroupService extends SearchService<CommodityGroup> {
     return of(new ResourceCollection<CommodityGroup>());
   }
 
-  getTotalsForCommodityGroup(
+  getTotals(
     commodityGroupId: string | null,
     moneyCode: MoneyTypes
   ): Observable<number> {

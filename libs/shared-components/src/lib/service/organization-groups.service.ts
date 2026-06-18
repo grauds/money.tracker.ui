@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { OrganizationGroup } from '@clematis-shared/model';
 import {
   HateoasResourceService,
   PagedResourceCollection,
-  ResourceCollection,
   PagedGetOption
 } from '@lagoshny/ngx-hateoas-client';
 
@@ -38,22 +37,5 @@ export class OrganizationGroupsService extends SearchService<OrganizationGroup> 
       OrganizationGroup,
       options
     );
-  }
-
-  getPathForOrganizationGroup(
-    organizationGroupId: string | null
-  ): Observable<ResourceCollection<OrganizationGroup>> {
-    if (organizationGroupId) {
-      return this.hateoasService.searchCollection<OrganizationGroup>(
-        OrganizationGroup,
-        'pathById',
-        {
-          params: {
-            id: organizationGroupId,
-          },
-        }
-      );
-    }
-    return of(new ResourceCollection<OrganizationGroup>());
   }
 }

@@ -7,68 +7,53 @@ import {
 } from '@lagoshny/ngx-hateoas-client';
 import {
   CommodityGroup,
-  MoneyTypes,
   Entity,
   ExpenseItem,
 } from '@clematis-shared/model';
 import {
   CommodityGroupService,
   EntityComponent,
-  EntityListComponent,
-} from '@clematis-shared/shared-components';
+  EntityListComponent, EntityService,
+  RESOURCE_TYPE,
+  PARENT_RESOURCE_TYPE
+} from "@clematis-shared/shared-components";
 import { Title } from '@angular/platform-browser';
 import { Utils } from '@clematis-shared/model';
-import { catchError, EMPTY, forkJoin } from "rxjs";
 
 @Component({
   selector: 'app-commodity-group',
   templateUrl: './commodity-group.component.html',
   styleUrls: ['./commodity-group.component.sass'],
   providers: [
-    { provide: 'searchService', useClass: CommodityGroupService }
+    { provide: 'searchService', useClass: CommodityGroupService },
+    EntityService,
+    { provide: RESOURCE_TYPE, useValue: CommodityGroup },
+    { provide: PARENT_RESOURCE_TYPE, useValue: CommodityGroup }
   ],
   standalone: false,
 })
 export class CommodityGroupComponent
-  extends EntityComponent<CommodityGroup>
+  extends EntityComponent<CommodityGroup, CommodityGroup>
   implements OnInit
 {
   @ViewChild(EntityListComponent)
   entityList!: EntityListComponent<CommodityGroup>;
 
-  loading = false;
-
-  parent: CommodityGroup | undefined;
-
-  parentLink: string | undefined;
-
   children: Entity[] = [];
-
-  totalSum: number | undefined;
-
-  path: Array<CommodityGroup> = [];
 
   constructor(
     resourceService: HateoasResourceService,
     private readonly commodityGroupService: CommodityGroupService,
+    entityService: EntityService<CommodityGroup, CommodityGroup>,
     route: ActivatedRoute,
     router: Router,
     title: Title
   ) {
-    super(CommodityGroup, resourceService, route, router, title);
+    super(CommodityGroup, resourceService, route, router, title, entityService);
   }
 
-  ngOnInit(): void {
-    this.loading = true;
-    this.onInit();
-  }
-
-  override setEntity(entity: CommodityGroup) {
-    super.setEntity(entity);
-
-    this.clearPreviousData();
-
-    if (!this.entity) {
+  override onEntityLoaded(entity: CommodityGroup) {
+    if (!entity) {
       return;
     }
 
@@ -77,66 +62,12 @@ export class CommodityGroupComponent
       queryName: 'recursiveByParentId',
     });
 
-    const parent$ = this.entity?.getRelation<CommodityGroup>('parent')
-      .pipe(
-        catchError((err) => {
-          if (err?.status === 404) {
-            // No parent is a valid state → don’t show an error to the user
-            this.parent = undefined;
-            this.parentLink = undefined;
-            return EMPTY;
-          }
-          // Other errors are real problems → let them propagate (or handle differently)
-          throw err;
-        })
-      );
-
-    const totals$ = this.commodityGroupService
-      .getTotalsForCommodityGroup(this.id, MoneyTypes.RUB)
-      .pipe(
-        catchError((err) => {
-          if (err?.status === 404) {
-            return EMPTY;
-          }
-          throw err;
-        })
-      );
-
     this.commodityGroupService
-      .getPathForCommodityGroup(Utils.getIdFromSelfUrl(this.entity))
+      .getPath(Utils.getIdFromSelfUrl(entity))
       .subscribe((response) => {
         this.path = response.resources.reverse();
       });
 
-    forkJoin({
-      parent: parent$,
-      totals: totals$
-    }).subscribe({
-      next: (result) => {
-        if (result.parent) {
-          this.parent = result.parent;
-          this.parentLink = Entity.getRelativeSelfLinkHref(result.parent);
-        }
-        if (result.totals) {
-          this.totalSum = result.totals;
-          this.loading = false;
-        }
-      },
-      error: (err) => console.error('An error occurred loading commodity group data', err)
-    });
-  }
-
-  private clearPreviousData() {
-    this.parent = undefined;
-    this.parentLink = undefined;
-    this.path = [];
-    this.totalSum = undefined;
-  }
-
-  setLoading($event: boolean) {
-    setTimeout(() => {
-      this.loading = $event;
-    });
   }
 
   getQueryArguments(): RequestParam {

@@ -7,20 +7,19 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 
 import {
-  CommodityGroup,
-  Entity,
   OrganizationGroup,
-  Utils
 } from '@clematis-shared/model';
 
 import {
   EntityComponent,
   EntityListComponent,
+  EntityService,
   OrganizationGroupsService,
-} from '@clematis-shared/shared-components';
+  RESOURCE_TYPE,
+  PARENT_RESOURCE_TYPE
+} from "@clematis-shared/shared-components";
 
 import { Title } from '@angular/platform-browser';
-import { catchError, EMPTY } from "rxjs";
 
 @Component({
   selector: 'app-organization-group',
@@ -28,43 +27,32 @@ import { catchError, EMPTY } from "rxjs";
   styleUrls: ['./organization-group.component.sass'],
   providers: [
     { provide: 'searchService', useClass: OrganizationGroupsService },
+    EntityService,
+    { provide: RESOURCE_TYPE, useValue: OrganizationGroup },
+    { provide: PARENT_RESOURCE_TYPE, useValue: OrganizationGroup }
   ],
   standalone: false,
 })
 export class OrganizationGroupComponent
-  extends EntityComponent<OrganizationGroup>
+  extends EntityComponent<OrganizationGroup, OrganizationGroup>
   implements OnInit
 {
   @ViewChild(EntityListComponent)
   entityList!: EntityListComponent<OrganizationGroup>;
 
-  loading = false;
-
-  parent: OrganizationGroup | undefined;
-
-  parentLink: string | undefined;
-
   children: OrganizationGroup[] = [];
-
-  path: Array<CommodityGroup> = [];
 
   constructor(
     resourceService: HateoasResourceService,
     private readonly organizationGroupsService: OrganizationGroupsService,
+    entityService: EntityService<OrganizationGroup, OrganizationGroup>,
     route: ActivatedRoute,
     router: Router,
     title: Title
   ) {
-    super(OrganizationGroup, resourceService, route, router, title);
-  }
-
-  ngOnInit(): void {
-    this.loading = true;
-    this.onInit();
-  }
-
-  setLoading($event: boolean) {
-    this.loading = $event;
+    super(
+      OrganizationGroup, resourceService, route, router, title, entityService
+    );
   }
 
   getQueryArguments(): RequestParam {
@@ -74,53 +62,20 @@ export class OrganizationGroupComponent
   }
 
   setEntities($event: OrganizationGroup[]) {
-    this.children = $event;
+    setTimeout(() => {
+      this.children = $event;
+    })
   }
 
-  override setEntity(entity: OrganizationGroup) {
-    super.setEntity(entity);
+  override onEntityLoaded(entity: OrganizationGroup) {
+    if (!entity) {
+      return;
+    }
 
     this.entityList?.refreshData({
       queryArguments: this.getQueryArguments(),
       queryName: 'recursiveByParentId',
     });
-
-    this.entity
-      ?.getRelation<OrganizationGroup>('parent')
-      .pipe(
-        catchError((err) => {
-          if (err?.status === 404) {
-            // No parent is a valid state → don’t show an error to the user
-            this.parent = undefined;
-            this.parentLink = undefined;
-            return EMPTY;
-          }
-          // Other errors are real problems → let them propagate (or handle differently)
-          throw err;
-        })
-      )
-      .subscribe({
-        next: (parent: OrganizationGroup) => {
-          this.parent = parent;
-          this.parentLink = Entity.getRelativeSelfLinkHref(this.parent);
-        },
-        error: () => {
-          this.parent = undefined;
-          this.parentLink = undefined;
-        },
-        complete: () => {
-          this.parent = undefined;
-          this.parentLink = undefined;
-        },
-    });
-
-    if (this.entity) {
-      this.organizationGroupsService
-        .getPathForOrganizationGroup(Utils.getIdFromSelfUrl(this.entity))
-        .subscribe((response) => {
-          this.path = response.resources;
-        });
-    }
   }
 
   getSort(): Sort {

@@ -28,7 +28,7 @@
           <div><strong>Quantity:</strong> {{ totalQty }} {{ defaultUnit }}</div>
           <div style="font-size: 1.1rem; margin-top: 4px; color: #212529;">
             <strong>Total:</strong>
-            {{ totalSum | currencySpace :  defaultMoneyType?.code  :'symbol' }}
+            {{ expensesSum | currencySpace :  defaultMoneyType?.code  :'symbol' }}
           </div>
         </div>
       }
