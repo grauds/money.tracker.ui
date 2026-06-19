@@ -87,22 +87,35 @@ pipeline {
 
   stage('Dependency-Check') {
       steps {
-          catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
-            dependencyCheck additionalArguments: '''
-                  -s "./"                                # Source directory
-                  -o "./dependency-check-reports"        # Output directory
-                  -f "ALL"                               # Generate all report formats
-                  --prettyPrint                           # Make JSON report human-readable
-                  -P "depcheck.properties"               # Optional config/proxy file
-                  --suppression "dependency-check-suppressions.xml" # Suppress known false positives
-                  --disableOssIndex
-                  --exclude "./.nx/cache"                # Exclude Nx cache
-                  --exclude "./coverage"                 # Exclude test coverage output
-                  --failOnError false
-                  --exclude "./node_modules/@algolia/abtesting/dist" # Exclude noisy library scans
-              ''', nvdCredentialsId: 'NVD_API_Key', odcInstallation: 'Dependency Checker'
+          script {
+              try {
+                  dependencyCheck(
+                      additionalArguments: '''
+                          -s "./"
+                          -o "./dependency-check-reports"
+                          -f "ALL"
+                          --prettyPrint
+                          -P "depcheck.properties"
+                          --suppression "dependency-check-suppressions.xml"
+                          --disableOssIndex
+                          --exclude "./.nx/cache"
+                          --exclude "./coverage"
+                          --exclude "./node_modules/@algolia/abtesting/dist"
+                      ''',
+                      nvdCredentialsId: 'NVD_API_Key',
+                      odcInstallation: 'Dependency Checker'
+                  )
+              } catch (Exception e) {
+                  echo "Dependency-Check failed: ${e.getMessage()}"
+              }
 
-            dependencyCheckPublisher pattern: 'dependency-check-reports/dependency-check-report.xml'
+              if (fileExists('dependency-check-reports/dependency-check-report.xml')) {
+                  dependencyCheckPublisher(
+                      pattern: 'dependency-check-reports/dependency-check-report.xml'
+                  )
+              } else {
+                  echo 'Dependency-Check report not generated, skipping publisher'
+              }
           }
       }
   }
