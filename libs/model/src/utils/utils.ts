@@ -23,11 +23,11 @@ export class Utils {
       // fix the redirect part
       params = params.set(
         'redirect',
-        routeParams['redirect']?.substring(0, indexOfQuotationMark)
+        routeParams['redirect']?.substring(0, indexOfQuotationMark),
       );
       // parse the extra query parameter(s)
       const otherParams = routeParams['redirect']?.substring(
-        indexOfQuotationMark + 1
+        indexOfQuotationMark + 1,
       );
       if (otherParams.indexOf('&') !== -1) {
         otherParams.split('&').forEach((pair: string) => {
@@ -69,7 +69,7 @@ export class Utils {
     const resourceAddress = new URL(entity.getSelfLinkHref());
     return resourceAddress.pathname.substring(
       resourceAddress.pathname.lastIndexOf('/') + 1,
-      resourceAddress.pathname.length
+      resourceAddress.pathname.length,
     );
   }
 
@@ -94,5 +94,26 @@ export class Utils {
         (inTheFuture ? 'In ' : '') + yearsDisplay + monthsDisplay + daysDisplay
       );
     }
+  }
+
+  // Helper method to deeply compare query parameter objects
+  static areParamsEqual(params1: any, params2: any): boolean {
+    // Return true if both are missing/falsy
+    if (!params1 && !params2) return true;
+
+    // Return false if only one is missing/falsy
+    if (!params1 || !params2) return false;
+
+    const keys1 = Object.keys(params1);
+    const keys2 = Object.keys(params2);
+
+    if (keys1.length !== keys2.length) return false;
+
+    for (const key of keys1) {
+      if (String(params1[key]) !== String(params2[key])) {
+        return false;
+      }
+    }
+    return true;
   }
 }

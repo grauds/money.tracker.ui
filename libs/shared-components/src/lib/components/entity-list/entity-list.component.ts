@@ -16,7 +16,7 @@ import {
 } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
-import { Entity, SearchRequest } from '@clematis-shared/model';
+import { Entity, SearchRequest, Utils } from '@clematis-shared/model';
 import {
   PagedResourceCollection,
   Sort as RestSort,
@@ -302,28 +302,12 @@ export class EntityListComponent<T extends Entity>
       const newParams = extras.queryParams || {};
 
       // Check if the old and new query parameters are identical
-      if (this.areParamsEqual(currentParams, newParams)) {
+      if (Utils.areParamsEqual(currentParams, newParams)) {
         return Promise.resolve(true);
       }
       return this.router.navigate([], extras);
     }
     return Promise.resolve(true);
-  }
-
-  // Helper method to deeply compare query parameter objects
-  private areParamsEqual(params1: any, params2: any): boolean {
-    const keys1 = Object.keys(params1);
-    const keys2 = Object.keys(params2);
-
-    if (keys1.length !== keys2.length) return false;
-
-    for (const key of keys1) {
-      // Convert to strings to safely compare numbers/booleans from URL string types
-      if (String(params1[key]) !== String(params2[key])) {
-        return false;
-      }
-    }
-    return true;
   }
 
   get providedTemplatesCount(): number {
