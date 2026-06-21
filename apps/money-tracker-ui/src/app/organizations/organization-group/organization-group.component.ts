@@ -67,17 +67,6 @@ export class OrganizationGroupComponent
     })
   }
 
-  override onEntityLoaded(entity: OrganizationGroup) {
-    if (!entity) {
-      return;
-    }
-
-    this.entityList?.refreshData({
-      queryArguments: this.getQueryArguments(),
-      queryName: 'recursiveByParentId',
-    });
-  }
-
   getSort(): Sort {
     return {
       name: 'ASC',

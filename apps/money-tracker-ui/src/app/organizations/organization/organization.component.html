@@ -16,7 +16,7 @@
         <!-- Right Side: Total Display -->
         <div class="summary-total">
           <span class="total-label">Total</span>
-          <span class="total-amount">{{ expensesSum | currencySpace : 'RUB' :'symbol'  }} </span>
+          <span class="total-amount">{{ expensesSum | currencySpace : 'RUB' :'symbol' }} </span>
         </div>
 
       </div>
@@ -26,6 +26,7 @@
         <ya-placemark [geometry]="[55.751952, 37.600739]"></ya-placemark>
       </ya-map-->
     </div>
+
   </div>
 }
 
@@ -61,45 +62,48 @@
         @if (element.commodity && element.commodityLink) {
           <a
             routerLink="{{ element.commodityLink }}"
-            >
+          >
             {{ element.commodity.name }}</a
-            >
-          }
+          >
+        }
 
-          @if (element.commodity && !element.commodityLink) {
-            <div>
-              {{ element.commodity.name }}
-            </div>
-          }
-        </td>
-      </ng-container>
+        @if (element.commodity && !element.commodityLink) {
+          <div>
+            {{ element.commodity.name }}
+          </div>
+        }
+      </td>
+    </ng-container>
 
-      <ng-container matColumnDef="price">
-        <th mat-header-cell *matHeaderCellDef>Price</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.price | currencySpace : element.expense.moneyType?.code : 'symbol' }}
-        </td>
-      </ng-container>
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef>Price</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.price | currencySpace : element.expense.moneyType?.code : 'symbol' }}
+      </td>
+    </ng-container>
 
-      <ng-container matColumnDef="qty">
-        <th mat-header-cell *matHeaderCellDef>Qty</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.qty | number : '1.0-2' }}
-          {{ element.commodity?.unittype?.shortName }}
-        </td>
-      </ng-container>
+    <ng-container matColumnDef="qty">
+      <th mat-header-cell *matHeaderCellDef>Qty</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.qty | number : '1.0-2' }}
+        {{ element.commodity?.unittype?.shortName }}
+      </td>
+    </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-  </ng-template>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</ng-template>
 
-  <app-entity-list
-    [tableTemplate]="expensesTable"
-    [searchRequest]="{
+<app-entity-list
+  [updateRouterState]="false"
+  [tableTemplate]="expensesTable"
+  [searchServiceOverride]="expenseService"
+  [cookieStateKey]="'organization-expense'"
+  [searchRequest]="{
       queryArguments: getQueryArguments(),
       queryName: 'tradeplace'
     }"
-      (loading$)="setLoading($event)"
-      (entitiesChange$)="setEntities($event)"
-  ></app-entity-list>
+  (loading$)="setLoading($event)"
+  (entitiesChange$)="setEntities($event)"
+></app-entity-list>

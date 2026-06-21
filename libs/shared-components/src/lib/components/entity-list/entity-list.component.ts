@@ -23,9 +23,9 @@ import {
   SortOrder
 } from '@lagoshny/ngx-hateoas-client';
 
-import { CookieStatePersistence } from "./cookie-state-persistence/cookie-state-persistence";
-import { SearchRequestHandler } from "./search-request-handler/search-request-handler";
-import { UrlStateAdapter } from "./url-state-adapter/url-state-adapter";
+import { CookieStatePersistence } from "./cookie-state-persistence";
+import { SearchRequestHandler } from "./search-request-handler";
+import { UrlStateAdapter } from "./url-state-adapter";
 
 import { SearchService } from '../../service/search.service';
 import { CookieService } from "../../service/cookie.service";
@@ -108,10 +108,11 @@ export interface EntityCollectionContext<T> {
   selector: 'app-entity-list',
   templateUrl: './entity-list.component.html',
   styleUrls: ['./entity-list.component.sass'],
-  standalone: false
+  standalone: false,
 })
-export class EntityListComponent<T extends Entity> implements OnInit, OnDestroy {
-
+export class EntityListComponent<T extends Entity>
+  implements OnInit, OnDestroy
+{
   @Input() searchService!: SearchService<T>;
   @Input() searchServiceOverride?: SearchService<T>;
 
@@ -158,7 +159,7 @@ export class EntityListComponent<T extends Entity> implements OnInit, OnDestroy 
     private readonly injector: Injector,
     private readonly cookieService: CookieService,
     protected router: Router,
-    protected route: ActivatedRoute
+    protected route: ActivatedRoute,
   ) {
     this.entitiesChange$.subscribe((entities: T[] | null) => {
       this.entities = entities;
@@ -174,32 +175,41 @@ export class EntityListComponent<T extends Entity> implements OnInit, OnDestroy 
       this.searchService = this.searchServiceOverride;
       return;
     }
-    const legacyService
-      = this.injector.get<SearchService<T>>('searchService', null);
+    const legacyService = this.injector.get<SearchService<T>>(
+      'searchService',
+      null,
+    );
     if (!legacyService) {
       throw new Error(
         `EntityListComponent configuration missing.
         Please provide a search service instance
         either by implementing [searchServiceOverride] or
-        via providers: [{ provide: 'searchService', ... }].`
+        via providers: [{ provide: 'searchService', ... }].`,
       );
     }
     this.searchService = legacyService;
   }
 
   ngOnInit(): void {
-
     this.resolveSearchService();
 
     this.statusDescription$ = this.searchService.getStatusDescription();
     this.cookiePersistence = new CookieStatePersistence(
-      this.router, this.cookieService, this.cookieStateKey
+      this.router,
+      this.cookieService,
+      this.cookieStateKey,
     );
 
-    this.pipelineSubscription = new SearchRequestHandler(this.searchService)
-      .createSearchPipeline(
+    this.pipelineSubscription = new SearchRequestHandler(
+      this.searchService,
+    ).createSearchPipeline(
       this.searchRequest$,
-      () => ({ n: this.n, limit: this.limit, sort: this.sort, filter: this.filter }),
+      () => ({
+        n: this.n,
+        limit: this.limit,
+        sort: this.sort,
+        filter: this.filter,
+      }),
       (page) => this.broadcastResults(page),
       (err) => {
         this.error = err.message;
@@ -207,34 +217,29 @@ export class EntityListComponent<T extends Entity> implements OnInit, OnDestroy 
         this.loading$.next(false);
         throw new Error(err.message);
       },
-      () => this.entitiesChange$.complete()
+      () => this.entitiesChange$.complete(),
     );
 
-    let stateLoadedFromCookie = this.cookieStateKey
-      ? this.loadStateFromCookie() : false;
-
     if (this.updateRouterState) {
-      this.pageSubscription = this.route.queryParams
-        .subscribe((queryParams: Params) => {
-        if (stateLoadedFromCookie) {
-          stateLoadedFromCookie = false;
-          return;
-        }
-        this.updateFromParameters(queryParams);
-      });
-    }
-
-    this.evaluateDefaultView();
-
-    if (this.loadOnInit) {
+      this.pageSubscription = this.route.queryParams.subscribe(
+        (queryParams: Params) => {
+          this.updateFromParameters(queryParams);
+          this.loadData();
+        },
+      );
+    } else {
+      this.loadStateFromCookie();
       this.loadData();
     }
+    this.evaluateDefaultView();
   }
 
   private hasTemplate(view: ViewRepresentation): boolean {
-    return (view === 'list' && !!this.listTemplate) ||
+    return (
+      (view === 'list' && !!this.listTemplate) ||
       (view === 'table' && !!this.tableTemplate) ||
-      (view === 'thumbnail' && !!this.thumbnailTemplate);
+      (view === 'thumbnail' && !!this.thumbnailTemplate)
+    );
   }
 
   private evaluateDefaultView(): void {
@@ -255,21 +260,16 @@ export class EntityListComponent<T extends Entity> implements OnInit, OnDestroy 
     this.limit = parsed.limit;
     this.sort = parsed.sort;
     this.filter = parsed.filter;
-    if (this.loadOnInit) {
-      this.loadData();
-    }
   }
 
-  private loadStateFromCookie(): boolean {
+  private loadStateFromCookie() {
     const state = this.cookiePersistence.loadState();
-    if (!state) {
-      return false;
+    if (state) {
+      this.n = state.n ?? 0;
+      this.limit = state.limit ?? 10;
+      this.sort = state.sort ?? null;
+      this.filter = new Map(state.filter ?? []);
     }
-    this.n = state.n ?? 0;
-    this.limit = state.limit ?? 10;
-    this.sort = state.sort ?? null;
-    this.filter = new Map(state.filter ?? []);
-    return true;
   }
 
   public loadData(): void {
@@ -289,18 +289,41 @@ export class EntityListComponent<T extends Entity> implements OnInit, OnDestroy 
 
   conditionalRouteUpdate(): Promise<boolean> {
     if (this.updateRouterState) {
-      const extras =
-        UrlStateAdapter.buildRouteParameters(
-          this.n,
-          this.limit,
-          this.sort,
-          this.filter,
-          this.queryParamsMode,
-          this.route
-        );
+      const extras = UrlStateAdapter.buildRouteParameters(
+        this.n,
+        this.limit,
+        this.sort,
+        this.filter,
+        this.queryParamsMode,
+        this.route,
+      );
+      // Get current active query parameters from the URL
+      const currentParams = this.route.snapshot.queryParams;
+      const newParams = extras.queryParams || {};
+
+      // Check if the old and new query parameters are identical
+      if (this.areParamsEqual(currentParams, newParams)) {
+        return Promise.resolve(true);
+      }
       return this.router.navigate([], extras);
     }
     return Promise.resolve(true);
+  }
+
+  // Helper method to deeply compare query parameter objects
+  private areParamsEqual(params1: any, params2: any): boolean {
+    const keys1 = Object.keys(params1);
+    const keys2 = Object.keys(params2);
+
+    if (keys1.length !== keys2.length) return false;
+
+    for (const key of keys1) {
+      // Convert to strings to safely compare numbers/booleans from URL string types
+      if (String(params1[key]) !== String(params2[key])) {
+        return false;
+      }
+    }
+    return true;
   }
 
   get providedTemplatesCount(): number {
@@ -348,7 +371,7 @@ export class EntityListComponent<T extends Entity> implements OnInit, OnDestroy 
     } else {
       this.removeFilter(id);
     }
-    this.saveAndUpdateData();
+    this.refreshData(this.searchRequest, true);
   }
 
   removeFilter(id?: string) {
@@ -373,10 +396,19 @@ export class EntityListComponent<T extends Entity> implements OnInit, OnDestroy 
   }
 
   private saveAndUpdateData() {
-    this.cookiePersistence.saveState(this.n, this.limit, this.sort, this.filter);
-    this.conditionalRouteUpdate().then(() => {
+    if (this.updateRouterState) {
+      this.conditionalRouteUpdate().then(() => {
+        this.loadData();
+      });
+    } else {
+      this.cookiePersistence.saveState(
+        this.n,
+        this.limit,
+        this.sort,
+        this.filter,
+      );
       this.loadData();
-    });
+    }
   }
 
   ngOnDestroy(): void {

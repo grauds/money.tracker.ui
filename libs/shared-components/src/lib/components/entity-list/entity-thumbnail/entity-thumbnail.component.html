@@ -9,11 +9,6 @@
            class="full-bleed-image"
            (load)="onImageLoad()"
       />
-      @if (isImageLoading) {
-        <div class="loader-overlay">
-          <div class="loader"></div>
-        </div>
-      }
     } @else {
       <img [ngSrc]="'assets/coming-soon.png'"
            width="170"

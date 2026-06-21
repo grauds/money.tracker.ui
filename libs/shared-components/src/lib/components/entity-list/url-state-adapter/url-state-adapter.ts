@@ -9,6 +9,8 @@ import {
  * including parsing and constructing query parameters.
  */
 export class UrlStateAdapter {
+
+  private static defaultSort: RestSort = { name: 'ASC' };
   /**
    * Parses query parameters and returns an object containing pagination,
    * sorting, and filtering information.
@@ -33,7 +35,7 @@ export class UrlStateAdapter {
     n: number;
     limit: number;
     sort: RestSort | null;
-    filter: Map<string, string>
+    filter: Map<string, string>;
   } {
     const page = Number.parseInt(queryParams['page'], 10);
     const n = isNaN(page) ? 0 : page;
@@ -41,10 +43,12 @@ export class UrlStateAdapter {
     const size = Number.parseInt(queryParams['size'], 10);
     const limit = isNaN(size) ? 10 : size;
 
-    let sort: RestSort | null = null;
+    let sort: RestSort | null = UrlStateAdapter.defaultSort;
     const sortParam = queryParams['sort'];
     if (sortParam) {
-      const sortString: string = Array.isArray(sortParam) ? sortParam[0] : sortParam;
+      const sortString: string = Array.isArray(sortParam)
+        ? sortParam[0]
+        : sortParam;
       const s = sortString.split(',');
       if (s.length === 2) {
         sort = { [s[0]]: s[1] as SortOrder };
@@ -88,13 +92,13 @@ export class UrlStateAdapter {
     sort: RestSort | null,
     filter: Map<string, string>,
     queryParamsMode: 'merge' | 'preserve' | '' | null,
-    route: ActivatedRoute
+    route: ActivatedRoute,
   ): NavigationExtras {
-
     const queryParams: Params = { page: n, size: limit };
     if (sort) {
-      queryParams['sort']
-        = Object.keys(sort).map(k => `${k},${sort[k]}`).join(',');
+      queryParams['sort'] = Object.keys(sort)
+        .map((k) => `${k},${sort[k]}`)
+        .join(',');
     }
     filter.forEach((value, key) => {
       queryParams[key] = value;
@@ -102,7 +106,12 @@ export class UrlStateAdapter {
 
     if (queryParamsMode === 'merge') {
       route.snapshot.queryParamMap?.keys.forEach((key) => {
-        if (key !== 'page' && key !== 'size' && key !== 'sort' && !filter.has(key)) {
+        if (
+          key !== 'page' &&
+          key !== 'size' &&
+          key !== 'sort' &&
+          !filter.has(key)
+        ) {
           queryParams[key] = null;
         }
       });

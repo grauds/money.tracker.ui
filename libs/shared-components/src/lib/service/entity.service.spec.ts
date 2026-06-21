@@ -120,7 +120,7 @@ describe('EntityGroupsService', () => {
 
       mockHttp.get.mockReturnValue(of(mockTotalValue));
 
-      service.getExpensesSum(id, moneyCode).subscribe((total) => {
+      service.getOperationsSum(id, moneyCode).subscribe((total) => {
         expect(mockHttp.get).toHaveBeenCalledWith(
           'http://example.com/expenseItems/search/sumMockEntityExpenses',
           {
@@ -136,7 +136,7 @@ describe('EntityGroupsService', () => {
     });
 
     it('should bypass the network entirely and return 0 if the tracking id reference drops to empty string', (done) => {
-      service.getExpensesSum('', 'USD' as any).subscribe((total) => {
+      service.getOperationsSum('', 'USD' as any).subscribe((total) => {
         expect(mockHttp.get).not.toHaveBeenCalled();
         expect(total).toBe(0);
         done();

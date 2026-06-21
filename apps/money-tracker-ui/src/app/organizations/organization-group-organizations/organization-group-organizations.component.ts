@@ -22,7 +22,9 @@ export class OrganizationGroupOrganizationsComponent {
   }
 
   setEntities($event: Entity[]) {
-    this.children = $event;
+    setTimeout(() => {
+      this.children = $event;
+    })
   }
 
   getQueryArguments(): RequestParam {

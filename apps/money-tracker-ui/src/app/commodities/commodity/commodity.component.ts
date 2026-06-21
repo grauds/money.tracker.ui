@@ -6,7 +6,6 @@ import {
 } from '@lagoshny/ngx-hateoas-client';
 import {
   Commodity,
-  MoneyType,
   CommodityGroup,
   ExpenseItem,
 } from "@clematis-shared/model";
@@ -19,14 +18,13 @@ import {
   RESOURCE_TYPE,
   PARENT_RESOURCE_TYPE,
   EntityService
-} from "@clematis-shared/shared-components";
+} from '@clematis-shared/shared-components';
 import { Title } from '@angular/platform-browser';
 import { formatDate } from '@angular/common';
 import {
-  takeUntil,
   catchError,
   EMPTY,
-  forkJoin
+  forkJoin,
 } from "rxjs";
 
 @Component({
@@ -51,9 +49,7 @@ export class CommodityComponent
     'organizationname',
   ];
 
-  defaultUnit: string | undefined;
-
-  defaultMoneyType: MoneyType | undefined;
+  unitTypeName: string | undefined;
 
   image: PhotoUploaderComponent | undefined;
 
@@ -84,14 +80,7 @@ export class CommodityComponent
       return;
     }
 
-    this.defaultUnit = entity.unittype?.shortName;
-    const moneyType$ = entity.getRelation<MoneyType>('defaultMoneyType')
-      .pipe(
-        catchError((err) => {
-          console.log(err)
-          return EMPTY;
-        })
-      );
+    this.unitTypeName = entity.unittype?.shortName;
 
     const totals$ = this.commodityService
       .getTotalQtyForCommodity(this.id)
@@ -102,36 +91,26 @@ export class CommodityComponent
         })
       );
 
-    forkJoin({
-      moneyType: moneyType$,
-      totals: totals$,
-    }).pipe(
-      takeUntil(this.destroy$)
-    ).subscribe({
-      next: (result) => {
-
-        if (result.moneyType) {
-          this.defaultMoneyType = result.moneyType;
-        }
-
-        if (result.totals) {
-          this.totalQty = result.totals;
-          if (this.totalQty) {
-            this.averagePrice = this.expensesSum / this.totalQty;
+      forkJoin({
+        totals: totals$,
+      }).subscribe({
+        next: (result) => {
+          if (result.totals) {
+            this.totalQty = result.totals;
+            if (this.totalQty) {
+              this.averagePrice = this.expensesSum / this.totalQty;
+            }
           }
-        }
-      },
-      error: (err) => console.error(
-        'An error occurred loading commodity data', err
-      )
-    });
+        },
+        error: (err) =>
+          console.error('An error occurred loading commodity data', err),
+      });
   }
 
   override clearPreviousData() {
     super.clearPreviousData();
 
-    this.defaultUnit = undefined;
-    this.defaultMoneyType = undefined;
+    this.unitTypeName = undefined;
     this.totalQty = undefined;
     this.averagePrice = undefined;
   }

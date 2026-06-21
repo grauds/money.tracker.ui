@@ -29,13 +29,6 @@
       </div>
     </div>
 
-    @if (!(children && children.length > 0)) {
-      <app-commodity-group-commodities
-        [id]="id"
-        >
-      </app-commodity-group-commodities>
-    }
-
     <app-entity-list
       [searchRequest]="{
         queryArguments: getQueryArguments(),
@@ -46,5 +39,9 @@
       [sort]="getSort()"
     ></app-entity-list>
 
+    <app-commodity-group-commodities
+      [id]="id"
+    >
+    </app-commodity-group-commodities>
   </div>
 }

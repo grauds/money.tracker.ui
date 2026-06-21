@@ -23,16 +23,16 @@
       @if(totalQty && totalQty > 0) {
         <div class="product-meta" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; font-size: 0.95rem; color: #495057;">
           <div><strong>Average Price:</strong>
-            {{ averagePrice | currencySpace :  defaultMoneyType?.code  :'symbol' }} / {{ defaultUnit }}
+            {{ averagePrice | currencySpace :  'RUB'  :'symbol' }} / {{ unitTypeName }}
           </div>
-          <div><strong>Quantity:</strong> {{ totalQty }} {{ defaultUnit }}</div>
+          <div><strong>Quantity:</strong> {{ totalQty }} {{ unitTypeName }}</div>
           <div style="font-size: 1.1rem; margin-top: 4px; color: #212529;">
             <strong>Total:</strong>
-            {{ expensesSum | currencySpace :  defaultMoneyType?.code  :'symbol' }}
+            {{ expensesSum | currencySpace :  'RUB'  :'symbol' }}
           </div>
         </div>
       }
-      @if(!totalQty || totalQty == 0) {
+      @if((!this.expenses || this.expenses.length == 0) && !loading) {
         <div class="product-meta" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; font-size: 0.95rem; color: #495057;">
           <strong>This item was never purchased</strong>
         </div>
@@ -104,23 +104,23 @@
               {{ element.tradeplace.name }}
             </div>
           }
-        </td>
-      </ng-container>
+      </td>
+    </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-  </ng-template>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</ng-template>
 
-  <app-entity-list
-    [tableTemplate]="operationsTable"
-    [updateRouterState]="false"
-    [searchServiceOverride]="expenseService"
-    [cookieStateKey]="'commodity-expense'"
-    [searchRequest]="{
-      queryArguments: getQueryArguments(),
-      queryName: 'commodity'
-    }"
-    (loading$)="setLoading($event)"
-    (entitiesChange$)="setEntities($event)"
-  ></app-entity-list>
+<app-entity-list
+  [updateRouterState]="false"
+  [tableTemplate]="operationsTable"
+  [searchServiceOverride]="expenseService"
+  [cookieStateKey]="'commodity-expense'"
+  [searchRequest]="{
+    queryArguments: getQueryArguments(),
+    queryName: 'commodity'
+  }"
+  (loading$)="setLoading($event)"
+  (entitiesChange$)="setEntities($event)"
+></app-entity-list>

@@ -52,7 +52,23 @@ export class EntityService<T extends Entity, P extends Entity>
     return of(new ResourceCollection<P>());
   }
 
-  getExpensesSum(id: string, moneyCode: MoneyTypes): Observable<number> {
+  getIncomeSum(id: string, moneyCode: MoneyTypes): Observable<number> {
+    if (id) {
+      const className = this.resourceType.name;
+      return this.http.get<number>(
+        this.getUrl(`/incomeItems/search/sum${className}Income`),
+        {
+          params: {
+            id: id,
+            moneyCode: moneyCode,
+          },
+        }
+      );
+    }
+    return of(0);
+  }
+
+  getOperationsSum(id: string, moneyCode: MoneyTypes): Observable<number> {
     if (id) {
       const className = this.resourceType.name;
       return this.http.get<number>(

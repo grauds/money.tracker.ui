@@ -81,7 +81,7 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
     this.pageSubscription = this.router.events
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
-        // see also
+
         if (val instanceof NavigationEnd) {
           this.onInit();
         }
@@ -101,11 +101,11 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          next: (entity: T) => {
+          next: () => {
             this.setLoading(false);
           },
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          error: (err) => {
+          error: () => {
             this.setLoading(false);
           },
         });
@@ -184,7 +184,7 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
     // Ensure expensesSum$ emits a fallback 0 and completes instead of
     // swallowing into EMPTY
     const expensesSum$ = this.entityService
-      .getExpensesSum(this.id, MoneyTypes.RUB)
+      .getOperationsSum(this.id, MoneyTypes.RUB)
       .pipe(
         catchError((err) => {
           console.error('Failed to load expenses sum:', err);

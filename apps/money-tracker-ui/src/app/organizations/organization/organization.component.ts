@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   HateoasResourceService,
@@ -11,13 +11,14 @@ import {
   OrganizationGroup
 } from "@clematis-shared/model";
 import {
-  EntityComponent, EntityService,
+  EntityComponent,
   ExpenseItemsService,
   OrganizationGroupsService,
   OrganizationsService,
+  RESOURCE_TYPE,
   PARENT_RESOURCE_TYPE,
-  RESOURCE_TYPE
-} from "@clematis-shared/shared-components";
+  EntityService
+} from '@clematis-shared/shared-components';
 import { Title } from '@angular/platform-browser';
 import { formatDate } from '@angular/common';
 
@@ -26,18 +27,22 @@ import { formatDate } from '@angular/common';
   templateUrl: './organization.component.html',
   styleUrls: ['./organization.component.sass'],
   providers: [
-    { provide: 'searchService', useClass: ExpenseItemsService },
     EntityService,
     { provide: PARENT_RESOURCE_TYPE, useValue: CommodityGroup },
-    { provide: RESOURCE_TYPE, useValue: Organization }
+    { provide: RESOURCE_TYPE, useValue: Organization },
   ],
   standalone: false,
 })
 export class OrganizationComponent
   extends EntityComponent<Organization, OrganizationGroup>
-  implements OnInit, OnDestroy
-{
-  displayedColumns: string[] = ['transferdate', 'name', 'price', 'qty'];
+  implements OnDestroy {
+
+  displayedColumns: string[] = [
+    'transferdate',
+    'name',
+    'price',
+    'qty'
+  ];
 
   expenses: ExpenseItem[] = [];
 
@@ -45,8 +50,8 @@ export class OrganizationComponent
 
   constructor(
     resourceService: HateoasResourceService,
+    public readonly expenseService: ExpenseItemsService,
     private readonly organizationsService: OrganizationsService,
-    private readonly organizationGroupsService: OrganizationGroupsService,
     entityService: EntityService<Organization, OrganizationGroup>,
     route: ActivatedRoute,
     router: Router,
@@ -94,7 +99,7 @@ export class OrganizationComponent
       },
       legend: {
         data: ['Total', 'Price'],
-        bottom: 0
+        bottom: 0,
       },
       xAxis: {
         type: 'category',
@@ -102,7 +107,7 @@ export class OrganizationComponent
           return formatDate(
             expense.transferDate,
             'shortDate',
-            navigator.language
+            navigator.language,
           );
         }),
       },

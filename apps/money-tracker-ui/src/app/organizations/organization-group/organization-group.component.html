@@ -16,6 +16,12 @@
       </div>
     </div>
 
+    <div>
+      <!--ya-map [center]="[55.751952, 37.600739]" [zoom]="12">
+        <ya-placemark [geometry]="[55.751952, 37.600739]"></ya-placemark>
+      </ya-map-->
+    </div>
+
     <app-entity-list
       [searchRequest]="{
         queryArguments: getQueryArguments(),
@@ -26,17 +32,10 @@
       [sort]="getSort()"
     ></app-entity-list>
 
-    @if (!(children && children.length > 0)) {
-      <app-organization-group-organizations
-        [id]="id"
-        >
-      </app-organization-group-organizations>
-    }
+    <app-organization-group-organizations
+      [id]="id"
+    >
+    </app-organization-group-organizations>
 
-    <div>
-      <!--ya-map [center]="[55.751952, 37.600739]" [zoom]="12">
-        <ya-placemark [geometry]="[55.751952, 37.600739]"></ya-placemark>
-      </ya-map-->
-    </div>
   </div>
 }

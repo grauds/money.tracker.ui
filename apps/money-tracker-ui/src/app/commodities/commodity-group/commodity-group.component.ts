@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   HateoasResourceService,
@@ -33,7 +33,6 @@ import { Title } from '@angular/platform-browser';
 })
 export class CommodityGroupComponent
   extends EntityComponent<CommodityGroup, CommodityGroup>
-  implements OnInit
 {
   @ViewChild(EntityListComponent)
   entityList!: EntityListComponent<CommodityGroup>;
@@ -52,14 +51,7 @@ export class CommodityGroupComponent
   }
 
   override onEntityLoaded(entity: CommodityGroup) {
-    if (!entity) {
-      return;
-    }
-
-    this.entityList?.refreshData({
-      queryArguments: this.getQueryArguments(),
-      queryName: 'recursiveByParentId',
-    });
+    console.log('onEntityLoaded', this.getQueryArguments());
   }
 
   getQueryArguments(): RequestParam {

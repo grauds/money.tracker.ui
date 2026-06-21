@@ -62,7 +62,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import {
-  CurrencySpacePipe, EntityListComponent,
+  CurrencySpacePipe,
   EnvironmentService,
   SharedComponentsModule
 } from "@clematis-shared/shared-components";
