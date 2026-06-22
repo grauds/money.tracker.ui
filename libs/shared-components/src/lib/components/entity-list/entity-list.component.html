@@ -118,7 +118,10 @@
                 @case ('thumbnail') {
                   <div class="thumbnail-grid">
                     @for (a of entities; track trackEntity(a)) {
-                      <app-entity-thumbnail [entity]="a"></app-entity-thumbnail>
+                      <app-entity-thumbnail
+                        [entity]="a"
+                        [entityName]="this.entityName"
+                      ></app-entity-thumbnail>
                     }
                   </div>
                 }

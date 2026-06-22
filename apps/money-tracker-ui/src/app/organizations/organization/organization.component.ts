@@ -14,6 +14,8 @@ import {
   EntityComponent,
   ExpenseItemsService,
   IncomeItemsService,
+  StorageService,
+  PhotoUploaderComponent,
   RESOURCE_TYPE,
   PARENT_RESOURCE_TYPE,
   EntityService
@@ -35,6 +37,8 @@ export class OrganizationComponent
   extends EntityComponent<Organization, OrganizationGroup>
   implements OnDestroy
 {
+  image: PhotoUploaderComponent | undefined;
+
   income: IncomeItem[] = [];
 
   expenses: ExpenseItem[] = [];
@@ -44,11 +48,13 @@ export class OrganizationComponent
     public readonly expenseService: ExpenseItemsService,
     public readonly incomeService: IncomeItemsService,
     entityService: EntityService<Organization, OrganizationGroup>,
+    private readonly uploadService: StorageService,
     route: ActivatedRoute,
     router: Router,
     title: Title,
   ) {
     super(Organization, resourceService, route, router, title, entityService);
+    this.image = new PhotoUploaderComponent(this.uploadService);
   }
 
   getQueryArguments(): RequestParam {

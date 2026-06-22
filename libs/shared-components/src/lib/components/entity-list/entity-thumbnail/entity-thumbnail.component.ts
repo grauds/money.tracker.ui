@@ -1,27 +1,28 @@
 import { Component, Input } from '@angular/core';
 import { Entity } from '@clematis-shared/model';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { NgOptimizedImage } from '@angular/common';
 import { AuthImagePipe } from "../../photo-uploader/AuthImagePipe";
 import { StorageService } from "../../../service/storage.service";
 
 @Component({
-  selector: "app-entity-thumbnail",
+  selector: 'app-entity-thumbnail',
   standalone: true,
-  templateUrl: "./entity-thumbnail.component.html",
+  templateUrl: './entity-thumbnail.component.html',
   styleUrls: ['./entity-thumbnail.component.sass'],
   imports: [
     RouterLink,
     AsyncPipe,
     AuthImagePipe,
     NgOptimizedImage,
-    AuthImagePipe
-  ]
+    AuthImagePipe,
+  ],
 })
 export class EntityThumbnailComponent<T extends Entity> {
-
   private _entity!: T;
+
+  @Input() entityName: string | undefined;
 
   entityLink: string | undefined;
 
@@ -29,8 +30,8 @@ export class EntityThumbnailComponent<T extends Entity> {
 
   isImageLoading = true;
 
-  constructor(private router: Router,
-              private storageService: StorageService
+  constructor(
+    private storageService: StorageService,
   ) {}
 
   get entity(): T {
@@ -50,8 +51,8 @@ export class EntityThumbnailComponent<T extends Entity> {
   }
 
   getImageUrl(): string {
-    if (this.entity.name && this.id) {
-      return this.storageService.getURL('commodities', this.id, 'main');
+    if (this.entity.name && this.entityName && this.id) {
+      return this.storageService.getURL(this.entityName, this.id, 'main');
     } else {
       return 'assets/product-placeholder.png';
     }

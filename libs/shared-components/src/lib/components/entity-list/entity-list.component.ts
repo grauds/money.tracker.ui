@@ -124,6 +124,8 @@ export class EntityListComponent<T extends Entity>
   @Input() listTemplate?: TemplateRef<EntityTemplateContext<T>>;
   @Input() tableTemplate?: TemplateRef<EntityCollectionContext<T>>;
   @Input() thumbnailTemplate?: TemplateRef<EntityTemplateContext<T>>;
+  @Input() entityName?: string | undefined;
+
   @Input() filterTemplate: TemplateRef<EntityTemplateContext<T>> | undefined;
 
   @Input() sort: RestSort | null = null;

@@ -43,13 +43,13 @@ export class CommodityComponent
   extends EntityComponent<Commodity, CommodityGroup>
   implements OnDestroy
 {
-  unitTypeName: string | undefined;
-
   image: PhotoUploaderComponent | undefined;
 
   income: IncomeItem[] = [];
 
   expenses: ExpenseItem[] = [];
+
+  unitTypeName: string | undefined;
 
   averagePrice: number | undefined;
 

@@ -6,6 +6,14 @@
     <div class="back-area">
       <div class="jumbotron summary-header">
 
+        <div class="product-media" style="flex-shrink: 0; background: #ffffff; padding: 12px; border: 1px solid #dee2e6; border-radius: 6px;">
+          <app-photo-uploader
+            [entityName]="'organizations'"
+            [entityId]="id"
+            [extraPath]="'main'"
+          ></app-photo-uploader>
+        </div>
+
         <!-- Left Side: Title and Description -->
         <div class="summary-details">
           <h2 style="margin: 0; font-size: 1.75rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
