@@ -35,6 +35,8 @@ export { MoneyExchangeService } from './lib/service/money-exchange.service';
 export { MoneyTypeService } from './lib/service/money-type.service';
 
 export { EntityService } from './lib/service/entity.service';
+export { EntityIncomeComponent } from './lib/components/entity/entity-income/entity-income.component'
+export { EntityExpensesComponent } from './lib/components/entity/entity-expenses/entity-expenses.component'
 
 export { StatsService } from './lib/service/stats.service';
 export { StorageService } from './lib/service/storage.service';
