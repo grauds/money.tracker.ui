@@ -22,7 +22,36 @@
       </ya-map-->
     </div>
 
+
+    <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
+      <div>
+        <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+          Group Organizations
+        </h3>
+        <small style="color: #6c757d; font-size: 0.85rem;">List of this group and subgroups organizations</small>
+      </div>
+    </div>
+
+    <app-organization-group-organizations
+      [id]="id"
+    >
+    </app-organization-group-organizations>
+
+
+    @if (this.children && this.children.length > 0) {
+      <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
+        <div>
+          <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+            Subgroups
+          </h3>
+          <small style="color: #6c757d; font-size: 0.85rem;">Child groups and some stats (to be updated)</small>
+        </div>
+      </div>
+    }
+
     <app-entity-list
+      [updateRouterState]="false"
+      [cookieStateKey]="'organization-group-subgroups'"
       [searchRequest]="{
         queryArguments: getQueryArguments(),
         queryName: 'recursiveByParentId'
@@ -31,11 +60,5 @@
       (entitiesChange$)="setEntities($event)"
       [sort]="getSort()"
     ></app-entity-list>
-
-    <app-organization-group-organizations
-      [id]="id"
-    >
-    </app-organization-group-organizations>
-
   </div>
 }

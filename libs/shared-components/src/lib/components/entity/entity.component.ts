@@ -1,5 +1,5 @@
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { Entity, MoneyTypes, Utils } from "@clematis-shared/model";
+import { Entity, MoneyType, MoneyTypes, Utils } from '@clematis-shared/model';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 import { Title } from '@angular/platform-browser';
 import {
@@ -15,9 +15,9 @@ import {
   takeUntil,
   tap,
   throwError
-} from "rxjs";
-import { EntityService } from "../../service/entity.service";
-import { Directive, OnDestroy, OnInit } from "@angular/core";
+} from 'rxjs';
+import { EntityService } from '../../service/entity.service';
+import { Directive, OnDestroy, OnInit } from '@angular/core';
 
 /**
  * Abstract component for managing entities of generic types T and P, where
@@ -70,6 +70,8 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
 
   protected destroy$ = new Subject<void>();
 
+  currency: MoneyType = new MoneyType();
+
   protected constructor(
     private type: new () => T,
     protected resourceService: HateoasResourceService,
@@ -81,7 +83,6 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
     this.pageSubscription = this.router.events
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
-
         if (val instanceof NavigationEnd) {
           this.onInit();
         }
@@ -184,21 +185,34 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
     // Ensure expensesSum$ emits a fallback 0 and completes instead of
     // swallowing into EMPTY
     const expensesSum$ = this.entityService
-      .getOperationsSum(this.id, MoneyTypes.RUB)
+      //.getExpensesSum(this.id, this.currency.name)
+      .getExpensesSum(this.id, MoneyTypes.RUB)
       .pipe(
-        catchError((err) => {
-          console.error('Failed to load expenses sum:', err);
-          return of(0); // Return a default value instead of breaking the
+        catchError(() => {
+          return of(0);
+          // Return a default value instead of breaking the
           // forkJoin stream
         }),
         defaultIfEmpty(0),
       );
 
-    // forkJoin will now guarantee execute because its dependencies are
+    const incomeSum$ = this.entityService
+      //.getIncomeSum(this.id, this.currency.name)
+      .getIncomeSum(this.id, MoneyTypes.RUB)
+      .pipe(
+        catchError(() => {
+          return of(0);
+          // Return a default value instead of breaking the forkJoin stream
+        }),
+        defaultIfEmpty(0),
+      );
+
+    // forkJoin will now guarantee execution because its dependencies are
     // guaranteed to emit and complete!
     return forkJoin({
-      parent: parent$,
+      parent: parent$, // todo: parent should finish earlier
       expensesSum: expensesSum$,
+      incomeSum: incomeSum$,
     }).pipe(
       tap((result) => {
         // Explicitly check for a valid parent object
@@ -209,6 +223,7 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
         }
         // Always assign the expense total value (even if it fell back to 0)
         this.expensesSum = result.expensesSum;
+        this.incomeSum = result.incomeSum;
       }),
       switchMap((result) => {
         if (result.parent) {
@@ -227,10 +242,6 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
         return of(undefined);
       }),
       catchError((err) => {
-        console.error(
-          'An error occurred loading base entity structural data',
-          err,
-        );
         return throwError(() => err);
       }),
     );
@@ -239,7 +250,6 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
   clearPreviousData() {
     this.parent = undefined;
     this.parentLink = undefined;
-    this.path = [];
     this.incomeSum = 0;
     this.expensesSum = 0;
   }

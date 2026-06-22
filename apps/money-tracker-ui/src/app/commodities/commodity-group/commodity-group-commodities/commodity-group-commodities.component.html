@@ -1,8 +1,5 @@
 <app-entity-list
-  [searchRequest]="{
-    queryArguments: getQueryArguments(),
-    queryName: 'recursiveCommoditiesByGroupId'
-  }"
+  [searchRequest]="searchRequest"
   (loading$)="setLoading($event)"
   (entitiesChange$)="setEntities($event)"
   [sort]="getSort()"

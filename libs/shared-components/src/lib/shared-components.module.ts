@@ -32,6 +32,7 @@ import { OrganizationGroupsService } from './service/organization-groups.service
 import { ExpenseItemsService } from './service/expense-items.service';
 import { IncomeItemsService } from './service/income-items.service';
 import { StatsService } from './service/stats.service';
+import { EntityService } from './service/entity.service';
 
 import { ErrorDialogService } from './error/error-dialog/error-dialog.service';
 import { GlobalErrorHandler } from './error/global-error-handler';
@@ -52,7 +53,9 @@ import { PhotoUploaderComponent } from "./components/photo-uploader/photo-upload
 import { CurrencySpacePipe } from "./components/currency-space-pipe/currency-space-pipe";
 import { EntityThumbnailComponent } from "./components/entity-list/entity-thumbnail/entity-thumbnail.component";
 import { EntityNameFilterComponent } from "./components/entity-list/entity-name-filter/entity-name-filter.component";
-import { EntityService } from "./service/entity.service";
+import { EntityExpensesComponent } from "./components/entity/entity-expenses/entity-expenses.component";
+import { EntityIncomeComponent } from "./components/entity/entity-income/entity-income.component";
+import { NgxEchartsDirective } from 'ngx-echarts';
 
 @NgModule({
   imports: [
@@ -77,7 +80,8 @@ import { EntityService } from "./service/entity.service";
     ErrorMessageComponent,
     PhotoUploaderComponent,
     CurrencySpacePipe,
-    EntityThumbnailComponent
+    EntityThumbnailComponent,
+    NgxEchartsDirective,
   ],
   exports: [
     EntityElementComponent,
@@ -88,6 +92,8 @@ import { EntityService } from "./service/entity.service";
     StatsTotalsComponent,
     PhotoUploaderComponent,
     EntityNameFilterComponent,
+    EntityExpensesComponent,
+    EntityIncomeComponent,
   ],
   declarations: [
     EntityListComponent,
@@ -100,7 +106,9 @@ import { EntityService } from "./service/entity.service";
     MoneyTypeSelectorComponent,
     DateRangeSelectorComponent,
     StatsTotalsComponent,
-    EntityNameFilterComponent
+    EntityNameFilterComponent,
+    EntityExpensesComponent,
+    EntityIncomeComponent,
   ],
   providers: [
     AccountsService,
@@ -126,7 +134,7 @@ import { EntityService } from "./service/entity.service";
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorHandlerInterceptor,
       multi: true,
-    }
+    },
   ],
 })
 export class SharedComponentsModule {}

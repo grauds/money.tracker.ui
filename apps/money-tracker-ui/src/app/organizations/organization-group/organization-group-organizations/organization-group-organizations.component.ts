@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
-import { Entity } from '@clematis-shared/model';
-import { RequestParam, Sort } from '@lagoshny/ngx-hateoas-client';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { OrganizationsService } from '@clematis-shared/shared-components';
+import { RequestParam, Sort } from '@lagoshny/ngx-hateoas-client';
+import { Entity } from '@clematis-shared/model';
 
 @Component({
   selector: 'app-organization-group-organizations',
@@ -10,12 +10,32 @@ import { OrganizationsService } from '@clematis-shared/shared-components';
   providers: [{ provide: 'searchService', useClass: OrganizationsService }],
   standalone: false,
 })
-export class OrganizationGroupOrganizationsComponent {
+export class OrganizationGroupOrganizationsComponent implements OnChanges {
   @Input() id = '';
 
   loading = false;
 
   children: Entity[] = [];
+
+  searchRequest!: {
+    queryArguments: RequestParam;
+    queryName: string;
+  };
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['id']) {
+      this.updateSearchRequest();
+    }
+  }
+
+  updateSearchRequest() {
+    this.searchRequest = {
+      queryArguments: {
+        id: this.id ? this.id : '',
+      },
+      queryName: 'recursiveByParentGroupId',
+    };
+  }
 
   setLoading($event: boolean) {
     this.loading = $event;
@@ -24,7 +44,7 @@ export class OrganizationGroupOrganizationsComponent {
   setEntities($event: Entity[]) {
     setTimeout(() => {
       this.children = $event;
-    })
+    });
   }
 
   getQueryArguments(): RequestParam {

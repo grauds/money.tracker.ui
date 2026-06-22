@@ -6,6 +6,8 @@ import {
   Input,
   OnDestroy,
   OnInit,
+  OnChanges,
+  SimpleChanges,
   Output,
   TemplateRef
 } from "@angular/core";
@@ -111,7 +113,7 @@ export interface EntityCollectionContext<T> {
   standalone: false,
 })
 export class EntityListComponent<T extends Entity>
-  implements OnInit, OnDestroy
+  implements OnInit, OnDestroy, OnChanges
 {
   @Input() searchService!: SearchService<T>;
   @Input() searchServiceOverride?: SearchService<T>;
@@ -234,6 +236,14 @@ export class EntityListComponent<T extends Entity>
     this.evaluateDefaultView();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    const fields: string[] = ['searchRequest', 'sort'];
+    if (this.shouldReloadData(fields, changes)) {
+      this.n = 0;
+      this.saveAndUpdateData();
+    }
+  }
+
   private hasTemplate(view: ViewRepresentation): boolean {
     return (
       (view === 'list' && !!this.listTemplate) ||
@@ -272,9 +282,19 @@ export class EntityListComponent<T extends Entity>
     }
   }
 
-  public loadData(): void {
-    this.loading$.next(true);
-    this.searchRequest$.next(this.searchRequest);
+  shouldReloadData(fields: string[], changes: SimpleChanges) {
+    let shouldReload = false;
+    for (const field of fields) {
+      if (changes[field] && !changes[field].firstChange) {
+        const prev = JSON.stringify(changes[field].previousValue);
+        const curr = JSON.stringify(changes[field].currentValue);
+        if (prev !== curr) {
+          shouldReload = true;
+          break;
+        }
+      }
+    }
+    return shouldReload;
   }
 
   public refreshData(searchRequest?: SearchRequest, resetPages = true): void {
@@ -285,6 +305,11 @@ export class EntityListComponent<T extends Entity>
       this.searchRequest = searchRequest;
     }
     this.saveAndUpdateData();
+  }
+
+  public loadData(): void {
+    this.loading$.next(true);
+    this.searchRequest$.next(this.searchRequest);
   }
 
   conditionalRouteUpdate(): Promise<boolean> {

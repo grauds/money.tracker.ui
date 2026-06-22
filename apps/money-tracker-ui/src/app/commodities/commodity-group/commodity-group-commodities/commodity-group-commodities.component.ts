@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommoditiesService } from '@clematis-shared/shared-components';
 import { RequestParam, Sort } from '@lagoshny/ngx-hateoas-client';
 import { Entity } from '@clematis-shared/model';
@@ -10,19 +10,41 @@ import { Entity } from '@clematis-shared/model';
   providers: [{ provide: 'searchService', useClass: CommoditiesService }],
   standalone: false,
 })
-export class CommodityGroupCommoditiesComponent {
+export class CommodityGroupCommoditiesComponent implements OnChanges {
   @Input() id = '';
 
   loading = false;
 
   children: Entity[] = [];
 
+  searchRequest!: {
+    queryArguments: RequestParam;
+    queryName: string;
+  };
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['id']) {
+      this.updateSearchRequest();
+    }
+  }
+
+  updateSearchRequest() {
+    this.searchRequest = {
+      queryArguments: {
+        id: this.id ? this.id : '',
+      },
+      queryName: 'recursiveCommoditiesByGroupId',
+    };
+  }
+
   setLoading($event: boolean) {
     this.loading = $event;
   }
 
   setEntities($event: Entity[]) {
-    this.children = $event;
+    setTimeout(() => {
+      this.children = $event;
+    });
   }
 
   getQueryArguments(): RequestParam {

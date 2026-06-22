@@ -6,17 +6,17 @@ import {
   Sort,
 } from '@lagoshny/ngx-hateoas-client';
 import {
-  CommodityGroup,
   Entity,
-  ExpenseItem,
+  CommodityGroup,
 } from '@clematis-shared/model';
 import {
-  CommodityGroupService,
   EntityComponent,
-  EntityListComponent, EntityService,
+  EntityListComponent,
+  EntityService,
+  CommodityGroupService,
   RESOURCE_TYPE,
   PARENT_RESOURCE_TYPE
-} from "@clematis-shared/shared-components";
+} from '@clematis-shared/shared-components';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -27,13 +27,14 @@ import { Title } from '@angular/platform-browser';
     { provide: 'searchService', useClass: CommodityGroupService },
     EntityService,
     { provide: RESOURCE_TYPE, useValue: CommodityGroup },
-    { provide: PARENT_RESOURCE_TYPE, useValue: CommodityGroup }
+    { provide: PARENT_RESOURCE_TYPE, useValue: CommodityGroup },
   ],
   standalone: false,
 })
-export class CommodityGroupComponent
-  extends EntityComponent<CommodityGroup, CommodityGroup>
-{
+export class CommodityGroupComponent extends EntityComponent<
+  CommodityGroup,
+  CommodityGroup
+> {
   @ViewChild(EntityListComponent)
   entityList!: EntityListComponent<CommodityGroup>;
 
@@ -41,17 +42,19 @@ export class CommodityGroupComponent
 
   constructor(
     resourceService: HateoasResourceService,
-    private readonly commodityGroupService: CommodityGroupService,
     entityService: EntityService<CommodityGroup, CommodityGroup>,
     route: ActivatedRoute,
     router: Router,
-    title: Title
+    title: Title,
   ) {
-    super(CommodityGroup, resourceService, route, router, title, entityService);
-  }
-
-  override onEntityLoaded(entity: CommodityGroup) {
-    console.log('onEntityLoaded', this.getQueryArguments());
+    super(
+      CommodityGroup,
+      resourceService,
+      route,
+      router,
+      title,
+      entityService
+    );
   }
 
   getQueryArguments(): RequestParam {
@@ -60,10 +63,10 @@ export class CommodityGroupComponent
     };
   }
 
-  setEntities($event: ExpenseItem[]) {
+  setEntities($event: CommodityGroup[]) {
     setTimeout(() => {
       this.children = $event;
-    })
+    });
   }
 
   getSort(): Sort {

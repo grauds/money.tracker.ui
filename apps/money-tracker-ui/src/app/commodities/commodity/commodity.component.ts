@@ -8,11 +8,13 @@ import {
   Commodity,
   CommodityGroup,
   ExpenseItem,
-} from "@clematis-shared/model";
+  IncomeItem
+} from '@clematis-shared/model';
 import {
   CommoditiesService,
   EntityComponent,
   ExpenseItemsService,
+  IncomeItemsService,
   StorageService,
   PhotoUploaderComponent,
   RESOURCE_TYPE,
@@ -20,7 +22,6 @@ import {
   EntityService
 } from '@clematis-shared/shared-components';
 import { Title } from '@angular/platform-browser';
-import { formatDate } from '@angular/common';
 import {
   catchError,
   EMPTY,
@@ -34,24 +35,19 @@ import {
   providers: [
     EntityService,
     { provide: RESOURCE_TYPE, useValue: Commodity },
-    { provide: PARENT_RESOURCE_TYPE, useValue: CommodityGroup }
+    { provide: PARENT_RESOURCE_TYPE, useValue: CommodityGroup },
   ],
   standalone: false,
 })
 export class CommodityComponent
   extends EntityComponent<Commodity, CommodityGroup>
-  implements OnDestroy {
-
-  displayedColumns: string[] = [
-    'transferdate',
-    'price',
-    'qty',
-    'organizationname',
-  ];
-
+  implements OnDestroy
+{
   unitTypeName: string | undefined;
 
   image: PhotoUploaderComponent | undefined;
+
+  income: IncomeItem[] = [];
 
   expenses: ExpenseItem[] = [];
 
@@ -59,17 +55,16 @@ export class CommodityComponent
 
   totalQty: number | undefined;
 
-  option: any = {};
-
   constructor(
     resourceService: HateoasResourceService,
     public readonly expenseService: ExpenseItemsService,
+    public readonly incomeService: IncomeItemsService,
     private readonly commodityService: CommoditiesService,
     private readonly uploadService: StorageService,
     entityService: EntityService<Commodity, CommodityGroup>,
     route: ActivatedRoute,
     router: Router,
-    title: Title
+    title: Title,
   ) {
     super(Commodity, resourceService, route, router, title, entityService);
     this.image = new PhotoUploaderComponent(this.uploadService);
@@ -82,29 +77,27 @@ export class CommodityComponent
 
     this.unitTypeName = entity.unittype?.shortName;
 
-    const totals$ = this.commodityService
-      .getTotalQtyForCommodity(this.id)
-      .pipe(
-        catchError((err) => {
-          console.log(err)
-          return EMPTY;
-        })
-      );
+    const totals$ = this.commodityService.getTotalQtyForCommodity(this.id).pipe(
+      catchError((err) => {
+        console.log(err);
+        return EMPTY;
+      }),
+    );
 
-      forkJoin({
-        totals: totals$,
-      }).subscribe({
-        next: (result) => {
-          if (result.totals) {
-            this.totalQty = result.totals;
-            if (this.totalQty) {
-              this.averagePrice = this.expensesSum / this.totalQty;
-            }
+    forkJoin({
+      totals: totals$,
+    }).subscribe({
+      next: (result) => {
+        if (result.totals) {
+          this.totalQty = result.totals;
+          if (this.totalQty) {
+            this.averagePrice = this.expensesSum / this.totalQty;
           }
-        },
-        error: (err) =>
-          console.error('An error occurred loading commodity data', err),
-      });
+        }
+      },
+      error: (err) =>
+        console.error('An error occurred loading commodity data', err),
+    });
   }
 
   override clearPreviousData() {
@@ -121,70 +114,15 @@ export class CommodityComponent
     };
   }
 
-  setEntities($event: ExpenseItem[]) {
+  setIncome($event: IncomeItem[]) {
+    setTimeout(() => {
+      this.income = $event;
+    });
+  }
+
+  setExpenses($event: ExpenseItem[]) {
     setTimeout(() => {
       this.expenses = $event;
-      this.option = this.getData();
-    })
-  }
-
-  override ngOnDestroy(): void {
-    super.ngOnDestroy();
-  }
-
-  getData() {
-    return {
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow',
-        },
-        formatter: function (params: any) {
-          if (params) {
-            return params
-              .map((param: any) => {
-                return (
-                  param.seriesName + ' : ' + Math.round(param.value * 100) / 100
-                );
-              })
-              .join('<br/>');
-          }
-          return 'No params';
-        },
-      },
-      legend: {
-        data: ['Total', 'Price'],
-        bottom: 0
-      },
-      xAxis: {
-        type: 'category',
-        data: this.expenses.map((expense) => {
-          return formatDate(
-            expense.transferDate,
-            'shortDate',
-            navigator.language
-          );
-        }),
-      },
-      yAxis: {
-        type: 'value',
-      },
-      series: [
-        {
-          name: 'Total',
-          data: this.expenses.map((expense) => {
-            return expense.qty * expense.price;
-          }),
-          type: 'line',
-        },
-        {
-          name: 'Price',
-          data: this.expenses.map((expense) => {
-            return expense.price;
-          }),
-          type: 'line',
-        },
-      ],
-    };
+    });
   }
 }

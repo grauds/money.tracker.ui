@@ -7,6 +7,8 @@ import { Organization } from './organization';
 export class IncomeItem extends Entity {
   commodity: Commodity | undefined;
 
+  price = 0;
+
   total = 0;
 
   tradeplace: Organization | undefined;

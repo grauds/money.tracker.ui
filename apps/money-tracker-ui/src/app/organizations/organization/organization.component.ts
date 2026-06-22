@@ -5,22 +5,20 @@ import {
   RequestParam,
 } from '@lagoshny/ngx-hateoas-client';
 import {
-  CommodityGroup,
-  ExpenseItem,
   Organization,
-  OrganizationGroup
-} from "@clematis-shared/model";
+  OrganizationGroup,
+  ExpenseItem,
+  IncomeItem
+} from '@clematis-shared/model';
 import {
   EntityComponent,
   ExpenseItemsService,
-  OrganizationGroupsService,
-  OrganizationsService,
+  IncomeItemsService,
   RESOURCE_TYPE,
   PARENT_RESOURCE_TYPE,
   EntityService
 } from '@clematis-shared/shared-components';
 import { Title } from '@angular/platform-browser';
-import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-organization',
@@ -28,34 +26,27 @@ import { formatDate } from '@angular/common';
   styleUrls: ['./organization.component.sass'],
   providers: [
     EntityService,
-    { provide: PARENT_RESOURCE_TYPE, useValue: CommodityGroup },
     { provide: RESOURCE_TYPE, useValue: Organization },
+    { provide: PARENT_RESOURCE_TYPE, useValue: OrganizationGroup },
   ],
   standalone: false,
 })
 export class OrganizationComponent
   extends EntityComponent<Organization, OrganizationGroup>
-  implements OnDestroy {
-
-  displayedColumns: string[] = [
-    'transferdate',
-    'name',
-    'price',
-    'qty'
-  ];
+  implements OnDestroy
+{
+  income: IncomeItem[] = [];
 
   expenses: ExpenseItem[] = [];
-
-  option: any = {};
 
   constructor(
     resourceService: HateoasResourceService,
     public readonly expenseService: ExpenseItemsService,
-    private readonly organizationsService: OrganizationsService,
+    public readonly incomeService: IncomeItemsService,
     entityService: EntityService<Organization, OrganizationGroup>,
     route: ActivatedRoute,
     router: Router,
-    title: Title
+    title: Title,
   ) {
     super(Organization, resourceService, route, router, title, entityService);
   }
@@ -66,70 +57,15 @@ export class OrganizationComponent
     };
   }
 
-  setEntities($event: ExpenseItem[]) {
+  setIncome($event: IncomeItem[]) {
+    setTimeout(() => {
+      this.income = $event;
+    });
+  }
+
+  setExpenses($event: ExpenseItem[]) {
     setTimeout(() => {
       this.expenses = $event;
-      this.option = this.getData();
-    })
-  }
-
-  override ngOnDestroy(): void {
-    super.ngOnDestroy();
-  }
-
-  getData() {
-    return {
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow',
-        },
-        formatter: function (params: any) {
-          if (params) {
-            return params
-              .map((param: any) => {
-                return (
-                  param.seriesName + ' : ' + Math.round(param.value * 100) / 100
-                );
-              })
-              .join('<br/>');
-          }
-          return 'No params';
-        },
-      },
-      legend: {
-        data: ['Total', 'Price'],
-        bottom: 0,
-      },
-      xAxis: {
-        type: 'category',
-        data: this.expenses.map((expense) => {
-          return formatDate(
-            expense.transferDate,
-            'shortDate',
-            navigator.language,
-          );
-        }),
-      },
-      yAxis: {
-        type: 'value',
-      },
-      series: [
-        {
-          name: 'Total',
-          data: this.expenses.map((expense) => {
-            return expense.qty * expense.price;
-          }),
-          type: 'line',
-        },
-        {
-          name: 'Price',
-          data: this.expenses.map((expense) => {
-            return expense.price;
-          }),
-          type: 'line',
-        },
-      ],
-    };
+    });
   }
 }

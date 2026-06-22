@@ -1,8 +1,5 @@
 <app-entity-list
-  [searchRequest]="{
-    queryArguments: getQueryArguments(),
-    queryName: 'recursiveByParentGroupId'
-  }"
+  [searchRequest]="searchRequest"
   (loading$)="setLoading($event)"
   (entitiesChange$)="setEntities($event)"
   [sort]="getSort()"

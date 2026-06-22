@@ -14,41 +14,76 @@
     </div>
 
     <!-- Left Side: Product Information -->
-    <!-- Note: Added min-width: 0 to force flex containment -->
-    <div class="product-info" style="flex: 1; min-width: 0;">
-      <h2 style="margin: 0 0 12px 0; font-size: 1.5rem; font-weight: 600; white-space: wrap; overflow: hidden; text-overflow: ellipsis;">
-        {{ entity ? entity.name : 'Not loaded' }}
-      </h2>
+    <div class="product-info" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; font-family: system-ui, -apple-system, sans-serif;">
 
-      @if(totalQty && totalQty > 0) {
-        <div class="product-meta" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; font-size: 0.95rem; color: #495057;">
-          <div><strong>Average Price:</strong>
-            {{ averagePrice | currencySpace :  'RUB'  :'symbol' }} / {{ unitTypeName }}
-          </div>
-          <div><strong>Quantity:</strong> {{ totalQty }} {{ unitTypeName }}</div>
-          <div style="font-size: 1.1rem; margin-top: 4px; color: #212529;">
-            <strong>Total:</strong>
-            {{ expensesSum | currencySpace :  'RUB'  :'symbol' }}
-          </div>
+      <!-- Title Section -->
+      <div style="border-bottom: 1px solid #f1f3f5; padding-bottom: 12px;">
+        <h2 style="margin: 0; font-size: 1.75rem; font-weight: 700; color: #1a1b1e; tracking: -0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+          {{ entity ? entity.name : 'Not loaded' }}
+        </h2>
+      </div>
+
+      <!-- Financial Overview Section -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+        <!-- Income Block (Green Theme) -->
+        <div style="background: #f4fbf7; border: 1px solid #e1f5eb; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #2b8a3e;">Income</span>
+          <strong style="font-size: 1.4rem; font-weight: 700; color: #2b8a3e;">
+            {{ incomeSum | currencySpace : this.currency.name :'symbol' }}
+          </strong>
         </div>
-      }
-      @if((!this.expenses || this.expenses.length == 0) && !loading) {
-        <div class="product-meta" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; font-size: 0.95rem; color: #495057;">
-          <strong>This item was never purchased</strong>
+
+        <!-- Expenses Block (Red Theme) -->
+        <div style="background: #fff5f5; border: 1px solid #ffe3e3; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #c92a2a;">Expenses</span>
+          <strong style="font-size: 1.4rem; font-weight: 700; color: #c92a2a;">
+            {{ expensesSum | currencySpace : this.currency.name :'symbol' }}
+          </strong>
         </div>
-      }
+
+        <!-- Key Metrics Badges (Meta Data) -->
+        @if(totalQty && totalQty > 0) {
+          <div class="product-meta" style="display: flex; flex-wrap: wrap; gap: 12px;">
+            <div style="background: #f8f9fa; border: 1px solid #e9ecef; padding: 8px 14px; border-radius: 8px; font-size: 0.875rem; color: #495057;">
+              <div>
+                <span style="color: #868e96; font-weight: 500; margin-right: 4px;">Average Price:</span>
+                <strong style="color: #212529; font-weight: 600;">{{ averagePrice | currencySpace : this.currency.name :'symbol' }}</strong>
+                <span style="color: #868e96;"> / {{ unitTypeName }}</span>
+              </div>
+              <div>
+                <span style="color: #868e96; font-weight: 500; margin-right: 4px;">Quantity:</span>
+                <strong style="color: #212529; font-weight: 600;">{{ totalQty }} {{ unitTypeName }}</strong>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Dynamic Profit/Loss Balance Tracker -->
+      <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 0.9rem; font-weight: 500; color: #495057;">Net Balance</span>
+        <strong [style.color]="(incomeSum - expensesSum) >= 0 ? '#2b8a3e' : '#c92a2a'" style="font-size: 1.15rem; font-weight: 700;">
+          {{ (incomeSum - expensesSum) | currencySpace : this.currency.name :'symbol' }}
+        </strong>
+      </div>
+
+      <!-- Description Section -->
       @if (entity.description) {
-        <div class="product-description" style="max-height: 200px; overflow-y: auto; font-size: 0.9rem; color: #6c757d; line-height: 1.5; border-top: 1px solid #dee2e6; padding-top: 12px;">
-          {{ entity.description }}
+        <div class="product-description" style="margin-top: 4px; border-top: 1px solid #f1f3f5; padding-top: 16px;">
+          <h4 style="margin: 0 0 8px 0; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #868e96;">Description</h4>
+          <div style="max-height: 140px; overflow-y: auto; font-size: 0.925rem; color: #495057; line-height: 1.6; padding-right: 8px;">
+            {{ entity.description }}
+          </div>
         </div>
       }
+
     </div>
 
   </div>
 }
 
 @if (entity && this.expenses.length > 1) {
-  <div class="d-flex align-items: center; margin: 32px 0 16px 0; padding-left: 12px; border-left: 4px solid #0d6efd;">
+  <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
     <div>
       <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
         Price & Analytics Trends
@@ -56,71 +91,34 @@
       <small style="color: #6c757d; font-size: 0.85rem;">Historical data and purchase distribution</small>
     </div>
   </div>
+}
 
-  <div class="row">
-    <div class="col-12">
-      <div echarts [options]="option" [loading]="loading"></div>
+<app-entity-expenses
+  [expenseService]="expenseService"
+  [cookieStateKey]="'commodity-expense'"
+  [queryArguments]="getQueryArguments()"
+  [queryName]="'commodity'"
+  (loadingChanged)="setLoading($event)"
+  (entitiesChanged)="setExpenses($event)"
+></app-entity-expenses>
+
+@if (entity && this.income.length > 1) {
+  <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
+    <div>
+      <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+        Income & Analytics Trends
+      </h3>
+      <small style="color: #6c757d; font-size: 0.85rem;">Historical data and income distribution</small>
     </div>
   </div>
 }
 
-<ng-template #operationsTable let-entities="entities">
-  <table mat-table [dataSource]="entities">
-    <ng-container matColumnDef="transferdate">
-      <th mat-header-cell *matHeaderCellDef>Transfer Date</th>
-      <td mat-cell *matCellDef="let element">
-        {{ element.transferDate | date : 'fullDate' }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="price">
-      <th mat-header-cell *matHeaderCellDef>Price</th>
-      <td mat-cell *matCellDef="let element">
-        {{ element.price | currencySpace : element.expense.moneyType?.code : 'symbol' }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="qty">
-      <th mat-header-cell *matHeaderCellDef>Qty</th>
-      <td mat-cell *matCellDef="let element">
-        {{ element.qty | number : '1.0-2' }}
-        {{ element.commodity?.unittype?.shortName }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="organizationname">
-      <th mat-header-cell *matHeaderCellDef>Organization</th>
-      <td mat-cell *matCellDef="let element">
-        @if (element.tradeplace && element.tradeplaceLink) {
-          <a
-            routerLink="{{ element.tradeplaceLink }}"
-            >
-            {{ element.tradeplace.name }}</a
-            >
-          }
-
-          @if (element.tradeplace && !element.tradeplaceLink) {
-            <div>
-              {{ element.tradeplace.name }}
-            </div>
-          }
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
-</ng-template>
-
-<app-entity-list
-  [updateRouterState]="false"
-  [tableTemplate]="operationsTable"
-  [searchServiceOverride]="expenseService"
-  [cookieStateKey]="'commodity-expense'"
-  [searchRequest]="{
-    queryArguments: getQueryArguments(),
-    queryName: 'commodity'
-  }"
-  (loading$)="setLoading($event)"
-  (entitiesChange$)="setEntities($event)"
-></app-entity-list>
+<app-entity-income
+  [incomeService]="incomeService"
+  [cookieStateKey]="'commodity-income'"
+  [queryArguments]="getQueryArguments()"
+  [queryName]="'commodity'"
+  (loadingChanged)="setLoading($event)"
+  (entitiesChanged)="setIncome($event)"
+  >
+</app-entity-income>
