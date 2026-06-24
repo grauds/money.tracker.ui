@@ -1,15 +1,22 @@
-import { Component, Input, inject, ChangeDetectorRef } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { NgOptimizedImage } from '@angular/common';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  inject,
+} from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import Keycloak, { KeycloakProfile } from 'keycloak-js';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
-import Keycloak, { KeycloakProfile } from 'keycloak-js';
-import { NgOptimizedImage } from "@angular/common";
-import { WorkspaceComponent } from "../workspace/workspace.component";
-import { MatTooltip } from "@angular/material/tooltip";
+import { MoneySelectorComponent } from './money-selector/money-selector.component';
+import { WorkspaceComponent } from '../workspace/workspace.component';
 
 @Component({
   selector: 'app-header',
@@ -17,20 +24,20 @@ import { MatTooltip } from "@angular/material/tooltip";
   styleUrls: ['./header.component.sass'],
   standalone: true,
   imports: [
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
     MatSidenavModule,
     MatToolbarModule,
-    MatListModule,
-    MatIconModule,
-    MatButtonModule,
+    MatTooltipModule,
+    NgOptimizedImage,
     RouterLink,
     RouterLinkActive,
+    MoneySelectorComponent,
     WorkspaceComponent,
-    MatTooltip,
-    NgOptimizedImage
-  ]
+  ],
 })
 export class HeaderComponent {
-
   // the header of the application
   @Input() title = '';
 

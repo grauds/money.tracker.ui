@@ -15,17 +15,19 @@ import {
 import { BalanceComponent } from './balance.component';
 import { NgxEchartsModule } from "ngx-echarts";
 import { mockResizeObserver } from "../../../mocks/mock_resize_observer";
+import { mockHateoasService, mockMoneyTypeService } from '../../../test-setup';
+import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
+
+const fakeActivatedRoute = {
+  queryParams: of({}),
+  snapshot: {
+    paramMap: convertToParamMap({ id: 9 }),
+  },
+} as ActivatedRoute;
 
 describe('BalanceComponent', () => {
   let component: BalanceComponent;
   let fixture: ComponentFixture<BalanceComponent>;
-
-  const fakeActivatedRoute = {
-    queryParams: of({}),
-    snapshot: {
-      paramMap: convertToParamMap({ id: 9 }),
-    },
-  } as ActivatedRoute;
 
   beforeEach(async () => {
     global.ResizeObserver = mockResizeObserver;
@@ -36,16 +38,17 @@ describe('BalanceComponent', () => {
         SharedComponentsModule,
         MatPaginatorModule,
         NgxEchartsModule.forRoot({
-          echarts: () => import("echarts")
-        })
+          echarts: () => import('echarts'),
+        }),
       ],
       providers: [
         AccountsService,
         HttpClient,
         HttpHandler,
         MoneyTypeService,
+        { provide: HateoasResourceService, useValue: mockHateoasService },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-
+        { provide: MoneyTypeService, useValue: mockMoneyTypeService },
       ],
     }).compileComponents();
 

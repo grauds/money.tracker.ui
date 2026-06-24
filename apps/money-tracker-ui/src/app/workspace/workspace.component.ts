@@ -5,7 +5,8 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-workspace',
   templateUrl: './workspace.component.html',
   styleUrls: ['./workspace.component.sass'],
-  standalone: true,
-  imports: [RouterOutlet],
+  imports: [
+    RouterOutlet
+  ]
 })
 export class WorkspaceComponent {}

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CommodityGroup, MoneyTypes } from '@clematis-shared/model';
+import { CommodityGroup, MoneyType } from '@clematis-shared/model';
 import { HttpClient } from '@angular/common/http';
 import {
   HateoasResourceService,
@@ -58,7 +58,7 @@ export class CommodityGroupService extends SearchService<CommodityGroup> {
 
   getTotals(
     commodityGroupId: string | null,
-    moneyCode: MoneyTypes
+    moneyCode: MoneyType
   ): Observable<number> {
     if (commodityGroupId) {
       return this.http.get<number>(
@@ -66,7 +66,7 @@ export class CommodityGroupService extends SearchService<CommodityGroup> {
         {
           params: {
             commodityGroupId: commodityGroupId,
-            moneyCode: moneyCode,
+            moneyCode: moneyCode.code,
           },
         }
       );

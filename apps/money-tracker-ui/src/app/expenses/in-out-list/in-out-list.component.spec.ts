@@ -24,6 +24,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxEchartsModule } from "ngx-echarts";
 import { mockResizeObserver } from "../../../mocks/mock_resize_observer";
+import { mockMoneyTypeService } from '../../../test-setup';
 
 const fakeActivatedRoute = {
   queryParams: of({}),
@@ -54,7 +55,7 @@ describe('InOutListComponent', () => {
         MatSelectModule,
         CurrencySpacePipe,
         NgxEchartsModule.forRoot({
-          echarts: () => import("echarts")
+          echarts: () => import('echarts'),
         }),
       ],
       providers: [
@@ -65,6 +66,7 @@ describe('InOutListComponent', () => {
         MoneyTypeService,
         CurrencyPipe,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: MoneyTypeService, useValue: mockMoneyTypeService },
       ],
     }).compileComponents();
 

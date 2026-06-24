@@ -1,12 +1,5 @@
 <div>
   <div>
-    <app-money-type-selector
-      [label]="'Available currencies'"
-      [disabled]="this.loading"
-      [currencies]="currencies"
-      [currency]="currency"
-      (currency$)="updateCurrency($event)"
-    ></app-money-type-selector>
     <div class="rubber timeHeader" [hidden]="loading">
       {{ this.startDate }} -> {{ this.endDate }}
     </div>

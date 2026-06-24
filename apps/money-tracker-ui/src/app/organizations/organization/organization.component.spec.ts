@@ -6,13 +6,14 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
 import {
-  ExpenseItemsService,
+  ExpenseItemsService, MoneyTypeService,
   OrganizationGroupsService,
   OrganizationsService,
-  SharedComponentsModule,
+  SharedComponentsModule
 } from '@clematis-shared/shared-components';
 import { mockResizeObserver } from "../../../mocks/mock_resize_observer";
 import { NgxEchartsModule } from "ngx-echarts";
+import { mockMoneyTypeService } from '../../../test-setup';
 
 describe('OrganizationComponent', () => {
   let component: OrganizationComponent;
@@ -33,8 +34,8 @@ describe('OrganizationComponent', () => {
       imports: [
         SharedComponentsModule,
         NgxEchartsModule.forRoot({
-          echarts: () => import("echarts")
-        })
+          echarts: () => import('echarts'),
+        }),
       ],
       providers: [
         HttpClient,
@@ -43,6 +44,7 @@ describe('OrganizationComponent', () => {
         OrganizationsService,
         OrganizationGroupsService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: MoneyTypeService, useValue: mockMoneyTypeService },
       ],
     }).compileComponents();
 

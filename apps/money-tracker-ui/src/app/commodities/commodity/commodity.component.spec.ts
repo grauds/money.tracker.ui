@@ -6,13 +6,14 @@ import {
   CommoditiesService,
   CommodityGroupService,
   CommodityGroupsService,
-  ExpenseItemsService,
-  SharedComponentsModule,
+  ExpenseItemsService, MoneyTypeService,
+  SharedComponentsModule
 } from '@clematis-shared/shared-components';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
 import { NgxEchartsModule } from "ngx-echarts";
 import { mockResizeObserver } from "../../../mocks/mock_resize_observer";
+import { mockMoneyTypeService } from '../../../test-setup';
 
 describe('CommodityComponent', () => {
   let component: CommodityComponent;
@@ -33,8 +34,8 @@ describe('CommodityComponent', () => {
       imports: [
         SharedComponentsModule,
         NgxEchartsModule.forRoot({
-          echarts: () => import("echarts")
-        })
+          echarts: () => import('echarts'),
+        }),
       ],
       providers: [
         HttpClient,
@@ -44,6 +45,7 @@ describe('CommodityComponent', () => {
         CommodityGroupService,
         CommodityGroupsService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: MoneyTypeService, useValue: mockMoneyTypeService },
       ],
     }).compileComponents();
   });

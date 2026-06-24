@@ -13,6 +13,8 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { NgxEchartsModule } from "ngx-echarts";
 import { mockResizeObserver } from "../../../mocks/mock_resize_observer";
 import { HeaderComponent } from "../../header/header.component";
+import { mockMoneyTypeService } from '../../../test-setup';
+import { FormsModule } from '@angular/forms';
 
 describe('AgentCommoditiesComponent', () => {
   let component: AgentCommoditiesComponent;
@@ -31,10 +33,12 @@ describe('AgentCommoditiesComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AgentCommoditiesComponent],
       imports: [
+        FormsModule,
+        MatCheckboxModule,
         SharedComponentsModule,
         MatCheckboxModule,
         NgxEchartsModule.forRoot({
-          echarts: () => import("echarts")
+          echarts: () => import('echarts'),
         }),
         RouterModule.forRoot([{ path: '', component: HeaderComponent }]),
       ],
@@ -43,7 +47,8 @@ describe('AgentCommoditiesComponent', () => {
         HttpHandler,
         MoneyTypeService,
         ExpenseItemsService,
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: MoneyTypeService, useValue: mockMoneyTypeService },
       ],
     }).compileComponents();
 

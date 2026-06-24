@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Subject, takeUntil } from 'rxjs';
 import {
   ResourceCollection,
 } from '@lagoshny/ngx-hateoas-client';
 
-import { InOutDelta, MoneyTypes } from '@clematis-shared/model';
+import { InOutDelta, MoneyType } from '@clematis-shared/model';
 import {
-  InOutService
+  InOutService,
+  MoneyTypeService
 } from '@clematis-shared/shared-components';
 
 @Component({
@@ -15,7 +17,7 @@ import {
   styleUrls: ['./in-out-list.component.sass'],
   standalone: false,
 })
-export class InOutListComponent implements OnInit {
+export class InOutListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['commodity.name', 'delta'];
 
   loading = false;
@@ -24,20 +26,30 @@ export class InOutListComponent implements OnInit {
 
   entities: Array<InOutDelta> = [];
 
+  currency: MoneyType = this.moneyTypeService.getSelectedMoneyType();
+
+  private destroy$ = new Subject<void>();
+
   constructor(
     protected inOutService: InOutService,
+    private readonly moneyTypeService: MoneyTypeService,
     private title: Title,
   ) {}
 
   ngOnInit(): void {
     this.title.setTitle('Reselling');
-    this.loadData();
+    this.moneyTypeService.selectedMoneyType$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.currency = this.moneyTypeService.getSelectedMoneyType();
+        this.loadData();
+      });
   }
 
   loadData() {
     this.loading = true;
 
-    this.inOutService.getInOutDeltasInCurrency(MoneyTypes.RUB).subscribe({
+    this.inOutService.getInOutDeltasInCurrency(this.currency).subscribe({
       next: (response: ResourceCollection<InOutDelta>) => {
         this.entities = response.resources;
         this.totals = this.entities.reduce(
@@ -59,5 +71,10 @@ export class InOutListComponent implements OnInit {
         this.loading = false;
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

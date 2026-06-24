@@ -2,9 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OrganizationGroupComponent } from './organization-group.component';
 import { HttpClient, HttpHandler } from '@angular/common/http';
-import { OrganizationGroupsService } from '@clematis-shared/shared-components';
+import { MoneyTypeService, OrganizationGroupsService } from '@clematis-shared/shared-components';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
+import { mockMoneyTypeService } from '../../../test-setup';
 
 describe('OrganizationGroupComponent', () => {
   let component: OrganizationGroupComponent;
@@ -25,6 +26,7 @@ describe('OrganizationGroupComponent', () => {
         HttpHandler,
         OrganizationGroupsService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: MoneyTypeService, useValue: mockMoneyTypeService },
       ],
     }).compileComponents();
 

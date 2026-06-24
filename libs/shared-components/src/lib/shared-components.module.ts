@@ -55,7 +55,10 @@ import { EntityThumbnailComponent } from "./components/entity-list/entity-thumbn
 import { EntityNameFilterComponent } from "./components/entity-list/entity-name-filter/entity-name-filter.component";
 import { EntityExpensesComponent } from "./components/entity/entity-expenses/entity-expenses.component";
 import { EntityIncomeComponent } from "./components/entity/entity-income/entity-income.component";
+
 import { NgxEchartsDirective } from 'ngx-echarts';
+
+import { TelegramFeedComponent } from './components/telegram-feed/telegram-feed.component';
 
 @NgModule({
   imports: [
@@ -82,6 +85,7 @@ import { NgxEchartsDirective } from 'ngx-echarts';
     CurrencySpacePipe,
     EntityThumbnailComponent,
     NgxEchartsDirective,
+    TelegramFeedComponent,
   ],
   exports: [
     EntityElementComponent,
@@ -94,6 +98,8 @@ import { NgxEchartsDirective } from 'ngx-echarts';
     EntityNameFilterComponent,
     EntityExpensesComponent,
     EntityIncomeComponent,
+    EntityThumbnailComponent,
+    TelegramFeedComponent,
   ],
   declarations: [
     EntityListComponent,

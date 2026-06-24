@@ -1,7 +1,9 @@
+/// <reference types="jest" />
 //import 'jest-preset-angular/setup-jest';
 import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
-import { TestBed } from "@angular/core/testing";
-import Keycloak from "keycloak-js";
+import { TestBed } from '@angular/core/testing';
+import Keycloak from 'keycloak-js';
+import { of } from 'rxjs';
 /**
  * The global mock for images
  */
@@ -24,7 +26,7 @@ setupZoneTestEnv();
  * Keycloak is required in a non-production environment.
  */
 const globalMockKeycloak = {
-  idTokenParsed: { sub: 'mock-global-user-id' }
+  idTokenParsed: { sub: 'mock-global-user-id' },
 };
 
 // Intercept all module configurations globally
@@ -33,16 +35,35 @@ TestBed.configureTestingModule = function (moduleDef) {
   moduleDef.providers = moduleDef.providers || [];
 
   // Only inject the mock if the user hasn't explicitly overwritten it inside their local spec file
-  const hasKeycloakProvider = moduleDef.providers.some(p =>
-    p === Keycloak || (typeof p === 'object' && p !== null && 'provide' in p && p.provide === Keycloak)
+  const hasKeycloakProvider = moduleDef.providers.some(
+    (p) =>
+      p === Keycloak ||
+      (typeof p === 'object' &&
+        p !== null &&
+        'provide' in p &&
+        p.provide === Keycloak),
   );
 
   if (!hasKeycloakProvider) {
     moduleDef.providers.push({
       provide: Keycloak,
-      useValue: globalMockKeycloak
+      useValue: globalMockKeycloak,
     });
   }
 
   return originalConfigureTestingModule.call(this, moduleDef);
+};
+
+export const mockHateoasService = {
+  searchPage: jest.fn().mockReturnValue(of({ resources: [] })),
+  getPage: jest.fn().mockReturnValue(of({ resources: [] })),
+  searchCollection: jest.fn().mockReturnValue(of({ resources: [] })),
+};
+
+export const mockMoneyTypeService = {
+  preloadMoneyTypes: jest.fn().mockReturnValue(of([])),
+  moneyTypes$: of([]),
+  selectedMoneyType$: of({ code: 'RUB' }),
+  getSelectedMoneyType: jest.fn().mockReturnValue({ code: 'RUB' }),
+  getLoadedMoneyTypes: jest.fn().mockReturnValue([]),
 };

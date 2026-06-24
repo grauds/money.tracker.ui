@@ -17,13 +17,6 @@
 
 <ng-template #filter>
   <app-entity-name-filter [entityList]="entityList"></app-entity-name-filter>
-  <app-money-type-selector
-    [label]="'Available currencies'"
-    [disabled]="loading"
-    [currencies]="currencies"
-    [currency]="currency"
-    (currency$)="updateCurrency($event)"
-  ></app-money-type-selector>
 </ng-template>
 
 <app-entity-list

@@ -11,6 +11,7 @@ import { SharedComponentsModule } from '@clematis-shared/shared-components';
 import { IncomeMonthlyComponent } from './income-monthly.component';
 import { NgxEchartsModule } from "ngx-echarts";
 import { mockResizeObserver } from "../../../mocks/mock_resize_observer";
+import { mockMoneyTypeService } from '../../../test-setup';
 
 describe('IncomeMonthlyComponent', () => {
   let component: IncomeMonthlyComponent;
@@ -31,7 +32,7 @@ describe('IncomeMonthlyComponent', () => {
       imports: [
         SharedComponentsModule,
         NgxEchartsModule.forRoot({
-          echarts: () => import("echarts")
+          echarts: () => import('echarts'),
         }),
       ],
       providers: [
@@ -40,7 +41,7 @@ describe('IncomeMonthlyComponent', () => {
         MoneyTypeService,
         IncomeItemsService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-
+        { provide: MoneyTypeService, useValue: mockMoneyTypeService },
       ],
     }).compileComponents();
 

@@ -7,14 +7,6 @@
       (endDate$)="updateEndDate($event)"
     ></app-date-range-selector>
 
-    <app-money-type-selector
-      [label]="'Available currencies'"
-      [disabled]="loading"
-      [currencies]="currencies"
-      [currency]="currency"
-      (currency$)="updateCurrency($event)"
-    ></app-money-type-selector>
-
     <mat-checkbox
       class="filter"
       [(ngModel)]="showGroups"
@@ -22,6 +14,7 @@
     >
       Break down to groups
     </mat-checkbox>
+
   </div>
 
   <div echarts [options]="chart" [loading]="loading" class="chart"></div>

@@ -15,7 +15,7 @@ import {
   EntityService,
   OrganizationGroupsService,
   RESOURCE_TYPE,
-  PARENT_RESOURCE_TYPE
+  PARENT_RESOURCE_TYPE, MoneyTypeService
 } from '@clematis-shared/shared-components';
 import { Title } from '@angular/platform-browser';
 
@@ -32,8 +32,8 @@ import { Title } from '@angular/platform-browser';
   standalone: false,
 })
 export class OrganizationGroupComponent extends EntityComponent<
-    OrganizationGroup,
-    OrganizationGroup
+  OrganizationGroup,
+  OrganizationGroup
 > {
   @ViewChild(EntityListComponent)
   entityList!: EntityListComponent<OrganizationGroup>;
@@ -43,6 +43,7 @@ export class OrganizationGroupComponent extends EntityComponent<
   constructor(
     resourceService: HateoasResourceService,
     entityService: EntityService<OrganizationGroup, OrganizationGroup>,
+    protected override readonly moneyTypeService: MoneyTypeService,
     route: ActivatedRoute,
     router: Router,
     title: Title,
@@ -50,10 +51,11 @@ export class OrganizationGroupComponent extends EntityComponent<
     super(
       OrganizationGroup,
       resourceService,
+      moneyTypeService,
       route,
       router,
       title,
-      entityService
+      entityService,
     );
   }
 

@@ -15,7 +15,8 @@ import {
   EntityService,
   CommodityGroupService,
   RESOURCE_TYPE,
-  PARENT_RESOURCE_TYPE
+  PARENT_RESOURCE_TYPE,
+  MoneyTypeService
 } from '@clematis-shared/shared-components';
 import { Title } from '@angular/platform-browser';
 
@@ -42,6 +43,7 @@ export class CommodityGroupComponent extends EntityComponent<
 
   constructor(
     resourceService: HateoasResourceService,
+    protected override moneyTypeService: MoneyTypeService,
     entityService: EntityService<CommodityGroup, CommodityGroup>,
     route: ActivatedRoute,
     router: Router,
@@ -50,10 +52,11 @@ export class CommodityGroupComponent extends EntityComponent<
     super(
       CommodityGroup,
       resourceService,
+      moneyTypeService,
       route,
       router,
       title,
-      entityService
+      entityService,
     );
   }
 

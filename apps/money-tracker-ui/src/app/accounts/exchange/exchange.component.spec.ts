@@ -9,6 +9,7 @@ import {
   MoneyTypeService,
   SharedComponentsModule,
 } from '@clematis-shared/shared-components';
+import { mockMoneyTypeService } from '../../../test-setup';
 
 describe('ExchangeComponent', () => {
   let component: ExchangeComponent;
@@ -30,6 +31,7 @@ describe('ExchangeComponent', () => {
         HttpHandler,
         MoneyTypeService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: MoneyTypeService, useValue: mockMoneyTypeService },
       ],
     }).compileComponents();
 

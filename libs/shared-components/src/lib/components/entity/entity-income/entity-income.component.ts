@@ -15,7 +15,12 @@ export class EntityIncomeComponent {
 
   income: IncomeItem[] = [];
 
-  displayedColumns: string[] = ['commodityname', 'transferdate', 'price', 'organizationname'];
+  displayedColumns: string[] = [
+    'commodityname',
+    'transferdate',
+    'price',
+    'organizationname'
+  ];
 
   @Input({ required: true }) incomeService!: IncomeItemsService;
   @Input({ required: true }) cookieStateKey!: string;

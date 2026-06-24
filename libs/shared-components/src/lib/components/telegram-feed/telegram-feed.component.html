@@ -1,0 +1,40 @@
+<div class="max-w-7xl mx-auto p-6">
+  @if (isLoading) {
+    <div class="flex justify-center items-center h-40">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+    </div>
+  }
+  @if (error) {
+    <div class="bg-red-50 text-red-600 p-4 rounded-xl text-center border border-red-200">
+      {{ error }}
+    </div>
+  }
+  @if (!isLoading && !error) {
+    <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 [column-fill:_balance] w-full">
+      @for (post of posts; track post.guid) {
+        <div class="break-inside-avoid mb-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col overflow-hidden">
+
+          <div class="p-5 flex-grow prose prose-sm prose-slate max-w-none">
+            <div [innerHTML]="post.description" class="text-gray-700 leading-relaxed text-sm whitespace-pre-line telegram-content"></div>
+          </div>
+
+          <div class="px-5 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-between mt-auto">
+            <span class="text-xs text-gray-400">
+              {{ post.pubDate | date:'dd.MM.yyyy HH:mm' }}
+            </span>
+            <a [href]="post.link"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="inline-flex items-center text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+              Читать в TG
+              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+
+        </div>
+      }
+    </div>
+  }
+</div>

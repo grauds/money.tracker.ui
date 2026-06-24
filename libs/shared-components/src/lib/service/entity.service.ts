@@ -1,5 +1,5 @@
 import { Inject, Injectable, Type } from "@angular/core";
-import { Entity, MoneyTypes } from "@clematis-shared/model";
+import { Entity, MoneyType } from '@clematis-shared/model';
 import { Observable, of } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import {
@@ -52,7 +52,7 @@ export class EntityService<T extends Entity, P extends Entity>
     return of(new ResourceCollection<P>());
   }
 
-  getIncomeSum(id: string, moneyCode: MoneyTypes): Observable<number> {
+  getIncomeSum(id: string, moneyCode: MoneyType): Observable<number> {
     if (id) {
       const className = this.resourceType.name;
       return this.http.get<number>(
@@ -60,7 +60,7 @@ export class EntityService<T extends Entity, P extends Entity>
         {
           params: {
             id: id,
-            moneyCode: moneyCode,
+            moneyCode: moneyCode.code,
           },
         }
       );
@@ -68,7 +68,7 @@ export class EntityService<T extends Entity, P extends Entity>
     return of(0);
   }
 
-  getExpensesSum(id: string, moneyCode: MoneyTypes): Observable<number> {
+  getExpensesSum(id: string, moneyCode: MoneyType): Observable<number> {
     if (id) {
       const className = this.resourceType.name;
       return this.http.get<number>(
@@ -76,7 +76,7 @@ export class EntityService<T extends Entity, P extends Entity>
         {
           params: {
             id: id,
-            moneyCode: moneyCode,
+            moneyCode: moneyCode.code,
           },
         }
       );

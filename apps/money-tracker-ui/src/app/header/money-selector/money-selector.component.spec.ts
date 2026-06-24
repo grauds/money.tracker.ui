@@ -1,18 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CommodityGroupComponent } from './commodity-group.component';
-import { HttpClient, HttpHandler } from '@angular/common/http';
-import {
-  CommodityGroupService,
-  CommodityGroupsService, MoneyTypeService
-} from '@clematis-shared/shared-components';
+import { MoneySelectorComponent } from './money-selector.component';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
-import { mockMoneyTypeService } from '../../../test-setup';
+import { MoneyTypeService } from '@clematis-shared/shared-components';
+import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
+import { mockHateoasService, mockMoneyTypeService } from '../../../test-setup';
 
-describe('CommodityGroupComponent', () => {
-  let component: CommodityGroupComponent;
-  let fixture: ComponentFixture<CommodityGroupComponent>;
+describe('MoneySelectorComponent', () => {
+  let component: MoneySelectorComponent;
+  let fixture: ComponentFixture<MoneySelectorComponent>;
 
   const fakeActivatedRoute = {
     queryParams: of({}),
@@ -23,12 +20,9 @@ describe('CommodityGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CommodityGroupComponent],
+      imports: [MoneySelectorComponent],
       providers: [
-        HttpClient,
-        HttpHandler,
-        CommodityGroupService,
-        CommodityGroupsService,
+        { provide: HateoasResourceService, useValue: mockHateoasService },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: MoneyTypeService, useValue: mockMoneyTypeService },
       ],
@@ -36,7 +30,7 @@ describe('CommodityGroupComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CommodityGroupComponent);
+    fixture = TestBed.createComponent(MoneySelectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

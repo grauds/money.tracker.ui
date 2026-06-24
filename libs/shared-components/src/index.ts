@@ -18,7 +18,13 @@ export { DateRangeSelectorComponent } from './lib/components/date-range-selector
 export { StatsTotalsComponent } from './lib/components/stats-totals/stats-totals.component';
 export { PhotoUploaderComponent } from './lib/components/photo-uploader/photo-uploader.component';
 export { CurrencySpacePipe } from './lib/components/currency-space-pipe/currency-space-pipe';
+
+export { EntityThumbnailComponent } from './lib/components/entity-list/entity-thumbnail/entity-thumbnail.component';
 export { EntityNameFilterComponent } from './lib/components/entity-list/entity-name-filter/entity-name-filter.component';
+export { EntityIncomeComponent } from './lib/components/entity/entity-income/entity-income.component';
+export { EntityExpensesComponent } from './lib/components/entity/entity-expenses/entity-expenses.component';
+
+export { TelegramFeedComponent } from './lib/components/telegram-feed/telegram-feed.component';
 
 export { AccountsService } from './lib/service/accounts.service';
 export { SearchService } from './lib/service/search.service';
@@ -33,10 +39,7 @@ export { InOutService } from './lib/service/in-out.service';
 export { LastCommodityService } from './lib/service/last-commodity.service';
 export { MoneyExchangeService } from './lib/service/money-exchange.service';
 export { MoneyTypeService } from './lib/service/money-type.service';
-
 export { EntityService } from './lib/service/entity.service';
-export { EntityIncomeComponent } from './lib/components/entity/entity-income/entity-income.component'
-export { EntityExpensesComponent } from './lib/components/entity/entity-expenses/entity-expenses.component'
 
 export { StatsService } from './lib/service/stats.service';
 export { StorageService } from './lib/service/storage.service';

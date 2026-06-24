@@ -1,17 +1,16 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of, Subscription, switchMap } from 'rxjs';
+import { Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 
 import {
-  PagedResourceCollection,
   ResourceCollection,
 } from '@lagoshny/ngx-hateoas-client';
 
 import { IncomeMonthly, MoneyType } from '@clematis-shared/model';
 import {
   IncomeItemsService,
-  MoneyTypeService,
+  MoneyTypeService
 } from '@clematis-shared/shared-components';
 
 import {
@@ -62,16 +61,14 @@ export const MY_FORMATS = {
   encapsulation: ViewEncapsulation.None,
   standalone: false,
 })
-export class IncomeMonthlyComponent implements OnInit {
+export class IncomeMonthlyComponent implements OnInit, OnDestroy {
   chart: any;
-
-  pageSubscription: Subscription;
 
   loading = false;
 
   currency: MoneyType = new MoneyType();
 
-  currencies: MoneyType[] = [];
+  private destroy$ = new Subject<void>();
 
   startDate = moment().add(-6, 'M');
 
@@ -84,35 +81,18 @@ export class IncomeMonthlyComponent implements OnInit {
     private readonly incomeItemsService: IncomeItemsService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly title: Title
+    private readonly title: Title,
   ) {
-    this.pageSubscription = route.queryParams.subscribe((queryParam: any) => {
-      this.initMoneyType(queryParam['currency'], 'RUB').subscribe(
-        (result: MoneyType) => {
-          this.currency = result;
-          this.loadData();
-        }
-      );
-    });
-  }
-
-  initMoneyType(destCurrency: string, fallback: string) {
-    if (!destCurrency) {
-      destCurrency = fallback;
-    }
-    return this.moneyTypeService.getCurrencyByCode(destCurrency);
+    this.moneyTypeService.selectedMoneyType$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.currency = this.moneyTypeService.getSelectedMoneyType();
+        this.loadData();
+      });
   }
 
   ngOnInit(): void {
     this.title.setTitle('Income');
-  }
-
-  updateCurrency($event: MoneyType) {
-    this.currency = $event;
-
-    this.updateRoute().then(() => {
-      this.loadData();
-    });
   }
 
   updateStartDate(normalizedMonthAndYear: moment.Moment) {
@@ -127,40 +107,12 @@ export class IncomeMonthlyComponent implements OnInit {
     this.loadData();
   }
 
-  updateRoute() {
-    return this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        currency: this.currency.code,
-      },
-      queryParamsHandling: 'merge',
-      skipLocationChange: false,
-    });
-  }
-
   loadData() {
     this.loading = true;
-
-    this.moneyTypeService
-      .getPage({
-        pageParams: {
-          page: 0,
-          size: 200,
-        },
-      })
-      .subscribe({
-        next: (response: PagedResourceCollection<MoneyType>) => {
-          this.currencies = response.resources;
-          this.createChart().subscribe((chart) => {
-            this.chart = chart;
-            this.loading = false;
-          });
-        },
-        error: (e) => {
-          this.currencies = [];
-          this.loading = false;
-        }
-      });
+    this.createChart().subscribe((chart) => {
+      this.chart = chart;
+      this.loading = false;
+    });
   }
 
   private createChart(): Observable<any> {
@@ -176,7 +128,7 @@ export class IncomeMonthlyComponent implements OnInit {
           this.startDate.month(),
           this.startDate.year(),
           this.endDate.month(),
-          this.endDate.year()
+          this.endDate.year(),
         );
       }),
       switchMap((response: ResourceCollection<IncomeMonthly>) => {
@@ -186,7 +138,8 @@ export class IncomeMonthlyComponent implements OnInit {
         // form series of data in the interval
         resources.forEach((incomeMonthly: IncomeMonthly) => {
           if (incomeMonthly.name) {
-            const values: IncomeMonthly[] = series.get(incomeMonthly.name) ?? [];
+            const values: IncomeMonthly[] =
+              series.get(incomeMonthly.name) ?? [];
             values.push(incomeMonthly);
             series.set(incomeMonthly.name, values);
           }
@@ -203,13 +156,13 @@ export class IncomeMonthlyComponent implements OnInit {
       }),
       switchMap(() => {
         return of(this.buildChart(ticks, series));
-      })
+      }),
     );
   }
 
   private getChartsSeries(
     ticks: string[],
-    series: Map<string, IncomeMonthly[]>
+    series: Map<string, IncomeMonthly[]>,
   ): any[] {
     const chartSeries: any[] = [];
     series.forEach((incomeMonthly: IncomeMonthly[], name: string) => {
@@ -233,10 +186,7 @@ export class IncomeMonthlyComponent implements OnInit {
     return chartSeries;
   }
 
-  private buildChart(
-    ticks: string[],
-    series: Map<string, IncomeMonthly[]>
-  ) {
+  private buildChart(ticks: string[], series: Map<string, IncomeMonthly[]>) {
     return {
       legend: {
         backgroundColor: 'rgba(206,206,206,0.7)',
@@ -256,7 +206,7 @@ export class IncomeMonthlyComponent implements OnInit {
           params: any,
           el: any,
           elRect: any,
-          size: { viewSize: number[] }
+          size: { viewSize: number[] },
         ) {
           const obj: any = { top: 10 };
           obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
@@ -267,7 +217,7 @@ export class IncomeMonthlyComponent implements OnInit {
           output += '<table class="w-full">';
 
           const sorted: any[] = params.sort(
-            (paramA, paramB) => paramB.value - paramA.value
+            (paramA, paramB) => paramB.value - paramA.value,
           );
           sorted.forEach(function (param) {
             if (param.value > 0) {
@@ -297,5 +247,10 @@ export class IncomeMonthlyComponent implements OnInit {
       },
       series: this.getChartsSeries(ticks, series),
     };
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -97,6 +97,9 @@
       <span class="page-title">{{ title }}</span>
       <span class="header-spacer"></span>
 
+      <app-money-selector></app-money-selector>
+      <span class="header-spacer"></span>
+
       @if (isLoggedIn) {
         <span class="navbar-username">{{ getUserInfo() }}</span>
       }

@@ -19,7 +19,8 @@ import {
   PhotoUploaderComponent,
   RESOURCE_TYPE,
   PARENT_RESOURCE_TYPE,
-  EntityService
+  EntityService,
+  MoneyTypeService
 } from '@clematis-shared/shared-components';
 import { Title } from '@angular/platform-browser';
 import {
@@ -59,6 +60,7 @@ export class CommodityComponent
     resourceService: HateoasResourceService,
     public readonly expenseService: ExpenseItemsService,
     public readonly incomeService: IncomeItemsService,
+    protected override moneyTypeService: MoneyTypeService,
     private readonly commodityService: CommoditiesService,
     private readonly uploadService: StorageService,
     entityService: EntityService<Commodity, CommodityGroup>,
@@ -66,7 +68,15 @@ export class CommodityComponent
     router: Router,
     title: Title,
   ) {
-    super(Commodity, resourceService, route, router, title, entityService);
+    super(
+      Commodity,
+      resourceService,
+      moneyTypeService,
+      route,
+      router,
+      title,
+      entityService,
+    );
     this.image = new PhotoUploaderComponent(this.uploadService);
   }
 

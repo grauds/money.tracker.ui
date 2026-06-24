@@ -19,7 +19,7 @@
       <!-- Title Section -->
       <div style="border-bottom: 1px solid #f1f3f5; padding-bottom: 12px;">
         <h2 style="margin: 0; font-size: 1.75rem; font-weight: 700; color: #1a1b1e; tracking: -0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-          {{ entity ? entity.name : 'Not loaded' }}
+          {{ !loading ? (entity ? entity.name : 'Not loaded') : 'Loading...' }}
         </h2>
       </div>
 
@@ -29,7 +29,7 @@
         <div style="background: #f4fbf7; border: 1px solid #e1f5eb; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
           <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #2b8a3e;">Income</span>
           <strong style="font-size: 1.4rem; font-weight: 700; color: #2b8a3e;">
-            {{ incomeSum | currencySpace : this.currency.name :'symbol' }}
+            {{ !loading ? (incomeSum | currencySpace : this.currency.code :'symbol') : '-' }}
           </strong>
         </div>
 
@@ -37,7 +37,7 @@
         <div style="background: #fff5f5; border: 1px solid #ffe3e3; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
           <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #c92a2a;">Expenses</span>
           <strong style="font-size: 1.4rem; font-weight: 700; color: #c92a2a;">
-            {{ expensesSum | currencySpace : this.currency.name :'symbol' }}
+            {{ !loading ? (expensesSum | currencySpace : this.currency.code :'symbol') : '-' }}
           </strong>
         </div>
 
@@ -47,7 +47,7 @@
             <div style="background: #f8f9fa; border: 1px solid #e9ecef; padding: 8px 14px; border-radius: 8px; font-size: 0.875rem; color: #495057;">
               <div>
                 <span style="color: #868e96; font-weight: 500; margin-right: 4px;">Average Price:</span>
-                <strong style="color: #212529; font-weight: 600;">{{ averagePrice | currencySpace : this.currency.name :'symbol' }}</strong>
+                <strong style="color: #212529; font-weight: 600;">{{ averagePrice | currencySpace : this.currency.code :'symbol' }}</strong>
                 <span style="color: #868e96;"> / {{ unitTypeName }}</span>
               </div>
               <div>
@@ -63,7 +63,7 @@
       <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
         <span style="font-size: 0.9rem; font-weight: 500; color: #495057;">Net Balance</span>
         <strong [style.color]="(incomeSum - expensesSum) >= 0 ? '#2b8a3e' : '#c92a2a'" style="font-size: 1.15rem; font-weight: 700;">
-          {{ (incomeSum - expensesSum) | currencySpace : this.currency.name :'symbol' }}
+          {{ !loading ? ((incomeSum - expensesSum) | currencySpace : this.currency.code :'symbol') : '-' }}
         </strong>
       </div>
 

@@ -1,15 +1,16 @@
-import { ComponentFixture, NO_ERRORS_SCHEMA, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { RouterModule } from "@angular/router";
 
-import { HeaderComponent } from './header.component';
-
-import { MockKeycloak } from '../../mocks/mock_keycloak';
 import Keycloak from 'keycloak-js';
+
+import { HeaderComponent } from './header.component';
+import { MockKeycloak } from '../../mocks/mock_keycloak';
+import { MoneyTypeService } from '@clematis-shared/shared-components';
+import { mockMoneyTypeService } from '../../test-setup';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -19,21 +20,18 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [],
       imports: [
         HeaderComponent,
-        MatSidenavModule,
-        BrowserAnimationsModule,
         MatSidenavModule,
         MatToolbarModule,
         MatIconModule,
         MatListModule,
-        RouterModule.forRoot([{ path: '', component: HeaderComponent }]),
+        RouterModule.forRoot([]),
       ],
       providers: [
+        { provide: MoneyTypeService, useValue: mockMoneyTypeService },
         { provide: Keycloak, useValue: keycloakServiceMock },
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

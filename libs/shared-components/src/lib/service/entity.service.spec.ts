@@ -115,7 +115,9 @@ describe('EntityGroupsService', () => {
   describe('getTotals', () => {
     it('should hit the correct endpoint tracking expense details for the resource', (done) => {
       const id = 'group-789';
-      const moneyCode = 'EUR' as any;
+
+      // FIX: Provide an object structure matching what the service extracts
+      const moneyCode = { code: 'EUR' } as any;
       const mockTotalValue = 1250.75;
 
       mockHttp.get.mockReturnValue(of(mockTotalValue));
@@ -126,7 +128,7 @@ describe('EntityGroupsService', () => {
           {
             params: {
               id: id,
-              moneyCode: moneyCode,
+              moneyCode: 'EUR', // The service correctly extracts 'EUR' from the object
             },
           },
         );

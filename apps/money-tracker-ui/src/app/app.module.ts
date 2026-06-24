@@ -32,8 +32,6 @@ import {
   NgxHateoasClientModule,
 } from '@lagoshny/ngx-hateoas-client';
 
-import { MainComponent } from './main/main.component';
-
 // lists
 import { CommoditiesListComponent } from './commodities/commodities-list/commodities-list.component';
 import { CommodityGroupListComponent } from './commodities/commodity-group-list/commodity-group-list.component';
@@ -64,8 +62,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import {
   CurrencySpacePipe,
   EnvironmentService,
-  SharedComponentsModule
-} from "@clematis-shared/shared-components";
+  SharedComponentsModule,
+  TelegramFeedComponent
+} from '@clematis-shared/shared-components';
 
 import { AccountsDashboardComponent } from './accounts/accounts-dashboard/accounts-dashboard.component';
 import { LastCommoditiesListComponent } from './expenses/last-commodities-list/last-commodities-list.component';
@@ -79,13 +78,9 @@ import { IncomeMonthlyComponent } from './income/income-monthly/income-monthly.c
 import { AgentCommoditiesComponent } from './expenses/agent-commodities/agent-commodities.component';
 import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { CommonModule, CurrencyPipe } from "@angular/common";
-import {
-  EntityThumbnailComponent
-} from '../../../../libs/shared-components/src/lib/components/entity-list/entity-thumbnail/entity-thumbnail.component';
 
 @NgModule({
   declarations: [
-    MainComponent,
     CommodityGroupListComponent,
     CommoditiesListComponent,
     OrganizationsListComponent,
@@ -114,7 +109,7 @@ import {
     FontAwesomeModule,
     FormsModule,
     NgxEchartsModule.forRoot({
-      echarts: () => import('echarts')
+      echarts: () => import('echarts'),
     }),
     NgxHateoasClientModule.forRoot(),
     LayoutModule,
@@ -141,15 +136,14 @@ import {
     RouterLinkActive,
     CurrencySpacePipe,
     SharedComponentsModule,
-    EntityThumbnailComponent
+    TelegramFeedComponent,
   ],
-  exports: [],
-  providers: [CurrencyPipe]
+  providers: [CurrencyPipe],
 })
 export class AppModule {
   constructor(
     hateoasConfig: NgxHateoasClientConfigurationService,
-    environmentService: EnvironmentService
+    environmentService: EnvironmentService,
   ) {
     hateoasConfig.configure({
       http: {

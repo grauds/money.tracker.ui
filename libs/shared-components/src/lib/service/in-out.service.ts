@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SearchService } from './search.service';
-import { Entity, InOutDelta, MoneyTypes } from '@clematis-shared/model';
+import { Entity, InOutDelta, MoneyType } from '@clematis-shared/model';
 import {
   HateoasResourceService,
   PagedResourceCollection,
@@ -13,25 +13,25 @@ import { Observable, of, switchMap } from 'rxjs';
 export class InOutService extends SearchService<InOutDelta> {
   constructor(
     private hateoasService: HateoasResourceService,
-    override environmentService: EnvironmentService
+    override environmentService: EnvironmentService,
   ) {
     super(environmentService);
   }
 
-  getInOutDeltasInCurrency(moneyType: MoneyTypes) {
+  getInOutDeltasInCurrency(moneyType: MoneyType) {
     return this.hateoasService.searchCollection<InOutDelta>(
       InOutDelta,
       'code',
       {
         params: {
-          code: moneyType,
+          code: moneyType.code,
         },
-      }
+      },
     );
   }
 
   getPage(
-    options: PagedGetOption | undefined
+    options: PagedGetOption | undefined,
   ): Observable<PagedResourceCollection<InOutDelta>> {
     return this.hateoasService
       .getPage<InOutDelta>(InOutDelta, options)
@@ -40,7 +40,7 @@ export class InOutService extends SearchService<InOutDelta> {
 
   searchPage(
     options: PagedGetOption | undefined,
-    queryName: string
+    queryName: string,
   ): Observable<PagedResourceCollection<InOutDelta>> {
     return this.hateoasService
       .searchPage<InOutDelta>(InOutDelta, queryName, options)
@@ -51,10 +51,10 @@ export class InOutService extends SearchService<InOutDelta> {
     return switchMap((arr: PagedResourceCollection<InOutDelta>) => {
       arr.resources = arr.resources.map((inOutDelta: InOutDelta) => {
         inOutDelta.commodityLink = Entity.getRelativeSelfLinkHref(
-          inOutDelta.commodity
+          inOutDelta.commodity,
         );
         inOutDelta.moneyTypeLink = Entity.getRelativeSelfLinkHref(
-          inOutDelta.moneyType
+          inOutDelta.moneyType,
         );
         return inOutDelta;
       });

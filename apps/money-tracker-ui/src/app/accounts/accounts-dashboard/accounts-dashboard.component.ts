@@ -20,7 +20,6 @@ import {
   standalone: false,
 })
 export class AccountsDashboardComponent implements OnInit {
-
   // total sum in the chosen currency
   total = 0;
 
@@ -37,7 +36,7 @@ export class AccountsDashboardComponent implements OnInit {
 
   totalsHistoryLoading = false;
 
-  currency: MoneyType = new MoneyType();
+  currency: MoneyType = this.moneyTypeService.getSelectedMoneyType();
 
   currencies: MoneyType[] = [];
 
@@ -46,17 +45,16 @@ export class AccountsDashboardComponent implements OnInit {
     private readonly moneyTypeService: MoneyTypeService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly title: Title
+    private readonly title: Title,
   ) {
     this.pageSubscription = route.queryParams.subscribe((queryParams: any) => {
       this.initMoneyType(queryParams['currency'], 'RUB').subscribe(
         (result: MoneyType) => {
           this.currency = result;
           this.loadData();
-        }
+        },
       );
     });
-
   }
 
   initMoneyType(destCurrency: string, fallback: string) {

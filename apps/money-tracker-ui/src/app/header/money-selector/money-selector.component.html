@@ -1,9 +1,8 @@
-<mat-form-field appearance="fill">
-  <mat-label>{{ label }}</mat-label>
+<mat-form-field appearance="fill" subscriptSizing="dynamic">
+  <mat-label>Global currency</mat-label>
   <mat-select
-    [disabled]="disabled"
+    [disabled]="loading"
     (valueChange)="onCurrencyChange($event)"
-    [compareWith]="compareFn"
     [value]="currency"
   >
     @for (currency of currencies; track currency) {

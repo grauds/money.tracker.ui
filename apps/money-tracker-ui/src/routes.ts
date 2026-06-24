@@ -17,7 +17,6 @@ import { CommodityComponent } from './app/commodities/commodity/commodity.compon
 import { InOutListComponent } from './app/expenses/in-out-list/in-out-list.component';
 import { LastCommoditiesListComponent } from './app/expenses/last-commodities-list/last-commodities-list.component';
 import { IncomeMonthlyComponent } from './app/income/income-monthly/income-monthly.component';
-import { MainComponent } from './app/main/main.component';
 import { OrganizationGroupListComponent } from './app/organizations/organization-group-list/organization-group-list.component';
 import { OrganizationGroupComponent } from './app/organizations/organization-group/organization-group.component';
 import { OrganizationComponent } from './app/organizations/organization/organization.component';
@@ -34,11 +33,6 @@ const routes: Routes = [
     path: 'about',
     pathMatch: 'full',
     component: AboutComponent,
-  },
-  {
-    path: 'main',
-    canActivate: [canActivate],
-    component: MainComponent,
   },
   {
     path: 'balance',

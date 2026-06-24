@@ -1,0 +1,40 @@
+:host
+  display: block
+  width: 100%
+
+  ::ng-deep
+    .telegram-content
+
+      // Адаптация изображений, гифок и видео из постов
+      img, video
+        width: 100%
+        height: auto
+        max-height: 450px
+        object-fit: cover
+        border-radius: 0.75rem
+        margin: 0.75rem 0
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05)
+
+      // Стилизация ссылок внутри текста поста
+      a
+        color: #2563eb
+        text-decoration: none
+        font-weight: 500
+        transition: color 0.2s ease
+
+        &:hover
+          color: #1d4ed8
+          text-decoration: underline
+
+      p
+        margin-bottom: 0.5rem
+
+        &:last-child
+          margin-bottom: 0
+
+      blockquote
+        border-left: 3px solid #cbd5e1
+        padding-left: 0.75rem
+        color: #475569
+        font-style: italic
+        margin: 0.5rem 0

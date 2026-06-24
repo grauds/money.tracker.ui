@@ -17,6 +17,7 @@ import {
   CurrencySpacePipe
 } from '@clematis-shared/shared-components';
 import { mockResizeObserver } from '../../../mocks/mock_resize_observer';
+import { mockMoneyTypeService } from '../../../test-setup';
 
 
 describe('AccountsDashboardComponent', () => {
@@ -41,7 +42,7 @@ describe('AccountsDashboardComponent', () => {
         FormsModule,
         CurrencySpacePipe,
         NgxEchartsModule.forRoot({
-          echarts: () => import("echarts")
+          echarts: () => import('echarts'),
         }),
       ],
       providers: [
@@ -52,6 +53,7 @@ describe('AccountsDashboardComponent', () => {
         CurrencyPipe,
         CurrencySpacePipe,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: MoneyTypeService, useValue: mockMoneyTypeService },
       ],
     }).compileComponents();
 
