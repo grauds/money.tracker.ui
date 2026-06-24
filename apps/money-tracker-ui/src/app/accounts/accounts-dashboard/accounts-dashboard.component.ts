@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AccountBalance, MoneyType } from '@clematis-shared/model';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import {
   PagedResourceCollection,
   ResourceCollection,
@@ -19,7 +19,7 @@ import {
   providers: [{ provide: 'searchService', useClass: AccountsService }],
   standalone: false,
 })
-export class AccountsDashboardComponent implements OnInit {
+export class AccountsDashboardComponent implements OnInit, OnDestroy {
   // total sum in the chosen currency
   total = 0;
 
@@ -28,17 +28,17 @@ export class AccountsDashboardComponent implements OnInit {
 
   accountsBalances: AccountBalance[] = [];
 
-  pageSubscription: Subscription;
-
   loading = false;
 
   totalsLoading = false;
 
   totalsHistoryLoading = false;
 
-  currency: MoneyType = this.moneyTypeService.getSelectedMoneyType();
+  currency: MoneyType;
 
   currencies: MoneyType[] = [];
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private readonly accountsService: AccountsService,
@@ -47,21 +47,13 @@ export class AccountsDashboardComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly title: Title,
   ) {
-    this.pageSubscription = route.queryParams.subscribe((queryParams: any) => {
-      this.initMoneyType(queryParams['currency'], 'RUB').subscribe(
-        (result: MoneyType) => {
-          this.currency = result;
-          this.loadData();
-        },
-      );
-    });
-  }
-
-  initMoneyType(destCurrency: string, fallback: string) {
-    if (!destCurrency) {
-      destCurrency = fallback;
-    }
-    return this.moneyTypeService.getCurrencyByCode(destCurrency);
+    this.currency = this.moneyTypeService.getSelectedMoneyType();
+    this.moneyTypeService.selectedMoneyType$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.currency = this.moneyTypeService.getSelectedMoneyType();
+        this.loadData();
+      });
   }
 
   ngOnInit(): void {
@@ -76,14 +68,6 @@ export class AccountsDashboardComponent implements OnInit {
       },
       queryParamsHandling: 'merge',
       skipLocationChange: false,
-    });
-  }
-
-  updateCurrency($event: MoneyType) {
-    this.currency = $event;
-
-    this.updateRoute().then(() => {
-      this.loadData();
     });
   }
 
@@ -159,5 +143,10 @@ export class AccountsDashboardComponent implements OnInit {
         this.loading = false;
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

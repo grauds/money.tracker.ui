@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
   distinctUntilChanged,
+  filter,
   map,
   Observable,
   shareReplay,
+  take,
   tap
 } from 'rxjs';
 import { MoneyType, MoneyTypes } from '@clematis-shared/model';
-import { HttpClient } from '@angular/common/http';
 import {
   HateoasResourceService,
   PagedResourceCollection,
@@ -124,8 +125,8 @@ export class MoneyTypeService extends SearchService<MoneyType> {
       this.selectedMoneyTypeSubject.getValue() ||
       this.moneyTypesSubject
         .getValue()
-        .find((type) => type.code === this.defaultCurrencyName)
-      || Object.assign(new MoneyType(), { code: this.defaultCurrencyName })
+        .find((type) => type.code === this.defaultCurrencyName) ||
+      Object.assign(new MoneyType(), { code: this.defaultCurrencyName })
     );
   }
 
@@ -150,15 +151,20 @@ export class MoneyTypeService extends SearchService<MoneyType> {
     return this.hateoasService.getPage<MoneyType>(MoneyType, options);
   }
 
-  getCurrencyByCode(code: string): Observable<MoneyType> {
-    return this.hateoasService.searchResource<MoneyType>(
-      MoneyType,
-      'findByCode',
-      {
-        params: {
-          code: code,
-        },
-      },
+  public getCurrencyByCode(code: string): Observable<MoneyType> {
+    return this.moneyTypes$.pipe(
+      filter((types) => types && types.length > 0),
+      take(1),
+      map((types) => {
+        const found = types.find((t) => t.code === code);
+        if (!found) {
+          return (
+            types.find((t) => t.code === this.defaultCurrencyName) ||
+            Object.assign(new MoneyType(), { code: code })
+          );
+        }
+        return found;
+      }),
     );
   }
 

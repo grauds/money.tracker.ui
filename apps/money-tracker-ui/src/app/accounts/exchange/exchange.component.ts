@@ -1,8 +1,8 @@
 import {
-  AfterViewInit,
   Component,
   Inject,
   OnInit,
+  AfterViewInit,
   ViewChild,
 } from '@angular/core';
 import { PagedResourceCollection, Sort } from '@lagoshny/ngx-hateoas-client';
@@ -29,8 +29,7 @@ import { Observable, of, Subscription, switchMap, tap } from 'rxjs';
   providers: [{ provide: 'searchService', useClass: MoneyExchangeService }],
   standalone: false,
 })
-export class ExchangeComponent implements OnInit {
-
+export class ExchangeComponent implements OnInit, AfterViewInit {
   @ViewChild(EntityListComponent)
   entityList!: EntityListComponent<MoneyExchange>;
 
@@ -64,56 +63,63 @@ export class ExchangeComponent implements OnInit {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly title: Title,
-    @Inject('searchService') private readonly moneyExchangeService: MoneyExchangeService
+    @Inject('searchService')
+    private readonly moneyExchangeService: MoneyExchangeService,
   ) {
     this.moneyExchangeService.setPostProcessingStream(
-      this.postProcessingHandler
+      this.postProcessingHandler.bind(this),
     );
   }
 
   ngOnInit(): void {
     this.title.setTitle('Currency Exchange');
-    setTimeout(() => {
-      this.moneyTypeService
-        .getPage({
-          pageParams: {
-            page: 0,
-            size: 200,
-          },
-        })
-        .subscribe((response: PagedResourceCollection<MoneyType>) => {
-          this.currencies = response.resources;
-          this.pageSubscription = this.route.queryParams.subscribe(
-            (queryParam: any) => {
-              this.initMoneyType(queryParam['source'], 'RUB').subscribe(
-                (result: MoneyType) => {
-                  this.sourceCurrency = result;
-
-                  this.initMoneyType(queryParam['dest'], 'USD').subscribe(
-                    (result: MoneyType) => {
-                      this.destCurrency = result;
-                      this.loadData();
-                    }
-                  );
-                }
-              );
-            }
-          );
-        });
+    this.moneyTypeService.moneyTypes$.subscribe((types) => {
+      this.currencies = types;
     });
+    this.pageSubscription = this.route.queryParams
+      .pipe(
+        switchMap((queryParam: any) => {
+          const sourceCode = queryParam['source'] || 'RUB';
+          return this.moneyTypeService.getCurrencyByCode(sourceCode).pipe(
+            switchMap((sourceRes) => {
+              this.sourceCurrency = sourceRes;
+
+              const destCode = queryParam['dest'] || 'USD';
+              return this.moneyTypeService.getCurrencyByCode(destCode);
+            }),
+          );
+        }),
+      )
+      .subscribe((destRes) => {
+        this.destCurrency = destRes;
+        this.loadData();
+      });
+  }
+
+  ngAfterViewInit() {
+    this.loadData();
+  }
+
+  private loadData() {
+    if (
+      this.sourceCurrency?.code &&
+      this.destCurrency?.code &&
+      this.entityList
+    ) {
+      this.entityList.refreshData(
+        {
+          queryArguments: this.getQueryArguments(),
+          queryName: 'events',
+        },
+        this.resetPages,
+      );
+    }
   }
 
   getSourceCurrencies() {
     return this.currencies.filter((value: MoneyType) => {
       return value?.code !== this.destCurrency?.code;
     });
-  }
-
-  initMoneyType(destCurrency: string, fallback: string) {
-    if (!destCurrency) {
-      destCurrency = fallback;
-    }
-    return this.moneyTypeService.getCurrencyByCode(destCurrency);
   }
 
   getDestCurrencies() {
@@ -153,18 +159,6 @@ export class ExchangeComponent implements OnInit {
     });
   }
 
-  private loadData() {
-    if (this.sourceCurrency?.code && this.destCurrency?.code) {
-      this.entityList.refreshData(
-        {
-          queryArguments: this.getQueryArguments(),
-          queryName: 'events',
-        },
-        this.resetPages
-      );
-    }
-  }
-
   getQueryArguments(): any {
     if (this.sourceCurrency?.code && this.destCurrency?.code) {
       return {
@@ -184,17 +178,17 @@ export class ExchangeComponent implements OnInit {
   setLoading($event: boolean) {
     setTimeout(() => {
       this.loading = $event;
-    })
+    });
   }
 
   postProcessingHandler = (
-    res: PagedResourceCollection<MoneyExchange>
+    res: PagedResourceCollection<MoneyExchange>,
   ): Observable<PagedResourceCollection<MoneyExchange>> => {
     return of(res).pipe(
       tap(() =>
         this.moneyExchangeService.setProcessingStatusDescription(
-          'loading exchange report'
-        )
+          'loading exchange report',
+        ),
       ),
       switchMap((res: PagedResourceCollection<MoneyExchange>) => {
         return this.moneyExchangeService
@@ -203,9 +197,9 @@ export class ExchangeComponent implements OnInit {
             switchMap((report: MoneyExchangeReport) => {
               this.report = report;
               return of(res);
-            })
+            }),
           );
-      })
+      }),
     );
   };
 }

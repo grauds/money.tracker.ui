@@ -38,7 +38,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
   loading = false;
 
-  currency: MoneyType = this.moneyTypeService.getSelectedMoneyType();
+  currency: MoneyType;
 
   currencies: MoneyType[] = [];
 
@@ -56,6 +56,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private title: Title,
   ) {
+    this.currency = this.moneyTypeService.getSelectedMoneyType()
     this.pageSubscription = route.queryParams
       .pipe(takeUntil(this.destroy$))
       .subscribe((queryParam: any) => {
