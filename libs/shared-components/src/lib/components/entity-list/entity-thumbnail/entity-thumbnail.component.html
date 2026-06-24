@@ -1,18 +1,18 @@
-<div class="thumbnail-card">
+<div class="thumbnail-card" [ngClass]="{ 'list-layout': currentLayout === 'list' }">
 
   <div class="image-container">
     @if ((getImageUrl() | authImage | async); as resolvedUrl) {
       <img [src]="resolvedUrl"
-           width="170"
-           height="170"
+           [attr.width]="currentLayout === 'list' ? 60 : 170"
+           [attr.height]="currentLayout === 'list' ? 60 : 170"
            alt="Photo"
            class="full-bleed-image"
            (load)="onImageLoad()"
       />
     } @else {
-      <img [ngSrc]="'assets/coming-soon.png'"
-           width="170"
-           height="170"
+      <img [src]="'assets/coming-soon.png'"
+           [attr.width]="currentLayout === 'list' ? 60 : 170"
+           [attr.height]="currentLayout === 'list' ? 60 : 170"
            alt="Placeholder"
            class="full-bleed-image placeholder-fallback"
            priority

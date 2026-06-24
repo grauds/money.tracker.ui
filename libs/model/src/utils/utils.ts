@@ -66,11 +66,9 @@ export class Utils {
   }
 
   static getIdFromSelfUrl(entity: Resource) {
-    const resourceAddress = new URL(entity.getSelfLinkHref());
-    return resourceAddress.pathname.substring(
-      resourceAddress.pathname.lastIndexOf('/') + 1,
-      resourceAddress.pathname.length,
-    );
+    const resourceAddress = entity.getSelfLinkHref();
+    const match = resourceAddress.match(/\/([^/]+?)(?:\{|%7B|$)/);
+    return match ? match[1] : '';
   }
 
   static getFormattedStringFromDays(numberOfDays: number): string {

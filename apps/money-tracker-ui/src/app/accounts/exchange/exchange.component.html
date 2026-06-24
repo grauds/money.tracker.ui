@@ -148,11 +148,11 @@
           mat-cell
           *matCellDef="let element"
           [ngClass]="{
-          positive:
-            element.sourceamount * (element.rate - this.report.curRate) > 0,
-          negative:
-            element.sourceamount * (element.rate - this.report.curRate) < 0
-        }"
+            positive:
+              element.sourceamount * (element.rate - this.report.curRate) > 0,
+            negative:
+              element.sourceamount * (element.rate - this.report.curRate) < 0
+          }"
         >
           {{
             element.sourceamount * (element.rate - this.report.curRate)

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SearchService } from './search.service';
-import { Entity, InOutDelta, MoneyType } from '@clematis-shared/model';
+import { Entity, InOutDelta, MoneyTypes } from '@clematis-shared/model';
 import {
   HateoasResourceService,
   PagedResourceCollection,
@@ -18,13 +18,13 @@ export class InOutService extends SearchService<InOutDelta> {
     super(environmentService);
   }
 
-  getInOutDeltasInCurrency(moneyType: MoneyType) {
+  getInOutDeltasInCurrency(moneyType: MoneyTypes) {
     return this.hateoasService.searchCollection<InOutDelta>(
       InOutDelta,
       'code',
       {
         params: {
-          code: moneyType.code,
+          code: moneyType,
         },
       }
     );

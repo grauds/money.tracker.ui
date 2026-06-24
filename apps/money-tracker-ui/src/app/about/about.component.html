@@ -1,21 +1,50 @@
-<p></p>
-
-@if (!isLoggedIn) {
-  <h1>Welcome to Money Tracker Reports and Analysis Tool</h1>
-
-  <p>
-    This applications makes it easy to visualise your finantial data and analyse
-    it. Use the menu on the left to navigate the report topics.
-  </p>
-}
-
-@if (isLoggedIn) {
-  <div class="stats-grid">
-    <app-stats-totals-component title="Last Update" background="var(--lightgreen)" value="{{ getLastDate() }}" />
-    <app-stats-totals-component title="Income Transactions" background="var(--green)" value="{{ infoAbout?.income }}" />
-    <app-stats-totals-component title="Expenses Transactions" value="{{ infoAbout?.expenses }}" />
-    <app-stats-totals-component title="Expenses with Tradeplaces" background="var(--violet)" value="{{ infoAbout?.expensesTradeplace }}" />
-    <app-stats-totals-component title="Expenses without Tradeplaces" background="var(--coral)" value="{{ infoAbout?.expensesNoTradeplace }}" />
-    <app-stats-totals-component title="Expenses without Commodities" background="var(--coral)" value="{{ infoAbout?.expensesNoCommodity }}" />
+<div class="flex gap-[2%] flex-nowrap items-stretch">
+  <div class="w-4/5">
+    <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
+      <div>
+        <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+          News
+        </h3>
+        <small style="color: #6c757d; font-size: 0.85rem;">Provided by <b>Product Media</b></small>
+      </div>
+    </div>
+    <p>
+      <iframe
+        src="https://widgets.sociablekit.com/telegram-channel/iframe/25692034"
+        frameborder="0" width="100%" height="1300px" ></iframe>
+    </p>
   </div>
-}
+  <div class="w-[200px]">
+    <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
+      <div>
+        <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+          Statistics
+        </h3>
+        <small style="color: #6c757d; font-size: 0.85rem;">Database key numbers</small>
+      </div>
+    </div>
+    @if (!isLoggedIn) {
+      <h1>Welcome to Money Tracker Reports and Analysis Tool</h1>
+
+      <p>
+        This applications makes it easy to visualise your finantial data and analyse
+        it. Use the menu on the left to navigate the report topics.
+      </p>
+    }
+
+    @if (isLoggedIn) {
+      <div class="stats-grid">
+        <app-stats-totals-component title="Last Update" background="var(--lightgreen)" value="{{ getLastDate() }}" />
+        <app-stats-totals-component title="Income Transactions" background="var(--green)" value="{{ infoAbout?.income }}" />
+        <app-stats-totals-component title="Expenses Transactions" value="{{ infoAbout?.expenses }}" />
+        <app-stats-totals-component title="Expenses with Tradeplaces" background="var(--violet)" value="{{ infoAbout?.expensesTradeplace }}" />
+        <app-stats-totals-component title="Expenses without Tradeplaces" background="var(--coral)" value="{{ infoAbout?.expensesNoTradeplace }}" />
+        <app-stats-totals-component title="Expenses without Commodities" background="var(--coral)" value="{{ infoAbout?.expensesNoCommodity }}" />
+      </div>
+    }
+  </div>
+</div>
+
+
+
+

@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Entity } from '@clematis-shared/model';
 import { RouterLink } from '@angular/router';
-import { AsyncPipe } from '@angular/common';
-import { NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { AuthImagePipe } from "../../photo-uploader/AuthImagePipe";
 import { StorageService } from "../../../service/storage.service";
 
@@ -15,8 +14,8 @@ import { StorageService } from "../../../service/storage.service";
     RouterLink,
     AsyncPipe,
     AuthImagePipe,
-    NgOptimizedImage,
     AuthImagePipe,
+    NgClass,
   ],
 })
 export class EntityThumbnailComponent<T extends Entity> {
@@ -24,15 +23,15 @@ export class EntityThumbnailComponent<T extends Entity> {
 
   @Input() entityName: string | undefined;
 
+  @Input() currentLayout: 'grid' | 'list' = 'grid';
+
   entityLink: string | undefined;
 
   id = '';
 
   isImageLoading = true;
 
-  constructor(
-    private storageService: StorageService,
-  ) {}
+  constructor(private storageService: StorageService) {}
 
   get entity(): T {
     return this._entity;

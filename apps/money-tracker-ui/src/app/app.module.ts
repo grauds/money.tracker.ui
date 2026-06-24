@@ -79,6 +79,9 @@ import { IncomeMonthlyComponent } from './income/income-monthly/income-monthly.c
 import { AgentCommoditiesComponent } from './expenses/agent-commodities/agent-commodities.component';
 import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { CommonModule, CurrencyPipe } from "@angular/common";
+import {
+  EntityThumbnailComponent
+} from '../../../../libs/shared-components/src/lib/components/entity-list/entity-thumbnail/entity-thumbnail.component';
 
 @NgModule({
   declarations: [
@@ -111,7 +114,7 @@ import { CommonModule, CurrencyPipe } from "@angular/common";
     FontAwesomeModule,
     FormsModule,
     NgxEchartsModule.forRoot({
-      echarts: () => import("echarts")
+      echarts: () => import('echarts')
     }),
     NgxHateoasClientModule.forRoot(),
     LayoutModule,
@@ -138,6 +141,7 @@ import { CommonModule, CurrencyPipe } from "@angular/common";
     RouterLinkActive,
     CurrencySpacePipe,
     SharedComponentsModule,
+    EntityThumbnailComponent
   ],
   exports: [],
   providers: [CurrencyPipe]
