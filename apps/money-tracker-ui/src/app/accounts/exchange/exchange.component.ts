@@ -164,6 +164,7 @@ export class ExchangeComponent implements OnInit, AfterViewInit {
       return {
         source: this.sourceCurrency?.code,
         dest: this.destCurrency?.code,
+        sort: this.getSort()
       };
     }
     return {};
