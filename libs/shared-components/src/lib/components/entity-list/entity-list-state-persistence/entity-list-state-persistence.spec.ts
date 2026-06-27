@@ -10,9 +10,13 @@ import { UrlStateAdapter } from '../url-state-adapter/url-state-adapter';
 
 describe('EntityListPersistenceService', () => {
   let service: EntityListPersistenceService;
-  let mockRouter: any;
-  let mockRoute: any;
-  let mockCookieService: any;
+  let mockRouter: jest.Mocked<Pick<Router, 'navigate'>>;
+  let mockCookieService: { get: jest.Mock; set: jest.Mock };
+
+  let mockRoute: {
+    snapshot: { queryParams: Record<string, string | undefined> };
+  };
+
 
   beforeEach(() => {
     // Define clean Jest mock objects for dependencies
@@ -56,9 +60,9 @@ describe('EntityListPersistenceService', () => {
       });
 
       // Verify property updates using typecasting for private properties
-      expect((service as any).updateRouterState).toBe(false);
-      expect((service as any).queryParamsMode).toBe('preserve');
-      expect((service as any).cookiePersistence).toBeInstanceOf(
+      expect(service['updateRouterState']).toBe(false);
+      expect(service['queryParamsMode']).toBe('preserve');
+      expect(service['cookiePersistence']).toBeInstanceOf(
         CookieStatePersistence,
       );
     });
@@ -163,16 +167,32 @@ describe('EntityListPersistenceService', () => {
         updateRouterState: true,
         queryParamsMode: 'merge',
       });
-      mockRoute.snapshot.queryParams = { page: '3', size: '30' };
 
+      // current active route state
+      mockRoute.snapshot.queryParams = {
+        page: '3',
+        size: '30',
+        sort: '', // explicitly set to match empty string defaults
+      };
+
+      // Make sure the spy returns target queryParams that perfectly match the active route state above
       const buildParamsSpy = jest
         .spyOn(UrlStateAdapter, 'buildRouteParameters')
-        .mockReturnValue({});
+        .mockReturnValue({
+          queryParams: {
+            page: '3',
+            size: '30',
+            sort: '',
+          },
+        });
 
+      // Execute the function under test with matching pagination inputs
       const result = await service.saveState(3, 30, null, dummyFilter);
 
+      // Assert early abort logic worked cleanly
       expect(mockRouter.navigate).not.toHaveBeenCalled();
       expect(result).toBe(true);
+
       buildParamsSpy.mockRestore();
     });
 

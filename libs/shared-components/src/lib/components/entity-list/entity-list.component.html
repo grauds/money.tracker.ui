@@ -54,9 +54,9 @@
         @if (total ? total > 5 : false) {
           <mat-paginator
             [length]="total"
-            [pageSize]="limit"
+            [pageSize]="gridState.limit"
             [pageSizeOptions]="[5, 10, 25, 100]"
-            [pageIndex]="n"
+            [pageIndex]="gridState.n"
             (page)="setCurrentPage($event)"
             [showFirstLastButtons]="true"
             [disabled]="loading"
@@ -74,7 +74,7 @@
                 @case ('list') {
                   @if (listTemplate) {
                     <div>
-                      @for (a of entities; track trackEntity(a)) {
+                      @for (a of entities; track getSelfLinkHref(a)) {
                         <div>
                           <ng-container *ngTemplateOutlet="listTemplate; context: { $implicit: a }"></ng-container>
                         </div>
@@ -92,7 +92,7 @@
                 @case ('thumbnail') {
                   @if (thumbnailTemplate) {
                     <div class="thumbnail-grid">
-                      @for (a of entities; track trackEntity(a)) {
+                      @for (a of entities; track getSelfLinkHref(a)) {
                         <ng-container *ngTemplateOutlet="thumbnailTemplate; context: { $implicit: a }"></ng-container>
                       }
                     </div>
@@ -106,7 +106,7 @@
             <div>
               @switch (currentView) {
                 @case ('list') {
-                  @for (a of entities; track trackEntity(a)) {
+                  @for (a of entities; track getSelfLinkHref(a)) {
                     <div>
                       <app-entity-element [entity]="a"></app-entity-element>
                     </div>
@@ -117,7 +117,7 @@
                 }
                 @case ('thumbnail') {
                   <div class="thumbnail-grid">
-                    @for (a of entities; track trackEntity(a)) {
+                    @for (a of entities; track getSelfLinkHref(a)) {
                       <app-entity-thumbnail
                         [entity]="a"
                         [entityName]="this.entityName"
@@ -146,9 +146,9 @@
         @if (total ? total > 5 : false) {
           <mat-paginator
             [length]="total"
-            [pageSize]="limit"
+            [pageSize]="gridState.limit"
             [pageSizeOptions]="[5, 10, 25, 100]"
-            [pageIndex]="n"
+            [pageIndex]="gridState.n"
             (page)="setCurrentPage($event)"
             [showFirstLastButtons]="true"
             [disabled]="loading"

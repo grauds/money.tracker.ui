@@ -44,7 +44,9 @@ export class CookieStatePersistence {
    * if no cookie state key is present.
    */
   public getRouteIsolatedCookieKey(): string | null {
-    if (!this.cookieStateKey) return null;
+    if (!this.cookieStateKey) {
+      return null;
+    }
     const basePath = this.router.url.split('?')[0];
     const sanitizedPath = basePath.replace(/\//g, '_');
     return `${this.cookieStateKey}_${sanitizedPath}`;
@@ -69,7 +71,9 @@ export class CookieStatePersistence {
                    filter: Map<string, string>
   ): void {
     const uniqueKey = this.getRouteIsolatedCookieKey();
-    if (!uniqueKey) return;
+    if (!uniqueKey) {
+      return;
+    }
 
     const state: ComponentState = {
       n,
@@ -93,7 +97,9 @@ export class CookieStatePersistence {
    */
   public loadState(): ComponentState | null {
     const uniqueKey = this.getRouteIsolatedCookieKey();
-    if (!uniqueKey) return null;
+    if (!uniqueKey) {
+      return null;
+    }
 
     return this.cookieService.getState<ComponentState>(uniqueKey);
   }

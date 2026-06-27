@@ -1,5 +1,5 @@
 import { Resource } from '@lagoshny/ngx-hateoas-client';
-import { Params } from '@angular/router';
+import { NavigationExtras, Params } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
 
 export class Utils {
@@ -94,21 +94,79 @@ export class Utils {
     }
   }
 
-  // Helper method to deeply compare query parameter objects
-  static areParamsEqual(params1: any, params2: any): boolean {
-    // Return true if both are missing/falsy
-    if (!params1 && !params2) return true;
+  public static compareParameters(
+    extras: NavigationExtras | null | undefined,
+    filter: Map<string, string> | null | undefined,
+    currentRouteParams: Params,
+  ) {
+    // Defensively handle null/undefined arguments
+    const safeExtras = extras ?? {};
+    const safeFilter = filter ?? new Map<string, string>();
 
-    // Return false if only one is missing/falsy
-    if (!params1 || !params2) return false;
+    // Fix the original crash: safely read queryParams from route snapshot
+    const current: Params = currentRouteParams ?? {};
+    const target: Params = safeExtras.queryParams ?? {};
 
-    const keys1 = Object.keys(params1);
-    const keys2 = Object.keys(params2);
+    // Compare pagination variables safely
+    const isPaginationEqual = Utils.areParamsEqual(current, target, [
+      'page',
+      'size',
+      'sort',
+    ]);
 
-    if (keys1.length !== keys2.length) return false;
+    // Safely extract dynamic filter keys
+    const filterKeys = new Set<string>();
+    Object.keys(current).forEach((k) => {
+      if (k.startsWith('filter_')) {
+        filterKeys.add(k);
+      }
+    });
 
-    for (const key of keys1) {
-      if (String(params1[key]) !== String(params2[key])) {
+    safeFilter.forEach((_, k) => {
+      if (k.startsWith('filter_')) {
+        filterKeys.add(k);
+      }
+    });
+
+    // Safely convert Map and compare the active filters
+    const isFiltersEqual = Utils.areParamsEqual(
+      current,
+      Object.fromEntries(safeFilter),
+      Array.from(filterKeys),
+    );
+
+    return { target, isPaginationEqual, isFiltersEqual };
+  }
+
+  static areParamsEqual(
+    params1: Record<string, unknown> | null | undefined,
+    params2: Record<string, unknown> | null | undefined,
+    keysToCompare?: string[],
+  ): boolean {
+    // Return true if both objects are missing/falsy
+    if (!params1 && !params2) {
+      return true;
+    }
+
+    // Return false if only one object is missing/falsy
+    if (!params1 || !params2) {
+      return false;
+    }
+
+    // Determine which keys to evaluate
+    const keys = keysToCompare ?? Object.keys({ ...params1, ...params2 });
+
+    for (const key of keys) {
+      const val1 =
+        params1[key] !== undefined && params1[key] !== null
+          ? String(params1[key])
+          : '';
+      const val2 =
+        params2[key] !== undefined && params2[key] !== null
+          ? String(params2[key])
+          : '';
+
+      if (val1 !== val2) {
         return false;
       }
     }

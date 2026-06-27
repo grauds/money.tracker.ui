@@ -4,33 +4,24 @@ import {
   EventEmitter,
   Injector,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
-  OnChanges,
-  SimpleChanges,
   Output,
+  SimpleChanges,
   TemplateRef
-} from "@angular/core";
-import {
-  ActivatedRoute,
-  Params,
-  Router,
-} from '@angular/router';
+} from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
-import { Entity, SearchRequest, Utils } from '@clematis-shared/model';
-import {
-  PagedResourceCollection,
-  Sort as RestSort,
-  SortOrder
-} from '@lagoshny/ngx-hateoas-client';
+import { Entity, SearchRequest } from '@clematis-shared/model';
+import { PagedResourceCollection, Sort as RestSort, SortOrder } from '@lagoshny/ngx-hateoas-client';
 
-import { CookieStatePersistence } from "./cookie-state-persistence";
-import { SearchRequestHandler } from "./search-request-handler";
-import { UrlStateAdapter } from "./url-state-adapter";
+import { SearchRequestHandler } from './search-request-handler';
+import { UrlStateAdapter } from './url-state-adapter';
 
 import { SearchService } from '../../service/search.service';
-import { CookieService } from "../../service/cookie.service";
+import { EntityListPersistenceService } from './entity-list-state-persistence';
 
 export type ViewRepresentation = 'list' | 'table' | 'thumbnail';
 
@@ -52,6 +43,12 @@ export interface EntityCollectionContext<T> {
   entities: T[] | null;
 }
 
+interface EntityGridState {
+  n: number;
+  limit: number;
+  sort: RestSort | null;
+  filter: Map<string, string>;
+}
 /**
  * Component used to manage and display a list of entities in various
  * representations such as list, table, or thumbnail views.
@@ -110,6 +107,7 @@ export interface EntityCollectionContext<T> {
   selector: 'app-entity-list',
   templateUrl: './entity-list.component.html',
   styleUrls: ['./entity-list.component.sass'],
+  providers: [EntityListPersistenceService],
   standalone: false,
 })
 export class EntityListComponent<T extends Entity>
@@ -146,22 +144,20 @@ export class EntityListComponent<T extends Entity>
   searchRequest$: EventEmitter<SearchRequest | undefined> = new EventEmitter<
     SearchRequest | undefined
   >();
-  filter: Map<string, string> = new Map<string, string>();
-  entities: T[] | null = [];
 
   loading = false;
+  entities: T[] | null = [];
   total: number | undefined;
-  limit = 10;
-  n = 0;
   error: string | undefined;
+
+  gridState!: EntityGridState;
 
   private pageSubscription?: Subscription;
   private pipelineSubscription?: Subscription;
-  private cookiePersistence!: CookieStatePersistence;
 
   public constructor(
     private readonly injector: Injector,
-    private readonly cookieService: CookieService,
+    private readonly persistenceService: EntityListPersistenceService,
     protected router: Router,
     protected route: ActivatedRoute,
   ) {
@@ -195,92 +191,94 @@ export class EntityListComponent<T extends Entity>
   }
 
   ngOnInit(): void {
+    console.log('EntityList: Entering ngOnInit');
     this.resolveSearchService();
 
-    this.statusDescription$ = this.searchService.getStatusDescription();
-    this.cookiePersistence = new CookieStatePersistence(
-      this.router,
-      this.cookieService,
-      this.cookieStateKey,
-    );
+    this.persistenceService.configure({
+      cookieKey: this.cookieStateKey,
+      updateRouterState: this.updateRouterState,
+      queryParamsMode: this.queryParamsMode,
+    });
+
+    const initial = this.persistenceService.getInitialState();
+    this.gridState = {
+      n: initial.n ?? this.gridState?.n ?? 0,
+      limit: initial.limit ?? this.gridState?.limit ?? 10,
+      sort: this.sort ?? initial.sort,
+      filter: initial.filter,
+    };
+    console.log('EntityList: Loaded initial state', initial);
 
     this.pipelineSubscription = new SearchRequestHandler(
       this.searchService,
     ).createSearchPipeline(
       this.searchRequest$,
-      () => ({
-        n: this.n,
-        limit: this.limit,
-        sort: this.sort,
-        filter: this.filter,
-      }),
-      (page) => this.broadcastResults(page),
+      () => {
+        console.log('EntityList: pipeline current state builder triggered');
+        return this.gridState;
+      },
+      (page) => {
+        console.log('EntityList: pipeline search results received', page);
+        this.broadcastResults(page);
+      },
       (err) => {
+        console.error('EntityList: pipeline search error caught', err);
         this.error = err.message;
         this.entitiesChange$.error(err);
         this.loading$.next(false);
         throw new Error(err.message);
       },
-      () => this.entitiesChange$.complete(),
+      () => {
+        console.log('EntityList: pipeline search stream completed');
+        this.entitiesChange$.complete();
+      },
     );
 
     if (this.updateRouterState) {
+      console.log(
+        'EntityList: Router state updates are enabled. Subscribing to query parameters.',
+      );
       this.pageSubscription = this.route.queryParams.subscribe(
         (queryParams: Params) => {
-          this.updateFromParameters(queryParams);
+          console.log(
+            'EntityList: Query parameters updated in browser. Parsing new states.',
+          );
+          const incoming = UrlStateAdapter.parseParams(queryParams);
+          this.gridState = {
+            n: incoming.n ?? this.gridState?.n ?? 0,
+            limit: incoming.limit ?? this.gridState?.limit ?? 10,
+            sort: incoming.sort ?? this.gridState?.sort ?? null,
+            filter: incoming.filter,
+          };
+
           this.loadData();
         },
       );
     } else {
-      this.loadStateFromCookie();
+      console.log(
+        'EntityList: Router state updates are disabled. Falling back to cookie persistence.',
+      );
       this.loadData();
     }
     this.evaluateDefaultView();
+    console.log('EntityList: Exiting ngOnInit');
+  }
+
+  public broadcastResults(page: PagedResourceCollection<T>): void {
+    console.log('EntityList: Broadcasting new results page data payload', page);
+    this.total = page.totalElements;
+    this.gridState.limit = page.pageSize;
+    this.error = undefined;
+    this.loading$.next(false);
+    this.entitiesChange$.next(page.resources);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const fields: string[] = ['searchRequest', 'sort'];
     if (this.shouldReloadData(fields, changes)) {
-      this.n = 0;
+
+      console.log('EntityList: ngOnChanges conditions met for reloading data');
       this.saveAndUpdateData();
-    }
-  }
-
-  private hasTemplate(view: ViewRepresentation): boolean {
-    return (
-      (view === 'list' && !!this.listTemplate) ||
-      (view === 'table' && !!this.tableTemplate) ||
-      (view === 'thumbnail' && !!this.thumbnailTemplate)
-    );
-  }
-
-  private evaluateDefaultView(): void {
-    if (this.hasTemplate(this.defaultView)) {
-      this.currentView = this.defaultView;
-    } else if (this.listTemplate) {
-      this.currentView = 'list';
-    } else if (this.tableTemplate) {
-      this.currentView = 'table';
-    } else if (this.thumbnailTemplate) {
-      this.currentView = 'thumbnail';
-    }
-  }
-
-  updateFromParameters(queryParams: Params) {
-    const parsed = UrlStateAdapter.parseParams(queryParams);
-    this.n = parsed.n;
-    this.limit = parsed.limit;
-    this.sort = parsed.sort;
-    this.filter = parsed.filter;
-  }
-
-  private loadStateFromCookie() {
-    const state = this.cookiePersistence.loadState();
-    if (state) {
-      this.n = state.n ?? 0;
-      this.limit = state.limit ?? 10;
-      this.sort = state.sort ?? null;
-      this.filter = new Map(state.filter ?? []);
     }
   }
 
@@ -291,6 +289,9 @@ export class EntityListComponent<T extends Entity>
         const prev = JSON.stringify(changes[field].previousValue);
         const curr = JSON.stringify(changes[field].currentValue);
         if (prev !== curr) {
+          console.log(
+            `EntityList: Detectable change found in field: "${field}". Old: ${prev}, New: ${curr}`,
+          );
           shouldReload = true;
           break;
         }
@@ -299,42 +300,140 @@ export class EntityListComponent<T extends Entity>
     return shouldReload;
   }
 
-  public refreshData(searchRequest?: SearchRequest, resetPages = true): void {
-    if (resetPages) {
-      this.n = 0;
-    }
-    if (searchRequest) {
-      this.searchRequest = searchRequest;
+  setCurrentPage(event: PageEvent) {
+    console.log('EntityList: Page change event captured', event);
+    this.gridState.n = event.pageIndex;
+    this.gridState.limit = event.pageSize;
+    this.saveAndUpdateData();
+  }
+
+  setSort(sort: Sort) {
+    if (sort?.direction) {
+      console.log('EntityList: Sort definition update captured', sort);
+      this.sort = {
+        [sort.active]: sort.direction.toUpperCase() as SortOrder,
+      };
+    } else {
+      console.log('EntityList: Sort criteria was cleared', sort);
+      this.sort = null;
     }
     this.saveAndUpdateData();
   }
 
+  setFilter(id?: string, value?: string) {
+    if (id && value) {
+      console.log(
+        `EntityList: Applying filter parameter target - ID: ${id}, Value: ${value}`,
+      );
+      this.filter$.next(this.gridState.filter.set(id, value));
+      this.saveAndUpdateData();
+    } else {
+      console.log(
+        `EntityList: No adjustments made for pair - ID: ${id}, Value: ${value}`,
+      );
+    }
+  }
+
+  removeFilter(id?: string) {
+    if (id && this.gridState.filter.delete(id)) {
+      console.log(
+        `EntityList: Filter item with mapping ID "${id}" successfully removed from configuration.`,
+      );
+      this.filter$.next(this.gridState.filter);
+      this.saveAndUpdateData();
+    } else {
+      console.log(
+        `EntityList: No adjustments made. Target removal item ID "${id}" was not found or was invalid.`,
+      );
+    }
+  }
+
+  clearFilter() {
+    console.log(
+      'EntityList: Complete removal action triggered for all dynamic filters.',
+    );
+    this.gridState.filter = new Map<string, string>();
+    this.filter$.next(this.gridState.filter);
+    this.saveAndUpdateData();
+  }
+
+  public refreshData(searchRequest?: SearchRequest, resetPages = true): void {
+    console.log('EntityList: refreshData requested', {
+      searchRequest,
+      resetPages,
+    });
+
+    let parsedState: any = null;
+    if (searchRequest && searchRequest.queryArguments) {
+      console.log('EntityList: Updating baseline search request reference');
+      this.searchRequest = searchRequest;
+      parsedState = UrlStateAdapter.parseParams(searchRequest.queryArguments);
+    }
+
+    const nextPage = resetPages
+      ? 0
+      : parsedState
+        ? parsedState.n
+        : this.gridState.n;
+    if (resetPages) {
+      console.log('EntityList: Resetting target page variable (n = 0)');
+    }
+
+    this.gridState = {
+      n: nextPage,
+      limit: parsedState ? parsedState.limit : this.gridState.limit,
+      sort: parsedState ? parsedState.sort : this.gridState.sort,
+      filter: parsedState ? parsedState.filter : this.gridState.filter,
+    };
+
+    this.saveAndUpdateData();
+  }
+
+  private saveAndUpdateData() {
+    this.persistenceService
+      .saveState(
+        this.gridState.n,
+        this.gridState.limit,
+        this.sort ?? null,
+        this.gridState.filter,
+      )
+      .then(() => {
+        this.loadData();
+      });
+  }
+
   public loadData(): void {
+    console.log(
+      'EntityList: loadData routine executed. Pushing values to streams.',
+    );
     this.loading$.next(true);
     this.searchRequest$.next(this.searchRequest);
   }
 
-  conditionalRouteUpdate(): Promise<boolean> {
-    if (this.updateRouterState) {
-      const extras = UrlStateAdapter.buildRouteParameters(
-        this.n,
-        this.limit,
-        this.sort,
-        this.filter,
-        this.queryParamsMode,
-        this.route,
-      );
-      // Get current active query parameters from the URL
-      const currentParams = this.route.snapshot.queryParams;
-      const newParams = extras.queryParams || {};
+  private hasTemplate(view: ViewRepresentation): boolean {
+    console.log(`EntityList: Checking if template exists for view: ${view}`);
+    const hasIt =
+      (view === 'list' && !!this.listTemplate) ||
+      (view === 'table' && !!this.tableTemplate) ||
+      (view === 'thumbnail' && !!this.thumbnailTemplate);
+    console.log(`EntityList: Template check result for ${view} is ${hasIt}`);
+    return hasIt;
+  }
 
-      // Check if the old and new query parameters are identical
-      if (Utils.areParamsEqual(currentParams, newParams)) {
-        return Promise.resolve(true);
-      }
-      return this.router.navigate([], extras);
+  private evaluateDefaultView(): void {
+    console.log('EntityList: Evaluating default view strategy');
+    if (this.hasTemplate(this.defaultView)) {
+      this.currentView = this.defaultView;
+    } else if (this.listTemplate) {
+      this.currentView = 'list';
+    } else if (this.tableTemplate) {
+      this.currentView = 'table';
+    } else if (this.thumbnailTemplate) {
+      this.currentView = 'thumbnail';
     }
-    return Promise.resolve(true);
+    console.log(
+      `EntityList: Evaluated default view. Selected currentView: ${this.currentView}`,
+    );
   }
 
   get providedTemplatesCount(): number {
@@ -351,75 +450,12 @@ export class EntityListComponent<T extends Entity>
     return count;
   }
 
-  public broadcastResults(page: PagedResourceCollection<T>): void {
-    this.total = page.totalElements;
-    this.limit = page.pageSize;
-    this.error = undefined;
-    this.loading$.next(false);
-    this.entitiesChange$.next(page.resources);
-  }
-
-  setCurrentPage(event: PageEvent) {
-    this.n = event.pageIndex;
-    this.limit = event.pageSize;
-    this.saveAndUpdateData();
-  }
-
-  setSort(sort: Sort) {
-    if (sort?.direction) {
-      this.sort = {
-        [sort.active]: sort.direction.toUpperCase() as SortOrder,
-      };
-    } else {
-      this.sort = null;
-    }
-    this.saveAndUpdateData();
-  }
-
-  setFilter(id?: string, value?: string) {
-    if (id && value) {
-      this.filter$.next(this.filter.set(id, value));
-    } else {
-      this.removeFilter(id);
-    }
-    this.refreshData(this.searchRequest, true);
-  }
-
-  removeFilter(id?: string) {
-    if (id && this.filter.delete(id)) {
-      this.filter$.next(this.filter);
-      this.saveAndUpdateData();
-    }
-  }
-
-  clearFilter() {
-    this.filter = new Map<string, string>();
-    this.filter$.next(this.filter);
-    this.saveAndUpdateData();
-  }
-
-  trackEntity(entity: T): string {
+  getSelfLinkHref(entity: T): string {
     return entity.getSelfLinkHref();
   }
 
   setView(view: ViewRepresentation) {
     this.currentView = view;
-  }
-
-  private saveAndUpdateData() {
-    if (this.updateRouterState) {
-      this.conditionalRouteUpdate().then(() => {
-        this.loadData();
-      });
-    } else {
-      this.cookiePersistence.saveState(
-        this.n,
-        this.limit,
-        this.sort,
-        this.filter,
-      );
-      this.loadData();
-    }
   }
 
   ngOnDestroy(): void {

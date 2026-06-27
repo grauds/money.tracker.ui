@@ -9,8 +9,6 @@ import {
  * including parsing and constructing query parameters.
  */
 export class UrlStateAdapter {
-
-  private static defaultSort: RestSort = { name: 'ASC' };
   /**
    * Parses query parameters and returns an object containing pagination,
    * sorting, and filtering information.
@@ -32,18 +30,18 @@ export class UrlStateAdapter {
    * Each key-value pair corresponds to a parameter name and its value.
    */
   public static parseParams(queryParams: Params): {
-    n: number;
-    limit: number;
+    n: number | null;
+    limit: number | null;
     sort: RestSort | null;
     filter: Map<string, string>;
   } {
     const page = Number.parseInt(queryParams['page'], 10);
-    const n = isNaN(page) ? 0 : page;
+    const n = isNaN(page) ? null : page;
 
     const size = Number.parseInt(queryParams['size'], 10);
-    const limit = isNaN(size) ? 10 : size;
+    const limit = isNaN(size) ? null : size;
 
-    let sort: RestSort | null = UrlStateAdapter.defaultSort;
+    let sort: RestSort | null = null;
     const sortParam = queryParams['sort'];
     if (sortParam) {
       const sortString: string = Array.isArray(sortParam)
@@ -103,19 +101,6 @@ export class UrlStateAdapter {
     filter.forEach((value, key) => {
       queryParams[key] = value;
     });
-
-    if (queryParamsMode === 'merge') {
-      route.snapshot.queryParamMap?.keys.forEach((key) => {
-        if (
-          key !== 'page' &&
-          key !== 'size' &&
-          key !== 'sort' &&
-          !filter.has(key)
-        ) {
-          queryParams[key] = null;
-        }
-      });
-    }
 
     return {
       relativeTo: route,

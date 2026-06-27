@@ -23,7 +23,7 @@ export class EntityNameFilterComponent<T extends Entity>
   private loadingSubscription?: Subscription;
 
   ngOnInit(): void {
-    this.name.setValue(this.entityList.filter.get('name') ?? '');
+    this.name.setValue(this.entityList.gridState.filter.get('name') ?? '');
 
     this.filterSubscription = this.entityList.filter$.subscribe((filter) => {
       this.name.setValue(filter.get('name') ?? '', { emitEvent: false });
