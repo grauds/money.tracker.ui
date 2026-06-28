@@ -22,6 +22,8 @@ import { OrganizationGroupComponent } from './app/organizations/organization-gro
 import { OrganizationComponent } from './app/organizations/organization/organization.component';
 import { OrganizationsListComponent } from './app/organizations/organizations-list/organizations-list.component';
 import { WorkspaceComponent } from './app/workspace/workspace.component';
+import { AccountComponent } from './app/accounts/account/account.component';
+import { AccountGroupComponent } from './app/accounts/account-group/account-group.component';
 
 const routes: Routes = [
   {
@@ -48,6 +50,14 @@ const routes: Routes = [
         path: 'accounts',
         component: AccountsDashboardComponent,
         pathMatch: 'full',
+      },
+      {
+        path: 'accounts/:id',
+        component: AccountComponent,
+      },
+      {
+        path: 'accountGroups/:id',
+        component: AccountGroupComponent,
       },
       {
         path: 'commodities/:id',

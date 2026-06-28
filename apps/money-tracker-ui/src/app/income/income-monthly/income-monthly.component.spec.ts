@@ -11,18 +11,11 @@ import { SharedComponentsModule } from '@clematis-shared/shared-components';
 import { IncomeMonthlyComponent } from './income-monthly.component';
 import { NgxEchartsModule } from "ngx-echarts";
 import { mockResizeObserver } from "../../../mocks/mock_resize_observer";
-import { mockMoneyTypeService } from '../../../test-setup';
+import { fakeActivatedRoute, mockMoneyTypeService } from '../../../test-setup';
 
 describe('IncomeMonthlyComponent', () => {
   let component: IncomeMonthlyComponent;
   let fixture: ComponentFixture<IncomeMonthlyComponent>;
-
-  const fakeActivatedRoute = {
-    queryParams: of({}),
-    snapshot: {
-      paramMap: convertToParamMap({}),
-    },
-  } as ActivatedRoute;
 
   beforeEach(async () => {
     global.ResizeObserver = mockResizeObserver;

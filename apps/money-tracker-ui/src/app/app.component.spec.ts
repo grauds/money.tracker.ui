@@ -8,14 +8,10 @@ import { EnvironmentService } from "@clematis-shared/shared-components";
 import Keycloak from "keycloak-js";
 import { mockEventSignal, MockKeycloak } from "../mocks/mock_keycloak.js";
 import { KEYCLOAK_EVENT_SIGNAL } from "keycloak-angular";
+import { fakeActivatedRoute } from '../test-setup';
 
 
 describe('AppComponent', () => {
-  const fakeActivatedRoute = {
-    snapshot: {
-      queryParams: {},
-    }
-  } as ActivatedRoute;
 
   const environmentServiceMock: any = {
     getValue: jest.fn().mockReturnValue('http://api.url')

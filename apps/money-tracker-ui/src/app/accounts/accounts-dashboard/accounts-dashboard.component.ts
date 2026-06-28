@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AccountBalance, MoneyType } from '@clematis-shared/model';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Account, MoneyType } from '@clematis-shared/model';
+import { Subject, takeUntil } from 'rxjs';
 import {
   PagedResourceCollection,
   ResourceCollection,
@@ -26,7 +26,7 @@ export class AccountsDashboardComponent implements OnInit, OnDestroy {
   // total sum week ago in the chosen currency
   totalWeekAgo = 0;
 
-  accountsBalances: AccountBalance[] = [];
+  accounts: Account[] = [];
 
   loading = false;
 
@@ -82,7 +82,7 @@ export class AccountsDashboardComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response: PagedResourceCollection<MoneyType>) => {
           this.currencies = response.resources;
-          this.getAccountsBalanceInCurrency();
+          this.getAccountsInCurrency();
         },
         error: () => {
           this.loading = false;
@@ -122,17 +122,17 @@ export class AccountsDashboardComponent implements OnInit, OnDestroy {
       });
   }
 
-  private setAccountsBalances(accountsBalances: AccountBalance[]) {
-    this.accountsBalances = accountsBalances;
+  private setAccounts(accounts: Account[]) {
+    this.accounts = accounts;
   }
 
-  private getAccountsBalanceInCurrency() {
+  private getAccountsInCurrency() {
     this.loading = true;
     this.totalsLoading = true;
 
     this.accountsService.getAccountsBalanceInCurrency(this.currency).subscribe({
-      next: (response: ResourceCollection<AccountBalance>) => {
-        this.setAccountsBalances(response.resources);
+      next: (response: ResourceCollection<Account>) => {
+        this.setAccounts(response.resources);
         this.getAccountsTotalInCurrency();
         this.getAccountsTotalWeekAgoInCurrency();
       },

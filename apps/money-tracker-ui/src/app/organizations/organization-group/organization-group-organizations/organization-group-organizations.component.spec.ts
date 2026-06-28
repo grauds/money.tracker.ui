@@ -2,15 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedComponentsModule } from "@clematis-shared/shared-components";
 import { OrganizationGroupOrganizationsComponent } from './organization-group-organizations.component';
 import { HttpClientModule } from "@angular/common/http";
-import { of } from "rxjs";
-import { ActivatedRoute, convertToParamMap } from "@angular/router";
-
-const fakeActivatedRoute = {
-  queryParams: of({}),
-  snapshot: {
-    paramMap: convertToParamMap({}),
-  },
-} as ActivatedRoute;
+import { ActivatedRoute } from "@angular/router";
+import { fakeActivatedRoute } from '../../../../test-setup';
 
 describe('OrganizationGroupOrganizationsComponent', () => {
   let component: OrganizationGroupOrganizationsComponent;

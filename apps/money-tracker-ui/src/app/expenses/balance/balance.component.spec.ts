@@ -15,15 +15,8 @@ import {
 import { BalanceComponent } from './balance.component';
 import { NgxEchartsModule } from "ngx-echarts";
 import { mockResizeObserver } from "../../../mocks/mock_resize_observer";
-import { mockHateoasService, mockMoneyTypeService } from '../../../test-setup';
+import { fakeActivatedRoute, mockHateoasService, mockMoneyTypeService } from '../../../test-setup';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
-
-const fakeActivatedRoute = {
-  queryParams: of({}),
-  snapshot: {
-    paramMap: convertToParamMap({ id: 9 }),
-  },
-} as ActivatedRoute;
 
 describe('BalanceComponent', () => {
   let component: BalanceComponent;

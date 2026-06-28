@@ -6,7 +6,8 @@ import {
   CommoditiesService,
   CommodityGroupService,
   CommodityGroupsService,
-  ExpenseItemsService, MoneyTypeService,
+  ExpenseItemsService,
+  MoneyTypeService,
   SharedComponentsModule
 } from '@clematis-shared/shared-components';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';

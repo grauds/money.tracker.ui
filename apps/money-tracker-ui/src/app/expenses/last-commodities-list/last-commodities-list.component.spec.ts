@@ -5,13 +5,7 @@ import { SharedComponentsModule } from '@clematis-shared/shared-components';
 import { LastCommoditiesListComponent } from './last-commodities-list.component';
 import { of } from "rxjs";
 import { ActivatedRoute, convertToParamMap } from "@angular/router";
-
-const fakeActivatedRoute = {
-  queryParams: of({}),
-  snapshot: {
-    paramMap: convertToParamMap({ id: 9 }),
-  },
-} as ActivatedRoute;
+import { fakeActivatedRoute } from '../../../test-setup';
 
 describe('LastCommoditiesListComponent', () => {
   let component: LastCommoditiesListComponent;

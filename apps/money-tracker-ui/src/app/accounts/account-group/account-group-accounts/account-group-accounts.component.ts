@@ -1,16 +1,16 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { OrganizationsService } from '@clematis-shared/shared-components';
+import { AccountsService, SharedComponentsModule } from '@clematis-shared/shared-components';
 import { RequestParam, Sort } from '@lagoshny/ngx-hateoas-client';
 import { Entity } from '@clematis-shared/model';
 
 @Component({
-  selector: 'app-organization-group-organizations',
-  templateUrl: './organization-group-organizations.component.html',
-  styleUrls: ['./organization-group-organizations.component.sass'],
-  providers: [{ provide: 'searchService', useClass: OrganizationsService }],
+  selector: 'app-account-group-accounts',
+  templateUrl: './account-group-accounts.component.html',
+  styleUrl: './account-group-accounts.component.sass',
+  providers: [{ provide: 'searchService', useClass: AccountsService }],
   standalone: false,
 })
-export class OrganizationGroupOrganizationsComponent implements OnChanges {
+export class AccountGroupAccountsComponent implements OnChanges {
   @Input() id = '';
 
   loading = false;
@@ -33,7 +33,7 @@ export class OrganizationGroupOrganizationsComponent implements OnChanges {
       queryArguments: {
         id: this.id ? this.id : '',
       },
-      queryName: 'recursiveOrganizationsByGroupId',
+      queryName: 'recursiveAccountsByGroupId',
     };
   }
 

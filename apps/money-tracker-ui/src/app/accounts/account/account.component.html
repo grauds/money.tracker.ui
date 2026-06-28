@@ -1,0 +1,107 @@
+@if (entity) {
+  <app-breadcrumbs [path]="path"></app-breadcrumbs>
+}
+@if (entity) {
+  <div class="product-container jumbotron" style="display: flex; gap: 24px; align-items: flex-start; max-width: 100%; overflow: hidden;">
+
+    <!-- Right Side: Image Control -->
+    <div class="product-media" style="flex-shrink: 0; background: #ffffff; padding: 12px; border: 1px solid #dee2e6; border-radius: 6px;">
+      <app-photo-uploader
+        [entityName]="'accounts'"
+        [entityId]="id"
+        [extraPath]="'main'"
+      ></app-photo-uploader>
+    </div>
+
+    <!-- Left Side: Product Information -->
+    <div class="product-info" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; font-family: system-ui, -apple-system, sans-serif;">
+
+      <!-- Title Section -->
+      <div style="border-bottom: 1px solid #f1f3f5; padding-bottom: 12px;">
+        <h2 style="margin: 0; font-size: 1.75rem; font-weight: 700; color: #1a1b1e; tracking: -0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+          {{ !loading ? (entity ? entity.name : 'Not loaded') : 'Loading...' }}
+        </h2>
+      </div>
+
+      <!-- Financial Overview Section -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+        <!-- Income Block (Green Theme) -->
+        <div style="background: #f4fbf7; border: 1px solid #e1f5eb; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #2b8a3e;">Income</span>
+          <strong style="font-size: 1.4rem; font-weight: 700; color: #2b8a3e;">
+            {{ !loading ? (incomeSum | currencySpace : this.currency.code :'symbol') : '-' }}
+          </strong>
+        </div>
+
+        <!-- Expenses Block (Red Theme) -->
+        <div style="background: #fff5f5; border: 1px solid #ffe3e3; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #c92a2a;">Expenses</span>
+          <strong style="font-size: 1.4rem; font-weight: 700; color: #c92a2a;">
+            {{ !loading ? (expensesSum | currencySpace : this.currency.code :'symbol') : '-' }}
+          </strong>
+        </div>
+      </div>
+
+      <!-- Dynamic Profit/Loss Balance Tracker -->
+      <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 0.9rem; font-weight: 500; color: #495057;">Net Balance</span>
+        <strong [style.color]="(incomeSum - expensesSum) >= 0 ? '#2b8a3e' : '#c92a2a'" style="font-size: 1.15rem; font-weight: 700;">
+          {{ !loading ? ((incomeSum - expensesSum) | currencySpace : this.currency.code :'symbol') : '-' }}
+        </strong>
+      </div>
+
+      <!-- Description Section -->
+      @if (entity.description) {
+        <div class="product-description" style="margin-top: 4px; border-top: 1px solid #f1f3f5; padding-top: 16px;">
+          <h4 style="margin: 0 0 8px 0; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #868e96;">Description</h4>
+          <div style="max-height: 140px; overflow-y: auto; font-size: 0.925rem; color: #495057; line-height: 1.6; padding-right: 8px;">
+            {{ entity.description }}
+          </div>
+        </div>
+      }
+
+    </div>
+
+  </div>
+}
+
+@if (entity && this.expenses.length > 1) {
+  <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
+    <div>
+      <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+        Price & Analytics Trends
+      </h3>
+      <small style="color: #6c757d; font-size: 0.85rem;">Historical data and purchase distribution</small>
+    </div>
+  </div>
+}
+
+<app-entity-expenses
+  [expenseService]="expenseService"
+  [cookieStateKey]="'account-expense'"
+  [queryArguments]="getQueryArguments()"
+  [queryName]="'account'"
+  (loadingChanged)="setLoading($event)"
+  (entitiesChanged)="setExpenses($event)"
+></app-entity-expenses>
+
+@if (entity && this.income.length > 1) {
+  <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
+    <div>
+      <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+        Income & Analytics Trends
+      </h3>
+      <small style="color: #6c757d; font-size: 0.85rem;">Historical data and income distribution</small>
+    </div>
+  </div>
+}
+
+<app-entity-income
+  [incomeService]="incomeService"
+  [cookieStateKey]="'account-income'"
+  [queryArguments]="getQueryArguments()"
+  [queryName]="'account'"
+  (loadingChanged)="setLoading($event)"
+  (entitiesChanged)="setIncome($event)"
+  >
+</app-entity-income>

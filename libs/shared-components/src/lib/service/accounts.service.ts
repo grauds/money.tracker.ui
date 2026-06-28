@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AccountBalance, MoneyType } from '@clematis-shared/model';
+import { Account, MoneyType } from '@clematis-shared/model';
 import { HttpClient } from '@angular/common/http';
 import {
   HateoasResourceService,
@@ -12,44 +12,36 @@ import { SearchService } from './search.service';
 import { EnvironmentService } from './environment.service';
 
 @Injectable()
-export class AccountsService extends SearchService<AccountBalance> {
+export class AccountsService extends SearchService<Account> {
   constructor(
     private http: HttpClient,
     private hateoasService: HateoasResourceService,
-    override environmentService: EnvironmentService
+    override environmentService: EnvironmentService,
   ) {
     super(environmentService);
   }
 
   searchPage(
     options: PagedGetOption | undefined,
-    queryName: string
-  ): Observable<PagedResourceCollection<AccountBalance>> {
-    return this.hateoasService.searchPage<AccountBalance>(
-      AccountBalance,
-      queryName,
-      options
-    );
+    queryName: string,
+  ): Observable<PagedResourceCollection<Account>> {
+    return this.hateoasService.searchPage<Account>(Account, queryName, options);
   }
 
   getPage(
-    options: PagedGetOption | undefined
-  ): Observable<PagedResourceCollection<AccountBalance>> {
-    return this.hateoasService.getPage<AccountBalance>(AccountBalance, options);
+    options: PagedGetOption | undefined,
+  ): Observable<PagedResourceCollection<Account>> {
+    return this.hateoasService.getPage<Account>(Account, options);
   }
 
   getAccountsBalanceInCurrency(
-    moneyType: MoneyType
-  ): Observable<ResourceCollection<AccountBalance>> {
-    return this.hateoasService.searchCollection<AccountBalance>(
-      AccountBalance,
-      'code',
-      {
-        params: {
-          code: moneyType.code,
-        },
-      }
-    );
+    moneyType: MoneyType,
+  ): Observable<ResourceCollection<Account>> {
+    return this.hateoasService.searchCollection<Account>(Account, 'code', {
+      params: {
+        code: moneyType.code,
+      },
+    });
   }
 
   getAccountsTotalInCurrency(moneyType: MoneyType): Observable<number> {
@@ -59,13 +51,13 @@ export class AccountsService extends SearchService<AccountBalance> {
         params: {
           code: moneyType.code,
         },
-      }
+      },
     );
   }
 
   getAccountsTotalHistoryInCurrency(
     moneyType: MoneyType,
-    days: number
+    days: number,
   ): Observable<number> {
     return this.http.get<number>(
       this.getUrl('/accountsTotals/search/balanceHistory'),
@@ -74,7 +66,7 @@ export class AccountsService extends SearchService<AccountBalance> {
           code: moneyType.code,
           days: days,
         },
-      }
+      },
     );
   }
 

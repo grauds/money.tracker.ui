@@ -24,14 +24,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxEchartsModule } from "ngx-echarts";
 import { mockResizeObserver } from "../../../mocks/mock_resize_observer";
-import { mockMoneyTypeService } from '../../../test-setup';
-
-const fakeActivatedRoute = {
-  queryParams: of({}),
-  snapshot: {
-    paramMap: convertToParamMap({ id: 9 }),
-  },
-} as ActivatedRoute;
+import { fakeActivatedRoute, mockMoneyTypeService } from '../../../test-setup';
 
 describe('InOutListComponent', () => {
   let component: InOutListComponent;

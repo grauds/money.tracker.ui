@@ -1,3 +1,5 @@
+export { Account } from '../model/account';
+export { AccountGroup } from '../model/account-group';
 export { AccountBalance } from '../model/account-balance';
 export { Commodity } from '../model/commodity';
 export { CommodityGroup } from '../model/commodity-group';

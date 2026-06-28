@@ -5,17 +5,11 @@ import { convertToParamMap, ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
 import { CommoditiesListComponent } from './commodities-list.component';
+import { fakeActivatedRoute } from '../../../test-setup';
 
 describe('CommoditiesListComponent', () => {
   let component: CommoditiesListComponent;
   let fixture: ComponentFixture<CommoditiesListComponent>;
-
-  const fakeActivatedRoute = {
-    queryParams: of({}),
-    snapshot: {
-      paramMap: convertToParamMap({}),
-    },
-  } as ActivatedRoute;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

@@ -1,0 +1,8 @@
+<app-entity-list
+  [searchRequest]="searchRequest"
+  (loading$)="setLoading($event)"
+  (entitiesChange$)="setEntities($event)"
+  [sort]="getSort()"
+  [entityName]="'accounts'"
+  [currentView]="'thumbnail'"
+></app-entity-list>

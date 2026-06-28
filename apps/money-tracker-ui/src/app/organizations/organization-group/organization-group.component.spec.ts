@@ -5,18 +5,11 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { MoneyTypeService, OrganizationGroupsService } from '@clematis-shared/shared-components';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
-import { mockMoneyTypeService } from '../../../test-setup';
+import { fakeActivatedRoute, mockMoneyTypeService } from '../../../test-setup';
 
 describe('OrganizationGroupComponent', () => {
   let component: OrganizationGroupComponent;
   let fixture: ComponentFixture<OrganizationGroupComponent>;
-
-  const fakeActivatedRoute = {
-    queryParams: of({}),
-    snapshot: {
-      paramMap: convertToParamMap({ id: 9 }),
-    },
-  } as ActivatedRoute;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

@@ -4,6 +4,7 @@ import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
 import { TestBed } from '@angular/core/testing';
 import Keycloak from 'keycloak-js';
 import { of } from 'rxjs';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 /**
  * The global mock for images
  */
@@ -67,3 +68,10 @@ export const mockMoneyTypeService = {
   getSelectedMoneyType: jest.fn().mockReturnValue({ code: 'RUB' }),
   getLoadedMoneyTypes: jest.fn().mockReturnValue([]),
 };
+
+export const fakeActivatedRoute = {
+  queryParams: of({}),
+  snapshot: {
+    paramMap: convertToParamMap({}),
+  },
+} as ActivatedRoute;

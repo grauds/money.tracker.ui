@@ -3,6 +3,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ContentLoaderModule } from '@ngneat/content-loader';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -14,6 +16,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import {
+  Account,
+  AccountGroup,
   CommodityGroup,
   Commodity,
   ExpenseItem,
@@ -66,6 +70,9 @@ import {
   TelegramFeedComponent
 } from '@clematis-shared/shared-components';
 
+import { AgentCommoditiesComponent } from './expenses/agent-commodities/agent-commodities.component';
+import { AccountGroupComponent } from './accounts/account-group/account-group.component';
+import { AccountComponent } from './accounts/account/account.component';
 import { AccountsDashboardComponent } from './accounts/accounts-dashboard/accounts-dashboard.component';
 import { LastCommoditiesListComponent } from './expenses/last-commodities-list/last-commodities-list.component';
 import { ExchangeComponent } from './accounts/exchange/exchange.component';
@@ -75,12 +82,15 @@ import { BalanceComponent } from './expenses/balance/balance.component';
 import { CommodityGroupCommoditiesComponent } from './commodities/commodity-group/commodity-group-commodities/commodity-group-commodities.component';
 import { OrganizationGroupOrganizationsComponent } from './organizations/organization-group/organization-group-organizations/organization-group-organizations.component';
 import { IncomeMonthlyComponent } from './income/income-monthly/income-monthly.component';
-import { AgentCommoditiesComponent } from './expenses/agent-commodities/agent-commodities.component';
-import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
-import { CommonModule, CurrencyPipe } from "@angular/common";
+import {
+  AccountGroupAccountsComponent
+} from './accounts/account-group/account-group-accounts/account-group-accounts.component';
 
 @NgModule({
   declarations: [
+    AccountComponent,
+    AccountGroupComponent,
+    AccountGroupAccountsComponent,
     CommodityGroupListComponent,
     CommoditiesListComponent,
     OrganizationsListComponent,
@@ -153,6 +163,8 @@ export class AppModule {
       },
       useTypes: {
         resources: [
+          Account,
+          AccountGroup,
           AccountBalance,
           Entity,
           CommodityGroup,

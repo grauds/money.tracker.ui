@@ -31,13 +31,13 @@ import {
 
 @Component({
   selector: 'app-commodity',
-  templateUrl: './commodity.component.html',
-  styleUrls: ['./commodity.component.sass'],
   providers: [
     EntityService,
     { provide: RESOURCE_TYPE, useValue: Commodity },
     { provide: PARENT_RESOURCE_TYPE, useValue: CommodityGroup },
   ],
+  templateUrl: './commodity.component.html',
+  styleUrls: ['./commodity.component.sass'],
   standalone: false,
 })
 export class CommodityComponent

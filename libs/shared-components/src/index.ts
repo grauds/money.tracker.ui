@@ -26,6 +26,7 @@ export { EntityExpensesComponent } from './lib/components/entity/entity-expenses
 
 export { TelegramFeedComponent } from './lib/components/telegram-feed/telegram-feed.component';
 
+export { AccountGroupService } from './lib/service/account-group.service';
 export { AccountsService } from './lib/service/accounts.service';
 export { SearchService } from './lib/service/search.service';
 export { OrganizationsService } from './lib/service/organizations.service';

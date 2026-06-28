@@ -5,17 +5,11 @@ import { of } from 'rxjs';
 
 import { CommodityGroupCommoditiesComponent } from './commodity-group-commodities.component';
 import { SharedComponentsModule } from '@clematis-shared/shared-components';
+import { fakeActivatedRoute } from '../../../../test-setup';
 
 describe('CommodityGroupCommoditiesComponent', () => {
   let component: CommodityGroupCommoditiesComponent;
   let fixture: ComponentFixture<CommodityGroupCommoditiesComponent>;
-
-  const fakeActivatedRoute = {
-    queryParams: of({}),
-    snapshot: {
-      paramMap: convertToParamMap({}),
-    },
-  } as ActivatedRoute;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

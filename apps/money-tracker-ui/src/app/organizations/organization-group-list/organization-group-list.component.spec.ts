@@ -6,13 +6,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { SharedComponentsModule } from '@clematis-shared/shared-components';
 import { OrganizationGroupListComponent } from './organization-group-list.component';
 import { OrganizationGroupsService } from '@clematis-shared/shared-components';
-
-const fakeActivatedRoute = {
-  queryParams: of({}),
-  snapshot: {
-    paramMap: convertToParamMap({}),
-  },
-} as ActivatedRoute;
+import { fakeActivatedRoute } from '../../../test-setup';
 
 describe('OrganizationGroupListComponent', () => {
   let component: OrganizationGroupListComponent;

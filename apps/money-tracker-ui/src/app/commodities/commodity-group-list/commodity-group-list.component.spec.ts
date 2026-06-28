@@ -5,17 +5,11 @@ import { CommodityGroupListComponent } from './commodity-group-list.component';
 import { SharedComponentsModule } from '@clematis-shared/shared-components';
 import { convertToParamMap, ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+import { fakeActivatedRoute } from '../../../test-setup';
 
 describe('CommodityGroupListComponent', () => {
   let component: CommodityGroupListComponent;
   let fixture: ComponentFixture<CommodityGroupListComponent>;
-
-  const fakeActivatedRoute = {
-    queryParams: of({}),
-    snapshot: {
-      paramMap: convertToParamMap({}),
-    },
-  } as ActivatedRoute;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

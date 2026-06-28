@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { CommodityGroup, MoneyType } from '@clematis-shared/model';
 import { HttpClient } from '@angular/common/http';
 import {
   HateoasResourceService,
@@ -7,10 +6,11 @@ import {
   ResourceCollection,
   PagedGetOption
 } from '@lagoshny/ngx-hateoas-client';
-
-import { SearchService } from './search.service';
-import { EnvironmentService } from './environment.service';
 import { Observable, of } from 'rxjs';
+
+import { CommodityGroup, MoneyType } from '@clematis-shared/model';
+import { EnvironmentService } from './environment.service';
+import { SearchService } from './search.service';
 
 @Injectable()
 export class CommodityGroupService extends SearchService<CommodityGroup> {

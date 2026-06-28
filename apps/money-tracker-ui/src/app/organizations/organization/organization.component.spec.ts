@@ -3,28 +3,22 @@ import { of } from 'rxjs';
 import { OrganizationComponent } from './organization.component';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import {
-  ExpenseItemsService, MoneyTypeService,
+  ExpenseItemsService,
+  MoneyTypeService,
   OrganizationGroupsService,
   OrganizationsService,
   SharedComponentsModule
 } from '@clematis-shared/shared-components';
 import { mockResizeObserver } from "../../../mocks/mock_resize_observer";
 import { NgxEchartsModule } from "ngx-echarts";
-import { mockMoneyTypeService } from '../../../test-setup';
+import { fakeActivatedRoute, mockMoneyTypeService } from '../../../test-setup';
 
 describe('OrganizationComponent', () => {
   let component: OrganizationComponent;
   let fixture: ComponentFixture<OrganizationComponent>;
-
-  const fakeActivatedRoute = {
-    queryParams: of({}),
-    snapshot: {
-      paramMap: convertToParamMap({}),
-    },
-  } as ActivatedRoute;
 
   beforeEach(async () => {
     global.ResizeObserver = mockResizeObserver;
