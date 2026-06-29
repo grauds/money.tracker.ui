@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subject, takeUntil } from 'rxjs';
 import {
-  ResourceCollection,
+  PagedResourceCollection,
 } from '@lagoshny/ngx-hateoas-client';
 
 import { InOutDelta, MoneyType } from '@clematis-shared/model';
@@ -23,8 +23,6 @@ export class InOutListComponent implements OnInit, OnDestroy {
   loading = false;
 
   totals = { positive: 0, negative: 0 };
-
-  entities: Array<InOutDelta> = [];
 
   currency: MoneyType = this.moneyTypeService.getSelectedMoneyType();
 
@@ -50,9 +48,8 @@ export class InOutListComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     this.inOutService.getInOutDeltasInCurrency(this.currency).subscribe({
-      next: (response: ResourceCollection<InOutDelta>) => {
-        this.entities = response.resources;
-        this.totals = this.entities.reduce(
+      next: (response: PagedResourceCollection<InOutDelta>) => {
+        this.totals = response.resources.reduce(
           (accumulator, object) => {
             if (object.delta > 0) {
               accumulator.positive += object.delta;

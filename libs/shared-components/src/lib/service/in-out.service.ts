@@ -18,16 +18,17 @@ export class InOutService extends SearchService<InOutDelta> {
     super(environmentService);
   }
 
-  getInOutDeltasInCurrency(moneyType: MoneyType) {
-    return this.hateoasService.searchCollection<InOutDelta>(
-      InOutDelta,
-      'code',
-      {
-        params: {
-          code: moneyType.code,
-        },
+  getInOutDeltasInCurrency(moneyType: MoneyType)
+    : Observable<PagedResourceCollection<InOutDelta>> {
+    return this.hateoasService.searchPage<InOutDelta>(InOutDelta, 'code', {
+      params: {
+        code: moneyType.code,
       },
-    );
+      pageParams: {
+        page: 0,
+        size: 1000,
+      },
+    });
   }
 
   getPage(
