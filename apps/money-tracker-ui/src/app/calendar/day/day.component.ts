@@ -43,7 +43,7 @@ export class DayComponent {
 
     this.weatherService.getDay(this.date).subscribe({
       next: (response: any) => {
-        this.weatherData = response._embedded?.observations
+        this.weatherData = response._embedded?.observations[0]
           ? new WeatherObservation(response._embedded?.observations[0])
           : null;
       },
