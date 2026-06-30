@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { WeatherObservation } from '@clematis-shared/model';
 import { WeatherService } from '@clematis-shared/shared-components';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -17,15 +17,13 @@ export class DayComponent {
 
   date: string = DayComponent.formatDate(new Date());
 
-  wpCoverImage: string | null = null;
-
   wpArticle: any = null;
 
   weatherData: WeatherObservation | null = null;
 
-  imageUrl: SafeUrl | null = null;
-
-  private loadedBackgroundImage: string | null = null;
+  private currentBlobUrl: string | null = null;
+  loadedBackgroundImage: string | null = null;
+  imageUrl: any = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,7 +36,6 @@ export class DayComponent {
       if (!routeDate) {
         routeDate = DayComponent.formatDate(new Date());
       }
-
       this.date = routeDate;
       this.loadData();
     });
@@ -89,55 +86,42 @@ export class DayComponent {
     };
   }
 
-  loadRandomImage(dayString: string): void {
-    this.weatherService.getImage(dayString).subscribe({
-      next: (blob: Blob) => {
-        // Create a local object URL from the raw blob bytes
-        const objectUrl = URL.createObjectURL(blob);
-        // Sanitize the URL so Angular allows it to bind to the src attribute
-        this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectUrl);
-      },
-      error: (err) => {
-        console.error('Failed to load weather image', err);
-      },
-    });
-  }
-
-  ngOnInit(): void {
-    this.date =
-      this.route.snapshot.paramMap.get('date') ??
-      new Date().toISOString().split('T')[0];
-    this.loadData();
-  }
-
-  loadDashboardBackground(day: string): void {
-    this.weatherService.getImage(day).subscribe({
-      next: (blob: Blob) => {
-        // Create an inline object URL from the raw image data bytes
-        const objectUrl = URL.createObjectURL(blob);
-        this.loadedBackgroundImage = `url('${objectUrl}')`;
-      },
-      error: (err) => {
-        console.error('Could not load dashboard background image', err);
-        // Fallback is handled automatically by the getter if this fails
-      },
-    });
-  }
-
-  // Your updated getter method
-  get dashboardBackgroundImage(): string {
+  private loadRandomImage(dayString: string): void {
     const defaultPlaceholder = 'assets/weather-placeholder.png';
 
-    // Prioritize the loaded random image blob, then fallback to wpCoverImage, then default
-    if (this.loadedBackgroundImage) {
-      return this.loadedBackgroundImage;
-    }
+    this.weatherService.getImage(dayString).subscribe({
+      next: (blob: Blob) => {
+        // Check if the returned blob is valid and contains actual data
+        if (blob && blob.size > 0) {
+          // Free up previous browser memory allocation
+          if (this.currentBlobUrl) {
+            URL.revokeObjectURL(this.currentBlobUrl);
+          }
 
-    const imageUrl = this.wpCoverImage || defaultPlaceholder;
-    return `url('${imageUrl}')`;
+          this.currentBlobUrl = URL.createObjectURL(blob);
+          this.loadedBackgroundImage = `url('${this.currentBlobUrl}')`;
+          this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(
+            this.currentBlobUrl,
+          );
+        } else {
+          // Handle empty response fallback directly
+          this.loadedBackgroundImage = `url('${defaultPlaceholder}')`;
+          this.imageUrl = defaultPlaceholder;
+        }
+      },
+      error: (err) => {
+        console.error(
+          'Failed to load weather image, falling back to placeholder',
+          err,
+        );
+        // 3. Handle network error fallback instantly
+        this.loadedBackgroundImage = `url('${defaultPlaceholder}')`;
+        this.imageUrl = defaultPlaceholder;
+      },
+    });
   }
 
-  navigateDay(offset: number): void {
+  protected navigateDay(offset: number): void {
     if (this.date) {
       // Parse the current string date (YYYY-MM-DD) safely split by hyphen
       const [year, month, day] = this.date.split('-').map(Number);
