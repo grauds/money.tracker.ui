@@ -7,6 +7,7 @@ export {
 export type { EnvironmentInterface } from './lib/service/environment-interface';
 
 export { BreadcrumbsComponent } from './lib/components/breadcrumbs/breadcrumbs.component';
+export { DateBreadcrumbsComponent } from './lib/components/date-breadcrumbs/date-breadcrumbs.component';
 export { EntityElementComponent } from './lib/components/entity-list/entity-element/entity-element.component';
 export { PaginationBarComponent } from './lib/components/pagination-bar/pagination-bar.component';
 export { PageSizeComponent } from './lib/components/page-size/page-size.component';
