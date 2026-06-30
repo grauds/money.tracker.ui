@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { WeatherObservation } from '@clematis-shared/model';
 import { WeatherService } from '@clematis-shared/shared-components';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 
 @Component({
@@ -22,10 +23,15 @@ export class DayComponent {
 
   weatherData: WeatherObservation | null = null;
 
+  imageUrl: SafeUrl | null = null;
+
+  private loadedBackgroundImage: string | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private weatherService: WeatherService,
+    private sanitizer: DomSanitizer,
   ) {
     this.route.paramMap.subscribe((params) => {
       let routeDate = params.get('date');
@@ -46,6 +52,7 @@ export class DayComponent {
         this.weatherData = response._embedded?.observations[0]
           ? new WeatherObservation(response._embedded?.observations[0])
           : null;
+        this.loadRandomImage(this.date);
       },
       error: () => {
         this.loading = false;
@@ -82,6 +89,20 @@ export class DayComponent {
     };
   }
 
+  loadRandomImage(dayString: string): void {
+    this.weatherService.getImage(dayString).subscribe({
+      next: (blob: Blob) => {
+        // Create a local object URL from the raw blob bytes
+        const objectUrl = URL.createObjectURL(blob);
+        // Sanitize the URL so Angular allows it to bind to the src attribute
+        this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectUrl);
+      },
+      error: (err) => {
+        console.error('Failed to load weather image', err);
+      },
+    });
+  }
+
   ngOnInit(): void {
     this.date =
       this.route.snapshot.paramMap.get('date') ??
@@ -89,16 +110,32 @@ export class DayComponent {
     this.loadData();
   }
 
-  /**
-   * Computes the background image styling safely.
-   * Swaps to a clean default placeholder if the WordPress asset is missing.
-   */
+  loadDashboardBackground(day: string): void {
+    this.weatherService.getImage(day).subscribe({
+      next: (blob: Blob) => {
+        // Create an inline object URL from the raw image data bytes
+        const objectUrl = URL.createObjectURL(blob);
+        this.loadedBackgroundImage = `url('${objectUrl}')`;
+      },
+      error: (err) => {
+        console.error('Could not load dashboard background image', err);
+        // Fallback is handled automatically by the getter if this fails
+      },
+    });
+  }
+
+  // Your updated getter method
   get dashboardBackgroundImage(): string {
     const defaultPlaceholder = 'assets/weather-placeholder.png';
+
+    // Prioritize the loaded random image blob, then fallback to wpCoverImage, then default
+    if (this.loadedBackgroundImage) {
+      return this.loadedBackgroundImage;
+    }
+
     const imageUrl = this.wpCoverImage || defaultPlaceholder;
     return `url('${imageUrl}')`;
   }
-
 
   navigateDay(offset: number): void {
     if (this.date) {
@@ -124,5 +161,4 @@ export class DayComponent {
     const d = String(date.getDate()).padStart(2, '0');
     return `${y}-${m}-${d}`;
   }
-
 }

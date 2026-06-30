@@ -20,10 +20,17 @@ export class WeatherService {
   }
 
   getDay(dayTime: string): Observable<ResourceCollection<WeatherObservation>> {
-    const url = `/observations/search/findByStationDayAndHour?dateTime=${dayTime} 09:00:00&stationId=27612`;
+    const url = `/api/observations/search/findByStationDayAndHour?dateTime=${dayTime} 09:00:00&stationId=27612`;
     return this.http.get<ResourceCollection<WeatherObservation>>(
       this.getUrl(url),
     );
+  }
+
+    getImage(day: string): Observable<Blob> {
+    const url = `/image/random?date=${day}`;
+    return this.http.get(this.getUrl(url), {
+      responseType: 'blob',
+    });
   }
 
   getUrl(url: string): string {
