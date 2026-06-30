@@ -24,6 +24,7 @@ import { OrganizationsListComponent } from './app/organizations/organizations-li
 import { WorkspaceComponent } from './app/workspace/workspace.component';
 import { AccountComponent } from './app/accounts/account/account.component';
 import { AccountGroupComponent } from './app/accounts/account-group/account-group.component';
+import { DayComponent } from './app/calendar/day/day.component';
 
 const routes: Routes = [
   {
@@ -72,6 +73,10 @@ const routes: Routes = [
         path: 'commodityGroups',
         component: CommodityGroupListComponent,
         pathMatch: 'full',
+      },
+      {
+        path: 'days/:date',
+        component: DayComponent,
       },
       {
         path: 'lastCommodities',

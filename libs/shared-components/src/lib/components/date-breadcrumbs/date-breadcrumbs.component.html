@@ -8,16 +8,16 @@
   @for (item of path; track item) {
     <div class="path-item">
       <div class="path-divider">&gt;</div>
-      @if (item.getSelfLinkHref()) {
+      @if (item.url) {
         <a
-          [routerLink]="parseResourceUrlToAppUrl(item)"
+          [routerLink]="item.url"
           class="active-ctrl"
-          >
-          {{ item.name }}
+        >
+          {{ item.label }}
         </a>
       }
-      @if (!item.getSelfLinkHref()) {
-        <div>{{ item.name }}</div>
+      @if (!item.url) {
+        <div>{{ item.label }}</div>
       }
     </div>
   }

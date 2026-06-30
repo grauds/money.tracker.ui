@@ -22,6 +22,8 @@ export { Organization } from '../model/organization';
 export { OrganizationGroup } from '../model/organization-group';
 export { UnitType } from '../model/unit-type';
 
+export { WeatherObservation } from '../model/weather-observation';
+
 export type { MoneyExchangeReport } from '../dto/money-exchange-report';
 
 export type { AgentCommodities } from '../dto/agent-commodities';

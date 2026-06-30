@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClient, HttpHandler } from '@angular/common/http';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import { of } from 'rxjs';
+import { ActivatedRoute} from '@angular/router';
 
 import { CommodityGroupCommoditiesComponent } from './commodity-group-commodities.component';
 import { SharedComponentsModule } from '@clematis-shared/shared-components';

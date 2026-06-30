@@ -3,8 +3,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 
 import { CommodityGroupListComponent } from './commodity-group-list.component';
 import { SharedComponentsModule } from '@clematis-shared/shared-components';
-import { convertToParamMap, ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import { fakeActivatedRoute } from '../../../test-setup';
 
 describe('CommodityGroupListComponent', () => {

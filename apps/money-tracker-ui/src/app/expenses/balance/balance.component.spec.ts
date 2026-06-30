@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { of } from 'rxjs';
 import { HttpClient, HttpHandler } from '@angular/common/http';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { MatPaginatorModule } from '@angular/material/paginator';
 

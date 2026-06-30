@@ -1,0 +1,297 @@
+// Global Variables & Configuration Design Tokens
+$border-radius-lg: 16px
+$border-radius-sm: 12px
+$transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
+$glass-background: rgba(255, 255, 255, 0.48)
+$glass-backdrop: blur(10px)
+
+.day-navigation-container
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: 20px
+
+.day-navigation-container button
+  padding: 8px 16px
+  cursor: pointer
+
+.calendar-square-card
+  display: flex
+  flex-direction: column
+  width: 100px
+  height: 100px
+  min-width: 100px
+  background: #ffffff
+  border-radius: 12px
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08)
+  border: 1px solid rgba(0, 0, 0, 0.05)
+  overflow: hidden
+  text-align: center
+  font-family: inherit
+  align-self: center
+
+  .calendar-month-banner
+    background: #e11d48 // Vivid red accent banner color
+    color: #ffffff
+    font-size: 0.75rem
+    font-weight: 700
+    letter-spacing: 1px
+    padding: 4px 0
+    text-transform: uppercase
+
+  .calendar-day-number
+    flex: 1
+    display: flex
+    align-items: center
+    justify-content: center
+    font-size: 2.25rem
+    font-weight: 800
+    color: #1f2937 // Dark slate body text color
+    line-height: 1
+    padding-top: 4px
+
+  .calendar-weekday-footer
+    font-size: 0.65rem
+    font-weight: 500
+    color: #6b7280 // Soft gray text color
+    padding-bottom: 6px
+    text-transform: uppercase
+    letter-spacing: 0.5px
+
+.day-dashboard
+  width: 100%
+  min-height: 90vh
+  margin-top: 1rem
+  padding: 1.5rem // Reduced to give contents maximum horizontal breathing room
+  box-sizing: border-box
+  border-radius: $border-radius-lg
+  background-size: cover
+  background-position: center
+  background-repeat: no-repeat
+  background-attachment: fixed
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05)
+
+  @media (max-width: 768px)
+    padding: 0.75rem
+    margin-top: 0.5rem
+
+  .dashboard-card
+    width: 100% // Forces the overlay card to take full advantage of screen width
+    max-width: 100%
+    background: $glass-background
+    border: 1px solid rgba(255, 255, 255, 0.5)
+    border-radius: $border-radius-lg
+    padding: 2.5rem
+    box-sizing: border-box
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06)
+    margin-top: 10%
+
+    @media (max-width: 768px)
+      padding: 1.5rem 1rem
+
+  .dashboard-header
+    display: flex
+    justify-content: space-between
+    align-items: stretch // Aligns components uniformly across the top axis
+    flex-wrap: wrap
+    gap: 2rem
+    padding-bottom: 2rem
+    margin-bottom: 2.5rem
+    border-bottom: 1px solid var(--mat-sys-outline-variant, rgba(0, 0, 0, 0.08))
+
+    .dashboard-title
+      font-size: 2.5rem
+      font-weight: 800
+      letter-spacing: -0.5px
+      margin: 0
+      align-self: center // Centers the text against the taller weather widget box
+      flex: 1
+      min-width: 280px
+      text-align: right
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
+      line-height: 3rem
+
+      @media (max-width: 768px)
+        font-size: 2rem
+
+  .wordpress-section
+    margin-bottom: 3rem
+    background: rgba(255, 255, 255, 0.4)
+    padding: 2.5rem
+    border-radius: $border-radius-sm
+    border: 1px solid rgba(0, 0, 0, 0.03)
+
+    @media (max-width: 768px)
+      padding: 1.25rem
+
+    .wp-header-block
+      margin-bottom: 1.75rem
+
+      .wp-title
+        font-size: 1.85rem
+        font-weight: 800
+        margin: 0 0 0.5rem 0
+        color: var(--mat-sys-primary, #3f51b5)
+
+      .wp-subtitle
+        font-size: 1.05rem
+        font-style: italic
+        margin: 0
+        color: var(--mat-sys-on-surface-variant, #5c5c64)
+
+    .wp-content-layout
+      display: grid
+      grid-template-columns: 2.2fr 1fr // Expands the textual workspace width
+      gap: 3rem
+      align-items: flex-start
+
+      @media (max-width: 992px)
+        grid-template-columns: 1fr
+        gap: 2rem
+
+    .wp-body
+      font-size: 1rem
+      line-height: 1.75
+      color: var(--mat-sys-on-surface-variant, #3a3a40)
+
+      p
+        margin-top: 0
+        margin-bottom: 1.5rem
+        text-align: justify
+
+        &:last-child
+          margin-bottom: 0
+
+    .wp-media-wrapper
+      display: flex
+      flex-direction: column
+      gap: 0.6rem
+
+      .wp-embedded-img
+        width: 100%
+        height: auto
+        border-radius: 8px
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06)
+        border: 1px solid rgba(255, 255, 255, 0.6)
+
+      .img-caption
+        font-size: 0.75rem
+        color: var(--mat-sys-on-surface-variant, #767680)
+        text-align: center
+
+  .section-heading
+    font-size: 1.4rem
+    font-weight: 700
+    margin-top: 0
+    margin-bottom: 1.5rem
+    color: var(--mat-sys-on-surface, #1e1e24)
+
+  .dashboard-content-split
+    display: grid
+    grid-template-columns: 2fr 1fr // Main log area layout optimization
+    gap: 3rem
+    align-items: flex-start
+
+    @media (max-width: 1024px)
+      grid-template-columns: 1fr
+      gap: 2.5rem
+
+  .logs-section
+    .logs-container
+      background: var(--mat-sys-surface, #ffffff)
+      border: 1px solid var(--mat-sys-outline-variant, rgba(0, 0, 0, 0.05))
+      border-radius: $border-radius-sm
+      padding: 2.5rem
+      min-height: 320px
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.01)
+
+    .logs-placeholder
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: center
+      text-align: center
+      min-height: 260px
+      color: var(--mat-sys-on-surface-variant, #8e8e96)
+
+      .placeholder-icon
+        font-size: 3rem
+        margin-bottom: 1.25rem
+        opacity: 0.5
+
+      p
+        margin: 0
+        font-size: 1rem
+
+  .ledger-sidebar
+    .ledger-grid
+      display: flex
+      flex-direction: column
+      gap: 1.15rem
+
+    .ledger-card
+      display: flex
+      align-items: center
+      gap: 1.25rem
+      padding: 1.25rem
+      border-radius: $border-radius-sm
+      background: var(--mat-sys-surface, #ffffff)
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02)
+      border-left: 5px solid transparent
+      transition: $transition-base
+
+      &:hover
+        transform: translateX(6px)
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06)
+
+      .card-icon
+        font-size: 1.4rem
+        width: 45px
+        height: 45px
+        display: flex
+        align-items: center
+        justify-content: center
+        border-radius: 50%
+        flex-shrink: 0
+
+      .card-content
+        display: flex
+        flex-direction: column
+        gap: 0.2rem
+
+        h3
+          margin: 0
+          font-size: 0.8rem
+          font-weight: 600
+          text-transform: uppercase
+          letter-spacing: 0.75px
+          color: var(--mat-sys-on-surface-variant, #767680)
+
+        .amount
+          margin: 0
+          font-size: 1.5rem
+          font-weight: 800
+          color: var(--mat-sys-on-surface, #1e1e24)
+
+      &.income
+        border-left-color: #2e7d32
+        .card-icon
+          background: #e8f5e9
+          color: #2e7d32
+      &.expense
+        border-left-color: #c62828
+        .card-icon
+          background: #ffebee
+          color: #c62828
+      &.exchange
+        border-left-color: #0277bd
+        .card-icon
+          background: #e1f5fe
+          color: #0277bd
+      &.transfer
+        border-left-color: #ef6c00
+        .card-icon
+          background: #fff3e0
+          color: #ef6c00

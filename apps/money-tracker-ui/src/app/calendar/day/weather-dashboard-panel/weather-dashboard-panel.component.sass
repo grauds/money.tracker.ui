@@ -1,0 +1,126 @@
+$glass-background: rgba(255, 255, 255, 0.48)
+$glass-backdrop: blur(10px)
+
+:host
+  display: block
+  flex: 2
+  max-width: 700px
+  min-width: 320px
+
+  @media (max-width: 992px)
+    max-width: 100%
+    flex: 1 1 100%
+
+.weather-dashboard-panel
+  display: flex
+  flex-direction: column
+  gap: 1rem
+  background: var(--mat-sys-surface-container-high, rgba(255, 255, 255, 0.55))
+  border: 1px solid rgba(255, 255, 255, 0.7)
+  padding: 1.25rem 1.5rem
+  border-radius: 14px
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02)
+  box-sizing: border-box
+  width: 100%
+  backdrop-filter: $glass-backdrop
+  -webkit-backdrop-filter: $glass-backdrop
+
+.weather-primary-row
+  display: flex
+  justify-content: space-between
+  align-items: center
+  gap: 1.5rem
+
+  .condition-hero
+    display: flex
+    align-items: center
+    gap: 1.25rem
+
+    .weather-main-icon
+      font-size: 3rem
+      color: var(--mat-sys-primary, #3f51b5)
+
+    .temperature-block
+      display: flex
+      flex-direction: column
+
+      .main-temp
+        font-size: 2.5rem
+        font-weight: 800
+        line-height: 1
+        color: var(--mat-sys-on-surface, #1e1e24)
+
+        .unit
+          font-size: 1.5rem
+          font-weight: 500
+          vertical-align: super
+          margin-left: 2px
+
+      .condition-text
+        font-size: 0.85rem
+        font-weight: 600
+        text-transform: capitalize
+        color: var(--mat-sys-on-surface-variant, #5c5c64)
+        margin-top: 0.35rem
+
+  .temp-extremes
+    display: flex
+    flex-direction: column
+    gap: 0.25rem
+    font-size: 0.85rem
+    font-weight: 700
+
+    .high
+      color: #c62828
+    .low
+      color: #0277bd
+
+.weather-details-grid
+  display: grid
+  grid-template-columns: repeat(4, 1fr) // Set to 4 columns to run inline horizontally
+  gap: 0.75rem
+  border-top: 1px solid rgba(0, 0, 0, 0.06)
+  padding-top: 1rem
+
+  @media (max-width: 1200px)
+    grid-template-columns: repeat(2, 1fr) // Wraps into a balanced 2x2 grid block on smaller desktops
+
+  @media (max-width: 480px)
+    grid-template-columns: 1fr
+
+  .metric-pill
+    display: flex
+    align-items: center
+    gap: 0.6rem
+    background: rgba(255, 255, 255, 0.7)
+    padding: 0.5rem 0.75rem
+    border-radius: 8px
+    border: 1px solid rgba(0, 0, 0, 0.02)
+
+    .metric-icon
+      font-size: 1rem
+      color: var(--mat-sys-on-surface-variant, #5c5c64)
+      width: 18px
+      text-align: center
+
+      &.wind-arrow
+        display: inline-block
+        transition: transform 0.3s ease
+
+    .metric-text
+      display: flex
+      flex-direction: column
+
+      label
+        font-size: 0.65rem
+        font-weight: 600
+        text-transform: uppercase
+        letter-spacing: 0.5px
+        color: var(--mat-sys-on-surface-variant, #8e8e96)
+        margin: 0
+
+      span
+        font-size: 0.8rem
+        font-weight: 700
+        white-space: nowrap // Prevents metric values from wrapping split-line
+        color: var(--mat-sys-on-surface, #1e1e24)

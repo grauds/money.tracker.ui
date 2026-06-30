@@ -1,0 +1,134 @@
+<div class="header-row-container" style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 20px;">
+
+  <!-- Left Side: Breadcrumbs -->
+  <lib-date-breadcrumbs [date]="date"></lib-date-breadcrumbs>
+
+  <!-- Right Side: Navigation Buttons -->
+  <div class="day-navigation-container" style="display: flex; align-items: center; gap: 15px; flex-shrink: 0;">
+    <!-- Back Button -->
+    <button (click)="navigateDay(-1)" class="btn btn-secondary">
+      &larr; Previous Day
+    </button>
+
+    <!-- Forward Button -->
+    <button (click)="navigateDay(1)" class="btn btn-secondary">
+      Next Day &rarr;
+    </button>
+  </div>
+
+</div>
+
+<!-- Main Container with background image binding -->
+<div class="day-dashboard" [style.background-image]="dashboardBackgroundImage">
+
+  <div style="display: flex; justify-content: flex-end; width: 100%;">
+    <div class="calendar-square-card">
+      <!-- Top header band (displays the month name) -->
+      <div class="calendar-month-banner">
+        {{ date | date : 'MMM' | uppercase }}
+      </div>
+      <!-- Main center content body (displays the numerical day number) -->
+      <div class="calendar-day-number">
+        {{ date | date : 'dd' }}
+      </div>
+      <!-- Bottom footer label (displays the full weekday name) -->
+      <div class="calendar-weekday-footer">
+        {{ date | date : 'EEEE' }}
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Glassmorphism overlay card -->
+  <div class="dashboard-card">
+
+    <!-- Header Section -->
+    <header class="dashboard-header">
+
+      @if (weatherData) {
+        <app-weather-dashboard-panel
+          [weatherData]="weatherData"
+        ></app-weather-dashboard-panel>
+      }
+
+
+    </header>
+
+    <!-- WordPress Article Area (Spans full top content width) -->
+    <section class="wordpress-section" *ngIf="wpArticle">
+      <article class="wp-article">
+        <div class="wp-header-block">
+          <h2 class="wp-title">{{ wpArticle.title }}</h2>
+          <p class="wp-subtitle" *ngIf="wpArticle.subtitle">{{ wpArticle.subtitle }}</p>
+        </div>
+
+        <div class="wp-content-layout">
+          <!-- Main text body from variable -->
+          <div class="wp-body" [innerHTML]="wpArticle.content"></div>
+
+          <!-- Secondary body content dummy image -->
+        </div>
+      </article>
+    </section>
+
+    <!-- Two-Column Workspace Grid (Logs vs Financials Sidebar) -->
+    <div class="dashboard-content-split">
+
+      <!-- Left Main Body Column: Transaction Logs -->
+      <main class="logs-section">
+        <h2 class="section-heading">Daily Transaction Logs</h2>
+        <div class="logs-container">
+          <div class="logs-placeholder">
+            <i class="pi pi-folder-open placeholder-icon"></i>
+            <p>No transaction rows documented for this calendar block.</p>
+          </div>
+        </div>
+      </main>
+
+      <!-- Right Sidebar Column: Financial Ledger Grid -->
+      <aside class="ledger-sidebar">
+        <h2 class="section-heading">Financial Summary</h2>
+
+        <div class="ledger-grid">
+          <!-- Income Card -->
+          <div class="ledger-card income">
+            <div class="card-icon"><i class="pi pi-arrow-down-left"></i></div>
+            <div class="card-content">
+              <h3>Incomes</h3>
+              <p class="amount">$0.00</p>
+            </div>
+          </div>
+
+          <!-- Expense Card -->
+          <div class="ledger-card expense">
+            <div class="card-icon"><i class="pi pi-arrow-up-right"></i></div>
+            <div class="card-content">
+              <h3>Expenses</h3>
+              <p class="amount">$0.00</p>
+            </div>
+          </div>
+
+          <!-- Exchange Card -->
+          <div class="ledger-card exchange">
+            <div class="card-icon"><i class="pi pi-refresh"></i></div>
+            <div class="card-content">
+              <h3>Exchanges</h3>
+              <p class="amount">$0.00</p>
+            </div>
+          </div>
+
+          <!-- Transfer Card -->
+          <div class="ledger-card transfer">
+            <div class="card-icon"><i class="pi pi-sync"></i></div>
+            <div class="card-content">
+              <h3>Transfers</h3>
+              <p class="amount">$0.00</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+
+  </div>
+</div>

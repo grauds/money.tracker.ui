@@ -24,6 +24,7 @@ export { EntityNameFilterComponent } from './lib/components/entity-list/entity-n
 export { EntityIncomeComponent } from './lib/components/entity/entity-income/entity-income.component';
 export { EntityExpensesComponent } from './lib/components/entity/entity-expenses/entity-expenses.component';
 
+export { DayLinkComponent } from './lib/components/day-link/day-link.component';
 export { TelegramFeedComponent } from './lib/components/telegram-feed/telegram-feed.component';
 
 export { AccountGroupService } from './lib/service/account-group.service';
@@ -44,6 +45,7 @@ export { EntityService } from './lib/service/entity.service';
 
 export { StatsService } from './lib/service/stats.service';
 export { StorageService } from './lib/service/storage.service';
+export { WeatherService } from './lib/service/weather.service';
 
 export type { SearchPostProcessingHandler } from './lib/service/search.service';
 

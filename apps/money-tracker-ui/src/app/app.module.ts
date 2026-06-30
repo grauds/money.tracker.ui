@@ -86,6 +86,11 @@ import {
   AccountGroupAccountsComponent
 } from './accounts/account-group/account-group-accounts/account-group-accounts.component';
 
+import { DayComponent } from './calendar/day/day.component';
+import {
+  WeatherDashboardPanelComponent
+} from './calendar/day/weather-dashboard-panel/weather-dashboard-panel.component';
+
 @NgModule({
   declarations: [
     AccountComponent,
@@ -93,6 +98,8 @@ import {
     AccountGroupAccountsComponent,
     CommodityGroupListComponent,
     CommoditiesListComponent,
+    DayComponent,
+    WeatherDashboardPanelComponent,
     OrganizationsListComponent,
     ExpensesListComponent,
     CommodityComponent,

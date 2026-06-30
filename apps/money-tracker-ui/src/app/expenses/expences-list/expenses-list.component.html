@@ -49,7 +49,7 @@
         Transfer Date
       </th>
       <td mat-cell *matCellDef="let element">
-        {{ element.transferDate | date : 'fullDate' }}
+        <app-day-link [date]="element.transferDate"></app-day-link>
       </td>
     </ng-container>
 

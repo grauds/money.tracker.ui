@@ -38,9 +38,11 @@ import { ErrorDialogService } from './error/error-dialog/error-dialog.service';
 import { GlobalErrorHandler } from './error/global-error-handler';
 import { ErrorHandlerInterceptor } from './error/error-handler.interceptor';
 
+import { DayLinkComponent } from './components/day-link/day-link.component';
 import { PageSizeComponent } from './components/page-size/page-size.component';
 import { EntityListComponent } from './components/entity-list/entity-list.component';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
+import { DateBreadcrumbsComponent } from './components/date-breadcrumbs/date-breadcrumbs.component';
 import { EntityElementComponent } from './components/entity-list/entity-element/entity-element.component';
 import { PaginationBarComponent } from './components/pagination-bar/pagination-bar.component';
 import { MoneyTypeSelectorComponent } from './components/money-type-selector/money-type-selector.component';
@@ -90,6 +92,7 @@ import { TelegramFeedComponent } from './components/telegram-feed/telegram-feed.
   exports: [
     EntityElementComponent,
     BreadcrumbsComponent,
+    DateBreadcrumbsComponent,
     EntityListComponent,
     MoneyTypeSelectorComponent,
     DateRangeSelectorComponent,
@@ -100,10 +103,12 @@ import { TelegramFeedComponent } from './components/telegram-feed/telegram-feed.
     EntityIncomeComponent,
     EntityThumbnailComponent,
     TelegramFeedComponent,
+    DayLinkComponent,
   ],
   declarations: [
     EntityListComponent,
     BreadcrumbsComponent,
+    DateBreadcrumbsComponent,
     EntityElementComponent,
     PaginationBarComponent,
     PageSizeComponent,
@@ -115,6 +120,7 @@ import { TelegramFeedComponent } from './components/telegram-feed/telegram-feed.
     EntityNameFilterComponent,
     EntityExpensesComponent,
     EntityIncomeComponent,
+    DayLinkComponent,
   ],
   providers: [
     AccountsService,

@@ -1,0 +1,69 @@
+<!-- Weather Widget Header Block -->
+@if (weatherData) {
+  <div class="weather-dashboard-panel">
+
+    <!-- Primary Condition Summary Row -->
+    <div class="weather-primary-row">
+      <div class="condition-hero">
+        <i class="weather-main-icon" [class]="getWeatherIcon(weatherData.presentWeather)"></i>
+        <div class="temperature-block">
+          <span class="main-temp">{{ weatherData.temperature ?? '--' }}<span class="unit">°C</span></span>
+          <span class="condition-text">{{
+              (weatherData.presentWeather && weatherData.presentWeather.trim()) || 'Clear Sky'
+            }}</span>
+        </div>
+      </div>
+
+      <!-- Extreme limits tracking during past period -->
+      @if(weatherData.maxTemperaturePastPeriod || weatherData.minTemperaturePastPeriod) {
+        <div class="temp-extremes">
+          <span class="high"><i class="pi pi-arrow-up"></i> H: {{ weatherData.maxTemperaturePastPeriod ?? '--' }}°</span>
+          <span class="low"><i class="pi pi-arrow-down"></i> L: {{ weatherData.minTemperaturePastPeriod ?? '--' }}°</span>
+        </div>
+      }
+    </div>
+
+    <!-- Secondary Meteorological Details Strip -->
+    <div class="weather-details-grid">
+      <!-- Wind Vector Condition -->
+      <div class="metric-pill">
+        <i class="pi pi-compass metric-icon wind-arrow" [style.transform]="getWindRotation(weatherData.windDirection)"></i>
+        <div class="metric-text">
+          <label>Wind</label>
+          <span>{{ weatherData.windDirection || 'CALM' }} {{ weatherData.windSpeed ?? '0' }} m/s</span>
+        </div>
+      </div>
+
+      <!-- Relative Atmospheric Humidity -->
+      <div class="metric-pill">
+        <i class="pi pi-percentage metric-icon"></i>
+        <div class="metric-text">
+          <label>Humidity</label>
+          <span>{{ weatherData.relativeHumidity ?? '--' }}%</span>
+        </div>
+      </div>
+
+      <!-- Ambient Surface Pressure -->
+      <div class="metric-pill">
+        <i class="pi pi-gauge metric-icon"></i>
+        <div class="metric-text">
+          <label>Pressure</label>
+          <span>{{ weatherData.stationPressure ?? '--' }} mmHg</span>
+        </div>
+      </div>
+
+      <!-- Horizontal Spatial Visibility -->
+      @if (weatherData.horizontalVisibilityKm) {
+        <div class="metric-pill">
+          <i class="pi pi-eye metric-icon"></i>
+          <div class="metric-text">
+            <label>Visibility</label>
+            <span>{{ weatherData.horizontalVisibilityKm }} km</span>
+          </div>
+        </div>
+      }
+    </div>
+
+  </div>
+
+}

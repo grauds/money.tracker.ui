@@ -30,7 +30,7 @@
     <ng-container matColumnDef="transferdate">
       <th mat-header-cell *matHeaderCellDef>Transfer Date</th>
       <td mat-cell *matCellDef="let element">
-        {{ element.transferDate | date : 'fullDate' }}
+        <app-day-link [date]="element.transferDate"></app-day-link>
       </td>
     </ng-container>
 
@@ -74,6 +74,7 @@
     queryArguments: queryArguments,
     queryName: queryName
   }"
+  [sort]="{transferdate:'ASC'}"
   (loading$)="onLoading($event)"
   (entitiesChange$)="onEntitiesReceived($event)"
 ></app-entity-list>
