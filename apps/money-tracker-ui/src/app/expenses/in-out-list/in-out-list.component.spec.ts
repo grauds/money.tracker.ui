@@ -9,9 +9,8 @@ import {
   SharedComponentsModule
 } from "@clematis-shared/shared-components";
 import { HttpClient, HttpHandler } from '@angular/common/http';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { of } from 'rxjs';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';

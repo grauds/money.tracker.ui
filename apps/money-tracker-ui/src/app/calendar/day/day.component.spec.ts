@@ -1,13 +1,17 @@
+import { CurrencyPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DayComponent } from './day.component';
 import { ActivatedRoute, RouterLinkWithHref } from '@angular/router';
 import { of } from 'rxjs';
 import { WeatherDashboardPanelComponent } from './weather-dashboard-panel/weather-dashboard-panel.component';
-import { WeatherService } from '@clematis-shared/shared-components';
 import {
-  DateBreadcrumbsComponent
-} from '../../../../../../libs/shared-components/src/lib/components/date-breadcrumbs/date-breadcrumbs.component';
+  CurrencySpacePipe,
+  DateBreadcrumbsComponent,
+  MoneyTypeService,
+  WeatherService
+} from '@clematis-shared/shared-components';
 import { MatIconModule } from '@angular/material/icon';
+import { mockMoneyTypeService } from '../../../test-setup';
 
 describe('DayComponent', () => {
   let component: DayComponent;
@@ -46,13 +50,12 @@ describe('DayComponent', () => {
         WeatherDashboardPanelComponent,
         DateBreadcrumbsComponent,
       ],
-      imports: [
-        RouterLinkWithHref,
-        MatIconModule,
-      ],
+      imports: [RouterLinkWithHref, MatIconModule, CurrencySpacePipe],
       providers: [
+        CurrencyPipe,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: WeatherService, useValue: mockWeatherService },
+        { provide: MoneyTypeService, useValue: mockMoneyTypeService },
       ],
     }).compileComponents();
 
