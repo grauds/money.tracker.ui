@@ -61,6 +61,7 @@ import { EntityIncomeComponent } from "./components/entity/entity-income/entity-
 import { NgxEchartsDirective } from 'ngx-echarts';
 
 import { TelegramFeedComponent } from './components/telegram-feed/telegram-feed.component';
+import { MatTooltip } from "@angular/material/tooltip";
 
 @NgModule({
   imports: [
@@ -88,6 +89,7 @@ import { TelegramFeedComponent } from './components/telegram-feed/telegram-feed.
     EntityThumbnailComponent,
     NgxEchartsDirective,
     TelegramFeedComponent,
+    MatTooltip
   ],
   exports: [
     EntityElementComponent,

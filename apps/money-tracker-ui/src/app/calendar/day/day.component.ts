@@ -1,23 +1,46 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { WeatherObservation } from '@clematis-shared/model';
-import { WeatherService } from '@clematis-shared/shared-components';
-import { DomSanitizer } from '@angular/platform-browser';
+import { ExpenseItem, MoneyType, WeatherObservation } from '@clematis-shared/model';
+import {
+  EntityListComponent,
+  ExpenseItemsService, MoneyTypeService,
+  WeatherService
+} from '@clematis-shared/shared-components';
+import { DomSanitizer, Title } from '@angular/platform-browser';
+import { Sort } from '@lagoshny/ngx-hateoas-client';
 
+import * as _moment from 'moment';
+// tslint:disable-next-line:no-duplicate-imports
+import { default as _rollupMoment } from 'moment';
+const moment = _rollupMoment || _moment;
 
 @Component({
   selector: 'app-day',
   templateUrl: './day.component.html',
   styleUrl: './day.component.sass',
+  providers: [{ provide: 'searchService', useClass: ExpenseItemsService }],
   standalone: false,
 })
 export class DayComponent {
+  @ViewChild(EntityListComponent) entityList!: EntityListComponent<ExpenseItem>;
+
   loading = false;
 
   date: string = DayComponent.formatDate(new Date());
 
-  wpArticle: any = null;
+  currency: MoneyType;
+
+  incomeSum = 0;
+
+  expensesSum = 0;
+
+  displayedColumns: string[] = [
+    'commodity.name',
+    'price',
+    'qty',
+    'organizationname',
+  ];
 
   weatherData: WeatherObservation | null = null;
 
@@ -25,18 +48,25 @@ export class DayComponent {
   loadedBackgroundImage: string | null = null;
   imageUrl: any = null;
 
+  wpArticle: any = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    protected moneyTypeService: MoneyTypeService,
     private weatherService: WeatherService,
     private sanitizer: DomSanitizer,
+    private title: Title,
   ) {
+    this.currency = this.moneyTypeService.getSelectedMoneyType();
+
     this.route.paramMap.subscribe((params) => {
       let routeDate = params.get('date');
       if (!routeDate) {
         routeDate = DayComponent.formatDate(new Date());
       }
       this.date = routeDate;
+      this.title.setTitle(moment(this.date).format('YYYY-MM-DD'));
       this.loadData();
     });
   }
@@ -58,32 +88,6 @@ export class DayComponent {
         this.loading = false;
       },
     });
-
-    this.wpArticle = {
-      title: 'Exploring the Evolution of Personal Ledger Management Systems',
-      subtitle:
-        'How tracking daily data can yield unexpected insights over decades.',
-      content: `
-        <p>The practice of maintaining a detailed personal ledger stretches back centuries,
-        long before modern cloud synchronization apps existed. Historically, individuals relied on
-        leather-bound journals and heavy ink pens to catalog their transactions, local crop values,
-        and weather observations. Today, integrating these metrics into unified digital workspaces allows
-        us to visualize our lives with structural clarity.</p>
-
-        <p>When tracking daily financial operations—such as expenses, income, currency exchanges,
-        and bank transfers—patterns emerge that are completely invisible over shorter windows.
-        For instance, seasonal fluctuations in utility billing, variable local transit costs, and subtle
-        shifts in food spending reveal deeper behavior mechanisms. Layering historical weather
-        observations over these transactional sheets can expose fascinating links between atmospheric variables
-        and our consumption behaviors.</p>
-
-        <p>As digital architecture shifts toward lightweight, modular user interfaces, the friction of
-        daily logging continues to decrease. Modern component-driven systems isolate transaction ledgers, external
-        content feeds, and localized sensor data into clear, self-contained widgets. Maintaining this structural
-        separation guarantees that our personal analytics platforms remain scalable, clean, and highly adaptive to
-        changing habits over the decades.</p>
-      `,
-    };
   }
 
   private loadRandomImage(dayString: string): void {
@@ -114,7 +118,6 @@ export class DayComponent {
           'Failed to load weather image, falling back to placeholder',
           err,
         );
-        // 3. Handle network error fallback instantly
         this.loadedBackgroundImage = `url('${defaultPlaceholder}')`;
         this.imageUrl = defaultPlaceholder;
       },
@@ -144,5 +147,25 @@ export class DayComponent {
     const m = String(date.getMonth() + 1).padStart(2, '0');
     const d = String(date.getDate()).padStart(2, '0');
     return `${y}-${m}-${d}`;
+  }
+
+  getQueryArguments(): any {
+    if (this.date) {
+      return {
+        startDate: moment(this.date).format('YYYY-MM-DD'),
+        endDate: moment(this.date).format('YYYY-MM-DD'),
+      };
+    }
+    return {};
+  }
+
+  getQueryName(): string | null {
+    return this.date ? 'filtered' : null;
+  }
+
+  getSort(): Sort {
+    return {
+      transferdate: 'DESC',
+    };
   }
 }

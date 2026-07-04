@@ -113,7 +113,7 @@ export class EntityListPersistenceService {
       n,
       limit,
       sort,
-      filterSize: filter.size,
+      filter: filter,
     });
 
     const currentParamsSnapshot = { ...this.route.snapshot.queryParams };
@@ -127,6 +127,8 @@ export class EntityListPersistenceService {
         this.queryParamsMode,
         this.route,
       );
+
+      console.log(`EntityListPersistenceService: Building route parameters`, extras)
 
       const { target, isPaginationEqual, isFiltersEqual } =
         Utils.compareParameters(extras, filter, currentParamsSnapshot);
@@ -149,6 +151,8 @@ export class EntityListPersistenceService {
         ...extras,
         queryParamsHandling: 'merge',
       };
+
+      console.log(`EntityListPersistenceService: Built route parameters`, routerConfig)
 
       return this.router.navigate([], routerConfig);
     }

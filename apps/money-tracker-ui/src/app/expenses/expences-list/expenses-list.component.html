@@ -114,11 +114,11 @@
 <app-entity-list
   [tableTemplate]="expensesTable"
   [searchRequest]="{
-        queryArguments: {},
+        queryArguments: getQueryArguments(),
         queryName: getQueryName()
       }"
   [sort]="getSort()"
   [filterTemplate]="filter"
-  (filter$)="setFilter($event)"
+  (filter$)="updateFilter($event)"
 >
 </app-entity-list>

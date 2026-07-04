@@ -6,7 +6,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { EntityListComponent, MoneyExchangeService, MoneyTypeService } from '@clematis-shared/shared-components';
 
-import { distinctUntilChanged, Observable, of, Subscription, switchMap, tap } from 'rxjs';
+import {
+  distinctUntilChanged,
+  Observable,
+  of,
+  Subscription,
+  switchMap,
+  tap
+} from 'rxjs';
 
 @Component({
   selector: 'app-exchange',

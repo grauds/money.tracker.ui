@@ -1,15 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Sort } from '@lagoshny/ngx-hateoas-client';
 import { FormControl } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-
-import { Sort } from '@lagoshny/ngx-hateoas-client';
-
-import {
-  EntityListComponent,
-  ExpenseItemsService,
-} from '@clematis-shared/shared-components';
 import { ExpenseItem } from '@clematis-shared/model';
+
+import { Title } from '@angular/platform-browser';
+import { EntityListComponent, ExpenseItemsService } from '@clematis-shared/shared-components';
 
 import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
@@ -23,7 +19,10 @@ const moment = _rollupMoment || _moment;
   providers: [{ provide: 'searchService', useClass: ExpenseItemsService }],
   standalone: false,
 })
-export class ExpensesListComponent implements OnInit {
+export class ExpensesListComponent implements OnInit, OnDestroy {
+  @ViewChild(EntityListComponent)
+  entityList!: EntityListComponent<ExpenseItem>;
+
   displayedColumns: string[] = [
     'transferdate',
     'commodity.name',
@@ -32,16 +31,34 @@ export class ExpensesListComponent implements OnInit {
     'organizationname',
   ];
 
-  @ViewChild(EntityListComponent) entityList!: EntityListComponent<ExpenseItem>;
-
   startDate: FormControl<Date> = new FormControl();
 
   endDate: FormControl<Date> = new FormControl();
 
-  constructor(private readonly title: Title) {}
+  constructor(
+    private readonly title: Title
+  ) {}
 
   ngOnInit(): void {
     this.title.setTitle('Expenses');
+  }
+
+  getQueryArguments(): any {
+    if (this.startDate.value || this.endDate.value) {
+      return {
+        ...(this.startDate?.value && {
+          startDate: moment(this.startDate.value).format('YYYY-MM-DD'),
+        }),
+        ...(this.endDate?.value && {
+          endDate: moment(this.endDate.value).format('YYYY-MM-DD'),
+        }),
+      };
+    }
+    return {};
+  }
+
+  getQueryName(): string | null {
+    return this.startDate.value && this.endDate.value ? 'filtered' : null;
   }
 
   getSort(): Sort {
@@ -50,38 +67,35 @@ export class ExpensesListComponent implements OnInit {
     };
   }
 
-  getQueryName(): string | null {
-    return this.startDate.value && this.endDate.value ? 'filtered' : null;
-  }
-
-  setFilter($event: Map<string, string>) {
-    if ($event.get('startDate')) {
-      this.startDate.setValue(
-        moment($event.get('startDate'), 'YYYY-MM-DD').toDate()
-      );
-    } else {
-      this.startDate.reset();
+  updateFilter($event: Map<string, string>) {
+    if ($event.has('startDate')) {
+      const rawStart = $event.get('startDate');
+      if (rawStart) {
+        this.startDate.setValue(moment(rawStart, 'YYYY-MM-DD').toDate(), {
+          emitEvent: false,
+        });
+      } else {
+        this.startDate.reset(undefined, { emitEvent: false });
+      }
     }
 
-    if ($event.get('endDate')) {
-      this.endDate.setValue(
-        moment($event.get('endDate'), 'YYYY-MM-DD').toDate()
-      );
-    } else {
-      this.endDate.reset();
+    if ($event.has('endDate')) {
+      const rawEnd = $event.get('endDate');
+      if (rawEnd) {
+        this.endDate.setValue(moment(rawEnd, 'YYYY-MM-DD').toDate(), {
+          emitEvent: false,
+        });
+      } else {
+        this.endDate.reset(undefined, { emitEvent: false });
+      }
     }
-
-    this.entityList.refreshData({
-      queryArguments: {},
-      queryName: this.getQueryName(),
-    });
   }
 
   setStartDate($event: MatDatepickerInputEvent<Date>) {
     if ($event.value) {
       this.entityList.setFilter(
         'startDate',
-        moment($event.value).format('YYYY-MM-DD')
+        moment($event.value).format('YYYY-MM-DD'),
       );
     } else {
       this.entityList.removeFilter('startDate');
@@ -92,7 +106,7 @@ export class ExpensesListComponent implements OnInit {
     if ($event.value) {
       this.entityList.setFilter(
         'endDate',
-        moment($event.value).format('YYYY-MM-DD')
+        moment($event.value).format('YYYY-MM-DD'),
       );
     } else {
       this.entityList.removeFilter('endDate');
@@ -105,5 +119,12 @@ export class ExpensesListComponent implements OnInit {
 
   getEndDate() {
     return moment(this.endDate.value);
+  }
+
+  ngOnDestroy(): void {
+    console.log(
+      'ExpensesListComponent: Destroy hook triggered. Unsubscribing page parameters stream.',
+    );
+    //this.pageSubscription?.unsubscribe();
   }
 }

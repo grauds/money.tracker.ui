@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 
 import {
@@ -46,22 +45,18 @@ export const MY_FORMATS = {
   selector: 'app-income-monthly',
   templateUrl: './income-monthly.component.html',
   styleUrls: ['./income-monthly.component.sass'],
-  providers: [
-    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
-    // application's root module. We provide it at the component level here, due to limitations of
-    // our example generation script.
-    {
+  providers: [{
       provide: DateAdapter,
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
-
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
   encapsulation: ViewEncapsulation.None,
   standalone: false,
 })
 export class IncomeMonthlyComponent implements OnInit, OnDestroy {
+
   chart: any;
 
   loading = false;
@@ -79,8 +74,6 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
   constructor(
     private readonly moneyTypeService: MoneyTypeService,
     private readonly incomeItemsService: IncomeItemsService,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
     private readonly title: Title,
   ) {
     this.moneyTypeService.selectedMoneyType$
@@ -125,9 +118,9 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
       switchMap(() => {
         return this.incomeItemsService.getIncomeInCurrency(
           this.currency,
-          this.startDate.month(),
+          this.startDate.month() + 1,
           this.startDate.year(),
-          this.endDate.month(),
+          this.endDate.month() + 1,
           this.endDate.year(),
         );
       }),

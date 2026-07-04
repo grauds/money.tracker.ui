@@ -124,7 +124,7 @@ export class EntityListComponent<T extends Entity>
   @Input() thumbnailTemplate?: TemplateRef<EntityTemplateContext<T>>;
   @Input() entityName?: string | undefined;
 
-  @Input() filterTemplate: TemplateRef<EntityTemplateContext<T>> | undefined;
+  @Input() filterTemplate: TemplateRef<any> | undefined;
 
   @Input() sort: RestSort | null = null;
   @Input() queryParamsMode: 'merge' | 'preserve' | '' | null = 'merge';
@@ -276,7 +276,6 @@ export class EntityListComponent<T extends Entity>
   ngOnChanges(changes: SimpleChanges): void {
     const fields: string[] = ['searchRequest', 'sort'];
     if (this.shouldReloadData(fields, changes)) {
-
       console.log('EntityList: ngOnChanges conditions met for reloading data');
       this.saveAndUpdateData();
     }
@@ -320,18 +319,45 @@ export class EntityListComponent<T extends Entity>
     this.saveAndUpdateData();
   }
 
-  setFilter(id?: string, value?: string) {
-    if (id && value) {
+  setFilter(idOrFilters: string | Record<string, string>, value?: string) {
+    let updatedFilter = this.gridState.filter;
+
+    // Handle an object with multiple filters { filter1: v1, filter2: v2 }
+    if (typeof idOrFilters === 'object' && idOrFilters !== null) {
       console.log(
-        `EntityList: Applying filter parameter target - ID: ${id}, Value: ${value}`,
+        `EntityList: Applying multiple filter parameters`,
+        idOrFilters,
       );
-      this.filter$.next(this.gridState.filter.set(id, value));
-      this.saveAndUpdateData();
-    } else {
-      console.log(
-        `EntityList: No adjustments made for pair - ID: ${id}, Value: ${value}`,
-      );
+
+      Object.entries(idOrFilters).forEach(([id, val]) => {
+        if (id && val) {
+          updatedFilter = updatedFilter.set(id, val);
+        }
+      });
     }
+    // Handle a single filter string ID and value pair
+    else if (typeof idOrFilters === 'string' && value) {
+      console.log(
+        `EntityList: Applying filter parameter target - ID: ${idOrFilters}, Value: ${value}`,
+      );
+      updatedFilter = updatedFilter.set(idOrFilters, value);
+    }
+    // Invalid input, exit early
+    else {
+      console.log(`EntityList: No adjustments made for input`, {
+        idOrFilters,
+        value,
+      });
+      return;
+    }
+
+    // Save the modified filter back into the component state
+    this.gridState.filter = updatedFilter;
+
+    // Push the fresh filter to your stream and save it
+    this.filter$.next(updatedFilter);
+    console.log(`EntityList: sending updated filter to stream`, Object.fromEntries(updatedFilter));
+    this.saveAndUpdateData();
   }
 
   removeFilter(id?: string) {
