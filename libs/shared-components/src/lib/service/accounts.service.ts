@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Account, MoneyType } from '@clematis-shared/model';
+import { Account, AccountBalance, MoneyType } from '@clematis-shared/model';
 import { HttpClient } from '@angular/common/http';
 import {
   HateoasResourceService,
@@ -36,12 +36,16 @@ export class AccountsService extends SearchService<Account> {
 
   getAccountsBalanceInCurrency(
     moneyType: MoneyType,
-  ): Observable<ResourceCollection<Account>> {
-    return this.hateoasService.searchCollection<Account>(Account, 'code', {
-      params: {
-        code: moneyType.code,
+  ): Observable<ResourceCollection<AccountBalance>> {
+    return this.hateoasService.searchCollection<AccountBalance>(
+      AccountBalance,
+      'code',
+      {
+        params: {
+          code: moneyType.code,
+        },
       },
-    });
+    );
   }
 
   getAccountsTotalInCurrency(moneyType: MoneyType): Observable<number> {

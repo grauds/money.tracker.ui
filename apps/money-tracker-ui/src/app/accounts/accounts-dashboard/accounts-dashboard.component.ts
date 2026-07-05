@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Account, MoneyType } from '@clematis-shared/model';
+import { AccountBalance, MoneyType } from '@clematis-shared/model';
 import { Subject, takeUntil } from 'rxjs';
 import {
   PagedResourceCollection,
@@ -26,7 +26,7 @@ export class AccountsDashboardComponent implements OnInit, OnDestroy {
   // total sum week ago in the chosen currency
   totalWeekAgo = 0;
 
-  accounts: Account[] = [];
+  accounts: AccountBalance[] = [];
 
   loading = false;
 
@@ -122,7 +122,7 @@ export class AccountsDashboardComponent implements OnInit, OnDestroy {
       });
   }
 
-  private setAccounts(accounts: Account[]) {
+  private setAccounts(accounts: AccountBalance[]) {
     this.accounts = accounts;
   }
 
@@ -131,7 +131,7 @@ export class AccountsDashboardComponent implements OnInit, OnDestroy {
     this.totalsLoading = true;
 
     this.accountsService.getAccountsBalanceInCurrency(this.currency).subscribe({
-      next: (response: ResourceCollection<Account>) => {
+      next: (response: ResourceCollection<AccountBalance>) => {
         this.setAccounts(response.resources);
         this.getAccountsTotalInCurrency();
         this.getAccountsTotalWeekAgoInCurrency();
