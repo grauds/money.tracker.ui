@@ -3,9 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { OrganizationGroupComponent } from './organization-group.component';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { MoneyTypeService, OrganizationGroupsService } from '@clematis-shared/shared-components';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import { of } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import { fakeActivatedRoute, mockMoneyTypeService } from '../../../test-setup';
+import { of } from 'rxjs';
 
 describe('OrganizationGroupComponent', () => {
   let component: OrganizationGroupComponent;
@@ -18,7 +18,17 @@ describe('OrganizationGroupComponent', () => {
         HttpClient,
         HttpHandler,
         OrganizationGroupsService,
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            ...fakeActivatedRoute,
+            paramMap: of({
+              // Add the missing paramMap observable
+              get: (key: string) => 'mock-id',
+              has: (key: string) => true,
+            }),
+          },
+        },
         { provide: MoneyTypeService, useValue: mockMoneyTypeService },
       ],
     }).compileComponents();

@@ -8,7 +8,7 @@ import {
 } from '@clematis-shared/shared-components';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
-import { mockMoneyTypeService } from '../../../test-setup';
+import { fakeActivatedRoute, mockMoneyTypeService } from '../../../test-setup';
 
 describe('CommodityGroupComponent', () => {
   let component: CommodityGroupComponent;
@@ -29,7 +29,17 @@ describe('CommodityGroupComponent', () => {
         HttpHandler,
         CommodityGroupService,
         CommodityGroupsService,
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            ...fakeActivatedRoute,
+            paramMap: of({
+              // Add the missing paramMap observable
+              get: (key: string) => 'mock-id',
+              has: (key: string) => true,
+            }),
+          },
+        },
         { provide: MoneyTypeService, useValue: mockMoneyTypeService },
       ],
     }).compileComponents();
