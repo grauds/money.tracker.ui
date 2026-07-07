@@ -5,6 +5,7 @@ import { Title } from '@angular/platform-browser';
 import {
   catchError,
   defaultIfEmpty,
+  distinctUntilChanged,
   forkJoin,
   map,
   Observable,
@@ -109,22 +110,31 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
   }
 
   onInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id !== this.id) {
-      this.id = id ?? '';
-      this.loadData()
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          next: () => {
-            this.setLoading(false);
-          },
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          error: () => {
-            this.setLoading(false);
-          },
-        });
-    }
+    this.route.paramMap
+      .pipe(
+        // Listen to ID changes continuously
+        map(params => params.get('id') ?? ''),
+        // Only proceed if the ID actually changed
+        distinctUntilChanged(),
+        // Set the loading state before starting the request
+        tap((id) => {
+          this.id = id;
+          this.setLoading(true);
+        }),
+        // Cancel previous pending requests if ID changes
+        switchMap(() => this.loadData()),
+        // Clean up subscription when the component destroys
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: () => {
+          this.setLoading(false);
+        },
+        error: (err) => {
+          this.setLoading(false);
+          // Optional: Handle downstream errors here if needed
+        },
+      });
   }
 
   setLoading($event: boolean) {
