@@ -181,15 +181,8 @@ export class DayComponent implements OnInit, OnDestroy {
       tap((result) => {
         this.expensesSum = result.expensesSum;
         this.incomeSum = result.incomeSum;
-        if (
-          result.weather &&
-          result.weather.resources &&
-          result.weather.resources.length > 0
-        ) {
-          this.weatherData = result.weather.resources[0];
-        } else {
-          this.weatherData = null;
-        }
+        const rawResult = result.weather as any;
+        this.weatherData = rawResult?.['_embedded']?.['observations'] || [];
         this.loadRandomImage(this.date);
       }),
       switchMap(() => {
