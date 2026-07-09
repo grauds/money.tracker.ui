@@ -23,62 +23,18 @@
         </h2>
       </div>
 
-      <!-- Financial Overview Section -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
-        <!-- Income Block (Green Theme) -->
-        <div style="background: #f4fbf7; border: 1px solid #e1f5eb; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
-          <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #2b8a3e;">Income</span>
-          <strong style="font-size: 1.4rem; font-weight: 700; color: #2b8a3e;">
-            {{ !loading ? (incomeSum | currencySpace : this.currency.code :'symbol') : '-' }}
-          </strong>
-        </div>
-
-        <!-- Expenses Block (Red Theme) -->
-        <div style="background: #fff5f5; border: 1px solid #ffe3e3; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
-          <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #c92a2a;">Expenses</span>
-          <strong style="font-size: 1.4rem; font-weight: 700; color: #c92a2a;">
-            {{ !loading ? (expensesSum | currencySpace : this.currency.code :'symbol') : '-' }}
-          </strong>
-        </div>
-
-        <!-- Key Metrics Badges (Meta Data) -->
-        @if(totalQty && totalQty > 0) {
-          <div class="product-meta" style="display: flex; flex-wrap: wrap; gap: 12px;">
-            <div style="background: #f8f9fa; border: 1px solid #e9ecef; padding: 8px 14px; border-radius: 8px; font-size: 0.875rem; color: #495057;">
-              <div>
-                <span style="color: #868e96; font-weight: 500; margin-right: 4px;">Average Price:</span>
-                <strong style="color: #212529; font-weight: 600;">{{ averagePrice | currencySpace : this.currency.code :'symbol' }}</strong>
-                <span style="color: #868e96;"> / {{ unitTypeName }}</span>
-              </div>
-              <div>
-                <span style="color: #868e96; font-weight: 500; margin-right: 4px;">Quantity:</span>
-                <strong style="color: #212529; font-weight: 600;">{{ totalQty }} {{ unitTypeName }}</strong>
-              </div>
-            </div>
-          </div>
-        }
-      </div>
-
-      <!-- Dynamic Profit/Loss Balance Tracker -->
-      <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
-        <span style="font-size: 0.9rem; font-weight: 500; color: #495057;">Net Balance</span>
-        <strong [style.color]="(incomeSum - expensesSum) >= 0 ? '#2b8a3e' : '#c92a2a'" style="font-size: 1.15rem; font-weight: 700;">
-          {{ !loading ? ((incomeSum - expensesSum) | currencySpace : this.currency.code :'symbol') : '-' }}
-        </strong>
-      </div>
-
-      <!-- Description Section -->
-      @if (entity.description) {
-        <div class="product-description" style="margin-top: 4px; border-top: 1px solid #f1f3f5; padding-top: 16px;">
-          <h4 style="margin: 0 0 8px 0; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #868e96;">Description</h4>
-          <div style="max-height: 140px; overflow-y: auto; font-size: 0.925rem; color: #495057; line-height: 1.6; padding-right: 8px;">
-            {{ entity.description }}
-          </div>
-        </div>
-      }
+      <lib-entity-balance-info
+        [loading]="loading"
+        [expensesSum]="expensesSum"
+        [incomeSum]="incomeSum"
+        [currency]="currency"
+        [totalQty]="totalQty"
+        [averagePrice]="averagePrice"
+        [unitTypeName]="unitTypeName"
+        [description]="entity.description"
+      ></lib-entity-balance-info>
 
     </div>
-
   </div>
 }
 

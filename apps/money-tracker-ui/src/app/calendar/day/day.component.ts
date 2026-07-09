@@ -1,14 +1,33 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-import { ExpenseItem, MoneyType, WeatherObservation } from '@clematis-shared/model';
 import {
+  catchError,
+  defaultIfEmpty, distinctUntilChanged,
+  finalize,
+  forkJoin, map,
+  Observable,
+  of, Subject,
+  switchMap, takeUntil,
+  tap,
+  throwError
+} from 'rxjs';
+
+import {
+  ExpenseItem,
+  MoneyType,
+  Utils,
+  WeatherObservation
+} from '@clematis-shared/model';
+import {
+  DayService,
   EntityListComponent,
-  ExpenseItemsService, MoneyTypeService,
+  ExpenseItemsService,
+  IncomeItemsService,
+  MoneyTypeService,
   WeatherService
 } from '@clematis-shared/shared-components';
 import { DomSanitizer, Title } from '@angular/platform-browser';
-import { Sort } from '@lagoshny/ngx-hateoas-client';
+import { ResourceCollection, Sort } from '@lagoshny/ngx-hateoas-client';
 
 import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
@@ -19,23 +38,28 @@ const moment = _rollupMoment || _moment;
   selector: 'app-day',
   templateUrl: './day.component.html',
   styleUrl: './day.component.sass',
-  providers: [{ provide: 'searchService', useClass: ExpenseItemsService }],
   standalone: false,
 })
-export class DayComponent {
+export class DayComponent implements OnInit, OnDestroy {
   @ViewChild(EntityListComponent) entityList!: EntityListComponent<ExpenseItem>;
 
   loading = false;
 
-  date: string = DayComponent.formatDate(new Date());
+  date: string = Utils.formatDate(new Date());
 
   currency: MoneyType;
 
   incomeSum = 0;
 
+  displayedIncomeColumns: string[] = [
+    'commodity.name',
+    'price',
+    'organizationname',
+  ];
+
   expensesSum = 0;
 
-  displayedColumns: string[] = [
+  displayedExpenseColumns: string[] = [
     'commodity.name',
     'price',
     'qty',
@@ -50,44 +74,135 @@ export class DayComponent {
 
   wpArticle: any = null;
 
+  protected destroy$ = new Subject<void>();
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     protected moneyTypeService: MoneyTypeService,
+    protected incomeService: IncomeItemsService,
+    protected expensesService: ExpenseItemsService,
     private weatherService: WeatherService,
+    private dayService: DayService,
     private sanitizer: DomSanitizer,
     private title: Title,
   ) {
     this.currency = this.moneyTypeService.getSelectedMoneyType();
-
-    this.route.paramMap.subscribe((params) => {
-      let routeDate = params.get('date');
-      if (!routeDate) {
-        routeDate = DayComponent.formatDate(new Date());
-      }
-      this.date = routeDate;
-      this.title.setTitle(moment(this.date).format('YYYY-MM-DD'));
-      this.loadData();
-    });
+    this.moneyTypeService.selectedMoneyType$
+      .pipe(
+        takeUntil(this.destroy$),
+        tap(() => (this.loading = true)),
+      )
+      .subscribe(() => {
+        this.currency = this.moneyTypeService.getSelectedMoneyType();
+        if (this.date) {
+          this.loadData().subscribe(() => (this.loading = false));
+        }
+      });
   }
 
-  loadData(): void {
+  ngOnInit(): void {
+    this.loading = true;
+    this.onInit();
+  }
+
+  onInit(): void {
+    this.route.paramMap
+      .pipe(
+        // Listen to ID changes continuously
+        map((params) => params.get('date') ?? ''),
+        // Only proceed if the date actually changed
+        distinctUntilChanged(),
+        // Set the loading state before starting the request
+        tap((routeDate) => {
+          if (!routeDate) {
+            routeDate = Utils.formatDate(new Date());
+          }
+          this.date = routeDate;
+          this.title.setTitle(moment(this.date).format('YYYY-MM-DD'));
+        }),
+        // Cancel previous pending requests if date changes
+        switchMap(() => this.loadData()),
+        // Clean up subscription when the component destroys
+        takeUntil(this.destroy$),
+      )
+      .subscribe({
+        next: () => {
+          this.loading = false;
+        },
+        error: () => {
+          this.loading = false;
+          // Optional: Handle downstream errors here if needed
+        },
+      });
+  }
+
+  loadData(): Observable<void> {
+    this.clearPreviousData();
     this.loading = true;
 
-    this.weatherService.getDay(this.date).subscribe({
-      next: (response: any) => {
-        this.weatherData = response._embedded?.observations[0]
-          ? new WeatherObservation(response._embedded?.observations[0])
-          : null;
+    const incomeSum$ = this.dayService
+      .getIncomeSumByDay(this.date, this.currency)
+      .pipe(
+        catchError(() => {
+          return of(0);
+        }),
+        defaultIfEmpty(0),
+      );
+
+    const expensesSum$ = this.dayService
+      .getExpensesSumByDay(this.date, this.currency)
+      .pipe(
+        catchError(() => {
+          return of(0);
+        }),
+        defaultIfEmpty(0),
+      );
+
+    const weather$: Observable<ResourceCollection<WeatherObservation>> =
+      this.weatherService.getDay(this.date).pipe(
+        catchError(() => {
+          const emptyCollection = new ResourceCollection<WeatherObservation>();
+          emptyCollection.resources = [];
+          return of(emptyCollection);
+        }),
+        defaultIfEmpty(
+          Object.assign(new ResourceCollection<WeatherObservation>(), {
+            resources: [],
+          }),
+        ),
+      );
+
+    return forkJoin({
+      weather: weather$,
+      expensesSum: expensesSum$,
+      incomeSum: incomeSum$,
+    }).pipe(
+      tap((result) => {
+        this.expensesSum = result.expensesSum;
+        this.incomeSum = result.incomeSum;
+        if (
+          result.weather &&
+          result.weather.resources &&
+          result.weather.resources.length > 0
+        ) {
+          this.weatherData = result.weather.resources[0];
+        } else {
+          this.weatherData = null;
+        }
         this.loadRandomImage(this.date);
-      },
-      error: () => {
+      }),
+      switchMap(() => {
+        return of(undefined);
+      }),
+      catchError((err) => {
+        return throwError(() => err);
+      }),
+      finalize(() => {
+        // This runs on 'complete' and 'error'
         this.loading = false;
-      },
-      complete: () => {
-        this.loading = false;
-      },
-    });
+      }),
+    );
   }
 
   private loadRandomImage(dayString: string): void {
@@ -136,17 +251,9 @@ export class DayComponent {
       currentTarget.setDate(currentTarget.getDate() + offset);
 
       // Navigate to the new URL path
-      const targetDateString = DayComponent.formatDate(currentTarget);
+      const targetDateString = Utils.formatDate(currentTarget);
       this.router.navigate(['/days', targetDateString]);
     }
-  }
-
-  // Helper to safely build local YYYY-MM-DD string
-  private static formatDate(date: Date): string {
-    const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, '0');
-    const d = String(date.getDate()).padStart(2, '0');
-    return `${y}-${m}-${d}`;
   }
 
   getQueryArguments(): any {
@@ -167,5 +274,15 @@ export class DayComponent {
     return {
       transferdate: 'DESC',
     };
+  }
+
+  clearPreviousData() {
+    this.incomeSum = 0;
+    this.expensesSum = 0;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -1,3 +1,62 @@
+<ng-template #incomeTable let-entities="entities">
+  <table mat-table [dataSource]="entities">
+    <ng-container matColumnDef="commodity.name">
+      <th mat-header-cell *matHeaderCellDef>Commodity</th>
+      <td mat-cell *matCellDef="let element">
+        @if (element.commodity && element.commodityLink) {
+          <a
+            routerLink="{{ element.commodityLink }}"
+          >
+            {{ element.commodity.name }}</a
+          >
+        }
+
+        @if (element.commodity && !element.commodityLink) {
+          <div>
+            {{ element.commodity.name }}
+          </div>
+        }
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="transferdate">
+      <th mat-header-cell *matHeaderCellDef>Transfer Date</th>
+      <td mat-cell *matCellDef="let element">
+        <app-day-link [date]="element.transferDate"></app-day-link>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef>Total</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.total | currencySpace : element.income.moneyType?.code : 'symbol' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="organizationname">
+      <th mat-header-cell *matHeaderCellDef>Organization</th>
+      <td mat-cell *matCellDef="let element">
+        @if (element.tradeplace && element.tradeplaceLink) {
+          <a
+            routerLink="{{ element.tradeplaceLink }}"
+          >
+            {{ element.tradeplace.name }}</a
+          >
+        }
+
+        @if (element.tradeplace && !element.tradeplaceLink) {
+          <div>
+            {{ element.tradeplace.name }}
+          </div>
+        }
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedIncomeColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedIncomeColumns"></tr>
+  </table>
+</ng-template>
+
 <ng-template #expensesTable let-entities="entities">
   <table
     mat-table
@@ -60,8 +119,8 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedExpenseColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedExpenseColumns"></tr>
   </table>
 </ng-template>
 
@@ -144,16 +203,37 @@
 
       <!-- Left Main Body Column: Transaction Logs -->
       <main class="logs-section">
-        <h2 class="section-heading">Daily Transaction Logs</h2>
+        <h2 class="section-heading">Expenses</h2>
         <div class="logs-container">
           <div class="logs-placeholder">
             <app-entity-list
               [tableTemplate]="expensesTable"
+              [searchServiceOverride]="expensesService"
               [searchRequest]="{
                 queryArguments: getQueryArguments(),
                 queryName: getQueryName()
               }"
               [sort]="getSort()"
+              [cookieStateKey]="'day-expenses'"
+              [updateRouterState]="false"
+            >
+            </app-entity-list>
+          </div>
+        </div>
+        <br/>
+        <h2 class="section-heading">Income</h2>
+        <div class="logs-container">
+          <div class="logs-placeholder">
+            <app-entity-list
+              [tableTemplate]="incomeTable"
+              [searchServiceOverride]="incomeService"
+              [searchRequest]="{
+                queryArguments: getQueryArguments(),
+                queryName: getQueryName()
+              }"
+              [sort]="getSort()"
+              [cookieStateKey]="'day-income'"
+              [updateRouterState]="false"
             >
             </app-entity-list>
           </div>
@@ -165,34 +245,13 @@
         <h2 class="section-heading">Financial Summary</h2>
 
         <div class="ledger-grid">
-          <div class="product-info" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; font-family: system-ui, -apple-system, sans-serif;">
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
-              <!-- Income Block (Green Theme) -->
-              <div style="background: #f4fbf7; text-align: right; border: 1px solid #e1f5eb; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
-                <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #2b8a3e;">Income</span>
-                <strong style="font-size: 1.4rem; font-weight: 700; color: #2b8a3e;">
-                  {{ !loading ? (incomeSum | currencySpace : this.currency.code :'symbol') : '-' }}
-                </strong>
-              </div>
-
-              <!-- Expenses Block (Red Theme) -->
-              <div style="background: #fff5f5; border: 1px solid #ffe3e3; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
-                <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #c92a2a;">Expenses</span>
-                <strong style="font-size: 1.4rem; font-weight: 700; color: #c92a2a;">
-                  {{ !loading ? (expensesSum | currencySpace : this.currency.code :'symbol') : '-' }}
-                </strong>
-              </div>
-            </div>
-
-            <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 12px 16px; display: flex; flex-direction: column; justify-content: space-between; align-items: center;">
-              <span style="font-size: 0.9rem; font-weight: 500; color: #495057;">Net Balance</span>
-              <strong [style.color]="(incomeSum - expensesSum) >= 0 ? '#2b8a3e' : '#c92a2a'" style="font-size: 1.15rem; font-weight: 700;">
-                {{ !loading ? ((incomeSum - expensesSum) | currencySpace : this.currency.code :'symbol') : '-' }}
-              </strong>
-            </div>
-
-          </div>
+          <lib-entity-balance-info
+            [loading]="loading"
+            [expensesSum]="expensesSum"
+            [incomeSum]="incomeSum"
+            [currency]="currency"
+          ></lib-entity-balance-info>
 
           <!-- Exchange Card
           <div class="ledger-card exchange">

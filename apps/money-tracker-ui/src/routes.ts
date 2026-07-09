@@ -33,7 +33,7 @@ const routes: Routes = [
     redirectTo: '/about',
   },
   {
-    path: 'about',
+    path: 'home',
     pathMatch: 'full',
     component: AboutComponent,
   },

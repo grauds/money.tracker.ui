@@ -1,4 +1,4 @@
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Entity, MoneyType, Utils } from '@clematis-shared/model';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 import { Title } from '@angular/platform-browser';
@@ -11,7 +11,6 @@ import {
   Observable,
   of,
   Subject,
-  Subscription,
   switchMap,
   takeUntil,
   tap,
@@ -67,9 +66,6 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
 
   loading = false;
 
-  // subscribe for page updates in the address bar
-  pageSubscription: Subscription;
-
   protected destroy$ = new Subject<void>();
 
   currency: MoneyType;
@@ -84,14 +80,6 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
     protected entityService: EntityService<T, P>,
   ) {
     this.currency = this.moneyTypeService.getSelectedMoneyType()
-    this.pageSubscription = this.router.events
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((val) => {
-        if (val instanceof NavigationEnd) {
-          this.onInit();
-        }
-      });
-
     this.moneyTypeService.selectedMoneyType$
       .pipe(
         takeUntil(this.destroy$),

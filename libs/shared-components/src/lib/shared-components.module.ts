@@ -62,6 +62,7 @@ import { NgxEchartsDirective } from 'ngx-echarts';
 
 import { TelegramFeedComponent } from './components/telegram-feed/telegram-feed.component';
 import { MatTooltip } from "@angular/material/tooltip";
+import { EntityBalanceInfoComponent } from './components/entity/entity-balance-info/entity-balance-info.component';
 
 @NgModule({
   imports: [
@@ -96,6 +97,7 @@ import { MatTooltip } from "@angular/material/tooltip";
     BreadcrumbsComponent,
     DateBreadcrumbsComponent,
     EntityListComponent,
+    EntityBalanceInfoComponent,
     MoneyTypeSelectorComponent,
     DateRangeSelectorComponent,
     StatsTotalsComponent,
@@ -109,6 +111,7 @@ import { MatTooltip } from "@angular/material/tooltip";
   ],
   declarations: [
     EntityListComponent,
+    EntityBalanceInfoComponent,
     BreadcrumbsComponent,
     DateBreadcrumbsComponent,
     EntityElementComponent,

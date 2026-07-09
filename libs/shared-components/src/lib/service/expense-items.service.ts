@@ -9,7 +9,6 @@ import {
 import {
   HateoasResourceService,
   PagedResourceCollection,
-  ResourceCollection,
   PagedGetOption
 } from '@lagoshny/ngx-hateoas-client';
 import { Observable, of, switchMap } from 'rxjs';
@@ -57,39 +56,6 @@ export class ExpenseItemsService extends SearchService<ExpenseItem> {
       });
       return of(arr);
     });
-  }
-
-  getCommodityExpences(
-    commodityId: string
-  ): Observable<ResourceCollection<ExpenseItem>> {
-    if (commodityId) {
-      return this.searchPage(
-        {
-          params: {
-            commodityId: commodityId,
-          },
-        },
-        'commodity'
-      );
-    }
-    return of(new ResourceCollection<ExpenseItem>());
-  }
-
-  getOrganizationExpences(
-    organizationId: string
-  ): Observable<ResourceCollection<ExpenseItem>> {
-    if (organizationId) {
-      return this.hateoasService.searchPage<ExpenseItem>(
-        ExpenseItem,
-        'tradeplace',
-        {
-          params: {
-            tradeplaceId: organizationId,
-          },
-        }
-      );
-    }
-    return of(new ResourceCollection<ExpenseItem>());
   }
 
   getAgentExpencesInCurrency(

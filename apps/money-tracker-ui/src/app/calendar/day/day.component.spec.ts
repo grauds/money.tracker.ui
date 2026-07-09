@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { WeatherDashboardPanelComponent } from './weather-dashboard-panel/weather-dashboard-panel.component';
 import {
   CurrencySpacePipe,
-  DateBreadcrumbsComponent,
+  DateBreadcrumbsComponent, EntityBalanceInfoComponent, EntityListComponent, ExpenseItemsService, IncomeItemsService,
   MoneyTypeService,
   WeatherService
 } from '@clematis-shared/shared-components';
@@ -46,6 +46,8 @@ describe('DayComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [
+        EntityListComponent,
+        EntityBalanceInfoComponent,
         DayComponent,
         WeatherDashboardPanelComponent,
         DateBreadcrumbsComponent,
@@ -53,6 +55,8 @@ describe('DayComponent', () => {
       imports: [RouterLinkWithHref, MatIconModule, CurrencySpacePipe],
       providers: [
         CurrencyPipe,
+        IncomeItemsService,
+        ExpenseItemsService,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: WeatherService, useValue: mockWeatherService },
         { provide: MoneyTypeService, useValue: mockMoneyTypeService },

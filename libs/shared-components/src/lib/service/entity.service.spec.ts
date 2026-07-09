@@ -42,7 +42,7 @@ describe('EntityGroupsService', () => {
       MockEntity as any
     );
 
-    // FIX: Safely mock the method on the class prototype if spyOn complains
+    // Safely mock the method on the class prototype if spyOn complains
     (service as any).getUrl = jest.fn((path: string) => `http://example.com${path}`);
   });
 

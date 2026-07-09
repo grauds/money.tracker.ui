@@ -15,29 +15,35 @@ import {
 } from "./entity-resource-type.token";
 
 @Injectable()
-export class EntityService<T extends Entity, P extends Entity>
-  extends SearchService<T> {
-
+export class EntityService<
+  T extends Entity,
+  P extends Entity,
+> extends SearchService<T> {
   constructor(
     private http: HttpClient,
     private hateoasService: HateoasResourceService,
     override environmentService: EnvironmentService,
     // Inject the runtime token safely here
     @Inject(RESOURCE_TYPE) private resourceType: Type<T>,
-    @Inject(PARENT_RESOURCE_TYPE) private parentResourceType: Type<P>
+    @Inject(PARENT_RESOURCE_TYPE) private parentResourceType: Type<P>,
   ) {
     super(environmentService);
   }
 
-  override searchPage(options: PagedGetOption, queryName: string):
-    Observable<PagedResourceCollection<T>> {
+  override searchPage(
+    options: PagedGetOption,
+    queryName: string,
+  ): Observable<PagedResourceCollection<T>> {
     return this.hateoasService.searchPage<T>(
-      this.resourceType, queryName, options
+      this.resourceType,
+      queryName,
+      options,
     );
   }
 
-  override getPage(options: PagedGetOption | undefined):
-    Observable<PagedResourceCollection<T>> {
+  override getPage(
+    options: PagedGetOption | undefined,
+  ): Observable<PagedResourceCollection<T>> {
     return this.hateoasService.getPage<T>(this.resourceType, options);
   }
 
@@ -45,8 +51,8 @@ export class EntityService<T extends Entity, P extends Entity>
     if (id) {
       return this.hateoasService.searchCollection<P>(
         this.parentResourceType,
-        "pathById",
-        { params: { id } }
+        'pathById',
+        { params: { id } },
       );
     }
     return of(new ResourceCollection<P>());
@@ -62,7 +68,7 @@ export class EntityService<T extends Entity, P extends Entity>
             id: id,
             moneyCode: moneyCode.code,
           },
-        }
+        },
       );
     }
     return of(0);
@@ -78,7 +84,7 @@ export class EntityService<T extends Entity, P extends Entity>
             id: id,
             moneyCode: moneyCode.code,
           },
-        }
+        },
       );
     }
     return of(0);

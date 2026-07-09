@@ -14,6 +14,7 @@ export { PageSizeComponent } from './lib/components/page-size/page-size.componen
 export { PageNotFoundComponent } from './lib/pages/page-not-found/page-not-found.component';
 export { EntityComponent } from './lib/components/entity/entity.component';
 export { EntityListComponent } from './lib/components/entity-list/entity-list.component';
+export { EntityBalanceInfoComponent } from './lib/components/entity/entity-balance-info/entity-balance-info.component';
 export { MoneyTypeSelectorComponent } from './lib/components/money-type-selector/money-type-selector.component';
 export { DateRangeSelectorComponent } from './lib/components/date-range-selector/date-range-selector.component';
 export { StatsTotalsComponent } from './lib/components/stats-totals/stats-totals.component';
@@ -44,6 +45,7 @@ export { MoneyExchangeService } from './lib/service/money-exchange.service';
 export { MoneyTypeService } from './lib/service/money-type.service';
 export { EntityService } from './lib/service/entity.service';
 
+export { DayService } from './lib/service/day.service';
 export { StatsService } from './lib/service/stats.service';
 export { StorageService } from './lib/service/storage.service';
 export { WeatherService } from './lib/service/weather.service';
