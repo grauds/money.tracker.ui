@@ -18,8 +18,8 @@
           }
         </div>
 
-        <!-- Financial Overview Section -->
         <div class="product-info" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; font-family: system-ui, -apple-system, sans-serif;">
+          <!-- Financial Overview Section -->
           <lib-entity-balance-info
             [loading]="loading"
             [expensesSum]="expensesSum"
@@ -38,15 +38,18 @@
 
 
     <div class="flex gap-[2%] flex-nowrap content-start">
-      <div class="w-1/3 h-1/4">
-        <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
-          <div>
-            <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
-              Subgroups
-            </h3>
-            <small style="color: #6c757d; font-size: 0.85rem;">Child groups and some stats (to be updated)</small>
+      <div class="w-1/3 h-1/4" [hidden]="!children || children.length === 0">
+
+        @if (children && children.length > 0) {
+          <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
+            <div>
+              <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+                Subgroups
+              </h3>
+              <small style="color: #6c757d; font-size: 0.85rem;">Child groups and some stats (to be updated)</small>
+            </div>
           </div>
-        </div>
+        }
 
         <app-entity-list
           [updateRouterState]="false"
@@ -61,7 +64,7 @@
         ></app-entity-list>
 
       </div>
-      <div class="w-2/3 h-3/4">
+      <div class="flex-1 h-3/4">
         <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
           <div>
             <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
