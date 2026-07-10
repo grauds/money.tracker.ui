@@ -182,7 +182,11 @@ export class DayComponent implements OnInit, OnDestroy {
         this.expensesSum = result.expensesSum;
         this.incomeSum = result.incomeSum;
         const rawResult = result.weather as any;
-        this.weatherData = rawResult?.['_embedded']?.['observations'] || [];
+        if (rawResult?.['_embedded']?.['observations'][0]) {
+          this.weatherData = new WeatherObservation(
+            rawResult?.['_embedded']?.['observations'][0],
+          );
+        }
         this.loadRandomImage(this.date);
       }),
       switchMap(() => {
@@ -201,35 +205,54 @@ export class DayComponent implements OnInit, OnDestroy {
   private loadRandomImage(dayString: string): void {
     const defaultPlaceholder = 'assets/weather-placeholder.png';
 
-    this.weatherService.getImage(dayString).subscribe({
-      next: (blob: Blob) => {
-        // Check if the returned blob is valid and contains actual data
-        if (blob && blob.size > 0) {
-          // Free up previous browser memory allocation
-          if (this.currentBlobUrl) {
-            URL.revokeObjectURL(this.currentBlobUrl);
-          }
+    // Helper to centralize fallback logic
+    const handleFallback = (errorContext: string, details?: any) => {
+      console.error(`Weather Image Error [${errorContext}]:`, details || '');
+      this.loadedBackgroundImage = `url('${defaultPlaceholder}')`;
+      this.imageUrl = defaultPlaceholder;
+    };
 
-          this.currentBlobUrl = URL.createObjectURL(blob);
-          this.loadedBackgroundImage = `url('${this.currentBlobUrl}')`;
-          this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(
-            this.currentBlobUrl,
-          );
-        } else {
-          // Handle empty response fallback directly
-          this.loadedBackgroundImage = `url('${defaultPlaceholder}')`;
-          this.imageUrl = defaultPlaceholder;
-        }
-      },
-      error: (err) => {
-        console.error(
-          'Failed to load weather image, falling back to placeholder',
-          err,
-        );
-        this.loadedBackgroundImage = `url('${defaultPlaceholder}')`;
-        this.imageUrl = defaultPlaceholder;
-      },
-    });
+    try {
+      this.weatherService.getImage(dayString).subscribe({
+        next: (blob: Blob) => {
+          try {
+            // 1. Catch empty or non-existent responses
+            if (!blob || blob.size === 0) {
+              handleFallback('Empty or missing Blob payload');
+              return;
+            }
+
+            // 2. Catch invalid image formats (non-image blobs)
+            if (!blob.type.startsWith('image/')) {
+              handleFallback('Invalid file type', blob.type);
+              return;
+            }
+
+            // Clean up memory safely
+            if (this.currentBlobUrl) {
+              URL.revokeObjectURL(this.currentBlobUrl);
+            }
+
+            // 3. Catch browser API failures
+            this.currentBlobUrl = URL.createObjectURL(blob);
+            this.loadedBackgroundImage = `url('${this.currentBlobUrl}')`;
+            this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(
+              this.currentBlobUrl,
+            );
+          } catch (runtimeError) {
+            // Catches DOM/Sanitizer/URL API crashes
+            handleFallback('Browser API Runtime Crash', runtimeError);
+          }
+        },
+        error: (httpError) => {
+          // 4. Catches network failures, 404s, 500s, and CORS blocks
+          handleFallback('HTTP Network Request Failed', httpError);
+        },
+      });
+    } catch (syncError) {
+      // 5. Catches synchronous startup issues before subscription
+      handleFallback('Stream Initialization Failed', syncError);
+    }
   }
 
   protected navigateDay(offset: number): void {
