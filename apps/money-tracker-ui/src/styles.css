@@ -79,15 +79,11 @@
 html,
 body {
   height: 100%;
-}
-
-body {
   padding: 0;
   margin: 0;
   font-size: 16px;
   line-height: 33px;
   font-family: 'SF UI Display', sans-serif;
-  background: var(--background);
   color: var(--foreground);
 }
 

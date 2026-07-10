@@ -15,7 +15,7 @@ $floating-shadow: 4px 0 24px rgba(0, 0, 0, 0.15)
   transition: width $transition-speed $transition-curve, box-shadow $transition-speed ease !important
   overflow-x: hidden
   border-right: 1px solid $border-color
-  background-color: $bg-white
+  background-color: #edece0
   box-shadow: none
 
   &[style*="width: 250px"], &[style*="width:250px"]
@@ -103,8 +103,41 @@ mat-icon
 .compact-toolbar
   height: 65px
   flex-shrink: 0
-  background-color: $bg-white !important
+  background-color: #edece0 !important
   color: $text-color !important
   position: relative
   z-index: 2
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03)
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3)
+
+:root
+  /* Light Mode Palette: Deep Floral Purples */
+  --bg-app-light: #FBF9FE       /* Soft lavender-tinted background */
+  --text-main-dark: #2E1A47     /* Deep eggplant purple for primary headings */
+  --purple-accent: #6E3AFF      /* Rich violet for charts and buttons */
+  --text-muted: #7A6F8A         /* Slate lavender for secondary labels */
+
+.brand-container
+  display: flex
+  flex-direction: column
+  align-items: flex-start
+  padding: 1rem
+  width: 200px
+  min-width: max-content
+
+.brand-title
+  font-family: 'Cormorant Garamond', serif
+  font-size: 2rem
+  font-weight: 500
+  font-style: italic           /* Optional: Adds beautiful floral motion */
+  color: var(--purple-accent)
+  line-height: 1
+  white-space: nowrap
+
+.brand-subtitle
+  font-family: 'Plus Jakarta Sans', sans-serif
+  font-size: 0.5rem
+  font-weight: 400
+  letter-spacing: 0.5em       /* Generous tracking looks upscale and modern */
+  color: var(--text-muted)
+  line-height: 1.5
+  white-space: nowrap

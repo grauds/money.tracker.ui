@@ -5,6 +5,7 @@
     [style.width]="isCollapsed ? '68px' : '250px'"
     fixedInViewport
     [attr.role]="'navigation'"
+    [autoFocus]="false"
     mode="over"
     [opened]="true"
     (mouseenter)="setCollapse(false)"
@@ -14,7 +15,10 @@
     <div class="logo-container">
       <img ngSrc="assets/clematis.png" alt="Logo" class="logo-img" height="600" width="600" />
       @if (!isCollapsed) {
-        <span class="brand-text">Clematis</span>
+        <div class="brand-container">
+          <span class="brand-title">Clematis</span>
+          <span class="brand-subtitle">MONEY TRACKER</span>
+        </div>
       }
     </div>
 
@@ -94,7 +98,10 @@
   <!-- The content area container transforms into a static, locked viewport column -->
   <mat-sidenav-content class="main-content-area">
     <mat-toolbar color="primary" class="mat-elevation-z3 compact-toolbar">
-      <span class="page-title">{{ title }}</span>
+      <div class="brand-container">
+        <span class="brand-title">Clematis</span>
+        <span class="brand-subtitle">MONEY TRACKER</span>
+      </div>
       <span class="header-spacer"></span>
 
       <app-money-selector></app-money-selector>

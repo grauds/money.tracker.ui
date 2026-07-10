@@ -17,6 +17,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
 import { MoneySelectorComponent } from './money-selector/money-selector.component';
 import { WorkspaceComponent } from '../workspace/workspace.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-header',
@@ -41,6 +42,8 @@ export class HeaderComponent {
   // the header of the application
   @Input() title = '';
 
+  pageTitle = '';
+
   @Input() userProfile?: KeycloakProfile;
 
   @Input() isLoggedIn?: boolean;
@@ -53,12 +56,16 @@ export class HeaderComponent {
 
   constructor(
     private readonly router: Router,
+    private titleService: Title,
     private readonly keycloak: Keycloak,
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         // Hide the progress spinner or progress bar
         this.currentRoute = event.urlAfterRedirects;
+        setTimeout(() => {
+          this.pageTitle = this.titleService.getTitle();
+        }, 1000);
       }
     });
   }
@@ -81,10 +88,7 @@ export class HeaderComponent {
       return (
         this.userProfile.firstName +
         ' ' +
-        this.userProfile.lastName +
-        ' (' +
-        this.userProfile.username +
-        ')'
+        this.userProfile.lastName
       );
     } else {
       return '';
