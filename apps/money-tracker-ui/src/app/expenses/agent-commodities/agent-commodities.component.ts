@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Observable, of, Subscription, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
 
-import { PagedResourceCollection } from '@lagoshny/ngx-hateoas-client';
-
-import { AgentCommodities, MoneyType, Page } from '@clematis-shared/model';
+import { AgentCommodities, InfoAbout, MoneyType, Page } from '@clematis-shared/model';
 import {
-  ExpenseItemsService,
-  MoneyTypeService,
+  ExpenseItemsService, MoneyTypeService,
+  StatsService
 } from '@clematis-shared/shared-components';
 
 import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
 import { default as _rollupMoment } from 'moment';
+import { formatDate } from '@angular/common';
 
 const moment = _rollupMoment || _moment;
 
@@ -40,13 +38,9 @@ export const MY_FORMATS = {
 export class AgentCommoditiesComponent implements OnInit {
   chart: any;
 
-  pageSubscription: Subscription;
+  statsLoading = false;
 
   loading = false;
-
-  currency: MoneyType | undefined;
-
-  currencies: MoneyType[] = [];
 
   startDate = moment().add(-6, 'M');
 
@@ -58,38 +52,23 @@ export class AgentCommoditiesComponent implements OnInit {
 
   checkSubscription = this.showGroupsEvent.asObservable();
 
-  constructor(
-    private readonly moneyTypeService: MoneyTypeService,
-    private readonly expenseItemsService: ExpenseItemsService,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    private readonly title: Title
-  ) {
-    this.pageSubscription = route.queryParams.subscribe((queryParam: any) => {
-      this.initMoneyType(queryParam['currency'], 'RUB').subscribe(
-        (result: MoneyType) => {
-          this.currency = result;
-          this.loadData();
-        }
-      );
-    });
+  infoAbout: InfoAbout | undefined;
 
+  constructor(
+    protected moneyTypeService: MoneyTypeService,
+    private readonly expenseItemsService: ExpenseItemsService,
+    private readonly statsService: StatsService,
+    private readonly title: Title,
+  ) {
     this.checkSubscription.subscribe(() => {
-      if (this.currency) {
-        this.loading = true;
-        this.createChart(this.currency).subscribe((chart) => {
+      this.loading = true;
+      this.createChart(this.moneyTypeService.getSelectedMoneyType()).subscribe(
+        (chart) => {
           this.chart = chart;
           this.loading = false;
-        });
-      }
+        },
+      );
     });
-  }
-
-  initMoneyType(destCurrency: string, fallback: string) {
-    if (!destCurrency) {
-      destCurrency = fallback;
-    }
-    return this.moneyTypeService.getCurrencyByCode(destCurrency);
   }
 
   onFilterEvent(data: boolean) {
@@ -98,14 +77,14 @@ export class AgentCommoditiesComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('Users Commodities');
-  }
-
-  updateCurrency($event: MoneyType) {
-    this.currency = $event;
-
-    this.updateRoute().then(() => {
-      this.loadData();
-    });
+    this.statsLoading = true;
+    this.statsService
+      .getInfoAbout()
+      .subscribe((infoAbout) => {
+        this.infoAbout = infoAbout;
+        this.statsLoading = false;
+      });
+    this.loadData();
   }
 
   updateStartDate(normalizedMonthAndYear: moment.Moment) {
@@ -120,53 +99,31 @@ export class AgentCommoditiesComponent implements OnInit {
     this.loadData();
   }
 
-  updateRoute() {
-    return this.router.navigate(
-      [],
-      this.currency
-        ? {
-            relativeTo: this.route,
-            queryParams: {
-              currency: this.currency.code,
-            },
-            queryParamsHandling: 'merge',
-            skipLocationChange: false,
-          }
-        : {
-            relativeTo: this.route,
-            queryParamsHandling: 'merge',
-            skipLocationChange: false,
-          }
-    );
-  }
-
   loadData() {
     this.loading = true;
 
-    this.moneyTypeService
-      .getPage({
-        pageParams: {
-          page: 0,
-          size: 200,
-        },
-      })
-      .subscribe({
-        next: (response: PagedResourceCollection<MoneyType>) => {
-          this.currencies = response.resources;
-          if (this.currency) {
-            this.createChart(this.currency).subscribe((chart) => {
-              this.chart = chart;
-              this.loading = false;
-            });
-          }
-        },
-        error: () => {
-          this.loading = false;
-        },
-        complete: () => {
-          this.loading = false;
-        },
-      });
+    this.createChart(this.moneyTypeService.getSelectedMoneyType()).subscribe(
+      (chart) => {
+        this.chart = chart;
+        this.loading = false;
+      },
+    );
+  }
+
+  getStartDate() {
+    if (this.infoAbout && this.infoAbout.dates && this.infoAbout.dates.start) {
+      return formatDate(this.infoAbout.dates.start, 'mediumDate', 'en_US');
+    } else {
+      return 'No date';
+    }
+  }
+
+  getLastDate() {
+    if (this.infoAbout && this.infoAbout.dates && this.infoAbout.dates.end) {
+      return formatDate(this.infoAbout.dates.end, 'mediumDate', 'en_US');
+    } else {
+      return 'No date';
+    }
   }
 
   private createChart(currency: MoneyType): Observable<any> {
@@ -175,7 +132,7 @@ export class AgentCommoditiesComponent implements OnInit {
     let ticks: string[] = [];
     const series: Map<string, AgentCommodities[]> = new Map();
 
-    return this.currency
+    return currency
       ? of(chart).pipe(
           switchMap(() => {
             return this.expenseItemsService.getAgentExpencesInCurrency(
@@ -183,7 +140,7 @@ export class AgentCommoditiesComponent implements OnInit {
               this.startDate.month(),
               this.startDate.year(),
               this.endDate.month(),
-              this.endDate.year()
+              this.endDate.year(),
             );
           }),
           switchMap((response: Page<AgentCommodities>) => {
@@ -235,14 +192,14 @@ export class AgentCommoditiesComponent implements OnInit {
           }),
           switchMap(() => {
             return of(this.buildChart(ticks, series));
-          })
+          }),
         )
       : of(chart);
   }
 
   private getChartsSeries(
     ticks: string[],
-    series: Map<string, AgentCommodities[]>
+    series: Map<string, AgentCommodities[]>,
   ): any[] {
     const chartSeries: any[] = [];
 
@@ -262,7 +219,7 @@ export class AgentCommoditiesComponent implements OnInit {
           const ac: AgentCommodities | undefined = commoditiesMonthly.find(
             (value: AgentCommodities) => {
               return value.an + '/' + value.mois === tick;
-            }
+            },
           );
           return ac ? ac.total : 0;
         }),
@@ -295,7 +252,7 @@ export class AgentCommoditiesComponent implements OnInit {
           params: any,
           el: any,
           elRect: any,
-          size: { viewSize: number[] }
+          size: { viewSize: number[] },
         ) {
           const obj: any = { top: 10 };
           obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
@@ -307,7 +264,7 @@ export class AgentCommoditiesComponent implements OnInit {
           output += '<table class="w-full">';
 
           const sorted: any[] = params.sort(
-            (paramA, paramB) => paramB.value - paramA.value
+            (paramA, paramB) => paramB.value - paramA.value,
           );
           sorted.forEach(function (param) {
             if (param.value !== 0) {

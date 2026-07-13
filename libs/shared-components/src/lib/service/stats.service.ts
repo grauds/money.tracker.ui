@@ -17,7 +17,7 @@ export class StatsService {
     this.environmentService = environmentService;
   }
 
-  getIncomeTransactionsCount(): Observable<InfoAbout> {
+  getInfoAbout(): Observable<InfoAbout> {
     return this.http.get<InfoAbout>(this.getUrl('/about'));
   }
 

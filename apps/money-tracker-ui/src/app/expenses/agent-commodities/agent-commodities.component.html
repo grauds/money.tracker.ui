@@ -1,3 +1,22 @@
+@if (this.infoAbout) {
+  <h4 class="header" [hidden]="statsLoading">
+    <span>Recorded transactions' time span
+    </span>
+    <span
+    ><b>starts:</b>
+      {{ getStartDate() }}
+    </span>
+    <span
+    ><b>, ends:</b>
+      {{ getLastDate() }}
+    </span>
+  </h4>
+}
+
+<h4 class="header" [hidden]="!statsLoading">
+  <span><b>Loading...</b></span>
+</h4>
+
 <div>
   <div>
 

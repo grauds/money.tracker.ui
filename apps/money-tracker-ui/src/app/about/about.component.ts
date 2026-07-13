@@ -49,7 +49,7 @@ export class AboutComponent implements OnInit {
   }
 
   loadData() {
-    this.statsService.getIncomeTransactionsCount().subscribe((infoAbout) => {
+    this.statsService.getInfoAbout().subscribe((infoAbout) => {
       this.infoAbout = infoAbout;
     });
   }
