@@ -60,7 +60,9 @@ export class EntityService<
 
   getIncomeSum(id: string, moneyCode: MoneyType): Observable<number> {
     if (id) {
-      const className = this.resourceType.name;
+      const className =
+        (this.resourceType as any).resourceName || this.resourceType.name;
+
       return this.http.get<number>(
         this.getUrl(`/incomeItems/search/sum${className}Income`),
         {
@@ -76,7 +78,9 @@ export class EntityService<
 
   getExpensesSum(id: string, moneyCode: MoneyType): Observable<number> {
     if (id) {
-      const className = this.resourceType.name;
+      const className =
+        (this.resourceType as any).resourceName || this.resourceType.name;
+
       return this.http.get<number>(
         this.getUrl(`/expenseItems/search/sum${className}Expenses`),
         {

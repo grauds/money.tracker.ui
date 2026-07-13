@@ -4,4 +4,5 @@ import { Entity } from './entity';
 @HateoasResource('accountGroups')
 export class AccountGroup extends Entity {
   description: string | undefined;
+  static readonly resourceName = 'AccountGroup';
 }

@@ -68,7 +68,8 @@
               "with": "apps/money-tracker-ui/src/environments/environment.demo.ts"
             }
           ],
-          "outputHashing": "all"
+          "buildOptimizer": true,
+          "optimization": true
         },
         "uat": {
           "fileReplacements": [
@@ -77,12 +78,8 @@
               "with": "apps/money-tracker-ui/src/environments/environment.uat.ts"
             }
           ],
-          "buildOptimizer": false,
-          "optimization": false,
-          "vendorChunk": true,
-          "extractLicenses": false,
-          "sourceMap": true,
-          "namedChunks": true
+          "buildOptimizer": true,
+          "optimization": true
         },
         "local": {
           "fileReplacements": [

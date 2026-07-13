@@ -1,5 +1,5 @@
 import { EnvironmentInterface } from '@clematis-shared/shared-components';
-
+// mac -> local mt
 export const environment: EnvironmentInterface = {
   production: false,
   apiUrl: 'http://localhost:8080/api',

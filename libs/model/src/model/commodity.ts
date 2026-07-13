@@ -9,4 +9,6 @@ export class Commodity extends Entity {
   defaultPrice: number | undefined;
 
   unittype: UnitType | undefined;
+
+  static readonly resourceName = 'Commodity';
 }
