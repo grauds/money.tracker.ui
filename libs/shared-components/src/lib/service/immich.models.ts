@@ -2,7 +2,7 @@ export interface ImmichRandomSearchPayload {
   type: 'IMAGE' | 'VIDEO';
   takenAfter: string;
   takenBefore: string;
-  visibility: 'visible' | 'search' | 'timeline';
+  isVisible: boolean;
   size: number;
 }
 

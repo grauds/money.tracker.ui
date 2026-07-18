@@ -24,7 +24,7 @@ export class ImmichService {
       type: 'IMAGE',
       takenAfter: `${date}T00:00:00.000Z`,
       takenBefore: `${date}T23:59:59.999Z`,
-      visibility: 'visible',
+      isVisible: true,
       size: qty,
     };
 
