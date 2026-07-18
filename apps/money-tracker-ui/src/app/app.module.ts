@@ -90,6 +90,7 @@ import { DayComponent } from './calendar/day/day.component';
 import {
   WeatherDashboardPanelComponent
 } from './calendar/day/weather-dashboard-panel/weather-dashboard-panel.component';
+import { PhotoGalleryComponent } from "./calendar/day/photo-gallery/photo-gallery.component";
 
 @NgModule({
   declarations: [
@@ -126,7 +127,7 @@ import {
     FontAwesomeModule,
     FormsModule,
     NgxEchartsModule.forRoot({
-      echarts: () => import('echarts'),
+      echarts: () => import("echarts")
     }),
     NgxHateoasClientModule.forRoot(),
     LayoutModule,
@@ -154,6 +155,7 @@ import {
     CurrencySpacePipe,
     SharedComponentsModule,
     TelegramFeedComponent,
+    PhotoGalleryComponent
   ],
   providers: [CurrencyPipe],
 })

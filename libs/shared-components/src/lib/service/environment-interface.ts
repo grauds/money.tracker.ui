@@ -6,4 +6,5 @@ export interface EnvironmentInterface {
   authClientId: string;
   storageUrl: string;
   weatherUrl: string;
+  immichUrl: string;
 }

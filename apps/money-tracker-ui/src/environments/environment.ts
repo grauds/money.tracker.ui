@@ -12,6 +12,7 @@ export const environment: EnvironmentInterface = {
   authClientId: 'clematis-money-tracker-ui',
   storageUrl: '/api/storage/mt',
   weatherUrl: '/weather-api',
+  immichUrl: '/immich',
 };
 
 /*

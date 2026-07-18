@@ -8,4 +8,5 @@ export const environment: EnvironmentInterface = {
   authClientId: 'clematis-money-tracker-ui',
   storageUrl: 'http://localhost:8080/api/storage/mt',
   weatherUrl: 'http://192.168.1.118:18087',
+  immichUrl: '/immich',
 };

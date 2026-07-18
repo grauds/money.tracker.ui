@@ -1,0 +1,43 @@
+/* Hides vertical overflow and sets the frame */
+.ribbon-container
+  overflow: hidden
+  width: 100%
+  background: #111
+  padding: 20px 0
+  display: flex
+
+/* Houses both identical segments lineally */
+.ribbon-track
+  display: flex
+  width: max-content
+  animation: scroll-left 40s linear infinite
+
+  /* Pause the scrolling animation when a user hovers over an image */
+  &:hover
+    animation-play-state: paused
+
+/* Layout container for each set of 19 images */
+.ribbon-group
+  display: flex
+  align-items: center
+  gap: 16px
+  padding-right: 16px /* Must perfectly match the gap distance */
+
+  /* Individual Image Styling */
+  img
+    height: 180px
+    width: auto
+    object-fit: cover
+    border-radius: 12px
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3)
+    transition: transform 0.2s ease
+
+    &:hover
+      transform: scale(1.05)
+
+/* The infinite layout translation keyframe */
+@keyframes scroll-left
+  0%
+    transform: translateX(0)
+  100%
+    transform: translateX(-50%)

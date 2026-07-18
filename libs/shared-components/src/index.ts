@@ -44,6 +44,8 @@ export { LastCommodityService } from './lib/service/last-commodity.service';
 export { MoneyExchangeService } from './lib/service/money-exchange.service';
 export { MoneyTypeService } from './lib/service/money-type.service';
 export { EntityService } from './lib/service/entity.service';
+export { ImmichService } from './lib/service/immich.service';
+export type { ImmichAsset } from './lib/service/immich.models';
 
 export { DayService } from './lib/service/day.service';
 export { StatsService } from './lib/service/stats.service';

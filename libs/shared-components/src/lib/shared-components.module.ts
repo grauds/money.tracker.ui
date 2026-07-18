@@ -34,6 +34,8 @@ import { IncomeItemsService } from './service/income-items.service';
 import { StatsService } from './service/stats.service';
 import { EntityService } from './service/entity.service';
 
+import { ImmichService } from './service/immich.service';
+
 import { ErrorDialogService } from './error/error-dialog/error-dialog.service';
 import { GlobalErrorHandler } from './error/global-error-handler';
 import { ErrorHandlerInterceptor } from './error/error-handler.interceptor';
@@ -142,6 +144,7 @@ import { EntityBalanceInfoComponent } from './components/entity/entity-balance-i
     MoneyTypeService,
     StatsService,
     EntityService,
+    ImmichService,
     ErrorDialogService,
     {
       provide: ErrorHandler,
