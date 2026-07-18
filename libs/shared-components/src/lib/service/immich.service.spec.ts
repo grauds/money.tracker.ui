@@ -74,7 +74,7 @@ describe('ImmichService', () => {
         type: 'IMAGE',
         takenAfter: '2026-07-13T00:00:00.000Z',
         takenBefore: '2026-07-13T23:59:59.999Z',
-        visibility: 'visible',
+        isVisible: true,
         size: count,
       });
 
