@@ -177,10 +177,6 @@
       </header>
     }
 
-    <app-photo-gallery
-      [date]="date"
-    ></app-photo-gallery>
-
     <!-- WordPress Article Area (Spans full top content width) -->
     @if (wpArticle) {
       <section class="wordpress-section">
@@ -278,6 +274,10 @@
       </aside>
 
     </div>
+
+    <app-photo-gallery
+      [date]="date"
+    ></app-photo-gallery>
 
   </div>
 </div>

@@ -1,21 +1,24 @@
 @if (isLoading()) {
   <div class="loader">Looking for images...</div>
 } @else if (hasError()) {
-
-} @else {
+  <div class="gallery-error-fallback">Could not retrieve images from Immich.</div>
+} @else if (imageUrls() && imageUrls().length > 0) {
   <div class="ribbon-container">
-    <div class="ribbon-track">
+    <!-- Navigation Buttons -->
+    <button class="nav-btn prev" (click)="galleryTrack.scrollBy({ left: -400, behavior: 'smooth' })" aria-label="Scroll Left">
+      &larr;
+    </button>
+    <button class="nav-btn next" (click)="galleryTrack.scrollBy({ left: 400, behavior: 'smooth' })" aria-label="Scroll Right">
+      &rarr;
+    </button>
+
+    <!-- Scrollable Track Frame -->
+    <div class="ribbon-track" #galleryTrack>
       <div class="ribbon-group">
-        @for (url of imageUrls(); track 'first-' + $index) {
-          <img [src]="url" alt="Immich Ribbon Photo" />
-        }
-      </div>
-      <div class="ribbon-group" aria-hidden="true">
-        @for (url of imageUrls(); track 'second-' + $index) {
-          <img [src]="url" alt="Immich Ribbon Photo Copy" />
+        @for (url of imageUrls(); track $index) {
+          <img [src]="url" alt="Immich Photo" />
         }
       </div>
     </div>
   </div>
 }
-

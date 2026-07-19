@@ -80,7 +80,7 @@ describe('PhotoGalleryComponent', () => {
 
     const displayedImages = compiled.querySelectorAll('.ribbon-group img');
     // 2 mock assets duplicated across 2 ribbon groups = 4 rendered elements total
-    expect(displayedImages).toHaveLength(4);
+    expect(displayedImages).toHaveLength(2);
     expect(displayedImages[0].getAttribute('src')).toBe(
       'blob:mock-url/asset-1',
     );
