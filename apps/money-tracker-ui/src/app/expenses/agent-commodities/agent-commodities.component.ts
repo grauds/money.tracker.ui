@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, of, switchMap, tap } from 'rxjs';
 
 import { AgentCommodities, InfoAbout, MoneyType, Page } from '@clematis-shared/model';
 import {
@@ -36,7 +36,7 @@ export const MY_FORMATS = {
   standalone: false,
 })
 export class AgentCommoditiesComponent implements OnInit {
-  chart: any;
+  chart: any = {};
 
   statsLoading = false;
 
@@ -50,64 +50,68 @@ export class AgentCommoditiesComponent implements OnInit {
 
   showGroupsEvent = new BehaviorSubject<boolean>(true);
 
-  checkSubscription = this.showGroupsEvent.asObservable();
-
   infoAbout: InfoAbout | undefined;
+
+  private startDate$ = new BehaviorSubject<moment.Moment>(
+    moment().add(-6, 'M'),
+  );
+  private endDate$ = new BehaviorSubject<moment.Moment>(moment().add(1, 'M'));
+  private showGroups$ = new BehaviorSubject<boolean>(true);
 
   constructor(
     protected moneyTypeService: MoneyTypeService,
     private readonly expenseItemsService: ExpenseItemsService,
     private readonly statsService: StatsService,
     private readonly title: Title,
-  ) {
-    this.checkSubscription.subscribe(() => {
-      this.loading = true;
-      this.createChart(this.moneyTypeService.getSelectedMoneyType()).subscribe(
-        (chart) => {
-          this.chart = chart;
-          this.loading = false;
-        },
-      );
-    });
-  }
-
-  onFilterEvent(data: boolean) {
-    this.showGroupsEvent.next(data);
-  }
+  ) {}
 
   ngOnInit(): void {
     this.title.setTitle('Users Commodities');
+    this.loadStats();
+    this.listenToFilterChanges();
+  }
+
+  private loadStats() {
     this.statsLoading = true;
-    this.statsService
-      .getInfoAbout()
-      .subscribe((infoAbout) => {
-        this.infoAbout = infoAbout;
-        this.statsLoading = false;
+    this.statsService.getInfoAbout().subscribe((infoAbout) => {
+      this.infoAbout = infoAbout;
+      this.statsLoading = false;
+    });
+  }
+
+  private listenToFilterChanges() {
+    // The method combineLatest waits for all filters and triggers
+    // one request when any changes
+    combineLatest([this.startDate$, this.endDate$, this.showGroups$])
+      .pipe(
+        tap(() => (this.loading = true)),
+        switchMap(([start, end, showGroups]) => {
+          // Store showGroups locally if your chart logic relies on `this.showGroups`
+          this.showGroups = showGroups;
+
+          return this.createChart(
+            this.moneyTypeService.getSelectedMoneyType(),
+            start,
+            end,
+          );
+        }),
+      )
+      .subscribe((chart) => {
+        this.chart = chart;
+        this.loading = false;
       });
-    this.loadData();
   }
 
   updateStartDate(normalizedMonthAndYear: moment.Moment) {
-    this.startDate.month(normalizedMonthAndYear.month());
-    this.startDate.year(normalizedMonthAndYear.year());
-    this.loadData();
+    this.startDate$.next(normalizedMonthAndYear);
   }
 
   updateEndDate(normalizedMonthAndYear: moment.Moment) {
-    this.endDate.month(normalizedMonthAndYear.month());
-    this.endDate.year(normalizedMonthAndYear.year());
-    this.loadData();
+    this.endDate$.next(normalizedMonthAndYear);
   }
 
-  loadData() {
-    this.loading = true;
-
-    this.createChart(this.moneyTypeService.getSelectedMoneyType()).subscribe(
-      (chart) => {
-        this.chart = chart;
-        this.loading = false;
-      },
-    );
+  onFilterEvent(data: boolean) {
+    this.showGroups$.next(data);
   }
 
   getStartDate() {
@@ -126,7 +130,11 @@ export class AgentCommoditiesComponent implements OnInit {
     }
   }
 
-  private createChart(currency: MoneyType): Observable<any> {
+  private createChart(
+    currency: MoneyType,
+    start: moment.Moment,
+    end: moment.Moment,
+  ): Observable<any> {
     const chart = {};
 
     let ticks: string[] = [];
@@ -137,10 +145,10 @@ export class AgentCommoditiesComponent implements OnInit {
           switchMap(() => {
             return this.expenseItemsService.getAgentExpencesInCurrency(
               currency,
-              this.startDate.month(),
-              this.startDate.year(),
-              this.endDate.month(),
-              this.endDate.year(),
+              start.month(),
+              start.year(),
+              end.month(),
+              end.year(),
             );
           }),
           switchMap((response: Page<AgentCommodities>) => {
@@ -155,6 +163,7 @@ export class AgentCommoditiesComponent implements OnInit {
                   (this.showGroups ? ': ' + month.commodityGroup : '');
                 let values: AgentCommodities[] = [];
                 if (series.get(key)) {
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                   values = series.get(key)!;
                 }
                 if (this.showGroups) {
