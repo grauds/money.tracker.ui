@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { BehaviorSubject, combineLatest, Observable, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 import { AgentCommodities, InfoAbout, MoneyType, Page } from '@clematis-shared/model';
 import {
@@ -35,7 +35,7 @@ export const MY_FORMATS = {
   styleUrl: './agent-commodities.component.sass',
   standalone: false,
 })
-export class AgentCommoditiesComponent implements OnInit {
+export class AgentCommoditiesComponent implements OnInit, OnDestroy {
   chart: any = {};
 
   statsLoading = false;
@@ -57,6 +57,8 @@ export class AgentCommoditiesComponent implements OnInit {
   );
   private endDate$ = new BehaviorSubject<moment.Moment>(moment().add(1, 'M'));
   private showGroups$ = new BehaviorSubject<boolean>(true);
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     protected moneyTypeService: MoneyTypeService,
@@ -95,6 +97,7 @@ export class AgentCommoditiesComponent implements OnInit {
             end,
           );
         }),
+        takeUntil(this.destroy$)
       )
       .subscribe((chart) => {
         this.chart = chart;
@@ -128,6 +131,11 @@ export class AgentCommoditiesComponent implements OnInit {
     } else {
       return 'No date';
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private createChart(
