@@ -29,24 +29,13 @@ export class CookieService {
     const userSpecificKey = `${this.getUserIdPrefix()}${key}`;
     const serializedData = encodeURIComponent(JSON.stringify(value));
 
-    // Capped at 400 days to comply with modern browser lifetime policies
-    const maxAgeSeconds = 400 * 24 * 60 * 60;
-
-    // Check if the environment is running over secure HTTPS protocols
-    const isSecureEnvironment = window.location.protocol === 'https:';
-
-    // Conditionally attach the Secure directive to support local HTTP debugging
-    let cookieString = `${userSpecificKey}=${serializedData}; path=/; max-age=${maxAgeSeconds}; SameSite=Strict`;
-
-    if (isSecureEnvironment) {
-      cookieString += '; Secure';
-    }
-
     console.log(
-      'EntityList Cookie Persistence: Writing state configuration payload:',
-      cookieString,
+      'EntityList LocalStorage Persistence: Writing state configuration payload:',
+      userSpecificKey,
     );
-    document.cookie = cookieString;
+
+    // Write to client-side localStorage instead of cookies
+    localStorage.setItem(userSpecificKey, serializedData);
   }
 
   /**
@@ -54,11 +43,11 @@ export class CookieService {
    */
   public getState<T>(key: string): T | null {
     const userSpecificKey = `${this.getUserIdPrefix()}${key}`;
-    const match = document.cookie.match(
-      new RegExp('(^| )' + userSpecificKey + '=([^;]+)'),
-    );
 
-    if (!match) {
+    // Retrieve value directly from localStorage
+    const storedValue = localStorage.getItem(userSpecificKey);
+
+    if (!storedValue) {
       console.log('No match found', userSpecificKey);
       return null;
     }
@@ -66,10 +55,10 @@ export class CookieService {
     console.log('Match found', userSpecificKey);
 
     try {
-      return JSON.parse(decodeURIComponent(match[2])) as T;
+      return JSON.parse(decodeURIComponent(storedValue)) as T;
     } catch (e) {
       console.error(
-        `Failed parsing user-isolated cookie state for key: ${key}`,
+        `Failed parsing user-isolated client state for key: ${key}`,
         e,
       );
       return null;
