@@ -147,8 +147,23 @@ export class EntityListPersistenceService {
         target,
       );
 
+      const queryParams = {
+        ...(extras.queryParams ?? {}),
+      } as Record<string, string | number | null>;
+
+      Object.keys(currentParamsSnapshot).forEach((key) => {
+        if (!Utils.notPaginationParams(key)) {
+          return;
+        }
+
+        if (!(key in queryParams)) {
+          queryParams[key] = null;
+        }
+      });
+
       const routerConfig: NavigationExtras = {
         ...extras,
+        queryParams,
         queryParamsHandling: 'merge',
       };
 

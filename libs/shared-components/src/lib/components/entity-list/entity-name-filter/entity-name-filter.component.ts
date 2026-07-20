@@ -15,6 +15,8 @@ export class EntityNameFilterComponent<T extends Entity>
 
   @Input() entityList!: EntityListComponent<T>;
 
+  @Input() key = 'name';
+
   name = new FormControl<string>(
     { value: '', disabled: false }, { nonNullable: true }
   );
@@ -23,10 +25,10 @@ export class EntityNameFilterComponent<T extends Entity>
   private loadingSubscription?: Subscription;
 
   ngOnInit(): void {
-    this.name.setValue(this.entityList.gridState.filter.get('name') ?? '');
+    this.name.setValue(this.entityList.gridState.filter.get(this.key) ?? '');
 
     this.filterSubscription = this.entityList.filter$.subscribe((filter) => {
-      this.name.setValue(filter.get('name') ?? '', { emitEvent: false });
+      this.name.setValue(filter.get(this.key) ?? '', { emitEvent: false });
     });
 
     this.loadingSubscription = this.entityList.loading$.subscribe((loading) => {
@@ -43,9 +45,9 @@ export class EntityNameFilterComponent<T extends Entity>
     const value = element.value.trim();
 
     if (value) {
-      this.entityList.setFilter('name', value);
+      this.entityList.setFilter(this.key, value);
     } else {
-      this.entityList.removeFilter('name');
+      this.entityList.removeFilter(this.key);
     }
   }
 

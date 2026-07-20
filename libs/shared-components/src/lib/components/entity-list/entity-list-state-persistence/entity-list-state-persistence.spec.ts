@@ -227,6 +227,45 @@ describe('EntityListPersistenceService', () => {
       buildParamsSpy.mockRestore();
     });
 
+    it('should remove stale filter params from the URL when the filter set is cleared', async () => {
+      service.configure({
+        cookieKey: 'test',
+        updateRouterState: true,
+        queryParamsMode: 'merge',
+      });
+
+      mockRoute.snapshot.queryParams = {
+        page: '1',
+        size: '10',
+        status: 'active',
+      };
+
+      const buildParamsSpy = jest
+        .spyOn(UrlStateAdapter, 'buildRouteParameters')
+        .mockReturnValue({
+          queryParams: {
+            page: 1,
+            size: 10,
+          },
+        } as any);
+
+      await service.saveState(1, 10, null, new Map());
+
+      expect(mockRouter.navigate).toHaveBeenCalledWith(
+        [],
+        expect.objectContaining({
+          queryParams: {
+            page: 1,
+            size: 10,
+            status: null,
+          },
+          queryParamsHandling: 'merge',
+        }),
+      );
+
+      buildParamsSpy.mockRestore();
+    });
+
     it('should cleanly push and commit data mutations to cookie instance if updateRouterState is false', async () => {
       service.configure({
         cookieKey: 'test',

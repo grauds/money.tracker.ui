@@ -114,16 +114,17 @@ export class Utils {
       'sort',
     ]);
 
-    // Safely extract dynamic filter keys
+    // Safely extract dynamic filter keys using the same rule as UrlStateAdapter:
+    // every query param except pagination/sort fields is considered a filter.
     const filterKeys = new Set<string>();
     Object.keys(current).forEach((k) => {
-      if (k.startsWith('filter_')) {
+      if (this.notPaginationParams(k)) {
         filterKeys.add(k);
       }
     });
 
     safeFilter.forEach((_, k) => {
-      if (k.startsWith('filter_')) {
+      if (this.notPaginationParams(k)) {
         filterKeys.add(k);
       }
     });
@@ -136,6 +137,10 @@ export class Utils {
     );
 
     return { target, isPaginationEqual, isFiltersEqual };
+  }
+
+  static notPaginationParams(k: string) {
+    return k !== 'page' && k !== 'size' && k !== 'sort';
   }
 
   static areParamsEqual(
