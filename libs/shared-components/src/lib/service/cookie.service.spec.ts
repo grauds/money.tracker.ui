@@ -1,42 +1,52 @@
 import { TestBed } from '@angular/core/testing';
-import { CookieService } from "./cookie.service";
+import { CookieService } from './cookie.service';
 import Keycloak from 'keycloak-js';
 
 describe('CookieService', () => {
   let service: CookieService;
   let mockKeycloakService: { idTokenParsed: { sub: string } | undefined };
+  let localStorageStore: Record<string, string>;
 
   beforeEach(() => {
     // Exact structural representation of the keycloak-js root object instance
     mockKeycloakService = {
-      idTokenParsed: { sub: 'user_12345_abc' }
+      idTokenParsed: { sub: 'user_12345_abc' },
     };
 
     TestBed.configureTestingModule({
       providers: [
         CookieService,
-        { provide: Keycloak, useValue: mockKeycloakService }
-      ]
+        { provide: Keycloak, useValue: mockKeycloakService },
+      ],
     });
 
     service = TestBed.inject(CookieService);
 
-    // Mock document cookie management tracking for isolated JSDOM environments
-    let cookieStore = '';
-    jest.spyOn(document, 'cookie', 'set')
-      .mockImplementation((val) => {
-      cookieStore = val;
+    // Mock localStorage tracking for isolated JSDOM testing environments
+    localStorageStore = {};
+
+    jest.spyOn(Storage.prototype, 'setItem').mockImplementation((key, val) => {
+      localStorageStore[key] = val;
     });
-    jest.spyOn(document, 'cookie', 'get')
-      .mockImplementation(() => cookieStore);
+
+    jest.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => {
+      return localStorageStore[key] || null;
+    });
   });
 
-  it('should isolate cookie keys using active Keycloak sub identifier profile values', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it('should isolate storage keys using active Keycloak sub identifier profile values', () => {
     const samplePayload = { page: 1 };
     service.setState('dashboard', samplePayload);
 
-    // Verify key cloak token prefix is merged perfectly into key string output
-    expect(document.cookie).toContain('usr_user_12345_abc_dashboard=');
+    // Verify keycloak token prefix is merged perfectly into storage keys
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      'usr_user_12345_abc_dashboard',
+      expect.any(String),
+    );
 
     const restored = service.getState('dashboard');
     expect(restored).toEqual(samplePayload);
@@ -47,6 +57,10 @@ describe('CookieService', () => {
     mockKeycloakService.idTokenParsed = undefined;
 
     service.setState('dashboard', { page: 0 });
-    expect(document.cookie).toContain('usr_anonymous_dashboard=');
+
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      'usr_anonymous_dashboard',
+      expect.any(String),
+    );
   });
 });
