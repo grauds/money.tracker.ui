@@ -125,6 +125,5 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
     console.log(
       'ExpensesListComponent: Destroy hook triggered. Unsubscribing page parameters stream.',
     );
-    //this.pageSubscription?.unsubscribe();
   }
 }
