@@ -35,8 +35,14 @@
         <!-- Section: Cash Flow -->
         @if (!isCollapsed) {
           <div class="menu-divider">Cash Flow</div>
+        } @else {
+          <div class="menu-divider">------</div>
         }
 
+        <a mat-list-item routerLinkActive="active-link" routerLink="/balance" matTooltip="Balance Monthly" [matTooltipDisabled]="!isCollapsed">
+          <mat-icon fontIcon="balance"></mat-icon>
+          @if (!isCollapsed) { <span class="menu-text">Balance Monthly</span> }
+        </a>
         <a mat-list-item routerLinkActive="active-link" routerLink="/income" matTooltip="Income" [matTooltipDisabled]="!isCollapsed">
           <mat-icon fontIcon="trending_up"></mat-icon>
           @if (!isCollapsed) { <span class="menu-text">Income</span> }
@@ -45,17 +51,20 @@
           <mat-icon fontIcon="trending_down"></mat-icon>
           @if (!isCollapsed) { <span class="menu-text">Expenses</span> }
         </a>
+
+        @if (!isCollapsed) {
+          <div class="menu-divider">Reports</div>
+        } @else {
+          <div class="menu-divider">------</div>
+        }
+
         <a mat-list-item routerLinkActive="active-link" routerLink="/lastCommodities" matTooltip="History" [matTooltipDisabled]="!isCollapsed">
           <mat-icon fontIcon="history"></mat-icon>
           @if (!isCollapsed) { <span class="menu-text">History</span> }
         </a>
-        <a mat-list-item routerLinkActive="active-link" routerLink="/balance" matTooltip="Balance Monthly" [matTooltipDisabled]="!isCollapsed">
-          <mat-icon fontIcon="balance"></mat-icon>
-          @if (!isCollapsed) { <span class="menu-text">Balance Monthly</span> }
-        </a>
-        <a mat-list-item routerLinkActive="active-link" routerLink="/commoditiesAgents" matTooltip="Users' Commodities" [matTooltipDisabled]="!isCollapsed">
+        <a mat-list-item routerLinkActive="active-link" routerLink="/commoditiesAgents" matTooltip="Expenses Groups Trends" [matTooltipDisabled]="!isCollapsed">
           <mat-icon fontIcon="local_grocery_store"></mat-icon>
-          @if (!isCollapsed) { <span class="menu-text">Users' Commodities</span> }
+          @if (!isCollapsed) { <span class="menu-text">Expenses Groups Trends</span> }
         </a>
         <a mat-list-item routerLinkActive="active-link" routerLink="/exchange" matTooltip="Currency Exchange" [matTooltipDisabled]="!isCollapsed">
           <mat-icon fontIcon="currency_exchange"></mat-icon>
@@ -69,6 +78,8 @@
         <!-- Section: Catalogs -->
         @if (!isCollapsed) {
           <div class="menu-divider">Catalogs</div>
+        } @else {
+          <div class="menu-divider">------</div>
         }
 
         <a mat-list-item routerLinkActive="active-link" routerLink="/accounts" [queryParams]="{ sort: 'name,ASC' }" [routerLinkActiveOptions]="{ matrixParams: 'ignored', queryParams: 'ignored', paths: 'exact', fragment: 'ignored' }" matTooltip="Accounts" [matTooltipDisabled]="!isCollapsed">

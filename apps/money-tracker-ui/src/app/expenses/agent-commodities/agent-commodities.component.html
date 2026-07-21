@@ -18,7 +18,20 @@
 </h4>
 
 <div>
-  <div>
+
+  <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
+    <div>
+      <h3 style="margin: 20px 0 0 20px; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+        Expenses Groups Trends
+      </h3>
+      <small style="margin: 0 0 0 20px; color: #6c757d; font-size: 0.85rem;">
+        Track how the expenses categories are distributed over months.
+      </small>
+    </div>
+  </div>
+
+  <div echarts [options]="chart" [loading]="loading" class="chart"></div>
+  <div class="date-picker">
 
     <app-date-range-selector
       [loading]="loading"
@@ -35,6 +48,4 @@
     </mat-checkbox>
 
   </div>
-
-  <div echarts [options]="chart" [loading]="loading" class="chart"></div>
 </div>

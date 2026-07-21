@@ -288,7 +288,7 @@ export class DayComponent implements OnInit, OnDestroy {
 
   getSort(): Sort {
     return {
-      transferdate: 'DESC',
+      'commodity.name': 'ASC',
     };
   }
 

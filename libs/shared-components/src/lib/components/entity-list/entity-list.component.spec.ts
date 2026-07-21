@@ -154,21 +154,27 @@ describe('EntityListComponent', () => {
   });
 
   it('should set and get filter', () => {
+    component.gridState.n = 4;
     component.setFilter('testId', 'testValue');
     expect(component.gridState.filter.get('testId')).toBe('testValue');
+    expect(component.gridState.n).toBe(0);
   });
 
   it('should remove filter', () => {
+    component.gridState.n = 4;
     component.setFilter('testId', 'testValue');
     component.removeFilter('testId');
     expect(component.gridState.filter.has('testId')).toBe(false);
+    expect(component.gridState.n).toBe(0);
   });
 
   it('should clear all filters', () => {
+    component.gridState.n = 4;
     component.setFilter('testId1', 'testValue1');
     component.setFilter('testId2', 'testValue2');
     component.clearFilter();
     expect(component.gridState.filter.size).toBe(0);
+    expect(component.gridState.n).toBe(0);
   });
 
   it('should broadcast results correctly', () => {

@@ -320,6 +320,7 @@ export class EntityListComponent<T extends Entity>
   }
 
   setFilter(idOrFilters: string | Record<string, string>, value?: string) {
+    this.gridState.n = 0;
     let updatedFilter = this.gridState.filter;
 
     // Handle an object with multiple filters { filter1: v1, filter2: v2 }
@@ -362,6 +363,7 @@ export class EntityListComponent<T extends Entity>
 
   removeFilter(id?: string) {
     if (id && this.gridState.filter.delete(id)) {
+      this.gridState.n = 0;
       console.log(
         `EntityList: Filter item with mapping ID "${id}" successfully removed from configuration.`,
       );
@@ -375,6 +377,7 @@ export class EntityListComponent<T extends Entity>
   }
 
   clearFilter() {
+    this.gridState.n = 0;
     console.log(
       'EntityList: Complete removal action triggered for all dynamic filters.',
     );

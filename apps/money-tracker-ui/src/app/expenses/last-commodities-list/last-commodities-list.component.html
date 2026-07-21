@@ -1,3 +1,7 @@
+<ng-template #filter>
+  <app-entity-name-filter [entityList]="entityList" [key]="'commodity.name'"></app-entity-name-filter>
+</ng-template>
+
 <ng-template #lastExpensesTable let-entities="entities">
   <table mat-table [dataSource]="entities">
     <ng-container matColumnDef="daysAgo">
@@ -10,7 +14,7 @@
     <ng-container matColumnDef="transferdate">
       <th mat-header-cell *matHeaderCellDef>Date</th>
       <td mat-cell *matCellDef="let element">
-        {{ element.transactionDate | date : 'fullDate' }}
+        <app-day-link [date]="element.transactionDate"></app-day-link>
       </td>
     </ng-container>
 
@@ -63,15 +67,30 @@
                 {{ element.organization.name }}
               </div>
             }
-          </td>
-        </ng-container>
+        </td>
+      </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      </table>
-    </ng-template>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</ng-template>
 
-    <app-entity-list
-      [tableTemplate]="lastExpensesTable"
-    >
-    </app-entity-list>
+<div>
+  <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
+    <div>
+      <h3 style="margin: 20px 0 0 20px; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+        History For A Commodity
+      </h3>
+      <small style="margin: 0 0 0 20px; color: #6c757d; font-size: 0.85rem;">
+        When and how many days ago the commodity was purchased the last time?
+      </small>
+    </div>
+  </div>
+
+  <app-entity-list
+    #entityList
+    [filterTemplate]="filter"
+    [tableTemplate]="lastExpensesTable"
+  >
+  </app-entity-list>
+</div>

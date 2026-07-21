@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AccountBalance, MoneyType } from '@clematis-shared/model';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import {
-  PagedResourceCollection,
   ResourceCollection,
 } from '@lagoshny/ngx-hateoas-client';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import {
   AccountsService,
@@ -43,51 +41,16 @@ export class AccountsDashboardComponent implements OnInit, OnDestroy {
   constructor(
     private readonly accountsService: AccountsService,
     private readonly moneyTypeService: MoneyTypeService,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
     private readonly title: Title,
   ) {
     this.currency = this.moneyTypeService.getSelectedMoneyType();
-    this.moneyTypeService.selectedMoneyType$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.currency = this.moneyTypeService.getSelectedMoneyType();
-        this.loadData();
-      });
+    this.currencies = this.moneyTypeService.getLoadedMoneyTypes();
   }
 
   ngOnInit(): void {
     this.title.setTitle('Accounts');
-  }
-
-  updateRoute() {
-    return this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        currency: this.currency.code,
-      },
-      queryParamsHandling: 'merge',
-      skipLocationChange: false,
-    });
-  }
-
-  loadData() {
-    this.moneyTypeService
-      .getPage({
-        pageParams: {
-          page: 0,
-          size: 200,
-        },
-      })
-      .subscribe({
-        next: (response: PagedResourceCollection<MoneyType>) => {
-          this.currencies = response.resources;
-          this.getAccountsInCurrency();
-        },
-        error: () => {
-          this.loading = false;
-        },
-      });
+    this.getAccountsTotalInCurrency();
+    this.getAccountsInCurrency();
   }
 
   private getAccountsTotalInCurrency() {
@@ -133,7 +96,6 @@ export class AccountsDashboardComponent implements OnInit, OnDestroy {
     this.accountsService.getAccountsBalanceInCurrency(this.currency).subscribe({
       next: (response: ResourceCollection<AccountBalance>) => {
         this.setAccounts(response.resources);
-        this.getAccountsTotalInCurrency();
         this.getAccountsTotalWeekAgoInCurrency();
       },
       error: () => {

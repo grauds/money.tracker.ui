@@ -23,7 +23,7 @@ export class LastCommoditiesListComponent implements OnInit {
   constructor(private title: Title) {}
 
   ngOnInit(): void {
-    this.title.setTitle('Last Commodities');
+    this.title.setTitle('History');
   }
 
   getDaysAgo(daysAgo: number) {

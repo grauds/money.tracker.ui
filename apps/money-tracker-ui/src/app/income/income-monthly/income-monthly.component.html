@@ -1,5 +1,16 @@
 <div>
-  <div>
+  <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
+    <div>
+      <h3 style="margin: 20px 0 0 20px; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+        Income Trends And Profile
+      </h3>
+      <small style="margin: 0 0 0 20px; color: #6c757d; font-size: 0.85rem;">Historical data on income sources</small>
+    </div>
+  </div>
+
+  <div echarts [options]="chart" class="income-chart" [loading]="loading"></div>
+
+  <div class="date-picker">
     <app-date-range-selector
       [loading]="loading"
       (startDate$)="updateStartDate($event)"
@@ -7,6 +18,4 @@
     ></app-date-range-selector>
 
   </div>
-
-  <div echarts [options]="chart" class="income-chart" [loading]="loading"></div>
 </div>

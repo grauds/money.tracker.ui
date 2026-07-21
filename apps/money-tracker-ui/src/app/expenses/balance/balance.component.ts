@@ -211,10 +211,17 @@ export class BalanceComponent implements OnInit, OnDestroy {
     this.startDate = waterfallX[0];
     this.endDate = waterfallX[waterfallX.length - 1];
     this.loading = false;
+    const title: string =
+      'From ' +
+      this.startDate +
+      ' to ' +
+      this.endDate +
+      ', in ' +
+      moneyType.code;
 
     return {
       title: {
-        text: 'Monthly Balance in ' + moneyType.code,
+        text: title,
       },
       tooltip: {
         trigger: 'axis',
@@ -235,8 +242,8 @@ export class BalanceComponent implements OnInit, OnDestroy {
         },
       },
       legend: {
-        data: ['Total', 'Monthly Balance'],
-        bottom: 0,
+        data: ['Savings', 'Monthly Budget Outcome'],
+        bottom: 10,
       },
       grid: {
         left: '3%',

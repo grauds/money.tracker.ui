@@ -68,7 +68,7 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.title.setTitle('Users Commodities');
+    this.title.setTitle('Expenses Groups Trends');
     this.loadStats();
     this.listenToFilterChanges();
   }
