@@ -179,23 +179,37 @@
     }
 
     <!-- WordPress Article Area (Spans full top content width) -->
-    @if (wpArticle) {
+    @if (wpArticle && wpArticle.length > 0) {
       <section class="wordpress-section">
-        <article class="wp-article">
-          <div class="wp-header-block">
-            <h2 class="wp-title">{{ wpArticle.title }}</h2>
-            @if (wpArticle.subtitle) {
-              <p class="wp-subtitle">{{ wpArticle.subtitle }}</p>
-            }
-          </div>
+        @for (article of wpArticle; track article.id) {
+          <article class="wp-article">
 
-          <div class="wp-content-layout">
-            <!-- Main text body from variable -->
-            <div class="wp-body" [innerHTML]="wpArticle.content"></div>
+            <!-- Post Header Data Wrapper Block -->
+            <div class="wp-header-block">
+              <h2 class="wp-title">{{ article.title.rendered }}</h2>
+              <time class="wp-date">{{ article.date | date:'longDate' }}</time>
+            </div>
 
-            <!-- Secondary body content dummy image -->
-          </div>
-        </article>
+            <div class="wp-content-layout">
+              <!-- Safely check and extract the featured media array from embedded data -->
+              @if (article._embedded?.['wp:featuredmedia']?.length; as mediaLength) {
+                @if (article._embedded?.['wp:featuredmedia']?.[0]; as mediaItem) {
+                  <div class="wp-featured-media">
+                    <img
+                      [src]="mediaItem.source_url"
+                      [alt]="mediaItem.alt_text || article.title.rendered"
+                      class="wp-responsive-banner"
+                    />
+                  </div>
+                }
+              }
+
+              <!-- Main structural text body safely unbound -->
+              <div class="wp-body" [innerHTML]="article.content.safeRendered"></div>
+            </div>
+
+          </article>
+        }
       </section>
     }
 

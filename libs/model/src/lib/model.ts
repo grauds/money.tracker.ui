@@ -23,6 +23,7 @@ export { OrganizationGroup } from '../model/organization-group';
 export { UnitType } from '../model/unit-type';
 
 export { WeatherObservation } from '../model/weather-observation';
+export type { WordPressArticle } from '../model/wordpress-article';
 
 export type { MoneyExchangeReport } from '../dto/money-exchange-report';
 

@@ -51,6 +51,7 @@ export { DayService } from './lib/service/day.service';
 export { StatsService } from './lib/service/stats.service';
 export { StorageService } from './lib/service/storage.service';
 export { WeatherService } from './lib/service/weather.service';
+export { WordpressService } from './lib/service/wordpress.service';
 
 export type { SearchPostProcessingHandler } from './lib/service/search.service';
 

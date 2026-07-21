@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EnvironmentService } from './environment.service';
+import { WordPressArticle } from '@clematis-shared/model';
 
 @Injectable()
 export class WordpressService {
@@ -14,7 +15,7 @@ export class WordpressService {
    * Fetches articles published on a specific day.
    * @param date ISO string or Date object (e.g., '2026-07-21' or new Date())
    */
-  getArticlesByDay(date: string | Date): Observable<any[]> {
+  getArticlesByDay(date: string | Date): Observable<WordPressArticle[]> {
     // Create fresh date instances to prevent reference mutation issues
     const baseDateStart =
       typeof date === 'string' ? new Date(date) : new Date(date.getTime());
@@ -35,8 +36,9 @@ export class WordpressService {
       .set('before', endOfDay)
       .set('_embed', 'true'); // Includes featured images and author data
 
-    // Fixed path: Changed from '/' to '/wp/v2/posts'
-    return this.http.get<any[]>(this.getUrl('/wp/v2/posts'), { params });
+    return this.http.get<WordPressArticle[]>(this.getUrl('/wp/v2/posts'), {
+      params,
+    });
   }
 
   getUrl(path: string): string {

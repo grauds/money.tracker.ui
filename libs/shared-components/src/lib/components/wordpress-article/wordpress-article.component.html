@@ -1,0 +1,9 @@
+@if (article) {
+  <article class="article-container">
+    <header>
+      <h1 class="article-title">{{ article.title.rendered }}</h1>
+      <time class="article-date">{{ article.date | date:'longDate' }}</time>
+    </header>
+    <section class="article-content" [innerHTML]="safeContent"></section>
+  </article>
+}

@@ -2,12 +2,16 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   catchError,
-  defaultIfEmpty, distinctUntilChanged,
+  defaultIfEmpty,
+  distinctUntilChanged,
   finalize,
-  forkJoin, map,
+  forkJoin,
+  map,
   Observable,
-  of, Subject,
-  switchMap, takeUntil,
+  of,
+  Subject,
+  switchMap,
+  takeUntil,
   tap,
   throwError
 } from 'rxjs';
@@ -16,7 +20,8 @@ import {
   ExpenseItem,
   MoneyType,
   Utils,
-  WeatherObservation
+  WeatherObservation,
+  WordPressArticle
 } from '@clematis-shared/model';
 import {
   DayService,
@@ -24,9 +29,10 @@ import {
   ExpenseItemsService,
   IncomeItemsService,
   MoneyTypeService,
-  WeatherService
+  WeatherService,
+  WordpressService
 } from '@clematis-shared/shared-components';
-import { DomSanitizer, Title } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl, Title } from '@angular/platform-browser';
 import { ResourceCollection, Sort } from '@lagoshny/ngx-hateoas-client';
 
 import * as _moment from 'moment';
@@ -46,11 +52,9 @@ export class DayComponent implements OnInit, OnDestroy {
   loading = false;
 
   date: string = Utils.formatDate(new Date());
-
   currency: MoneyType;
 
   incomeSum = 0;
-
   displayedIncomeColumns: string[] = [
     'commodity.name',
     'price',
@@ -58,7 +62,6 @@ export class DayComponent implements OnInit, OnDestroy {
   ];
 
   expensesSum = 0;
-
   displayedExpenseColumns: string[] = [
     'commodity.name',
     'price',
@@ -67,12 +70,11 @@ export class DayComponent implements OnInit, OnDestroy {
   ];
 
   weatherData: WeatherObservation | null = null;
+  wpArticle: WordPressArticle[] = [];
 
-  private currentBlobUrl: string | null = null;
+  currentBlobUrl: string | null = null;
   loadedBackgroundImage: string | null = null;
-  imageUrl: any = null;
-
-  wpArticle: any = null;
+  imageUrl: SafeUrl | null = null;
 
   protected destroy$ = new Subject<void>();
 
@@ -83,6 +85,7 @@ export class DayComponent implements OnInit, OnDestroy {
     protected incomeService: IncomeItemsService,
     protected expensesService: ExpenseItemsService,
     private weatherService: WeatherService,
+    private wordpressService: WordpressService,
     private dayService: DayService,
     private sanitizer: DomSanitizer,
     private title: Title,
@@ -173,14 +176,39 @@ export class DayComponent implements OnInit, OnDestroy {
         ),
       );
 
+    const wpArticle$: Observable<WordPressArticle[]> = this.wordpressService
+      .getArticlesByDay(this.date)
+      .pipe(
+        catchError(() => {
+          return of([]);
+        }),
+      );
+
     return forkJoin({
       weather: weather$,
       expensesSum: expensesSum$,
       incomeSum: incomeSum$,
+      wpArticle: wpArticle$,
     }).pipe(
       tap((result) => {
         this.expensesSum = result.expensesSum;
         this.incomeSum = result.incomeSum;
+        this.wpArticle = (result.wpArticle || []).map(
+          (article: WordPressArticle) => {
+            return {
+              ...article,
+              content: {
+                ...article.content,
+                // Pass the HTML string to the sanitizer
+                // to allow inline media grids to render
+                safeRendered: this.sanitizer.bypassSecurityTrustHtml(
+                  article.content.rendered,
+                ),
+              },
+            };
+          },
+        );
+
         const rawResult = result.weather as any;
         if (rawResult?.['_embedded']?.['observations'][0]) {
           this.weatherData = new WeatherObservation(
@@ -216,13 +244,13 @@ export class DayComponent implements OnInit, OnDestroy {
       this.weatherService.getImage(dayString).subscribe({
         next: (blob: Blob) => {
           try {
-            // 1. Catch empty or non-existent responses
+            // Catch empty or non-existent responses
             if (!blob || blob.size === 0) {
               handleFallback('Empty or missing Blob payload');
               return;
             }
 
-            // 2. Catch invalid image formats (non-image blobs)
+            // Catch invalid image formats (non-image blobs)
             if (!blob.type.startsWith('image/')) {
               handleFallback('Invalid file type', blob.type);
               return;
@@ -233,7 +261,7 @@ export class DayComponent implements OnInit, OnDestroy {
               URL.revokeObjectURL(this.currentBlobUrl);
             }
 
-            // 3. Catch browser API failures
+            // Catch browser API failures
             this.currentBlobUrl = URL.createObjectURL(blob);
             this.loadedBackgroundImage = `url('${this.currentBlobUrl}')`;
             this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(

@@ -67,6 +67,8 @@ import { TelegramFeedComponent } from './components/telegram-feed/telegram-feed.
 import { MatTooltip } from "@angular/material/tooltip";
 import { EntityBalanceInfoComponent } from './components/entity/entity-balance-info/entity-balance-info.component';
 
+import { WordpressArticleComponent } from './components/wordpress-article/wordpress-article.component'
+
 @NgModule({
   imports: [
     CommonModule,
@@ -93,7 +95,7 @@ import { EntityBalanceInfoComponent } from './components/entity/entity-balance-i
     EntityThumbnailComponent,
     NgxEchartsDirective,
     TelegramFeedComponent,
-    MatTooltip
+    MatTooltip,
   ],
   exports: [
     EntityElementComponent,
@@ -111,6 +113,7 @@ import { EntityBalanceInfoComponent } from './components/entity/entity-balance-i
     EntityThumbnailComponent,
     TelegramFeedComponent,
     DayLinkComponent,
+    WordpressArticleComponent,
   ],
   declarations: [
     EntityListComponent,
@@ -129,6 +132,7 @@ import { EntityBalanceInfoComponent } from './components/entity/entity-balance-i
     EntityExpensesComponent,
     EntityIncomeComponent,
     DayLinkComponent,
+    WordpressArticleComponent,
   ],
   providers: [
     AccountsService,
