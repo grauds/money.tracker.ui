@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Sort } from '@lagoshny/ngx-hateoas-client';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { ExpenseItem } from '@clematis-shared/model';
 
@@ -31,26 +32,41 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
     'organizationname',
   ];
 
-  startDate: FormControl<Date> = new FormControl();
+  syncingDateRange = false;
 
-  endDate: FormControl<Date> = new FormControl();
+  readonly range = new FormGroup({
+    startDate: new FormControl<Date | null>(null),
+    endDate: new FormControl<Date | null>(null),
+  });
 
   constructor(
-    private readonly title: Title
+    private readonly title: Title,
+    private readonly route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
     this.title.setTitle('Expenses');
+    this.updateFilter(
+      this.parseDateFilters(
+        (this.route.snapshot.queryParams ?? {}) as Record<
+          string,
+          string | undefined
+        >,
+      ),
+    );
   }
 
   getQueryArguments(): any {
-    if (this.startDate.value || this.endDate.value) {
+    if (
+      this.range.controls.startDate.value &&
+      this.range.controls.endDate.value
+    ) {
       return {
-        ...(this.startDate?.value && {
-          startDate: moment(this.startDate.value).format('YYYY-MM-DD'),
+        ...(this.range.controls.startDate?.value && {
+          startDate: this.getStartDate(),
         }),
-        ...(this.endDate?.value && {
-          endDate: moment(this.endDate.value).format('YYYY-MM-DD'),
+        ...(this.range.controls.endDate?.value && {
+          endDate: this.getEndDate(),
         }),
       };
     }
@@ -58,7 +74,10 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
   }
 
   getQueryName(): string | null {
-    return this.startDate.value && this.endDate.value ? 'filtered' : null;
+    return this.range.controls.startDate.value &&
+      this.range.controls.endDate.value
+      ? 'filtered'
+      : null;
   }
 
   getSort(): Sort {
@@ -68,30 +87,61 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
   }
 
   updateFilter($event: Map<string, string>) {
-    if ($event.has('startDate')) {
-      const rawStart = $event.get('startDate');
-      if (rawStart) {
-        this.startDate.setValue(moment(rawStart, 'YYYY-MM-DD').toDate(), {
-          emitEvent: false,
-        });
+    this.syncingDateRange = true;
+    try {
+      if ($event.has('startDate')) {
+        const rawStart = $event.get('startDate');
+        if (rawStart) {
+          this.range.controls.startDate.setValue(
+            moment(rawStart, 'YYYY-MM-DD').toDate(),
+            {
+              emitEvent: false,
+            },
+          );
+        } else {
+          this.range.controls.startDate.setValue(null, { emitEvent: false });
+        }
       } else {
-        this.startDate.reset(undefined, { emitEvent: false });
+        this.range.controls.startDate.setValue(null, { emitEvent: false });
       }
-    }
 
-    if ($event.has('endDate')) {
-      const rawEnd = $event.get('endDate');
-      if (rawEnd) {
-        this.endDate.setValue(moment(rawEnd, 'YYYY-MM-DD').toDate(), {
-          emitEvent: false,
-        });
+      if ($event.has('endDate')) {
+        const rawEnd = $event.get('endDate');
+        if (rawEnd) {
+          this.range.controls.endDate.setValue(
+            moment(rawEnd, 'YYYY-MM-DD').toDate(),
+            {
+              emitEvent: false,
+            },
+          );
+        } else {
+          this.range.controls.endDate.setValue(null, { emitEvent: false });
+        }
       } else {
-        this.endDate.reset(undefined, { emitEvent: false });
+        this.range.controls.endDate.setValue(null, { emitEvent: false });
       }
+    } finally {
+      this.syncingDateRange = false;
     }
   }
 
+  private parseDateFilters(
+    queryParams: Record<string, string | undefined>,
+  ): Map<string, string> {
+    const result = new Map<string, string>();
+    ['startDate', 'endDate'].forEach((key) => {
+      const value = queryParams[key];
+      if (value) {
+        result.set(key, value);
+      }
+    });
+    return result;
+  }
+
   setStartDate($event: MatDatepickerInputEvent<Date>) {
+    if (this.syncingDateRange) {
+      return;
+    }
     if ($event.value) {
       this.entityList.setFilter(
         'startDate',
@@ -103,6 +153,9 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
   }
 
   setEndDate($event: MatDatepickerInputEvent<Date>) {
+    if (this.syncingDateRange) {
+      return;
+    }
     if ($event.value) {
       this.entityList.setFilter(
         'endDate',
@@ -113,12 +166,12 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
     }
   }
 
-  getStartDate() {
-    return moment(this.startDate.value);
+  getStartDate(): string {
+    return moment(this.range.controls.startDate.value).format('YYYY-MM-DD');
   }
 
-  getEndDate() {
-    return moment(this.endDate.value);
+  getEndDate(): string {
+    return moment(this.range.controls.endDate.value).format('YYYY-MM-DD');
   }
 
   ngOnDestroy(): void {
