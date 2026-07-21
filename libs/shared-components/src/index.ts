@@ -26,6 +26,7 @@ export { EntityNameFilterComponent } from './lib/components/entity-list/entity-n
 export { EntityIncomeComponent } from './lib/components/entity/entity-income/entity-income.component';
 export { EntityExpensesComponent } from './lib/components/entity/entity-expenses/entity-expenses.component';
 
+export { WordpressArticleComponent } from './lib/components/wordpress-article/wordpress-article.component';
 export { DayLinkComponent } from './lib/components/day-link/day-link.component';
 export { TelegramFeedComponent } from './lib/components/telegram-feed/telegram-feed.component';
 
