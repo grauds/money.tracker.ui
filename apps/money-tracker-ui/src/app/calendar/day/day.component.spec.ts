@@ -6,9 +6,14 @@ import { of } from 'rxjs';
 import { WeatherDashboardPanelComponent } from './weather-dashboard-panel/weather-dashboard-panel.component';
 import {
   CurrencySpacePipe,
-  DateBreadcrumbsComponent, EntityBalanceInfoComponent, EntityListComponent, ExpenseItemsService, IncomeItemsService,
+  DateBreadcrumbsComponent,
+  EntityBalanceInfoComponent,
+  EntityListComponent,
+  ExpenseItemsService,
+  IncomeItemsService,
   MoneyTypeService,
-  WeatherService
+  WeatherService,
+  WordpressService
 } from '@clematis-shared/shared-components';
 import { MatIconModule } from '@angular/material/icon';
 import { mockMoneyTypeService } from '../../../test-setup';
@@ -17,16 +22,22 @@ describe('DayComponent', () => {
   let component: DayComponent;
   let fixture: ComponentFixture<DayComponent>;
   let mockWeatherService: any;
+  let mockWordpressService: any;
 
   beforeEach(async () => {
-    // 1. Create a Jest mock service object
+    // Weather mock service
     mockWeatherService = {
       getDay: jest
         .fn()
         .mockReturnValue(of({ presentWeather: 'Clear Sky', temperature: 22 })),
     };
 
-    // 2. Build a full Jest mock for ActivatedRoute tracking variables
+    // WordPress mock service
+    mockWordpressService = {
+      getArticlesByDay: jest.fn().mockReturnValue(of([])),
+    };
+
+    // Mock for activated route
     const mockActivatedRoute = {
       paramMap: of({
         get: (key: string) => (key === 'date' ? '2026-06-23' : null),
@@ -60,6 +71,7 @@ describe('DayComponent', () => {
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: WeatherService, useValue: mockWeatherService },
         { provide: MoneyTypeService, useValue: mockMoneyTypeService },
+        { provide: WordpressService, useValue: mockWordpressService }
       ],
     }).compileComponents();
 
