@@ -7,4 +7,5 @@ export interface EnvironmentInterface {
   storageUrl: string;
   weatherUrl: string;
   immichUrl: string;
+  wordpressUrl: string;
 }

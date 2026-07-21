@@ -35,6 +35,7 @@ import { StatsService } from './service/stats.service';
 import { EntityService } from './service/entity.service';
 
 import { ImmichService } from './service/immich.service';
+import { WordpressService } from './service/wordpress.service';
 
 import { ErrorDialogService } from './error/error-dialog/error-dialog.service';
 import { GlobalErrorHandler } from './error/global-error-handler';
@@ -145,6 +146,7 @@ import { EntityBalanceInfoComponent } from './components/entity/entity-balance-i
     StatsService,
     EntityService,
     ImmichService,
+    WordpressService,
     ErrorDialogService,
     {
       provide: ErrorHandler,

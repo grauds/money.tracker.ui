@@ -35,7 +35,7 @@ export class ImmichService {
 
   /**
    * Fetch the thumbnail binary file and transform it into an Object URL
-   * @param assetId UUID of targeted asset
+   * @param assetId UUID of the targeted asset
    */
   getThumbnailUrl(assetId: string): Observable<string> {
     const headers = new HttpHeaders({ 'x-api-key': this.API_KEY });

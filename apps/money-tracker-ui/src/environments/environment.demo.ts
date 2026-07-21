@@ -9,4 +9,5 @@ export const environment: EnvironmentInterface = {
   storageUrl: '/api/storage/mt-demo',
   weatherUrl: '/weather-api',
   immichUrl: '/immich',
+  wordpressUrl: '/wordpress',
 };
