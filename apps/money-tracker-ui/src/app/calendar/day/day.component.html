@@ -202,34 +202,9 @@
     </div>
 
     <!-- WordPress Article Area (Spans full top content width) -->
-    @if (wpArticle && wpArticle.length > 0) {
-      <section class="wordpress-section">
-        @for (article of wpArticle; track article.id) {
-          <article class="wp-article">
-
-            <div class="wp-header-block">
-              <h2 class="wp-title">{{ article.title.rendered }}</h2>
-              <time class="wp-date">{{ article.date | date:'longDate' }}</time>
-            </div>
-
-            <div class="wp-content-layout">
-              <!-- Render the clean, proxied original image banner -->
-              @if (article.featuredImageUrl) {
-                <div class="wp-featured-media">
-                  <img
-                    [src]="article.featuredImageUrl"
-                    [alt]="article.title.rendered"
-                    class="wp-responsive-banner"
-                  />
-                </div>
-              }
-              <div class="wp-body" [innerHTML]="article.content.safeRendered"></div>
-            </div>
-
-          </article>
-        }
-      </section>
-    }
+    <app-wordpress-article
+      [wpArticle]="wpArticle"
+    ></app-wordpress-article>
 
     @if (expensesSum) {
       <h2 class="section-heading">Expenses</h2>

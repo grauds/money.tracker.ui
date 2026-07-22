@@ -92,6 +92,7 @@ import {
 } from './calendar/day/weather-dashboard-panel/weather-dashboard-panel.component';
 import { PhotoGalleryComponent } from "./calendar/day/photo-gallery/photo-gallery.component";
 import { CalendarDayComponent } from "./calendar/day/calendar-day/calendar-day.component";
+import { WordpressArticleComponent } from "./calendar/day/wordpress-article/wordpress-article.component";
 
 @NgModule({
   declarations: [
@@ -157,7 +158,8 @@ import { CalendarDayComponent } from "./calendar/day/calendar-day/calendar-day.c
     SharedComponentsModule,
     TelegramFeedComponent,
     PhotoGalleryComponent,
-    CalendarDayComponent
+    CalendarDayComponent,
+    WordpressArticleComponent
   ],
   providers: [CurrencyPipe],
 })

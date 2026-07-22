@@ -44,8 +44,6 @@ $glass-backdrop: blur(3px)
   overflow: hidden // Чтобы скругления углов не обрезались фоном страницы
   z-index: 0
 
-  // Удалены конфликтующие свойства: background-size, background-position, background-repeat, background-attachment
-
   @media (max-width: 768px)
     padding: 0.75rem
     margin-top: 0.5rem
@@ -92,88 +90,6 @@ $glass-backdrop: blur(3px)
 
       @media (max-width: 768px)
         font-size: 2rem
-
-  .wordpress-section
-    margin-bottom: 3rem
-    background: rgba(255, 255, 255)
-    padding: 2.5rem
-    border-radius: $border-radius-sm
-    border: 1px solid rgba(0, 0, 0, 0.03)
-
-    @media (max-width: 768px)
-      padding: 1.25rem
-
-    .wp-header-block
-      margin-bottom: 1.75rem
-
-      .wp-title
-        font-family: Oswald, serif !important
-        color: #33363b
-        line-height: 1.33333
-        font-weight: 400
-        text-transform: uppercase
-        font-size: 60px
-        margin-bottom: 15px
-        margin-top: 15px
-
-      .wp-subtitle
-        font-size: 1.05rem
-        font-style: italic
-        margin: 0
-        color: var(--mat-sys-on-surface-variant, #5c5c64)
-
-    .wp-content-layout
-      display: grid
-      grid-template-columns: 2.2fr 1fr // Expands the textual workspace width
-      gap: 3rem
-      align-items: flex-start
-
-      @media (max-width: 992px)
-        grid-template-columns: 1fr
-        gap: 2rem
-
-    .wp-body
-      font-size: 1.1rem
-      line-height: 1.55
-      color: var(--mat-sys-on-surface-variant, #3a3a40)
-      font-family: Roboto !important
-
-      p
-        margin-top: 0
-        margin-bottom: 1.5rem
-        text-align: justify
-
-        &:last-child
-          margin-bottom: 0
-
-      .wp-block-preformatted
-        box-sizing: border-box
-        white-space: pre-wrap
-        background: #eee
-        font-family: "Courier 10 Pitch", Courier, monospace
-        font-size: 0.9375rem
-        line-height: 1.6
-        margin-bottom: 1.6em
-        max-width: 100%
-        overflow: auto
-        padding: 1.6em
-
-    .wp-media-wrapper
-      display: flex
-      flex-direction: column
-      gap: 0.6rem
-
-      .wp-embedded-img
-        width: 100%
-        height: auto
-        border-radius: 8px
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06)
-        border: 1px solid rgba(255, 255, 255, 0.6)
-
-      .img-caption
-        font-size: 0.75rem
-        color: var(--mat-sys-on-surface-variant, #767680)
-        text-align: center
 
   .section-heading
     font-size: 1.4rem
