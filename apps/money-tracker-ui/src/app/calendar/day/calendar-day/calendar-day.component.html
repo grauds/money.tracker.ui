@@ -1,0 +1,20 @@
+<div style="display: flex; justify-content: flex-end; width: 100%;">
+  <div class="calendar-square-card">
+    <!-- Top header band (displays the month name) -->
+    <div class="calendar-month-banner">
+      {{ date | date : 'MMM' | uppercase }}
+    </div>
+    <!-- Main center content body (displays the numerical day number) -->
+    <div class="calendar-day-number">
+      {{ date | date : 'dd' }}
+    </div>
+    <!-- Center sub-label (displays the four-digit year number) -->
+    <div class="calendar-year-label">
+      {{ date | date : 'yyyy' }}
+    </div>
+    <!-- Bottom footer label (displays the full weekday name) -->
+    <div class="calendar-weekday-footer">
+      {{ date | date : 'EEEE' }}
+    </div>
+  </div>
+</div>

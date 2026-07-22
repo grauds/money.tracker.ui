@@ -2,6 +2,7 @@ export interface WordPressArticle {
   id: number;
   date: string;
   title: { rendered: string };
+  featuredImageUrl?: string;
   content: {
     rendered: string;
     safeRendered?: any; // Used to hold sanitized DomSanitizer data
@@ -14,6 +15,7 @@ export interface WordPressArticle {
         sizes?: {
           large?: { source_url: string };
           medium?: { source_url: string };
+          full?: { source_url: string };
         };
       };
     }>;

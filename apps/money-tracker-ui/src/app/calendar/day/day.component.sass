@@ -15,50 +15,6 @@ $glass-backdrop: blur(3px)
   padding: 8px 16px
   cursor: pointer
 
-.calendar-square-card
-  display: flex
-  flex-direction: column
-  width: 100px
-  height: 100px
-  min-width: 100px
-  background: #ffffff
-  border-radius: 12px
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08)
-  border: 1px solid rgba(0, 0, 0, 0.05)
-  overflow: hidden
-  text-align: center
-  font-family: inherit
-  align-self: center
-
-  .calendar-month-banner
-    background: #e11d48 // Vivid red accent banner color
-    color: #ffffff
-    font-size: 0.75rem
-    font-weight: 700
-    letter-spacing: 1px
-    padding: 4px 0
-    text-transform: uppercase
-
-  .calendar-day-number
-    flex: 1
-    display: flex
-    align-items: center
-    justify-content: center
-    font-size: 2.25rem
-    font-weight: 800
-    color: #1f2937 // Dark slate body text color
-    line-height: 1
-    padding-top: 4px
-
-  .calendar-weekday-footer
-    font-size: 0.65rem
-    font-weight: 500
-    color: #6b7280 // Soft gray text color
-    padding-bottom: 6px
-    text-transform: uppercase
-    letter-spacing: 0.5px
-
-
 .dashboard-bg
   position: fixed /* Стабильная замена background-attachment: fixed для Safari */
   top: 0
@@ -139,7 +95,7 @@ $glass-backdrop: blur(3px)
 
   .wordpress-section
     margin-bottom: 3rem
-    background: rgba(255, 255, 255, 0.4)
+    background: rgba(255, 255, 255)
     padding: 2.5rem
     border-radius: $border-radius-sm
     border: 1px solid rgba(0, 0, 0, 0.03)
@@ -151,10 +107,14 @@ $glass-backdrop: blur(3px)
       margin-bottom: 1.75rem
 
       .wp-title
-        font-size: 1.85rem
-        font-weight: 800
-        margin: 0 0 0.5rem 0
-        color: var(--mat-sys-primary, #3f51b5)
+        font-family: Oswald, serif !important
+        color: #33363b
+        line-height: 1.33333
+        font-weight: 400
+        text-transform: uppercase
+        font-size: 60px
+        margin-bottom: 15px
+        margin-top: 15px
 
       .wp-subtitle
         font-size: 1.05rem
@@ -173,9 +133,10 @@ $glass-backdrop: blur(3px)
         gap: 2rem
 
     .wp-body
-      font-size: 1rem
-      line-height: 1.75
+      font-size: 1.1rem
+      line-height: 1.55
       color: var(--mat-sys-on-surface-variant, #3a3a40)
+      font-family: Roboto !important
 
       p
         margin-top: 0
@@ -184,6 +145,18 @@ $glass-backdrop: blur(3px)
 
         &:last-child
           margin-bottom: 0
+
+      .wp-block-preformatted
+        box-sizing: border-box
+        white-space: pre-wrap
+        background: #eee
+        font-family: "Courier 10 Pitch", Courier, monospace
+        font-size: 0.9375rem
+        line-height: 1.6
+        margin-bottom: 1.6em
+        max-width: 100%
+        overflow: auto
+        padding: 1.6em
 
     .wp-media-wrapper
       display: flex

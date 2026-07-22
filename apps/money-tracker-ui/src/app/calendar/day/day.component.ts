@@ -25,7 +25,7 @@ import {
 } from '@clematis-shared/model';
 import {
   DayService,
-  EntityListComponent,
+  EntityListComponent, EnvironmentService,
   ExpenseItemsService,
   IncomeItemsService,
   MoneyTypeService,
@@ -86,6 +86,7 @@ export class DayComponent implements OnInit, OnDestroy {
     protected expensesService: ExpenseItemsService,
     private weatherService: WeatherService,
     private wordpressService: WordpressService,
+    private environmentService: EnvironmentService,
     private dayService: DayService,
     private sanitizer: DomSanitizer,
     private title: Title,
@@ -195,12 +196,28 @@ export class DayComponent implements OnInit, OnDestroy {
         this.incomeSum = result.incomeSum;
         this.wpArticle = (result.wpArticle || []).map(
           (article: WordPressArticle) => {
+            let featuredImageUrl = '';
+
+            // Safely extract the original full-resolution image URL from the payload
+            const mediaItem = article._embedded?.['wp:featuredmedia']?.[0];
+            const originalUrl =
+              mediaItem?.media_details?.sizes?.['full']?.source_url ||
+              mediaItem?.source_url;
+
+            if (originalUrl) {
+              featuredImageUrl = originalUrl.replace(
+                /^https?:\/\/[^/]+/,
+                this.environmentService.getValue('wordpressUrl'),
+              );
+            }
+
+            console.log('featuredImageUrl ' + featuredImageUrl)
+
             return {
               ...article,
+              featuredImageUrl, // Add a clean, pre-routed string directly to the object layout
               content: {
                 ...article.content,
-                // Pass the HTML string to the sanitizer
-                // to allow inline media grids to render
                 safeRendered: this.sanitizer.bypassSecurityTrustHtml(
                   article.content.rendered,
                 ),

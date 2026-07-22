@@ -91,6 +91,7 @@ import {
   WeatherDashboardPanelComponent
 } from './calendar/day/weather-dashboard-panel/weather-dashboard-panel.component';
 import { PhotoGalleryComponent } from "./calendar/day/photo-gallery/photo-gallery.component";
+import { CalendarDayComponent } from "./calendar/day/calendar-day/calendar-day.component";
 
 @NgModule({
   declarations: [
@@ -155,7 +156,8 @@ import { PhotoGalleryComponent } from "./calendar/day/photo-gallery/photo-galler
     CurrencySpacePipe,
     SharedComponentsModule,
     TelegramFeedComponent,
-    PhotoGalleryComponent
+    PhotoGalleryComponent,
+    CalendarDayComponent
   ],
   providers: [CurrencyPipe],
 })

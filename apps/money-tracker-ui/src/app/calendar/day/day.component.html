@@ -148,111 +148,22 @@
 <div class="day-dashboard">
   <div class="dashboard-bg" [style.background-image]="loadedBackgroundImage"></div>
 
-  <div style="display: flex; justify-content: flex-end; width: 100%;">
-    <div class="calendar-square-card">
-      <!-- Top header band (displays the month name) -->
-      <div class="calendar-month-banner">
-        {{ date | date : 'MMM' | uppercase }}
-      </div>
-      <!-- Main center content body (displays the numerical day number) -->
-      <div class="calendar-day-number">
-        {{ date | date : 'dd' }}
-      </div>
-      <!-- Bottom footer label (displays the full weekday name) -->
-      <div class="calendar-weekday-footer">
-        {{ date | date : 'EEEE' }}
-      </div>
-    </div>
-  </div>
-
+  <app-calendar-day [date]="date"></app-calendar-day>
 
   <!-- Glassmorphism overlay card -->
   <div class="dashboard-card">
 
-    <!-- Header Section -->
-    @if (weatherData) {
-      <header class="dashboard-header">
-        <app-weather-dashboard-panel
-          [weatherData]="weatherData"
-        ></app-weather-dashboard-panel>
-      </header>
-    }
-
-    <!-- WordPress Article Area (Spans full top content width) -->
-    @if (wpArticle && wpArticle.length > 0) {
-      <section class="wordpress-section">
-        @for (article of wpArticle; track article.id) {
-          <article class="wp-article">
-
-            <!-- Post Header Data Wrapper Block -->
-            <div class="wp-header-block">
-              <h2 class="wp-title">{{ article.title.rendered }}</h2>
-              <time class="wp-date">{{ article.date | date:'longDate' }}</time>
-            </div>
-
-            <div class="wp-content-layout">
-              <!-- Safely check and extract the featured media array from embedded data -->
-              @if (article._embedded?.['wp:featuredmedia']?.length; as mediaLength) {
-                @if (article._embedded?.['wp:featuredmedia']?.[0]; as mediaItem) {
-                  <div class="wp-featured-media">
-                    <img
-                      [src]="mediaItem.source_url"
-                      [alt]="mediaItem.alt_text || article.title.rendered"
-                      class="wp-responsive-banner"
-                    />
-                  </div>
-                }
-              }
-
-              <!-- Main structural text body safely unbound -->
-              <div class="wp-body" [innerHTML]="article.content.safeRendered"></div>
-            </div>
-
-          </article>
-        }
-      </section>
-    }
-
-    <!-- Two-Column Workspace Grid (Logs vs Financials Sidebar) -->
     <div class="dashboard-content-split">
 
-      <!-- Left Main Body Column: Transaction Logs -->
+      <!-- Weather Section -->
       <main class="logs-section">
-        <h2 class="section-heading">Expenses</h2>
-        <div class="logs-container">
-          <div class="logs-placeholder">
-            <app-entity-list
-              [tableTemplate]="expensesTable"
-              [searchServiceOverride]="expensesService"
-              [searchRequest]="{
-                queryArguments: getQueryArguments(),
-                queryName: getQueryName()
-              }"
-              [sort]="getSort()"
-              [cookieStateKey]="'day-expenses'"
-              [updateRouterState]="false"
-            >
-            </app-entity-list>
-          </div>
-        </div>
-        <br/>
-        <h2 class="section-heading">Income</h2>
-        <div class="logs-container">
-          <div class="logs-placeholder">
-            <app-entity-list
-              [tableTemplate]="incomeTable"
-              [searchServiceOverride]="incomeService"
-              [searchRequest]="{
-                queryArguments: getQueryArguments(),
-                queryName: getQueryName()
-              }"
-              [sort]="getSort()"
-              [cookieStateKey]="'day-income'"
-              [updateRouterState]="false"
-            >
-            </app-entity-list>
-          </div>
-        </div>
+          @if (weatherData) {
+            <header class="dashboard-header">
+              <app-weather-dashboard-panel
+                [weatherData]="weatherData"
+              ></app-weather-dashboard-panel>
+            </header>
+          }
       </main>
 
       <!-- Right Sidebar Column: Financial Ledger Grid -->
@@ -289,6 +200,76 @@
       </aside>
 
     </div>
+
+    <!-- WordPress Article Area (Spans full top content width) -->
+    @if (wpArticle && wpArticle.length > 0) {
+      <section class="wordpress-section">
+        @for (article of wpArticle; track article.id) {
+          <article class="wp-article">
+
+            <div class="wp-header-block">
+              <h2 class="wp-title">{{ article.title.rendered }}</h2>
+              <time class="wp-date">{{ article.date | date:'longDate' }}</time>
+            </div>
+
+            <div class="wp-content-layout">
+              <!-- Render the clean, proxied original image banner -->
+              @if (article.featuredImageUrl) {
+                <div class="wp-featured-media">
+                  <img
+                    [src]="article.featuredImageUrl"
+                    [alt]="article.title.rendered"
+                    class="wp-responsive-banner"
+                  />
+                </div>
+              }
+              <div class="wp-body" [innerHTML]="article.content.safeRendered"></div>
+            </div>
+
+          </article>
+        }
+      </section>
+    }
+
+    @if (expensesSum) {
+      <h2 class="section-heading">Expenses</h2>
+      <div class="logs-container">
+        <div class="logs-placeholder">
+          <app-entity-list
+            [tableTemplate]="expensesTable"
+            [searchServiceOverride]="expensesService"
+            [searchRequest]="{
+              queryArguments: getQueryArguments(),
+              queryName: getQueryName()
+            }"
+            [sort]="getSort()"
+            [cookieStateKey]="'day-expenses'"
+            [updateRouterState]="false"
+          >
+          </app-entity-list>
+        </div>
+      </div>
+    }
+    @if (incomeSum) {
+      <br/>
+      <h2 class="section-heading">Income</h2>
+      <div class="logs-container">
+        <div class="logs-placeholder">
+          <app-entity-list
+            [tableTemplate]="incomeTable"
+            [searchServiceOverride]="incomeService"
+            [searchRequest]="{
+              queryArguments: getQueryArguments(),
+              queryName: getQueryName()
+            }"
+            [sort]="getSort()"
+            [cookieStateKey]="'day-income'"
+            [updateRouterState]="false"
+          >
+          </app-entity-list>
+        </div>
+      </div>
+    }
 
     <app-photo-gallery
       [date]="date"
