@@ -196,31 +196,29 @@ export class DayComponent implements OnInit, OnDestroy {
         this.incomeSum = result.incomeSum;
         this.wpArticle = (result.wpArticle || []).map(
           (article: WordPressArticle) => {
-            let featuredImageUrl = '';
-
-            // Safely extract the original full-resolution image URL from the payload
+            // Extract the original full-size image URL straight from the embedded payload structure
             const mediaItem = article._embedded?.['wp:featuredmedia']?.[0];
-            const originalUrl =
+            const featuredImageUrl =
               mediaItem?.media_details?.sizes?.['full']?.source_url ||
-              mediaItem?.source_url;
-
-            if (originalUrl) {
-              featuredImageUrl = originalUrl.replace(
-                /^https?:\/\/[^/]+/,
-                this.environmentService.getValue('wordpressUrl'),
-              );
-            }
-
-            console.log('featuredImageUrl ' + featuredImageUrl)
+              mediaItem?.source_url ||
+              '';
 
             return {
               ...article,
-              featuredImageUrl, // Add a clean, pre-routed string directly to the object layout
+              featuredImageUrl, // Bound exactly as returned from the API database layer
               content: {
                 ...article.content,
                 safeRendered: this.sanitizer.bypassSecurityTrustHtml(
                   article.content.rendered,
                 ),
+              },
+              excerpt: {
+                ...article.excerpt,
+                safeRendered: article.excerpt?.rendered
+                  ? this.sanitizer.bypassSecurityTrustHtml(
+                      article.excerpt.rendered,
+                    )
+                  : null,
               },
             };
           },

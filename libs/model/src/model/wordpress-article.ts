@@ -5,7 +5,12 @@ export interface WordPressArticle {
   featuredImageUrl?: string;
   content: {
     rendered: string;
-    safeRendered?: any; // Used to hold sanitized DomSanitizer data
+    safeRendered?: any;
+  };
+  excerpt: {
+    rendered: string;
+    safeRendered?: any;
+    protected: boolean;
   };
   _embedded?: {
     'wp:featuredmedia'?: Array<{

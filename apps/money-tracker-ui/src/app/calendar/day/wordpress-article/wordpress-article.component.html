@@ -6,6 +6,9 @@
         <div class="wp-header-block">
           <h2 class="wp-title">{{ article.title.rendered }}</h2>
           <time class="wp-date">{{ article.date | date:'longDate' }}</time>
+          @if (article.excerpt.safeRendered) {
+            <div class="wp-excerpt" [innerHTML]="article.excerpt.safeRendered"></div>
+          }
         </div>
 
         <div class="wp-content-layout">
