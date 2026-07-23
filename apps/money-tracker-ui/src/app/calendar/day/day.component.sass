@@ -5,43 +5,46 @@ $transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
 $glass-background: rgba(255, 255, 255, 0.48)
 $glass-backdrop: blur(3px)
 
+.header-row-container
+  display: flex
+  align-items: center
+  justify-content: space-between
+  width: 100%
+  gap: 20px
+  position: relative
+  z-index: 10
+  background: rgba(255, 255, 255, 0.85)
+
 .day-navigation-container
   display: flex
   align-items: center
   justify-content: center
   gap: 20px
-
-.day-navigation-container button
-  padding: 8px 16px
-  cursor: pointer
+  button
+    padding: 8px 16px
+    cursor: pointer
 
 .dashboard-bg
-  position: fixed /* Стабильная замена background-attachment: fixed для Safari */
+  position: fixed
   top: 0
   left: 0
   width: 100%
   height: 100%
-  z-index: -1 /* Уводит картинку под текст и контент */
-
-  /* Свойства масштабирования фона */
+  z-index: -1
   background-size: cover
   background-position: center
   background-repeat: no-repeat
-
-  /* Защита от мерцания и лагов скролла в Safari */
   transform: translateZ(0)
   will-change: transform
 
 .day-dashboard
-  position: relative // Обязательно: задает правильный контекст наложения слоев
+  position: relative
   width: 100%
-  min-height: 90vh
-  margin-top: 1rem
-  padding: 1.5rem // Reduced to give contents maximum horizontal breathing room
+  min-height: 100%
+  padding: 1.5rem
   box-sizing: border-box
   border-radius: $border-radius-lg
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05)
-  overflow: hidden // Чтобы скругления углов не обрезались фоном страницы
   z-index: 0
 
   @media (max-width: 768px)
@@ -49,161 +52,98 @@ $glass-backdrop: blur(3px)
     margin-top: 0.5rem
 
   .dashboard-card
-    width: 100% // Forces the overlay card to take full advantage of screen width
+    width: 100%
     max-width: 100%
     background: $glass-background
-    backdrop-filter: $glass-backdrop // Активирует размытие динамического фона под карточкой
-    -webkit-backdrop-filter: $glass-backdrop // Поддержка размытия для Safari
+    backdrop-filter: $glass-backdrop
+    -webkit-backdrop-filter: $glass-backdrop
     border: 1px solid rgba(255, 255, 255, 0.5)
     border-radius: $border-radius-lg
     padding: 2.5rem
     box-sizing: border-box
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06)
-    margin-top: 10%
+    margin-top: 2rem // Fixed arbitrary top margin overlapping issues
 
     @media (max-width: 768px)
       padding: 1.5rem 1rem
 
   .dashboard-header
+    width: 100%
     display: flex
-    justify-content: space-between
-    align-items: stretch // Aligns components uniformly across the top axis
-    flex-wrap: wrap
-    gap: 2rem
-    padding-bottom: 2rem
-    margin-bottom: 2.5rem
-    border-bottom: 1px solid var(--mat-sys-outline-variant, rgba(0, 0, 0, 0.08))
-
-    .dashboard-title
-      font-size: 2.5rem
-      font-weight: 800
-      letter-spacing: -0.5px
-      margin: 0
-      align-self: center // Centers the text against the taller weather widget box
-      flex: 1
-      min-width: 280px
-      text-align: right
-      white-space: nowrap
-      overflow: hidden
-      text-overflow: ellipsis
-      line-height: 3rem
-
-      @media (max-width: 768px)
-        font-size: 2rem
+    flex-direction: column
 
   .section-heading
-    font-size: 1.4rem
+    font-size: 1.25rem
     font-weight: 700
     margin-top: 0
-    margin-bottom: 1.5rem
+    margin-bottom: 1rem
     color: var(--mat-sys-on-surface, #1e1e24)
+    text-transform: uppercase
+    letter-spacing: 0.5px
+
+  .section-heading-accent
+    font-size: 1.4rem
+    font-weight: 700
+    margin: 0 0 1rem 0
+    padding-left: 0.75rem
+    color: var(--mat-sys-on-surface, #1e1e24)
+    border-left: 4px solid transparent
+
+    &.expense-accent
+      border-left-color: var(--mat-sys-error, #ba1a1a)
+    &.income-accent
+      border-left-color: #2e7d32
+    &.summary-accent
+      border-left-color: #512e70
 
   .dashboard-content-split
     display: grid
-    grid-template-columns: 2fr 1fr // Main log area layout optimization
-    gap: 3rem
-    align-items: flex-start
-    margin-bottom: 30px
+    grid-template-columns: 1.5fr 1fr // Improved top layout distribution balance
+    gap: 2rem
+    align-items: stretch
+    margin-bottom: 2.5rem
 
     @media (max-width: 1024px)
       grid-template-columns: 1fr
-      gap: 2.5rem
-
-  .logs-section
-    .logs-container
-      background: var(--mat-sys-surface, #ffffff)
-      border: 1px solid var(--mat-sys-outline-variant, rgba(0, 0, 0, 0.05))
-      border-radius: $border-radius-sm
-      padding: 2.5rem
-      min-height: 320px
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.01)
-
-    .logs-placeholder
-      display: flex
-      flex-direction: column
-      align-items: center
-      justify-content: center
-      text-align: center
-      min-height: 260px
-      color: var(--mat-sys-on-surface-variant, #8e8e96)
-
-      .placeholder-icon
-        font-size: 3rem
-        margin-bottom: 1.25rem
-        opacity: 0.5
-
-      p
-        margin: 0
-        font-size: 1rem
+      gap: 2rem
 
   .ledger-sidebar
+    background: var(--mat-sys-surface, rgba(255, 255, 255, 0.6))
+    border: 1px solid var(--mat-sys-outline-variant, rgba(0, 0, 0, 0.05))
+    padding: 1.5rem
+    border-radius: $border-radius-sm
+    display: flex
+    flex-direction: column
+
     .ledger-grid
       display: flex
       flex-direction: column
       gap: 1.15rem
       width: 100%
 
-    .ledger-card
-      display: flex
-      align-items: center
-      gap: 1.25rem
-      padding: 1.25rem
-      border-radius: $border-radius-sm
-      background: var(--mat-sys-surface, #ffffff)
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02)
-      border-left: 5px solid transparent
-      transition: $transition-base
+  .financial-details-section
+    display: flex
+    flex-direction: column
+    gap: 2.5rem
+    margin-bottom: 2.5rem
+    min-height: 200px
 
-      &:hover
-        transform: translateX(6px)
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06)
+  .finance-block
+    width: 100%
 
-      .card-icon
-        font-size: 1.4rem
-        width: 45px
-        height: 45px
-        display: flex
-        align-items: center
-        justify-content: center
-        border-radius: 50%
-        flex-shrink: 0
+  .logs-container
+    background: var(--mat-sys-surface, #ffffff)
+    border: 1px solid var(--mat-sys-outline-variant, rgba(0, 0, 0, 0.05))
+    border-radius: $border-radius-sm
+    padding: 1.5rem
+    width: 100%
+    box-sizing: border-box
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.01)
+    overflow-x: auto // Restricts table component overflows seamlessly
+    min-height: 200px
 
-      .card-content
-        display: flex
-        flex-direction: column
-        gap: 0.2rem
-
-        h3
-          margin: 0
-          font-size: 0.8rem
-          font-weight: 600
-          text-transform: uppercase
-          letter-spacing: 0.75px
-          color: var(--mat-sys-on-surface-variant, #767680)
-
-        .amount
-          margin: 0
-          font-size: 1.5rem
-          font-weight: 800
-          color: var(--mat-sys-on-surface, #1e1e24)
-
-      &.income
-        border-left-color: #2e7d32
-        .card-icon
-          background: #e8f5e9
-          color: #2e7d32
-      &.expense
-        border-left-color: #c62828
-        .card-icon
-          background: #ffebee
-          color: #c62828
-      &.exchange
-        border-left-color: #0277bd
-        .card-icon
-          background: #e1f5fe
-          color: #0277bd
-      &.transfer
-        border-left-color: #ef6c00
-        .card-icon
-          background: #fff3e0
-          color: #ef6c00
+  .dashboard-footer-content
+    display: flex
+    flex-direction: column
+    gap: 2.5rem
+    width: 100%

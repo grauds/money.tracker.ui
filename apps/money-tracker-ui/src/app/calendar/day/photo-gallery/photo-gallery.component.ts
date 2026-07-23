@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { ImmichService } from '@clematis-shared/shared-components';
@@ -10,7 +10,7 @@ import { ImmichService } from '@clematis-shared/shared-components';
   templateUrl: './photo-gallery.component.html',
   styleUrl: './photo-gallery.component.sass',
 })
-export class PhotoGalleryComponent implements OnInit {
+export class PhotoGalleryComponent {
   private immichService = inject(ImmichService);
 
   // Signal-based inputs introduced in modern Angular
@@ -22,17 +22,24 @@ export class PhotoGalleryComponent implements OnInit {
   isLoading = signal<boolean>(true);
   hasError = signal<boolean>(false);
 
-  ngOnInit(): void {
-    this.loadRandomRibbon();
+  constructor() {
+    // Effects must be declared in an injection context (like the constructor)
+    effect(() => {
+      const currentDate = this.date();
+      const currentQty = this.qty();
+      // React to the change by reloading the gallery data
+      this.loadRandomRibbon(currentDate, currentQty);
+    });
   }
 
-  private loadRandomRibbon(): void {
+  private loadRandomRibbon(dateStr: string, quantity: number): void {
     this.isLoading.set(true);
     this.hasError.set(false);
 
-    this.immichService.getRandomPhotos(this.date(), this.qty()).subscribe({
+    this.immichService.getRandomPhotos(dateStr, quantity).subscribe({
       next: (assets) => {
         if (!assets || assets.length === 0) {
+          this.imageUrls.set([]);
           this.isLoading.set(false);
           return;
         }
@@ -47,12 +54,14 @@ export class PhotoGalleryComponent implements OnInit {
             this.isLoading.set(false);
           },
           error: () => {
+            this.imageUrls.set([]);
             this.hasError.set(true);
             this.isLoading.set(false);
           },
         });
       },
       error: () => {
+        this.imageUrls.set([]);
         this.hasError.set(true);
         this.isLoading.set(false);
       },

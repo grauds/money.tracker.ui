@@ -180,9 +180,8 @@ export class DayComponent implements OnInit, OnDestroy {
     const wpArticle$: Observable<WordPressArticle[]> = this.wordpressService
       .getArticlesByDay(this.date)
       .pipe(
-        catchError(() => {
-          return of([]);
-        }),
+        catchError(() => of([])),
+        defaultIfEmpty([]),
       );
 
     return forkJoin({

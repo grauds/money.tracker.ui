@@ -124,7 +124,7 @@
   </table>
 </ng-template>
 
-<div class="header-row-container" style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 20px;">
+<div class="header-row-container">
 
   <!-- Left Side: Breadcrumbs -->
   <lib-date-breadcrumbs [date]="date"></lib-date-breadcrumbs>
@@ -144,111 +144,95 @@
 
 </div>
 
-<!-- Main Container with background image binding -->
 <div class="day-dashboard">
   <div class="dashboard-bg" [style.background-image]="loadedBackgroundImage"></div>
 
   <app-calendar-day [date]="date"></app-calendar-day>
 
-  <!-- Glassmorphism overlay card -->
   <div class="dashboard-card">
 
+    <!-- Top Layout Split -->
     <div class="dashboard-content-split">
 
-      <!-- Weather Section -->
-      <main class="logs-section">
-          @if (weatherData) {
-            <header class="dashboard-header">
-              <app-weather-dashboard-panel
-                [weatherData]="weatherData"
-              ></app-weather-dashboard-panel>
-            </header>
-          }
-      </main>
+      <!-- Weather Panel -->
+      <header class="dashboard-header">
+        @if (weatherData) {
+          <app-weather-dashboard-panel [weatherData]="weatherData"></app-weather-dashboard-panel>
+        }
+      </header>
 
-      <!-- Right Sidebar Column: Financial Ledger Grid -->
+
+      <!-- Financial Balance Widget Overview -->
       <aside class="ledger-sidebar">
-        <h2 class="section-heading">Financial Summary</h2>
-
+        <h2 class="section-heading-accent summary-accent">Financial Summary</h2>
         <div class="ledger-grid">
-
           <lib-entity-balance-info
             [loading]="loading"
             [expensesSum]="expensesSum"
             [incomeSum]="incomeSum"
             [currency]="currency"
           ></lib-entity-balance-info>
-
-          <!-- Exchange Card
-          <div class="ledger-card exchange">
-            <div class="card-icon"><i class="pi pi-refresh"></i></div>
-            <div class="card-content">
-              <h3>Exchanges</h3>
-              <p class="amount">$0.00</p>
-            </div>
-          </div>
-
-           Transfer Card
-          <div class="ledger-card transfer">
-            <div class="card-icon"><i class="pi pi-sync"></i></div>
-            <div class="card-content">
-              <h3>Transfers</h3>
-              <p class="amount">$0.00</p>
-            </div>
-          </div>-->
         </div>
       </aside>
 
     </div>
 
-    <!-- WordPress Article Area (Spans full top content width) -->
-    <app-wordpress-article
-      [wpArticle]="wpArticle"
-    ></app-wordpress-article>
+    <!-- Financial Breakdowns Section -->
+    @if (expensesSum || incomeSum) {
+      <section class="financial-details-section">
 
-    @if (expensesSum) {
-      <h2 class="section-heading">Expenses</h2>
-      <div class="logs-container">
-        <div class="logs-placeholder">
-          <app-entity-list
-            [tableTemplate]="expensesTable"
-            [searchServiceOverride]="expensesService"
-            [searchRequest]="{
-              queryArguments: getQueryArguments(),
-              queryName: getQueryName()
-            }"
-            [sort]="getSort()"
-            [cookieStateKey]="'day-expenses'"
-            [updateRouterState]="false"
-          >
-          </app-entity-list>
-        </div>
-      </div>
-    }
-    @if (incomeSum) {
-      <br/>
-      <h2 class="section-heading">Income</h2>
-      <div class="logs-container">
-        <div class="logs-placeholder">
-          <app-entity-list
-            [tableTemplate]="incomeTable"
-            [searchServiceOverride]="incomeService"
-            [searchRequest]="{
-              queryArguments: getQueryArguments(),
-              queryName: getQueryName()
-            }"
-            [sort]="getSort()"
-            [cookieStateKey]="'day-income'"
-            [updateRouterState]="false"
-          >
-          </app-entity-list>
-        </div>
-      </div>
+        <!-- Income Block -->
+        @if (incomeSum) {
+          <div class="finance-block">
+            <h2 class="section-heading-accent income-accent">Income</h2>
+            <div class="logs-container">
+              <app-entity-list
+                [tableTemplate]="incomeTable"
+                [searchServiceOverride]="incomeService"
+                [searchRequest]="{
+                  queryArguments: getQueryArguments(),
+                  queryName: getQueryName()
+                }"
+                [sort]="getSort()"
+                [cookieStateKey]="'day-income'"
+                [updateRouterState]="false"
+              >
+              </app-entity-list>
+            </div>
+          </div>
+        }
+
+        <!-- Expenses Block -->
+        @if (expensesSum) {
+          <div class="finance-block">
+            <h2 class="section-heading-accent expense-accent">Expenses</h2>
+            <div class="logs-container">
+              <app-entity-list
+                [tableTemplate]="expensesTable"
+                [searchServiceOverride]="expensesService"
+                [searchRequest]="{
+                  queryArguments: getQueryArguments(),
+                  queryName: getQueryName()
+                }"
+                [sort]="getSort()"
+                [cookieStateKey]="'day-expenses'"
+                [updateRouterState]="false"
+              >
+              </app-entity-list>
+            </div>
+          </div>
+        }
+
+
+
+      </section>
     }
 
-    <app-photo-gallery
-      [date]="date"
-    ></app-photo-gallery>
+    <!-- Content Footer Media Layout -->
+    <footer class="dashboard-footer-content">
+      <app-wordpress-article [wpArticle]="wpArticle"></app-wordpress-article>
+      <app-photo-gallery [date]="date"></app-photo-gallery>
+    </footer>
 
   </div>
 </div>
