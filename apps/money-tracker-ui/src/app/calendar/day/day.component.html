@@ -164,8 +164,8 @@
 
       <!-- Financial Balance Widget Overview -->
       <aside class="ledger-sidebar">
-        <h2 class="section-heading-accent summary-accent">Financial Summary</h2>
         <div class="ledger-grid">
+          <h2 class="section-heading-accent summary-accent">Financial Summary</h2>
           <lib-entity-balance-info
             [loading]="loading"
             [expensesSum]="expensesSum"
@@ -184,8 +184,8 @@
         <!-- Income Block -->
         @if (incomeSum) {
           <div class="finance-block">
-            <h2 class="section-heading-accent income-accent">Income</h2>
             <div class="logs-container">
+              <h2 class="section-heading-accent income-accent">Income</h2>
               <app-entity-list
                 [tableTemplate]="incomeTable"
                 [searchServiceOverride]="incomeService"
@@ -205,8 +205,8 @@
         <!-- Expenses Block -->
         @if (expensesSum) {
           <div class="finance-block">
-            <h2 class="section-heading-accent expense-accent">Expenses</h2>
             <div class="logs-container">
+              <h2 class="section-heading-accent expense-accent">Expenses</h2>
               <app-entity-list
                 [tableTemplate]="expensesTable"
                 [searchServiceOverride]="expensesService"

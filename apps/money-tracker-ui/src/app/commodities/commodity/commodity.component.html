@@ -2,9 +2,8 @@
   <app-breadcrumbs [path]="path"></app-breadcrumbs>
 }
 @if (entity) {
-  <div class="product-container jumbotron" style="display: flex; gap: 24px; align-items: flex-start; max-width: 100%; overflow: hidden;">
+  <div class="jumbotron summary-header">
 
-    <!-- Right Side: Image Control -->
     <div class="product-media" style="flex-shrink: 0; background: #ffffff; padding: 12px; border: 1px solid #dee2e6; border-radius: 6px;">
       <app-photo-uploader
         [entityName]="'commodities'"
@@ -13,17 +12,13 @@
       ></app-photo-uploader>
     </div>
 
-    <!-- Left Side: Product Information -->
-    <div class="product-info" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; font-family: system-ui, -apple-system, sans-serif;">
-
-      <!-- Title Section -->
-      <div style="border-bottom: 1px solid #f1f3f5; padding-bottom: 12px;">
-        <h2 style="margin: 0; font-size: 1.75rem; font-weight: 700; color: #1a1b1e; tracking: -0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+    <div class="ledger-grid">
+      <div class="summary-details">
+        <h2 style="margin: 0; font-size: 1.75rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
           {{ !loading ? (entity ? entity.name : 'Not loaded') : 'Loading...' }}
         </h2>
       </div>
 
-      <!-- Left Side: Product Information -->
       <lib-entity-balance-info
         [loading]="loading"
         [expensesSum]="expensesSum"
@@ -34,15 +29,14 @@
         [unitTypeName]="unitTypeName"
         [description]="entity.description"
       ></lib-entity-balance-info>
-
     </div>
   </div>
 }
 
 @if (entity && this.expenses.length > 1) {
-  <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
+  <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; margin-left: 20px; border-left: 4px solid #0d6efd;">
     <div>
-      <h3 style="margin: 0 0 0 20px; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+      <h3 style="margin: 20px 0 0 20px; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
         Price & Analytics Trends
       </h3>
       <small style="margin: 0 0 0 20px; color: #6c757d; font-size: 0.85rem;">Historical data and purchase distribution</small>
@@ -62,7 +56,7 @@
 @if (entity && this.income.length > 1) {
   <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
     <div>
-      <h3 style="margin: 0 0 0 20px; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+      <h3 style="margin: 20px 0 0 20px;  font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
         Income & Analytics Trends
       </h3>
       <small style="margin: 0 0 0 20px; color: #6c757d; font-size: 0.85rem;">Historical data and income distribution</small>
@@ -77,5 +71,5 @@
   [queryName]="'commodity'"
   (loadingChanged)="setLoading($event)"
   (entitiesChanged)="setIncome($event)"
-  >
+>
 </app-entity-income>
