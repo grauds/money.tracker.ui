@@ -30,12 +30,18 @@ export class AboutComponent implements OnInit {
     private readonly title: Title,
     private readonly statsService: StatsService
   ) {
+    // Set the initial state immediately from the provider
+    this.isLoggedIn = this.keycloak.authenticated ?? false;
+
+    // Listen for future changes
     effect(() => {
       const keycloakEvent = this.keycloakSignal();
 
       if (keycloakEvent !== null) {
         if (keycloakEvent.type === KeycloakEventType.Ready) {
           this.isLoggedIn = typeEventArgs<ReadyArgs>(keycloakEvent.args);
+        } else if (keycloakEvent.type === KeycloakEventType.AuthSuccess) {
+          this.isLoggedIn = true;
         } else if (keycloakEvent.type === KeycloakEventType.AuthLogout) {
           this.isLoggedIn = false;
         }
