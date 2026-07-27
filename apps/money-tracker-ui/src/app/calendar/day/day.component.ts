@@ -353,12 +353,12 @@ export class DayComponent implements OnInit, OnDestroy {
           }
         },
         error: (httpError) => {
-          // 4. Catches network failures, 404s, 500s, and CORS blocks
+          // Catches network failures, 404s, 500s, and CORS blocks
           handleFallback('HTTP Network Request Failed', httpError);
         },
       });
     } catch (syncError) {
-      // 5. Catches synchronous startup issues before subscription
+      // Catches synchronous startup issues before subscription
       handleFallback('Stream Initialization Failed', syncError);
     }
   }

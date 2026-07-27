@@ -69,7 +69,7 @@
     <ng-container matColumnDef="exchangedate">
       <th mat-header-cell *matHeaderCellDef>Exchange Date</th>
       <td mat-cell *matCellDef="let element">
-        {{ element.exchangeDate | date : 'fullDate' }}
+        <app-day-link [date]="element.exchangeDate"></app-day-link>
       </td>
     </ng-container>
 
