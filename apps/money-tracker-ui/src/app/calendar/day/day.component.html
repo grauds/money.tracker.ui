@@ -124,6 +124,8 @@
   </table>
 </ng-template>
 
+
+@if (date) {
 <div class="header-row-container">
 
   <!-- Left Side: Breadcrumbs -->
@@ -190,7 +192,7 @@
         <!-- Income Block -->
         @if (incomeSum) {
           <div class="finance-block">
-            <div class="logs-container">
+            <div class="logs-container income-container">
               <h2 class="section-heading-accent income-accent">Income</h2>
               <app-entity-list
                 [tableTemplate]="incomeTable"
@@ -212,7 +214,7 @@
         <!-- Expenses Block -->
         @if (expensesSum) {
           <div class="finance-block">
-            <div class="logs-container">
+            <div class="logs-container expenses-container">
               <h2 class="section-heading-accent expense-accent">Expenses</h2>
               <app-entity-list
                 [tableTemplate]="expensesTable"
@@ -246,3 +248,4 @@
 
   </div>
 </div>
+}

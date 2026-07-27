@@ -85,10 +85,6 @@ body {
   font-family: 'SF UI Display', sans-serif;
   color: var(--foreground);
   background-color: #edece0 !important;
-
-  overflow-y: auto !important;
-  scrollbar-width: auto;
-  margin: 0 0 0 calc(100vw - 100%);
 }
 
 .cdk-overlay-container {

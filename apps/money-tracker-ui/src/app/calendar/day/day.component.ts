@@ -53,7 +53,7 @@ export class DayComponent implements OnInit, OnDestroy {
   incomeLoaded: boolean | undefined = undefined;
   expencesLoaded: boolean | undefined = undefined;
 
-  date: string = Utils.formatDate(new Date());
+  date: string | undefined = undefined;
   currency: MoneyType;
 
   incomeSum: number | undefined = undefined;
@@ -168,146 +168,154 @@ export class DayComponent implements OnInit, OnDestroy {
   }
 
   loadSums(): Observable<void> {
-    this.loading = true;
-    const incomeSum$ = this.dayService
-      .getIncomeSumByDay(this.date, this.currency)
-      .pipe(
-        catchError(() => {
-          return of(0);
-        }),
-        defaultIfEmpty(0),
-      );
+    if (this.date) {
+      this.loading = true;
+      const incomeSum$ = this.dayService
+        .getIncomeSumByDay(this.date, this.currency)
+        .pipe(
+          catchError(() => {
+            return of(0);
+          }),
+          defaultIfEmpty(0),
+        );
 
-    const expensesSum$ = this.dayService
-      .getExpensesSumByDay(this.date, this.currency)
-      .pipe(
-        catchError(() => {
-          return of(0);
-        }),
-        defaultIfEmpty(0),
-      );
+      const expensesSum$ = this.dayService
+        .getExpensesSumByDay(this.date, this.currency)
+        .pipe(
+          catchError(() => {
+            return of(0);
+          }),
+          defaultIfEmpty(0),
+        );
 
-    return forkJoin({
-      expensesSum: expensesSum$,
-      incomeSum: incomeSum$,
-    }).pipe(
-      tap((result) => {
-        this.expensesSum = result.expensesSum;
-        this.incomeSum = result.incomeSum;
-      }),
-      switchMap(() => {
-        return of(undefined);
-      }),
-      catchError((err) => {
-        return throwError(() => err);
-      }),
-      finalize(() => {
-        // This runs on 'complete' and 'error'
-        this.loading = false;
-      }),
-    );
+      return forkJoin({
+        expensesSum: expensesSum$,
+        incomeSum: incomeSum$,
+      }).pipe(
+        tap((result) => {
+          this.expensesSum = result.expensesSum;
+          this.incomeSum = result.incomeSum;
+        }),
+        switchMap(() => {
+          return of(undefined);
+        }),
+        catchError((err) => {
+          return throwError(() => err);
+        }),
+        finalize(() => {
+          // This runs on 'complete' and 'error'
+          this.loading = false;
+        }),
+      );
+    }
+    return of(undefined);
   }
 
   loadData(): Observable<void> {
     this.clearPreviousData();
-    this.loading = true;
+    if (this.date) {
+      this.loading = true;
 
-    const incomeSum$ = this.dayService
-      .getIncomeSumByDay(this.date, this.currency)
-      .pipe(
-        catchError(() => {
-          return of(0);
-        }),
-        defaultIfEmpty(0),
-      );
-
-    const expensesSum$ = this.dayService
-      .getExpensesSumByDay(this.date, this.currency)
-      .pipe(
-        catchError(() => {
-          return of(0);
-        }),
-        defaultIfEmpty(0),
-      );
-
-    const weather$: Observable<ResourceCollection<WeatherObservation>> =
-      this.weatherService.getDay(this.date).pipe(
-        catchError(() => {
-          const emptyCollection = new ResourceCollection<WeatherObservation>();
-          emptyCollection.resources = [];
-          return of(emptyCollection);
-        }),
-        defaultIfEmpty(
-          Object.assign(new ResourceCollection<WeatherObservation>(), {
-            resources: [],
+      const incomeSum$ = this.dayService
+        .getIncomeSumByDay(this.date, this.currency)
+        .pipe(
+          catchError(() => {
+            return of(0);
           }),
-        ),
-      );
+          defaultIfEmpty(0),
+        );
 
-    const wpArticle$: Observable<WordPressArticle[]> = this.wordpressService
-      .getArticlesByDay(this.date)
-      .pipe(
-        catchError(() => of([])),
-        defaultIfEmpty([]),
-      );
+      const expensesSum$ = this.dayService
+        .getExpensesSumByDay(this.date, this.currency)
+        .pipe(
+          catchError(() => {
+            return of(0);
+          }),
+          defaultIfEmpty(0),
+        );
 
-    return forkJoin({
-      weather: weather$,
-      expensesSum: expensesSum$,
-      incomeSum: incomeSum$,
-      wpArticle: wpArticle$,
-    }).pipe(
-      tap((result) => {
-        const rawResult = result.weather as any;
-        if (rawResult?.['_embedded']?.['observations'][0]) {
-          this.weatherData = new WeatherObservation(
-            rawResult?.['_embedded']?.['observations'][0],
-          );
-        }
-        this.loadRandomImage(this.date);
-        this.expensesSum = result.expensesSum;
-        this.incomeSum = result.incomeSum;
-        this.wpArticle = (result.wpArticle || []).map(
-          (article: WordPressArticle) => {
-            // Extract the original full-size image URL straight from the embedded payload structure
-            const mediaItem = article._embedded?.['wp:featuredmedia']?.[0];
-            const featuredImageUrl =
-              mediaItem?.media_details?.sizes?.['full']?.source_url ||
-              mediaItem?.source_url ||
-              '';
+      const weather$: Observable<ResourceCollection<WeatherObservation>> =
+        this.weatherService.getDay(this.date).pipe(
+          catchError(() => {
+            const emptyCollection = new ResourceCollection<WeatherObservation>();
+            emptyCollection.resources = [];
+            return of(emptyCollection);
+          }),
+          defaultIfEmpty(
+            Object.assign(new ResourceCollection<WeatherObservation>(), {
+              resources: [],
+            }),
+          ),
+        );
 
-            return {
-              ...article,
-              featuredImageUrl, // Bound exactly as returned from the API database layer
-              content: {
-                ...article.content,
-                safeRendered: this.sanitizer.bypassSecurityTrustHtml(
-                  article.content.rendered,
-                ),
-              },
-              excerpt: {
-                ...article.excerpt,
-                safeRendered: article.excerpt?.rendered
-                  ? this.sanitizer.bypassSecurityTrustHtml(
+      const wpArticle$: Observable<WordPressArticle[]> = this.wordpressService
+        .getArticlesByDay(this.date)
+        .pipe(
+          catchError(() => of([])),
+          defaultIfEmpty([]),
+        );
+
+      return forkJoin({
+        weather: weather$,
+        expensesSum: expensesSum$,
+        incomeSum: incomeSum$,
+        wpArticle: wpArticle$,
+      }).pipe(
+        tap((result) => {
+          const rawResult = result.weather as any;
+          if (rawResult?.['_embedded']?.['observations'][0]) {
+            this.weatherData = new WeatherObservation(
+              rawResult?.['_embedded']?.['observations'][0],
+            );
+          }
+          if (this.date) {
+            this.loadRandomImage(this.date);
+          }
+          this.expensesSum = result.expensesSum;
+          this.incomeSum = result.incomeSum;
+          this.wpArticle = (result.wpArticle || []).map(
+            (article: WordPressArticle) => {
+              // Extract the original full-size image URL straight from the embedded payload structure
+              const mediaItem = article._embedded?.['wp:featuredmedia']?.[0];
+              const featuredImageUrl =
+                mediaItem?.media_details?.sizes?.['full']?.source_url ||
+                mediaItem?.source_url ||
+                '';
+
+              return {
+                ...article,
+                featuredImageUrl, // Bound exactly as returned from the API database layer
+                content: {
+                  ...article.content,
+                  safeRendered: this.sanitizer.bypassSecurityTrustHtml(
+                    article.content.rendered,
+                  ),
+                },
+                excerpt: {
+                  ...article.excerpt,
+                  safeRendered: article.excerpt?.rendered
+                    ? this.sanitizer.bypassSecurityTrustHtml(
                       article.excerpt.rendered,
                     )
-                  : null,
-              },
-            };
-          },
-        );
-      }),
-      switchMap(() => {
-        return of(undefined);
-      }),
-      catchError((err) => {
-        return throwError(() => err);
-      }),
-      finalize(() => {
-        // This runs on 'complete' and 'error'
-        this.loading = false;
-      }),
-    );
+                    : null,
+                },
+              };
+            },
+          );
+        }),
+        switchMap(() => {
+          return of(undefined);
+        }),
+        catchError((err) => {
+          return throwError(() => err);
+        }),
+        finalize(() => {
+          // This runs on 'complete' and 'error'
+          this.loading = false;
+        }),
+      );
+    }
+    return of(undefined);
   }
 
   private loadRandomImage(dayString: string): void {
