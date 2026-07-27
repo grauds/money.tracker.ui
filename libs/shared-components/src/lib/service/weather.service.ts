@@ -27,7 +27,7 @@ export class WeatherService {
   }
 
   getImage(day: string): Observable<Blob> {
-    const url = `/image/random?date=${day}`;
+    const url = `/image/similar?profile=PHOTO&dateTime=${day} 09:00:00&stationId=27612`;
     return this.http.get(this.getUrl(url), {
       responseType: 'blob',
     });
