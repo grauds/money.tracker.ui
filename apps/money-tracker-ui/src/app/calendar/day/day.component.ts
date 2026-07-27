@@ -25,7 +25,7 @@ import {
 } from '@clematis-shared/model';
 import {
   DayService,
-  EntityListComponent, EnvironmentService,
+  EntityListComponent,
   ExpenseItemsService,
   IncomeItemsService,
   MoneyTypeService,
@@ -50,18 +50,20 @@ export class DayComponent implements OnInit, OnDestroy {
   @ViewChild(EntityListComponent) entityList!: EntityListComponent<ExpenseItem>;
 
   loading = false;
+  incomeLoaded: boolean | undefined = undefined;
+  expencesLoaded: boolean | undefined = undefined;
 
   date: string = Utils.formatDate(new Date());
   currency: MoneyType;
 
-  incomeSum = 0;
+  incomeSum: number | undefined = undefined;
   displayedIncomeColumns: string[] = [
     'commodity.name',
     'price',
     'organizationname',
   ];
 
-  expensesSum = 0;
+  expensesSum: number | undefined = undefined;
   displayedExpenseColumns: string[] = [
     'commodity.name',
     'price',
@@ -86,7 +88,6 @@ export class DayComponent implements OnInit, OnDestroy {
     protected expensesService: ExpenseItemsService,
     private weatherService: WeatherService,
     private wordpressService: WordpressService,
-    private environmentService: EnvironmentService,
     private dayService: DayService,
     private sanitizer: DomSanitizer,
     private title: Title,
@@ -100,7 +101,7 @@ export class DayComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.currency = this.moneyTypeService.getSelectedMoneyType();
         if (this.date) {
-          this.loadData().subscribe(() => (this.loading = false));
+          this.loadSums().subscribe(() => (this.loading = false));
         }
       });
   }
@@ -139,6 +140,72 @@ export class DayComponent implements OnInit, OnDestroy {
           // Optional: Handle downstream errors here if needed
         },
       });
+  }
+
+  setIncomeLoaded($event: boolean) {
+    setTimeout(() => {
+      this.incomeLoaded = !$event;
+    });
+  }
+
+  setExpensesLoaded($event: boolean) {
+    setTimeout(() => {
+      this.expencesLoaded = !$event;
+    });
+  }
+
+  canDisplayGallery(): boolean {
+    const hasIncome =
+      !!this.incomeLoaded &&
+      this.incomeSum !== undefined &&
+      this.incomeSum >= 0;
+    const hasExpenses =
+      !!this.expencesLoaded &&
+      this.expensesSum !== undefined &&
+      this.expensesSum >= 0;
+
+    return hasIncome || hasExpenses;
+  }
+
+  loadSums(): Observable<void> {
+    this.loading = true;
+    const incomeSum$ = this.dayService
+      .getIncomeSumByDay(this.date, this.currency)
+      .pipe(
+        catchError(() => {
+          return of(0);
+        }),
+        defaultIfEmpty(0),
+      );
+
+    const expensesSum$ = this.dayService
+      .getExpensesSumByDay(this.date, this.currency)
+      .pipe(
+        catchError(() => {
+          return of(0);
+        }),
+        defaultIfEmpty(0),
+      );
+
+    return forkJoin({
+      expensesSum: expensesSum$,
+      incomeSum: incomeSum$,
+    }).pipe(
+      tap((result) => {
+        this.expensesSum = result.expensesSum;
+        this.incomeSum = result.incomeSum;
+      }),
+      switchMap(() => {
+        return of(undefined);
+      }),
+      catchError((err) => {
+        return throwError(() => err);
+      }),
+      finalize(() => {
+        // This runs on 'complete' and 'error'
+        this.loading = false;
+      }),
+    );
   }
 
   loadData(): Observable<void> {
@@ -191,6 +258,13 @@ export class DayComponent implements OnInit, OnDestroy {
       wpArticle: wpArticle$,
     }).pipe(
       tap((result) => {
+        const rawResult = result.weather as any;
+        if (rawResult?.['_embedded']?.['observations'][0]) {
+          this.weatherData = new WeatherObservation(
+            rawResult?.['_embedded']?.['observations'][0],
+          );
+        }
+        this.loadRandomImage(this.date);
         this.expensesSum = result.expensesSum;
         this.incomeSum = result.incomeSum;
         this.wpArticle = (result.wpArticle || []).map(
@@ -222,14 +296,6 @@ export class DayComponent implements OnInit, OnDestroy {
             };
           },
         );
-
-        const rawResult = result.weather as any;
-        if (rawResult?.['_embedded']?.['observations'][0]) {
-          this.weatherData = new WeatherObservation(
-            rawResult?.['_embedded']?.['observations'][0],
-          );
-        }
-        this.loadRandomImage(this.date);
       }),
       switchMap(() => {
         return of(undefined);
@@ -245,7 +311,7 @@ export class DayComponent implements OnInit, OnDestroy {
   }
 
   private loadRandomImage(dayString: string): void {
-    const defaultPlaceholder = 'assets/weather-placeholder.png';
+    const defaultPlaceholder = 'assets/weather-placeholder.jpg';
 
     // Helper to centralize fallback logic
     const handleFallback = (errorContext: string, details?: any) => {

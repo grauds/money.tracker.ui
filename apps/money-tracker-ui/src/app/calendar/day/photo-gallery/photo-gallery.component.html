@@ -1,5 +1,5 @@
 @if (isLoading()) {
-  <div class="loader">Looking for images...</div>
+  <!-- -->
 } @else if (hasError()) {
   <div class="gallery-error-fallback">Could not retrieve images from Immich.</div>
 } @else if (imageUrls() && imageUrls().length > 0) {

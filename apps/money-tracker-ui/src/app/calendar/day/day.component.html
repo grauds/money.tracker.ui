@@ -151,31 +151,37 @@
 
   <div class="dashboard-card">
 
-    <!-- Top Layout Split -->
-    <div class="dashboard-content-split">
-
-      <!-- Weather Panel -->
-      <header class="dashboard-header">
-        @if (weatherData) {
+    @if (weatherData) {
+      <div class="dashboard-content-split">
+        <header class="dashboard-header">
+          <!-- Weather Panel -->
           <app-weather-dashboard-panel [weatherData]="weatherData"></app-weather-dashboard-panel>
-        }
-      </header>
-
-
-      <!-- Financial Balance Widget Overview -->
-      <aside class="ledger-sidebar">
-        <div class="ledger-grid">
-          <h2 class="section-heading-accent summary-accent">Financial Summary</h2>
-          <lib-entity-balance-info
-            [loading]="loading"
-            [expensesSum]="expensesSum"
-            [incomeSum]="incomeSum"
-            [currency]="currency"
-          ></lib-entity-balance-info>
-        </div>
-      </aside>
-
-    </div>
+        </header>
+        <!-- Financial Balance Widget Overview -->
+        <aside class="ledger-sidebar">
+          <div class="ledger-grid">
+            <h2 class="section-heading-accent summary-accent">Financial Summary</h2>
+            <lib-entity-balance-info
+              [loading]="loading"
+              [expensesSum]="expensesSum ?? 0"
+              [incomeSum]="incomeSum ?? 0"
+              [currency]="currency"
+            ></lib-entity-balance-info>
+          </div>
+        </aside>
+      </div>
+    } @else {
+      <div class="dashboard-content">
+        <!-- Financial Balance Widget Overview -->
+        <h2 class="section-heading-accent summary-accent">Financial Summary</h2>
+        <lib-entity-balance-info
+          [loading]="loading"
+          [expensesSum]="expensesSum ?? 0"
+          [incomeSum]="incomeSum ?? 0"
+          [currency]="currency"
+        ></lib-entity-balance-info>
+      </div>
+    }
 
     <!-- Financial Breakdowns Section -->
     @if (expensesSum || incomeSum) {
@@ -196,6 +202,7 @@
                 [sort]="getSort()"
                 [cookieStateKey]="'day-income'"
                 [updateRouterState]="false"
+                (loading$)="setIncomeLoaded($event)"
               >
               </app-entity-list>
             </div>
@@ -217,6 +224,7 @@
                 [sort]="getSort()"
                 [cookieStateKey]="'day-expenses'"
                 [updateRouterState]="false"
+                (loading$)="setExpensesLoaded($event)"
               >
               </app-entity-list>
             </div>
@@ -229,10 +237,12 @@
     }
 
     <!-- Content Footer Media Layout -->
-    <footer class="dashboard-footer-content">
-      <app-wordpress-article [wpArticle]="wpArticle"></app-wordpress-article>
-      <app-photo-gallery [date]="date"></app-photo-gallery>
-    </footer>
+    @if (canDisplayGallery()) {
+      <footer class="dashboard-footer-content">
+        <app-wordpress-article [wpArticle]="wpArticle"></app-wordpress-article>
+        <app-photo-gallery [date]="date"></app-photo-gallery>
+      </footer>
+    }
 
   </div>
 </div>
