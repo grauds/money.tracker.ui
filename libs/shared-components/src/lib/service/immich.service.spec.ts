@@ -94,7 +94,7 @@ describe('ImmichService', () => {
       });
 
       const req = httpMock.expectOne(
-        `${mockBaseUrl}/assets/${assetId}/thumbnail?size=preview`,
+        `${mockBaseUrl}/assets/${assetId}/thumbnail?size=preview&edited=true`,
       );
       expect(req.request.method).toBe('GET');
       expect(req.request.responseType).toBe('blob');
