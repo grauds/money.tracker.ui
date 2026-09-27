@@ -41,10 +41,13 @@ export class ImmichService {
     const headers = new HttpHeaders({ 'x-api-key': this.API_KEY });
 
     return this.http
-      .get(this.getUrl(`/assets/${assetId}/thumbnail?size=preview`), {
-        headers,
-        responseType: 'blob',
-      })
+      .get(
+        this.getUrl(`/assets/${assetId}/thumbnail?size=preview&edited=true`),
+        {
+          headers,
+          responseType: 'blob',
+        },
+      )
       .pipe(map((blob: Blob) => URL.createObjectURL(blob)));
   }
 
