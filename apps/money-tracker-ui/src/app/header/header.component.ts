@@ -13,10 +13,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 import { MoneySelectorComponent } from './money-selector/money-selector.component';
-import { WorkspaceComponent } from '../workspace/workspace.component';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -34,8 +33,8 @@ import { Title } from '@angular/platform-browser';
     NgOptimizedImage,
     RouterLink,
     RouterLinkActive,
+    RouterOutlet,
     MoneySelectorComponent,
-    WorkspaceComponent,
   ],
 })
 export class HeaderComponent {

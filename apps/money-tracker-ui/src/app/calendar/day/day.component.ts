@@ -237,7 +237,8 @@ export class DayComponent implements OnInit, OnDestroy {
       const weather$: Observable<ResourceCollection<WeatherObservation>> =
         this.weatherService.getDay(this.date).pipe(
           catchError(() => {
-            const emptyCollection = new ResourceCollection<WeatherObservation>();
+            const emptyCollection =
+              new ResourceCollection<WeatherObservation>();
             emptyCollection.resources = [];
             return of(emptyCollection);
           }),
@@ -295,8 +296,8 @@ export class DayComponent implements OnInit, OnDestroy {
                   ...article.excerpt,
                   safeRendered: article.excerpt?.rendered
                     ? this.sanitizer.bypassSecurityTrustHtml(
-                      article.excerpt.rendered,
-                    )
+                        article.excerpt.rendered,
+                      )
                     : null,
                 },
               };

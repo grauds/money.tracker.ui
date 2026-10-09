@@ -93,6 +93,7 @@ import {
 import { PhotoGalleryComponent } from "./calendar/day/photo-gallery/photo-gallery.component";
 import { CalendarDayComponent } from "./calendar/day/calendar-day/calendar-day.component";
 import { WordpressArticleComponent } from "./calendar/day/wordpress-article/wordpress-article.component";
+import { TimelineComponent } from "./calendar/day/timeline/timeline.component";
 
 @NgModule({
   declarations: [
@@ -159,7 +160,8 @@ import { WordpressArticleComponent } from "./calendar/day/wordpress-article/word
     TelegramFeedComponent,
     PhotoGalleryComponent,
     CalendarDayComponent,
-    WordpressArticleComponent
+    WordpressArticleComponent,
+    TimelineComponent
   ],
   providers: [CurrencyPipe],
 })

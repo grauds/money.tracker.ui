@@ -1,0 +1,16 @@
+<aside class="timeline-sidebar" aria-label="Date timeline navigation">
+  <div class="track-line"></div>
+  <div class="segment-wrapper">
+    @for (bucket of buckets; track bucket.id) {
+      <a
+        [routerLink]="['/days', bucket.id]"
+        routerLinkActive="active"
+        class="timeline-tick"
+        [attr.title]="bucket.label">
+        <span class="year-label">{{ bucket.yearLabel || bucket.year }}</span>
+        <span class="dot"></span>
+        <span class="bubble-label">{{ bucket.label }}</span>
+      </a>
+    }
+  </div>
+</aside>

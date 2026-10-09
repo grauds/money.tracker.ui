@@ -38,15 +38,14 @@ const routes: Routes = [
     component: AboutComponent,
   },
   {
-    path: 'balance',
-    canActivate: [canActivate],
-    component: BalanceComponent,
-  },
-  {
     path: '',
     canActivate: [canActivate],
     component: WorkspaceComponent,
     children: [
+      {
+        path: 'balance',
+        component: BalanceComponent,
+      },
       {
         path: 'accounts',
         component: AccountsDashboardComponent,
