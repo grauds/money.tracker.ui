@@ -17,7 +17,7 @@ export class WorkspaceComponent implements OnInit {
   }
 
   generateTimelineBuckets(): TimelineBucket[] {
-    const startYear = 2000;
+    const startYear = 1977;
     const today = new Date();
     const currentYear = today.getFullYear();
     const todayFormatted = Utils.formatDate(today);
