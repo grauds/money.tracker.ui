@@ -31,10 +31,10 @@ describe('WorkspaceComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize timeline buckets starting from Jan 1, 2000 to the current year', () => {
+  it('should initialize timeline buckets starting from Jan 1, 1977 to the current year', () => {
     const buckets = component.timelineBuckets();
     const currentYear = new Date().getFullYear();
-    const expectedCount = currentYear - 2000 + 1;
+    const expectedCount = currentYear - 1977 + 1;
 
     expect(buckets.length).toBe(expectedCount);
 
@@ -45,9 +45,9 @@ describe('WorkspaceComponent', () => {
 
     // Earliest bucket is 2000 starting from Jan 1, 2000
     const earliestBucket = buckets[buckets.length - 1];
-    expect(earliestBucket.year).toBe(2000);
-    expect(earliestBucket.id).toBe('2000-01-01');
-    expect(earliestBucket.label).toBe('Jan 1, 2000');
-    expect(earliestBucket.yearLabel).toBe('2000');
+    expect(earliestBucket.year).toBe(1977);
+    expect(earliestBucket.id).toBe('1977-01-01');
+    expect(earliestBucket.label).toBe('Jan 1, 1977');
+    expect(earliestBucket.yearLabel).toBe('1977');
   });
 });
