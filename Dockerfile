@@ -8,23 +8,29 @@ WORKDIR /opt/software
 
 COPY .babelrc eslint.config.mjs decorate-angular-cli.js \
      jest.config.ts jest.preset.js nx.json postcss.config.json .postcssrc.json \
-     package.json package-lock.json tsconfig.base.json ./
+     package.json tsconfig.base.json ./
 
 ENV NODE_OPTIONS='--dns-result-order=ipv4first'
+
+ARG NPM_REGISTRY=https://registry.npmjs.org/
+ENV NPM_CONFIG_REGISTRY="${NPM_REGISTRY}"
 
 RUN npm config set maxsockets 5 \
  && npm config set fetch-retries 5 \
  && npm config set fetch-retry-factor 2 \
  && npm config set fetch-retry-mintimeout 20000 \
  && npm config set fetch-retry-maxtimeout 120000
-RUN npm ci --no-audit --no-fund
+
+RUN echo "NPM_CONFIG_REGISTRY=$NPM_CONFIG_REGISTRY" \
+    && npm config get registry \
+    && npm config list
+
+RUN npm i --verbose  --no-audit --no-fund
 
 COPY apps apps
 COPY libs libs
 
 ENV NX_DAEMON=false
-ARG NPM_REGISTRY=https://registry.npmjs.org/
-ENV NPM_CONFIG_REGISTRY="${NPM_REGISTRY}"
 
 RUN npx nx run-many --target=test --all --coverage --runInBand
 
@@ -38,9 +44,12 @@ WORKDIR /opt/software
 
 COPY .babelrc eslint.config.mjs decorate-angular-cli.js \
      jest.config.ts jest.preset.js nx.json postcss.config.json .postcssrc.json \
-     package.json package-lock.json tsconfig.base.json ./
+     package.json tsconfig.base.json ./
 
 ENV NODE_OPTIONS='--dns-result-order=ipv4first'
+
+ARG NPM_REGISTRY=https://registry.npmjs.org/
+ENV NPM_CONFIG_REGISTRY="${NPM_REGISTRY}"
 
 RUN npm config set maxsockets 5 \
  && npm config set fetch-retries 5 \
@@ -48,14 +57,16 @@ RUN npm config set maxsockets 5 \
  && npm config set fetch-retry-mintimeout 20000 \
  && npm config set fetch-retry-maxtimeout 120000
 
-RUN npm ci --no-audit --no-fund
+RUN echo "NPM_CONFIG_REGISTRY=$NPM_CONFIG_REGISTRY" \
+    && npm config get registry \
+    && npm config list
+
+RUN npm i --verbose  --no-audit --no-fund
 
 COPY apps apps
 COPY libs libs
 
 ENV NX_DAEMON=false
-ARG NPM_REGISTRY=https://registry.npmjs.org/
-ENV NPM_CONFIG_REGISTRY="${NPM_REGISTRY}"
 
 ARG ENVIRONMENT
 RUN npx nx run money-tracker-ui:build:${ENVIRONMENT}
