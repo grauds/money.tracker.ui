@@ -8,7 +8,7 @@ WORKDIR /opt/software
 
 COPY .babelrc eslint.config.mjs decorate-angular-cli.js \
      jest.config.ts jest.preset.js nx.json postcss.config.json .postcssrc.json \
-     package.json tsconfig.base.json ./
+     package.json package-lock.json tsconfig.base.json ./
 
 ENV NODE_OPTIONS='--dns-result-order=ipv4first'
 
@@ -25,7 +25,7 @@ RUN echo "NPM_CONFIG_REGISTRY=$NPM_CONFIG_REGISTRY" \
     && npm config get registry \
     && npm config list
 
-RUN npm i --verbose  --no-audit --no-fund
+RUN npm ci --verbose  --no-audit --no-fund
 
 COPY apps apps
 COPY libs libs
@@ -44,7 +44,7 @@ WORKDIR /opt/software
 
 COPY .babelrc eslint.config.mjs decorate-angular-cli.js \
      jest.config.ts jest.preset.js nx.json postcss.config.json .postcssrc.json \
-     package.json tsconfig.base.json ./
+     package.json package-lock.json tsconfig.base.json ./
 
 ENV NODE_OPTIONS='--dns-result-order=ipv4first'
 
@@ -61,7 +61,7 @@ RUN echo "NPM_CONFIG_REGISTRY=$NPM_CONFIG_REGISTRY" \
     && npm config get registry \
     && npm config list
 
-RUN npm i --verbose  --no-audit --no-fund
+RUN npm ci --verbose  --no-audit --no-fund
 
 COPY apps apps
 COPY libs libs
