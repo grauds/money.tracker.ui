@@ -54,24 +54,29 @@ pipeline {
 
     stage('Build Docker Images') {
       steps {
-        sh '''
+        sh """
           docker build \
-            . -t money.tracker.ui.uat -f Dockerfile --build-arg="ENVIRONMENT=uat" --build-arg="NPM_REGISTRY=${NEXUS_NPM_URL}"
+            . -t money.tracker.ui.uat -f Dockerfile \
+            --build-arg="ENVIRONMENT=uat" \
+            --build-arg="NPM_REGISTRY=${env.NEXUS_NPM_URL}"
+
           docker build \
-            . -t money.tracker.ui.demo -f Dockerfile --build-arg="ENVIRONMENT=demo" --build-arg="NPM_REGISTRY=${NEXUS_NPM_URL}"
-        '''
+            . -t money.tracker.ui.demo -f Dockerfile \
+            --build-arg="ENVIRONMENT=demo" \
+            --build-arg="NPM_REGISTRY=${env.NEXUS_NPM_URL}"
+        """
       }
     }
 
     stage('Publish tests') {
       steps {
-        sh '''
+        sh """
            export DOCKER_BUILDKIT=1
            docker build \
-              --build-arg="NPM_REGISTRY=${NEXUS_NPM_URL}" \
-              --output "type=local,dest=${WORKSPACE}/coverage" --target test-out .
+              --build-arg="NPM_REGISTRY=${env.NEXUS_NPM_URL}" \
+              --output "type=local,dest=${env.WORKSPACE}/coverage" --target test-out .
            ls -l ./coverage
-        '''
+        """
         recordCoverage(
           tools: [[parser: 'COBERTURA', pattern: 'coverage/**/cobertura-coverage.xml']],
           id: 'cobertura',
