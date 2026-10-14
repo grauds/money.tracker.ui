@@ -23,8 +23,8 @@ COPY apps apps
 COPY libs libs
 
 ENV NX_DAEMON=false
-ARG NPM_PROXY_URL=https://registry.npmjs.org/
-ENV NPM_CONFIG_REGISTRY="${NPM_PROXY_URL}"
+ARG NPM_REGISTRY=https://registry.npmjs.org/
+ENV NPM_CONFIG_REGISTRY="${NPM_REGISTRY}"
 
 RUN npx nx run-many --target=test --all --coverage --runInBand
 
@@ -46,8 +46,7 @@ RUN npm config set maxsockets 5 \
  && npm config set fetch-retries 5 \
  && npm config set fetch-retry-factor 2 \
  && npm config set fetch-retry-mintimeout 20000 \
- && npm config set fetch-retry-maxtimeout 120000  \
- && npm config set registry "${NPM_REGISTRY}"
+ && npm config set fetch-retry-maxtimeout 120000
 
 RUN npm ci --no-audit --no-fund
 
@@ -55,8 +54,8 @@ COPY apps apps
 COPY libs libs
 
 ENV NX_DAEMON=false
-ARG NPM_PROXY_URL=https://registry.npmjs.org/
-ENV NPM_CONFIG_REGISTRY="${NPM_PROXY_URL}"
+ARG NPM_REGISTRY=https://registry.npmjs.org/
+ENV NPM_CONFIG_REGISTRY="${NPM_REGISTRY}"
 
 ARG ENVIRONMENT
 RUN npx nx run money-tracker-ui:build:${ENVIRONMENT}
