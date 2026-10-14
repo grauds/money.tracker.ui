@@ -6,7 +6,7 @@ FROM node:22-bullseye AS test-image
 
 WORKDIR /opt/software
 
-COPY .babelrc .eslintignore .eslintrc.json decorate-angular-cli.js \
+COPY .babelrc eslint.config.mjs decorate-angular-cli.js \
      jest.config.ts jest.preset.js nx.json postcss.config.json .postcssrc.json \
      package.json package-lock.json tsconfig.base.json ./
 
@@ -16,15 +16,15 @@ RUN npm config set maxsockets 5 \
  && npm config set fetch-retries 5 \
  && npm config set fetch-retry-factor 2 \
  && npm config set fetch-retry-mintimeout 20000 \
- && npm config set fetch-retry-maxtimeout 120000 \
- && npm config set registry https://registry.npmjs.org/
-
+ && npm config set fetch-retry-maxtimeout 120000
 RUN npm ci --no-audit --no-fund
 
 COPY apps apps
 COPY libs libs
 
 ENV NX_DAEMON=false
+ARG NPM_PROXY_URL=https://registry.npmjs.org/
+ENV NPM_CONFIG_REGISTRY="${NPM_PROXY_URL}"
 
 RUN npx nx run-many --target=test --all --coverage --runInBand
 
@@ -36,7 +36,7 @@ FROM node:22-bullseye AS build-image
 
 WORKDIR /opt/software
 
-COPY .babelrc .eslintignore .eslintrc.json decorate-angular-cli.js \
+COPY .babelrc eslint.config.mjs decorate-angular-cli.js \
      jest.config.ts jest.preset.js nx.json postcss.config.json .postcssrc.json \
      package.json package-lock.json tsconfig.base.json ./
 
@@ -46,8 +46,8 @@ RUN npm config set maxsockets 5 \
  && npm config set fetch-retries 5 \
  && npm config set fetch-retry-factor 2 \
  && npm config set fetch-retry-mintimeout 20000 \
- && npm config set fetch-retry-maxtimeout 120000 \
- && npm config set registry https://registry.npmjs.org/
+ && npm config set fetch-retry-maxtimeout 120000  \
+ && npm config set registry "${NPM_REGISTRY}"
 
 RUN npm ci --no-audit --no-fund
 
@@ -55,6 +55,8 @@ COPY apps apps
 COPY libs libs
 
 ENV NX_DAEMON=false
+ARG NPM_PROXY_URL=https://registry.npmjs.org/
+ENV NPM_CONFIG_REGISTRY="${NPM_PROXY_URL}"
 
 ARG ENVIRONMENT
 RUN npx nx run money-tracker-ui:build:${ENVIRONMENT}

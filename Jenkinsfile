@@ -56,9 +56,9 @@ pipeline {
       steps {
         sh '''
           docker build \
-            . -t money.tracker.ui.uat -f Dockerfile --build-arg="ENVIRONMENT=uat"
+            . -t money.tracker.ui.uat -f Dockerfile --build-arg="ENVIRONMENT=uat" --build-arg="NPM_REGISTRY=${NEXUS_NPM_URL}"
           docker build \
-            . -t money.tracker.ui.demo -f Dockerfile --build-arg="ENVIRONMENT=demo"
+            . -t money.tracker.ui.demo -f Dockerfile --build-arg="ENVIRONMENT=demo" --build-arg="NPM_REGISTRY=${NEXUS_NPM_URL}"
         '''
       }
     }
@@ -68,6 +68,7 @@ pipeline {
         sh '''
            export DOCKER_BUILDKIT=1
            docker build \
+              --build-arg="NPM_REGISTRY=${NEXUS_NPM_URL}" \
               --output "type=local,dest=${WORKSPACE}/coverage" --target test-out .
            ls -l ./coverage
         '''
