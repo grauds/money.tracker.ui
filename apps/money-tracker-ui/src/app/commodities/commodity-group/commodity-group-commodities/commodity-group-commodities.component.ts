@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { CommoditiesService } from '@clematis-shared/shared-components';
 import { RequestParam, Sort } from '@lagoshny/ngx-hateoas-client';
 import { Entity } from '@clematis-shared/model';
@@ -8,6 +8,7 @@ import { Entity } from '@clematis-shared/model';
   templateUrl: './commodity-group-commodities.component.html',
   styleUrls: ['./commodity-group-commodities.component.sass'],
   providers: [{ provide: 'searchService', useClass: CommoditiesService }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class CommodityGroupCommoditiesComponent implements OnChanges {

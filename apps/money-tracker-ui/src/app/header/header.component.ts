@@ -4,6 +4,7 @@ import {
   Component,
   Input,
   inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import Keycloak, { KeycloakProfile } from 'keycloak-js';
@@ -23,6 +24,7 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.sass'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatButtonModule,
     MatIconModule,

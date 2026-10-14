@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from "@angular/core";
+import { Component, OnDestroy, ChangeDetectionStrategy } from "@angular/core";
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   HateoasResourceService,
@@ -32,6 +32,7 @@ import { Title } from '@angular/platform-browser';
     { provide: RESOURCE_TYPE, useValue: Organization },
     { provide: PARENT_RESOURCE_TYPE, useValue: OrganizationGroup },
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class OrganizationComponent

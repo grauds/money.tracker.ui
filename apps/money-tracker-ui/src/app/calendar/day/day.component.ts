@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   catchError,
@@ -44,6 +44,7 @@ const moment = _rollupMoment || _moment;
   selector: 'app-day',
   templateUrl: './day.component.html',
   styleUrl: './day.component.sass',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DayComponent implements OnInit, OnDestroy {

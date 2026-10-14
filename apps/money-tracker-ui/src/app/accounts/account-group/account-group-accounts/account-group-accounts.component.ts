@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { AccountsService, SharedComponentsModule } from '@clematis-shared/shared-components';
 import { RequestParam, Sort } from '@lagoshny/ngx-hateoas-client';
 import { Entity } from '@clematis-shared/model';
@@ -8,6 +8,7 @@ import { Entity } from '@clematis-shared/model';
   templateUrl: './account-group-accounts.component.html',
   styleUrl: './account-group-accounts.component.sass',
   providers: [{ provide: 'searchService', useClass: AccountsService }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AccountGroupAccountsComponent implements OnChanges {

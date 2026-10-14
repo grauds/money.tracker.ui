@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { Component, effect, inject, OnInit } from "@angular/core";
+import { Component, effect, inject, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { Title } from '@angular/platform-browser';
 import { InfoAbout } from '@clematis-shared/model';
 import { StatsService } from '@clematis-shared/shared-components';
@@ -16,6 +16,7 @@ import {
   selector: 'app-about',
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.sass'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AboutComponent implements OnInit {

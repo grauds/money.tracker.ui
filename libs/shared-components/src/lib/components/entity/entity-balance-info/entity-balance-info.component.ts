@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { MoneyType } from '@clematis-shared/model';
 
 @Component({
   selector: 'lib-entity-balance-info',
   templateUrl: './entity-balance-info.component.html',
   styleUrl: './entity-balance-info.component.sass',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class EntityBalanceInfoComponent {

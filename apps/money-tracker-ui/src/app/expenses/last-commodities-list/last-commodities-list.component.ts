@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Utils } from '@clematis-shared/model';
 import { LastCommodityService } from '@clematis-shared/shared-components';
@@ -8,6 +8,7 @@ import { LastCommodityService } from '@clematis-shared/shared-components';
   templateUrl: 'last-commodities-list.component.html',
   styleUrls: ['last-commodities-list.component.sass'],
   providers: [{ provide: 'searchService', useClass: LastCommodityService }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class LastCommoditiesListComponent implements OnInit {

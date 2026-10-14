@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 
@@ -21,6 +21,7 @@ interface RssResponse {
   selector: 'lib-telegram-feed',
   imports: [DatePipe],
   templateUrl: './telegram-feed.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './telegram-feed.component.sass',
 })
 export class TelegramFeedComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, HostListener, signal, computed } from "@angular/core";
+import { Component, Input, Output, EventEmitter, HostListener, signal, computed, ChangeDetectionStrategy } from "@angular/core";
 import { CommonModule, NgOptimizedImage } from "@angular/common";
 import { ImageCropperComponent, ImageCroppedEvent, ImageTransform } from 'ngx-image-cropper';
 import { StorageService } from '../../service/storage.service';
@@ -9,6 +9,7 @@ import { AuthImagePipe } from "./AuthImagePipe";
   standalone: true,
   imports: [CommonModule, ImageCropperComponent, NgOptimizedImage, AuthImagePipe, AuthImagePipe],
   templateUrl: './photo-uploader.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./photo-uploader.component.css']
 })
 export class PhotoUploaderComponent {

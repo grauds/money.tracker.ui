@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { catchError, of, Subject, Subscription, switchMap, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -18,6 +18,7 @@ import { MoneyType, MonthlyDelta } from '@clematis-shared/model';
   selector: 'app-balance',
   templateUrl: './balance.component.html',
   styleUrls: ['./balance.component.sass'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class BalanceComponent implements OnInit, OnDestroy {

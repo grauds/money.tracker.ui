@@ -33,10 +33,12 @@ import { ContentLoaderModule } from '@ngneat/content-loader';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LayoutModule } from '@angular/cdk/layout';
 
-import { provideHttpClient,
+import {
+  provideHttpClient,
   HttpErrorResponse,
   HttpInterceptorFn,
-  withInterceptors
+  withInterceptors,
+  withXhr
 } from "@angular/common/http";
 import { provideAnimations } from '@angular/platform-browser/animations';
 
@@ -173,7 +175,7 @@ bootstrapApplication(AppComponent, {
       provide: ENVIRONMENT,
       useValue: environment,
     },
-    provideHttpClient(
+    provideHttpClient(withXhr(), 
       withInterceptors([authRecoveryInterceptor, includeBearerTokenInterceptor])
     )
   ],

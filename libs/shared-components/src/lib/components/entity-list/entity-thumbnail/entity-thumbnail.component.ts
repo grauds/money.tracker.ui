@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Entity } from '@clematis-shared/model';
 import { RouterLink } from '@angular/router';
 import { AsyncPipe, NgClass } from '@angular/common';
@@ -10,6 +10,7 @@ import { StorageService } from "../../../service/storage.service";
   standalone: true,
   templateUrl: './entity-thumbnail.component.html',
   styleUrls: ['./entity-thumbnail.component.sass'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterLink,
     AsyncPipe,

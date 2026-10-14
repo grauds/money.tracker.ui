@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { WordPressArticle } from '@clematis-shared/model';
 
@@ -6,6 +6,7 @@ import { WordPressArticle } from '@clematis-shared/model';
   selector: 'lib-wordpress-article',
   templateUrl: './wordpress-article.component.html',
   styleUrl: './wordpress-article.component.sass',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class WordpressArticleComponent {

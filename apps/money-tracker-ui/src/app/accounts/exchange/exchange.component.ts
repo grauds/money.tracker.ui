@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { PagedResourceCollection, Sort } from '@lagoshny/ngx-hateoas-client';
 import { MoneyExchange, MoneyExchangeReport, MoneyType } from '@clematis-shared/model';
 
@@ -20,6 +20,7 @@ import {
   templateUrl: './exchange.component.html',
   styleUrls: ['./exchange.component.sass'],
   providers: [{ provide: 'searchService', useClass: MoneyExchangeService }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ExchangeComponent implements OnInit, OnDestroy {

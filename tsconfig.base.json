@@ -30,7 +30,10 @@
         "libs/shared-components/src/index.ts"
       ]
     },
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "noUncheckedSideEffectImports": false,
+    "types": ["*"],
+    "ignoreDeprecations": "6.0"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

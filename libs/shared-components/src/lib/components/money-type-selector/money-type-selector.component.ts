@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { MoneyType } from '@clematis-shared/model';
 
 @Component({
   selector: 'app-money-type-selector',
   templateUrl: './money-type-selector.component.html',
   styleUrls: ['./money-type-selector.component.sass'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class MoneyTypeSelectorComponent {

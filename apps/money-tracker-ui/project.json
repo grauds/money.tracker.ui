@@ -14,6 +14,7 @@
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "default",
       "options": {
         "outputPath": "dist/apps/money-tracker-ui",
         "index": "apps/money-tracker-ui/src/index.html",
@@ -123,11 +124,11 @@
           "sourceMap": true,
           "namedChunks": true
         }
-      },
-      "defaultConfiguration": "default"
+      }
     },
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
+      "defaultConfiguration": "development",
       "configurations": {
         "default": {
           "buildTarget": "money-tracker-ui:build:default"
@@ -148,8 +149,7 @@
         "development": {
           "buildTarget": "money-tracker-ui:build:development"
         }
-      },
-      "defaultConfiguration": "development"
+      }
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",

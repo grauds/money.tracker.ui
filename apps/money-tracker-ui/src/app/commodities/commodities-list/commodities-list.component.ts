@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { CommoditiesService } from '@clematis-shared/shared-components';
 
@@ -7,6 +7,7 @@ import { CommoditiesService } from '@clematis-shared/shared-components';
   templateUrl: 'commodities-list.component.html',
   styleUrls: ['commodities-list.component.sass'],
   providers: [{ provide: 'searchService', useClass: CommoditiesService }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class CommoditiesListComponent implements OnInit {

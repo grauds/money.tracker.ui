@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { CommodityGroupsService } from '@clematis-shared/shared-components';
 
@@ -7,6 +7,7 @@ import { CommodityGroupsService } from '@clematis-shared/shared-components';
   templateUrl: 'commodity-group-list.component.html',
   styleUrls: ['commodity-group-list.component.sass'],
   providers: [{ provide: 'searchService', useClass: CommodityGroupsService }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class CommodityGroupListComponent implements OnInit {

@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Entity } from '@clematis-shared/model';
 
 @Component({
   selector: 'app-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.sass'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class BreadcrumbsComponent {

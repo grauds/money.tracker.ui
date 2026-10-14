@@ -3,7 +3,7 @@ import {
   HttpTestingController,
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { ImmichService } from './immich.service';
 import { EnvironmentService } from './environment.service';
 import { ImmichAsset } from './immich.models';
@@ -30,7 +30,7 @@ describe('ImmichService', () => {
     TestBed.configureTestingModule({
       providers: [
         ImmichService,
-        provideHttpClient(),
+        provideHttpClient(withXhr()),
         provideHttpClientTesting(),
         { provide: EnvironmentService, useValue: environmentServiceMock },
       ],

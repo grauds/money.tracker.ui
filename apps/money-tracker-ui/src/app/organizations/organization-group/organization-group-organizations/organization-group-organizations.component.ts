@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { OrganizationsService } from '@clematis-shared/shared-components';
 import { RequestParam, Sort } from '@lagoshny/ngx-hateoas-client';
 import { Entity } from '@clematis-shared/model';
@@ -8,6 +8,7 @@ import { Entity } from '@clematis-shared/model';
   templateUrl: './organization-group-organizations.component.html',
   styleUrls: ['./organization-group-organizations.component.sass'],
   providers: [{ provide: 'searchService', useClass: OrganizationsService }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class OrganizationGroupOrganizationsComponent implements OnChanges {

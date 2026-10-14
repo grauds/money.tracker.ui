@@ -1,5 +1,5 @@
 import { IncomeItem } from '@clematis-shared/model';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { RequestParam } from '@lagoshny/ngx-hateoas-client';
 import { IncomeItemsService } from '../../../service/income-items.service';
@@ -8,6 +8,7 @@ import { IncomeItemsService } from '../../../service/income-items.service';
   selector: 'app-entity-income',
   templateUrl: './entity-income.component.html',
   styleUrls: ['./entity-income.component.sass'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class EntityIncomeComponent {

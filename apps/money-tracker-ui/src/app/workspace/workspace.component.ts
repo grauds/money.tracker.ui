@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Utils } from '@clematis-shared/model';
 import { TimelineBucket, TimelineComponent } from '../calendar/day/timeline/timeline.component';
@@ -7,6 +7,7 @@ import { TimelineBucket, TimelineComponent } from '../calendar/day/timeline/time
   selector: 'app-workspace',
   templateUrl: './workspace.component.html',
   styleUrls: ['./workspace.component.sass'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterOutlet, TimelineComponent],
 })
 export class WorkspaceComponent implements OnInit {

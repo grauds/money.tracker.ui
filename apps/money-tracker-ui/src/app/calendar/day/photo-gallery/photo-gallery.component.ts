@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, signal } from '@angular/core';
+import { Component, effect, inject, input, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { ImmichService } from '@clematis-shared/shared-components';
@@ -8,6 +8,7 @@ import { ImmichService } from '@clematis-shared/shared-components';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './photo-gallery.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './photo-gallery.component.sass',
 })
 export class PhotoGalleryComponent {

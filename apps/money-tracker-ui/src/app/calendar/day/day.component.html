@@ -29,7 +29,7 @@
     <ng-container matColumnDef="price">
       <th mat-header-cell *matHeaderCellDef>Total</th>
       <td mat-cell *matCellDef="let element">
-        {{ element.total | currencySpace : element.income.moneyType?.code : 'symbol' }}
+        {{ element.total | currencySpace : $safeNavigationMigration(element.income.moneyType?.code) : 'symbol' }}
       </td>
     </ng-container>
 
@@ -88,7 +88,7 @@
     <ng-container matColumnDef="price">
       <th mat-header-cell mat-sort-header="price" *matHeaderCellDef>Price</th>
       <td mat-cell *matCellDef="let element">
-        {{ element.price | currencySpace : element.expense.moneyType?.code : 'symbol' }}
+        {{ element.price | currencySpace : $safeNavigationMigration(element.expense.moneyType?.code) : 'symbol' }}
       </td>
     </ng-container>
 

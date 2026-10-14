@@ -37,7 +37,7 @@
     <ng-container matColumnDef="price">
       <th mat-header-cell *matHeaderCellDef>Total</th>
       <td mat-cell *matCellDef="let element">
-        {{ element.total | currencySpace : element.income.moneyType?.code : 'symbol' }}
+        {{ element.total | currencySpace : $safeNavigationMigration(element.income.moneyType?.code) : 'symbol' }}
       </td>
     </ng-container>
 

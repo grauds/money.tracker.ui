@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Sort } from '@lagoshny/ngx-hateoas-client';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -18,6 +18,7 @@ const moment = _rollupMoment || _moment;
   templateUrl: 'expenses-list.component.html',
   styleUrls: ['expenses-list.component.sass'],
   providers: [{ provide: 'searchService', useClass: ExpenseItemsService }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ExpensesListComponent implements OnInit, OnDestroy {

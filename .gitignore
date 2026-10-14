@@ -58,3 +58,6 @@ Thumbs.db
 /apps/money-tracker-ui/jenkins/localhost.crt
 /apps/money-tracker-ui/jenkins/localhost.key
 /apps/money-tracker-ui/jenkins/nginx-local.conf
+
+.claude/worktrees
+.claude/settings.local.json

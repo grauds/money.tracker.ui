@@ -65,7 +65,7 @@
       <th mat-header-cell *matHeaderCellDef>Delta</th>
       <td mat-cell *matCellDef="let element">
         <span [style.color]="element.delta >= 0 ? 'green' : 'darkred'">
-          <b>{{ element.delta | currencySpace : element.moneyType?.code : 'symbol' }}</b>
+          <b>{{ element.delta | currencySpace : $safeNavigationMigration(element.moneyType?.code) : 'symbol' }}</b>
         </span>
       </td>
     </ng-container>

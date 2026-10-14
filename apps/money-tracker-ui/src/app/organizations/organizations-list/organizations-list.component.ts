@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { OrganizationsService } from '@clematis-shared/shared-components';
 
@@ -7,6 +7,7 @@ import { OrganizationsService } from '@clematis-shared/shared-components';
   templateUrl: 'organizations-list.component.html',
   styleUrls: ['organizations-list.component.sass'],
   providers: [{ provide: 'searchService', useClass: OrganizationsService }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class OrganizationsListComponent implements OnInit {

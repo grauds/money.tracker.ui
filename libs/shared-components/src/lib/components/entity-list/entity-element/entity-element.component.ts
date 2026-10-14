@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Entity } from '@clematis-shared/model';
 import { Router } from '@angular/router';
 
@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
   selector: 'app-entity-element',
   templateUrl: './entity-element.component.html',
   styleUrls: ['./entity-element.component.sass'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class EntityElementComponent<T extends Entity> implements OnInit {

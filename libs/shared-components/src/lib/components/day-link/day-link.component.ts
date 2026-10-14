@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-day-link',
@@ -8,6 +8,7 @@ import { Component, Input } from '@angular/core';
       {{ date | date: displayFormat }}
     </a>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class DayLinkComponent {

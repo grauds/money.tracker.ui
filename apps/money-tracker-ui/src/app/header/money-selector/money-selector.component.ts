@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MoneyType } from '@clematis-shared/model';
 import { HateoasResourceService } from '@lagoshny/ngx-hateoas-client';
 import { Subscription, combineLatest } from 'rxjs';
@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
   templateUrl: './money-selector.component.html',
   styleUrls: ['./money-selector.component.sass'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatFormFieldModule, MatOptionModule, MatSelectModule],
 })
 export class MoneySelectorComponent implements OnInit, OnDestroy {

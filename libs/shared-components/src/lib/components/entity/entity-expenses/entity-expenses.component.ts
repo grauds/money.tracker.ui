@@ -1,5 +1,5 @@
 import { ExpenseItem } from '@clematis-shared/model';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { RequestParam } from '@lagoshny/ngx-hateoas-client';
 import { ExpenseItemsService } from '../../../service/expense-items.service';
@@ -8,6 +8,7 @@ import { ExpenseItemsService } from '../../../service/expense-items.service';
   selector: 'app-entity-expenses',
   templateUrl: './entity-expenses.component.html',
   styleUrls: ['./entity-expenses.component.sass'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class EntityExpensesComponent {

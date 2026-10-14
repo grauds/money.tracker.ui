@@ -1,4 +1,4 @@
-import { Component, effect, inject } from "@angular/core";
+import { Component, effect, inject, ChangeDetectionStrategy } from "@angular/core";
 import { ActivatedRoute, Router } from '@angular/router';
 import { Utils } from '@clematis-shared/model';
 import { HttpParams } from '@angular/common/http';
@@ -19,6 +19,7 @@ import Keycloak, { KeycloakProfile } from 'keycloak-js';
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [HeaderComponent]
 })
 export class AppComponent {

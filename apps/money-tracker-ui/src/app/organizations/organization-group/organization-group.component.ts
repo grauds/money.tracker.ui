@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   HateoasResourceService,
@@ -29,6 +29,7 @@ import { Title } from '@angular/platform-browser';
     { provide: RESOURCE_TYPE, useValue: OrganizationGroup },
     { provide: PARENT_RESOURCE_TYPE, useValue: OrganizationGroup },
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class OrganizationGroupComponent extends EntityComponent<

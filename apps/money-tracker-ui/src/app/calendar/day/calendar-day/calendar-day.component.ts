@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe, UpperCasePipe } from '@angular/common';
 
 @Component({
@@ -8,6 +8,7 @@ import { DatePipe, UpperCasePipe } from '@angular/common';
     UpperCasePipe
   ],
   templateUrl: './calendar-day.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './calendar-day.component.sass',
 })
 export class CalendarDayComponent {

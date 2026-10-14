@@ -9,7 +9,8 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  TemplateRef
+  TemplateRef,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
@@ -108,6 +109,7 @@ interface EntityGridState {
   templateUrl: './entity-list.component.html',
   styleUrls: ['./entity-list.component.sass'],
   providers: [EntityListPersistenceService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class EntityListComponent<T extends Entity>

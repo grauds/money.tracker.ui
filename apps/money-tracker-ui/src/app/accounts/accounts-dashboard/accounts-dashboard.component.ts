@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AccountBalance, MoneyType } from '@clematis-shared/model';
 import { Subject } from 'rxjs';
 import {
@@ -15,6 +15,7 @@ import {
   templateUrl: './accounts-dashboard.component.html',
   styleUrls: ['./accounts-dashboard.component.sass'],
   providers: [{ provide: 'searchService', useClass: AccountsService }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AccountsDashboardComponent implements OnInit, OnDestroy {

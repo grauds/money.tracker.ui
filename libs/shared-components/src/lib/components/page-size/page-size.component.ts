@@ -6,6 +6,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -13,6 +14,7 @@ import { Router } from '@angular/router';
   selector: 'app-page-size',
   templateUrl: './page-size.component.html',
   styleUrls: ['./page-size.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class PageSizeComponent implements OnInit, OnChanges {

@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from "@angular/core";
+import { Component, OnDestroy, ChangeDetectionStrategy } from "@angular/core";
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   HateoasResourceService,
@@ -38,6 +38,7 @@ import {
   ],
   templateUrl: './commodity.component.html',
   styleUrls: ['./commodity.component.sass'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class CommodityComponent

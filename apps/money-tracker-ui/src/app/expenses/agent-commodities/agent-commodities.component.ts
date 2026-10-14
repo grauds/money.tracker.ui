@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { BehaviorSubject, combineLatest, Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
@@ -33,6 +33,7 @@ export const MY_FORMATS = {
   selector: 'app-agent-commodities',
   templateUrl: './agent-commodities.component.html',
   styleUrl: './agent-commodities.component.sass',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AgentCommoditiesComponent implements OnInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { OrganizationGroupsService } from '@clematis-shared/shared-components';
 
@@ -9,6 +9,7 @@ import { OrganizationGroupsService } from '@clematis-shared/shared-components';
   providers: [
     { provide: 'searchService', useClass: OrganizationGroupsService },
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class OrganizationGroupListComponent implements OnInit {

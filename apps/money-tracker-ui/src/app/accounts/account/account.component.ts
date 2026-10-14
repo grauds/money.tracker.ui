@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
   EntityComponent,
   EntityService, ExpenseItemsService, IncomeItemsService, MoneyTypeService,
@@ -25,6 +25,7 @@ import { Title } from '@angular/platform-browser';
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.sass',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AccountComponent extends EntityComponent<Account, AccountGroup> {

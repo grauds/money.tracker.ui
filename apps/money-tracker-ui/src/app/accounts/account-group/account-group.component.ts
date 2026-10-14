@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import {
   AccountGroupService,
   EntityComponent,
@@ -23,6 +23,7 @@ import { Title } from '@angular/platform-browser';
     { provide: RESOURCE_TYPE, useValue: AccountGroup },
     { provide: PARENT_RESOURCE_TYPE, useValue: AccountGroup },
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AccountGroupComponent extends EntityComponent<

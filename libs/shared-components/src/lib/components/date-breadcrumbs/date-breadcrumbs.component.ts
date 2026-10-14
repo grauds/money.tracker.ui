@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 
 export interface BreadcrumbItem {
   label: string;
@@ -9,6 +9,7 @@ export interface BreadcrumbItem {
   selector: 'lib-date-breadcrumbs',
   templateUrl: './date-breadcrumbs.component.html',
   styleUrl: './date-breadcrumbs.component.sass',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DateBreadcrumbsComponent implements OnChanges {

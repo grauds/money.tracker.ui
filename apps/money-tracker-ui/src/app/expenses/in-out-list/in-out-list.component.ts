@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subject, takeUntil } from 'rxjs';
 import {
@@ -15,6 +15,7 @@ import {
   selector: 'app-in-out-list',
   templateUrl: './in-out-list.component.html',
   styleUrls: ['./in-out-list.component.sass'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class InOutListComponent implements OnInit, OnDestroy {
