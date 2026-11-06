@@ -9,7 +9,7 @@ import {
 import { AuthGuardData, createAuthGuard } from "keycloak-angular";
 import Keycloak from 'keycloak-js';
 
-const isAccessAllowed =  async (
+export const isAccessAllowed = async (
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
     authData: AuthGuardData

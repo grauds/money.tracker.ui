@@ -29,7 +29,7 @@
     <ng-container matColumnDef="price">
       <th mat-header-cell *matHeaderCellDef>Total</th>
       <td mat-cell *matCellDef="let element">
-        {{ element.total | currencySpace : $safeNavigationMigration(element.income.moneyType?.code) : 'symbol' }}
+        {{ element.total | currencySpace : (element.income.moneyType?.code) : 'symbol' }}
       </td>
     </ng-container>
 
@@ -88,7 +88,7 @@
     <ng-container matColumnDef="price">
       <th mat-header-cell mat-sort-header="price" *matHeaderCellDef>Price</th>
       <td mat-cell *matCellDef="let element">
-        {{ element.price | currencySpace : $safeNavigationMigration(element.expense.moneyType?.code) : 'symbol' }}
+        {{ element.price | currencySpace : element.expense.moneyType?.code : 'symbol' }}
       </td>
     </ng-container>
 
@@ -152,6 +152,10 @@
   <app-calendar-day [date]="date"></app-calendar-day>
 
   <div class="dashboard-card">
+
+    <div class="dashboard-content">
+      <app-wordpress-article [wpArticle]="wpArticle"></app-wordpress-article>
+    </div>
 
     @if (weatherData) {
       <div class="dashboard-content-split">
@@ -239,12 +243,9 @@
     }
 
     <!-- Content Footer Media Layout -->
-    @if (canDisplayGallery()) {
-      <footer class="dashboard-footer-content">
-        <app-wordpress-article [wpArticle]="wpArticle"></app-wordpress-article>
-        <app-photo-gallery [date]="date"></app-photo-gallery>
-      </footer>
-    }
+    <footer class="dashboard-footer-content">
+      <app-photo-gallery [date]="date"></app-photo-gallery>
+    </footer>
 
   </div>
 </div>
