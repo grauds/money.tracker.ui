@@ -63,7 +63,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgxEchartsModule } from 'ngx-echarts';
 
-import { catchError, throwError } from 'rxjs';
+import { catchError, EMPTY, throwError } from 'rxjs';
 
 import { appRoutes as routes } from './routes';
 import { AppModule } from "./app/app.module";
@@ -106,6 +106,10 @@ const authRecoveryInterceptor: HttpInterceptorFn = (request, next) => {
           .then((loginUrl) => {
             window.location.replace(loginUrl);
           });
+
+        // Page is redirecting to login — don't propagate the error
+        // to avoid the error dialog flashing before the redirect.
+        return EMPTY;
       }
 
       return throwError(() => error);
@@ -175,7 +179,7 @@ bootstrapApplication(AppComponent, {
       provide: ENVIRONMENT,
       useValue: environment,
     },
-    provideHttpClient(withXhr(), 
+    provideHttpClient(withXhr(),
       withInterceptors([authRecoveryInterceptor, includeBearerTokenInterceptor])
     )
   ],
