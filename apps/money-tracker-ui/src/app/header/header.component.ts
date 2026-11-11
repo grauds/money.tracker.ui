@@ -1,4 +1,4 @@
-import { NgOptimizedImage } from '@angular/common';
+import { DatePipe, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -37,10 +37,13 @@ import { Title } from '@angular/platform-browser';
     RouterLinkActive,
     RouterOutlet,
     MoneySelectorComponent,
+    DatePipe,
   ],
 })
 export class HeaderComponent {
-  // the header of the application
+
+  today = new Date();
+
   @Input() title = '';
 
   pageTitle = '';
@@ -86,11 +89,7 @@ export class HeaderComponent {
 
   getUserInfo() {
     if (this.userProfile) {
-      return (
-        this.userProfile.firstName +
-        ' ' +
-        this.userProfile.lastName
-      );
+      return this.userProfile.firstName + ' ' + this.userProfile.lastName;
     } else {
       return '';
     }

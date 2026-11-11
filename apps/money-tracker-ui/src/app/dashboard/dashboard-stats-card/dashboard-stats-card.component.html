@@ -1,0 +1,37 @@
+<div
+  class="stats-card"
+  [style.--card-color]="color"
+  [style.--card-bg]="bg"
+  [class.positive]="positive"
+  [class.negative]="negative"
+  [class.neutral]="!positive && !negative && !highlight"
+  [class.highlight]="highlight"
+  [class.is-loading]="loading"
+>
+  <div class="stats-card-header">
+    <span class="stats-card-title">{{ title }}</span>
+    <span class="status-dot" aria-hidden="true"></span>
+  </div>
+
+  @if (loading) {
+    <div class="stats-card-skeleton" aria-busy="true" aria-label="Loading">
+      <div class="skeleton-line skeleton-value"></div>
+      <div class="skeleton-line skeleton-subtitle"></div>
+    </div>
+  } @else {
+    <div class="stats-card-body">
+      @if (value !== undefined && value !== null) {
+        <div class="stats-card-value" [title]="value | currency: currencyCode">
+          @if (showSign && value > 0) {+}
+          {{ value | currency: currencyCode }}
+        </div>
+      } @else if (info) {
+        <div class="stats-card-value" [title]="info">{{ info }}</div>
+      } @else {
+        <div class="stats-card-value is-empty">—</div>
+      }
+
+      <div class="stats-card-subtitle">{{ subtitle || '\u00A0' }}</div>
+    </div>
+  }
+</div>

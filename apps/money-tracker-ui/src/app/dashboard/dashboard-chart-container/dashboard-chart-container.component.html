@@ -1,0 +1,13 @@
+<section class="chart-panel">
+  <div class="chart-panel-header">
+    <h3 class="chart-panel-title">{{ title }}</h3>
+  </div>
+  <div class="chart-panel-body">
+    <div echarts [options]="options" class="chart" [loading]="loading"></div>
+    @if (loading) {
+      <div class="chart-loading-overlay">
+        <mat-progress-spinner mode="indeterminate" diameter="30"></mat-progress-spinner>
+      </div>
+    }
+  </div>
+</section>

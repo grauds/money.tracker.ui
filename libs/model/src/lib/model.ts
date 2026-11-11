@@ -34,3 +34,12 @@ export { SearchStringMode } from '../dto/search-string-mode';
 export { Page } from '../dto/page';
 export type { HttpError } from '../model/http-error';
 export { Utils } from '../utils/utils';
+
+export type { DashboardStats } from '../dto/dashboard-stats';
+export type { MonthlyTrend } from '../dto/monthly-trend';
+export type { CommodityPopularity } from '../dto/commodity-popularity';
+export type { OrganizationSpending } from '../dto/organization-spending';
+export type { CurrencyExchangeStat } from '../dto/currency-exchange-stat';
+export type { DashboardDelta } from '../dto/dashboard-delta';
+export type { IncomeByCurrency } from '../dto/income-by-currency';
+export type { ExpenseByCurrency } from '../dto/expense-by-currency';

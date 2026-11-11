@@ -2,7 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { InfoAbout } from '@clematis-shared/model';
+import {
+  CommodityPopularity,
+  CurrencyExchangeStat,
+  InfoAbout,
+  MonthlyTrend,
+  OrganizationSpending,
+} from '@clematis-shared/model';
 
 import { EnvironmentService } from './environment.service';
 
@@ -19,6 +25,33 @@ export class StatsService {
 
   getInfoAbout(): Observable<InfoAbout> {
     return this.http.get<InfoAbout>(this.getUrl('/about'));
+  }
+
+  getMonthlyTrend(code: string): Observable<MonthlyTrend[]> {
+    return this.http.get<MonthlyTrend[]>(this.getUrl('/stats/monthlyTrend'), {
+      params: { code },
+    });
+  }
+
+  getCommodityPopularity(code: string): Observable<CommodityPopularity[]> {
+    return this.http.get<CommodityPopularity[]>(
+      this.getUrl('/stats/commodityPopularity'),
+      { params: { code } }
+    );
+  }
+
+  getOrganizationSpending(code: string): Observable<OrganizationSpending[]> {
+    return this.http.get<OrganizationSpending[]>(
+      this.getUrl('/stats/organizationSpending'),
+      { params: { code } }
+    );
+  }
+
+  getCurrencyExchangeStats(code: string): Observable<CurrencyExchangeStat[]> {
+    return this.http.get<CurrencyExchangeStat[]>(
+      this.getUrl('/stats/currencyExchangeStat'),
+      { params: { code } }
+    );
   }
 
   getUrl(url: string): string {

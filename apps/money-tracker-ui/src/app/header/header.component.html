@@ -109,13 +109,23 @@
   <!-- The content area container transforms into a static, locked viewport column -->
   <mat-sidenav-content class="main-content-area">
     <mat-toolbar color="primary" class="mat-elevation-z3 compact-toolbar">
+
       <div class="brand-container">
         <span class="brand-title">Clematis</span>
         <span class="brand-subtitle">MONEY TRACKER</span>
       </div>
+
+      <span class="header-spacer"></span>
+
+      <div class="masthead-left">
+        <span class="masthead-day">{{ today | date:'EEEE' }}</span>
+        <span class="masthead-date">{{ today | date:'MMMM d, y' }}</span>
+      </div>
+
       <span class="header-spacer"></span>
 
       <app-money-selector></app-money-selector>
+
       <span class="header-spacer"></span>
 
       @if (isLoggedIn) {

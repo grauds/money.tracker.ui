@@ -30,7 +30,9 @@ import { CommoditiesService } from './service/commodities.service';
 import { CommodityGroupsService } from './service/commodity-groups.service';
 import { OrganizationGroupsService } from './service/organization-groups.service';
 import { ExpenseItemsService } from './service/expense-items.service';
+import { ExpenseService } from './service/expense.service';
 import { IncomeItemsService } from './service/income-items.service';
+import { IncomeService } from './service/income.service';
 import { StatsService } from './service/stats.service';
 import { EntityService } from './service/entity.service';
 
@@ -142,7 +144,9 @@ import { WordpressArticleComponent } from './components/wordpress-article/wordpr
     CommodityGroupsService,
     OrganizationGroupsService,
     ExpenseItemsService,
+    ExpenseService,
     IncomeItemsService,
+    IncomeService,
     InOutService,
     LastCommodityService,
     MoneyExchangeService,

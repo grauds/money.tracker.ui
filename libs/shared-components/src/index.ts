@@ -38,7 +38,9 @@ export { CommoditiesService } from './lib/service/commodities.service';
 export { CommodityGroupService } from './lib/service/commodity-group.service';
 export { CommodityGroupsService } from './lib/service/commodity-groups.service';
 export { OrganizationGroupsService } from './lib/service/organization-groups.service';
+export { ExpenseService } from './lib/service/expense.service';
 export { ExpenseItemsService } from './lib/service/expense-items.service';
+export { IncomeService } from './lib/service/income.service';
 export { IncomeItemsService } from './lib/service/income-items.service';
 export { InOutService } from './lib/service/in-out.service';
 export { LastCommodityService } from './lib/service/last-commodity.service';
@@ -50,6 +52,7 @@ export type { ImmichAsset } from './lib/service/immich.models';
 
 export { DayService } from './lib/service/day.service';
 export { StatsService } from './lib/service/stats.service';
+export { DashboardService } from './lib/service/dashboard.service';
 export { StorageService } from './lib/service/storage.service';
 export { WeatherService } from './lib/service/weather.service';
 export { WordpressService } from './lib/service/wordpress.service';

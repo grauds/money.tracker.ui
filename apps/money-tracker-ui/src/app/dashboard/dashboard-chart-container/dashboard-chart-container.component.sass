@@ -1,0 +1,41 @@
+.chart-panel
+  margin-bottom: 12px
+  background: #fff
+  border: 1px solid #ddd
+
+  &:last-child
+    margin-bottom: 0
+
+  .chart-panel-header
+    padding: 6px 10px
+    border-bottom: 1px solid #eee
+    display: flex
+    align-items: baseline
+    gap: 8px
+    background: #fafafa
+
+  .chart-panel-title
+    font-family: Georgia, serif
+    font-size: 10px
+    font-weight: 900
+    letter-spacing: 1.5px
+    text-transform: uppercase
+    margin: 0
+    color: #1a1a1a
+
+  .chart-panel-body
+    padding: 8px 10px
+    position: relative
+
+.chart
+  width: 100%
+  height: 200px
+
+.chart-loading-overlay
+  position: absolute
+  inset: 0
+  display: flex
+  align-items: center
+  justify-content: center
+  background: rgba(255, 255, 255, 0.7)
+  z-index: 10

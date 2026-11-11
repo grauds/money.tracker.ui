@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, of, switchMap } from 'rxjs';
 import {
   HateoasResourceService,
@@ -21,7 +20,6 @@ import { EnvironmentService } from './environment.service';
 @Injectable()
 export class IncomeItemsService extends SearchService<IncomeItem> {
   constructor(
-    private http: HttpClient,
     private hateoasService: HateoasResourceService,
     override environmentService: EnvironmentService
   ) {

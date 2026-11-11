@@ -49,7 +49,6 @@ Thumbs.db
 .nx/cache
 .nx/
 /.nx/
-/.vscode/
 
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
@@ -59,5 +58,6 @@ Thumbs.db
 /apps/money-tracker-ui/jenkins/localhost.key
 /apps/money-tracker-ui/jenkins/nginx-local.conf
 
-.claude/worktrees
-.claude/settings.local.json
+/.claude/
+/.ai/
+/.gigacode/

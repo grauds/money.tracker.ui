@@ -62,6 +62,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import {
   CurrencySpacePipe,
@@ -95,6 +96,13 @@ import { CalendarDayComponent } from "./calendar/day/calendar-day/calendar-day.c
 import { WordpressArticleComponent } from "./calendar/day/wordpress-article/wordpress-article.component";
 import { TimelineComponent } from "./calendar/day/timeline/timeline.component";
 
+// Dashboard
+import {
+  DashboardComponent,
+  DashboardStatsCardComponent,
+  DashboardChartContainerComponent,
+} from './dashboard';
+
 @NgModule({
   declarations: [
     AccountComponent,
@@ -122,6 +130,10 @@ import { TimelineComponent } from "./calendar/day/timeline/timeline.component";
     OrganizationGroupOrganizationsComponent,
     IncomeMonthlyComponent,
     AgentCommoditiesComponent,
+    // Dashboard
+    DashboardComponent,
+    DashboardStatsCardComponent,
+    DashboardChartContainerComponent,
   ],
   imports: [
     HttpClientModule,
@@ -150,6 +162,7 @@ import { TimelineComponent } from "./calendar/day/timeline/timeline.component";
     MatDatepickerModule,
     MatMomentDateModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
     MatCheckboxModule,
     ReactiveFormsModule,
     RouterLink,
