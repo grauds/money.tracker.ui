@@ -101,6 +101,7 @@ import {
   DashboardComponent,
   DashboardStatsCardComponent,
   DashboardChartContainerComponent,
+  CashFlowPoolComponent,
 } from './dashboard';
 
 @NgModule({
@@ -142,7 +143,7 @@ import {
     FontAwesomeModule,
     FormsModule,
     NgxEchartsModule.forRoot({
-      echarts: () => import("echarts")
+      echarts: () => import('echarts')
     }),
     NgxHateoasClientModule.forRoot(),
     LayoutModule,
@@ -174,7 +175,8 @@ import {
     PhotoGalleryComponent,
     CalendarDayComponent,
     WordpressArticleComponent,
-    TimelineComponent
+    TimelineComponent,
+    CashFlowPoolComponent
   ],
   providers: [CurrencyPipe],
 })

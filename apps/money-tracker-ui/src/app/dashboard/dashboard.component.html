@@ -1,4 +1,4 @@
-<section class="stats-strip">
+<!--section class="stats-strip">
   <app-dashboard-stats-card
     title="INCOME"
     [value]="totalIncome"
@@ -32,109 +32,117 @@
     [highlight]="true"
     [loading]="infoLoading"
   ></app-dashboard-stats-card>
-</section>
+</section-->
 
+<div class="content-grid">
 
-<!-- =================================================================== -->
-  <!-- MAIN CONTENT                                                          -->
-  <!-- =================================================================== -->
-  <div class="content-grid">
+  <!-- LEFT COLUMN -->
+  <div class="col-main">
 
-    <!-- LEFT COLUMN -->
-    <div class="col-main">
+    <!-- Monthly Trends >
+    <app-dashboard-chart--
+      title="MONTHLY TREND"
+      [options]="monthlyTrendChart"
+      [loading]="trendsLoading"
+    ></app-dashboard-chart-->
 
-      <!-- Monthly Trends >
-      <app-dashboard-chart--
-        title="MONTHLY TREND"
-        [options]="monthlyTrendChart"
-        [loading]="trendsLoading"
-      ></app-dashboard-chart-->
-
-      <!-- Top Commodities Table >
-      <section-- class="panel">
-        <div class="panel-header">
-          <h2 class="panel-title">TOP COMMODITIES</h2>
-          <span class="panel-subtitle">By purchase frequency</span>
-        </div>
-        <div class="panel-body">
-          @if (commodityLoading) {
-            <div class="chart-loading"><mat-progress-spinner mode="indeterminate" diameter="30"></mat-progress-spinner></div>
-          } @else if (commodityPopularity.length > 0) {
-            <table class="data-table">
-              <thead>
+    <!-- Top Commodities Table >
+    <section-- class="panel">
+      <div class="panel-header">
+        <h2 class="panel-title">TOP COMMODITIES</h2>
+        <span class="panel-subtitle">By purchase frequency</span>
+      </div>
+      <div class="panel-body">
+        @if (commodityLoading) {
+          <div class="chart-loading"><mat-progress-spinner mode="indeterminate" diameter="30"></mat-progress-spinner></div>
+        } @else if (commodityPopularity.length > 0) {
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th class="col-rank">#</th>
+                <th class="col-name">Commodity</th>
+                <th class="col-group">Group</th>
+                <th class="col-count">Txns</th>
+                <th class="col-total">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of commodityPopularity.slice(0, 12); track item.commodityName) {
                 <tr>
-                  <th class="col-rank">#</th>
-                  <th class="col-name">Commodity</th>
-                  <th class="col-group">Group</th>
-                  <th class="col-count">Txns</th>
-                  <th class="col-total">Total</th>
+                  <td class="col-rank">{{ $index + 1 }}</td>
+                  <td class="col-name">{{ item.commodityName }}</td>
+                  <td class="col-group">{{ item.commodityGroup }}</td>
+                  <td class="col-count">{{ item.count }}</td>
+                  <td class="col-total">{{ item.totalSpent | currency: selectedMoneyType?.code }}</td>
                 </tr>
-              </thead>
-              <tbody>
-                @for (item of commodityPopularity.slice(0, 12); track item.commodityName) {
-                  <tr>
-                    <td class="col-rank">{{ $index + 1 }}</td>
-                    <td class="col-name">{{ item.commodityName }}</td>
-                    <td class="col-group">{{ item.commodityGroup }}</td>
-                    <td class="col-count">{{ item.count }}</td>
-                    <td class="col-total">{{ item.totalSpent | currency: selectedMoneyType?.code }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          } @else {
-            <div class="chart-empty">No data available</div>
-          }
-        </div>
-      </section-->
-
-    </div>
-
-    <!-- RIGHT COLUMN -->
-    <div class="col-side">
-
-      <!-- Savings Rate >
-      <app-dashboard-chart--
-        title="SAVINGS RATE"
-        [options]="savingsRateGaugeChart"
-        [loading]="gaugeLoading"
-      ></app-dashboard-chart-->
-
-      <!-- Top Organizations >
-      <app-dashboard-chart--
-        title="TOP VENDORS"
-        [options]="organizationBarChart"
-        [loading]="organizationsLoading"
-      ></app-dashboard-chart-->
-
-      <!-- Quick Facts -->
-      <!--section class="panel panel-facts">
-        <div class="panel-header">
-          <h2 class="panel-title">AT A GLANCE</h2>
-        </div>
-        <div class="panel-body">
-          <div class="fact-grid">
-            <div class="fact-item">
-              <span class="fact-label">Period</span>
-              <span class="fact-value">{{ stats.dateRangeStart | date:'MMM y' }} — {{ stats.dateRangeEnd | date:'MMM y' }}</span>
-            </div>
-            <div class="fact-item">
-              <span class="fact-label">Avg Income</span>
-              <span class="fact-value">{{ stats.totalIncomeSum / stats.totalIncomeCount | number:'1.2-2' }}</span>
-            </div>
-            <div class="fact-item">
-              <span class="fact-label">Avg Expense</span>
-              <span class="fact-value">{{ stats.totalExpenseSum / stats.totalExpenseCount | number:'1.2-2' }}</span>
-            </div>
-            <div class="fact-item">
-              <span class="fact-label">Total Txns</span>
-              <span class="fact-value">{{ stats.totalIncomeCount + stats.totalExpenseCount }}</span>
-            </div>
-          </div>
-        </div>
-      </section-->
-
-    </div>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <div class="chart-empty">No data available</div>
+        }
+      </div>
+    </section-->
 
   </div>
+
+  <!-- RIGHT COLUMN -->
+  <div class="col-side">
+    <app-dashboard-stats-card
+      title="LAST UPDATED"
+      [info]="getLastDate()"
+      [highlight]="true"
+      [loading]="infoLoading"
+    ></app-dashboard-stats-card>
+    <!-- Savings Rate >
+    <app-dashboard-chart--
+      title="SAVINGS RATE"
+      [options]="savingsRateGaugeChart"
+      [loading]="gaugeLoading"
+    ></app-dashboard-chart-->
+
+    <!-- Top Organizations >
+    <app-dashboard-chart--
+      title="TOP VENDORS"
+      [options]="organizationBarChart"
+      [loading]="organizationsLoading"
+    ></app-dashboard-chart-->
+
+    <!-- Quick Facts -->
+    <!--section class="panel panel-facts">
+      <div class="panel-header">
+        <h2 class="panel-title">AT A GLANCE</h2>
+      </div>
+      <div class="panel-body">
+        <div class="fact-grid">
+          <div class="fact-item">
+            <span class="fact-label">Period</span>
+            <span class="fact-value">{{ stats.dateRangeStart | date:'MMM y' }} — {{ stats.dateRangeEnd | date:'MMM y' }}</span>
+          </div>
+          <div class="fact-item">
+            <span class="fact-label">Avg Income</span>
+            <span class="fact-value">{{ stats.totalIncomeSum / stats.totalIncomeCount | number:'1.2-2' }}</span>
+          </div>
+          <div class="fact-item">
+            <span class="fact-label">Avg Expense</span>
+            <span class="fact-value">{{ stats.totalExpenseSum / stats.totalExpenseCount | number:'1.2-2' }}</span>
+          </div>
+          <div class="fact-item">
+            <span class="fact-label">Total Txns</span>
+            <span class="fact-value">{{ stats.totalIncomeCount + stats.totalExpenseCount }}</span>
+          </div>
+        </div>
+      </div>
+    </section-->
+
+  </div>
+
+</div>
+
+<app-cash-flow-pool
+  [incomes]="incomeByCurrency"
+  [expenses]="expenseByCurrency"
+  [baseCurrency]="currency?.code ?? 'USD'"
+  [loading]="incomeByCurrencyLoading || expenseByCurrencyLoading"
+></app-cash-flow-pool>
 
