@@ -22,7 +22,7 @@ import {
   MoneyType,
   InfoAbout,
   IncomeByCurrency,
-  ExpenseByCurrency,
+  ExpenseByCurrency, CategoryAmountItem
 } from '@clematis-shared/model';
 import {
   ExpenseService,
@@ -56,6 +56,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   expenseByCurrencyLoading = false;
   expenseByCurrency: ExpenseByCurrency[] = [];
 
+  incomeByOrganizationLoading = false;
+  incomeByOrganization: CategoryAmountItem[] = [];
+
+  expenseByCategoryLoading = false;
+  expenseByCategory: CategoryAmountItem[] = [];
+
   stats: DashboardStats | null = null;
   today = new Date();
   errorMessage: string | null = null;
@@ -84,6 +90,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.loadExpense$(),
             this.loadIncomeByCurrency$(),
             this.loadExpenseByCurrency$(),
+            this.loadExpenseByCategory$(),
+            this.loadIncomeByOrganization$(),
           ),
         ),
       )
@@ -183,6 +191,44 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return of([]);
       }),
       finalize(() => (this.expenseByCurrencyLoading = false)),
+    );
+  }
+
+  private loadIncomeByOrganization$() {
+    if (!this.currency) {
+      this.incomeByOrganization = [];
+      return of([]);
+    }
+
+    this.incomeByOrganizationLoading = true;
+
+    return this.incomeService.totalByOrganizations(this.currency.code).pipe(
+      tap((items) => (this.incomeByOrganization = items ?? [])),
+      catchError(() => {
+        this.errorMessage = 'Failed to load income by organization';
+        this.incomeByOrganization = [];
+        return of([]);
+      }),
+      finalize(() => (this.incomeByOrganizationLoading = false)),
+    );
+  }
+
+  private loadExpenseByCategory$() {
+    if (!this.currency) {
+      this.expenseByCategory = [];
+      return of([]);
+    }
+
+    this.expenseByCategoryLoading = true;
+
+    return this.expensesService.totalByCategories(this.currency.code).pipe(
+      tap((items) => (this.expenseByCategory = items ?? [])),
+      catchError(() => {
+        this.errorMessage = 'Failed to load expenses by category';
+        this.expenseByCategory = [];
+        return of([]);
+      }),
+      finalize(() => (this.expenseByCategoryLoading = false)),
     );
   }
 

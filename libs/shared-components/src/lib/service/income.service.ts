@@ -3,7 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { EnvironmentService } from './environment.service';
-import { IncomeByCurrency, IncomeItem } from '@clematis-shared/model';
+import {
+  CategoryAmountItem,
+  IncomeByCurrency,
+  IncomeItem,
+} from '@clematis-shared/model';
 import { SearchService } from './search.service';
 import {
   HateoasResourceService,
@@ -49,6 +53,15 @@ export class IncomeService extends SearchService<IncomeItem> {
       this.getUrl('/income/search/totalByCurrency'),
       {
         params: { code },
+      },
+    );
+  }
+
+  totalByOrganizations(code: string): Observable<CategoryAmountItem[]> {
+    return this.http.get<CategoryAmountItem[]>(
+      this.getUrl('/income/search/totalByOrganizations'),
+      {
+        params: { code }
       },
     );
   }

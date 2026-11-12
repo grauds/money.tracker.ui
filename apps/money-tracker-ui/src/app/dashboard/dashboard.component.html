@@ -139,10 +139,32 @@
 
 </div>
 
-<app-cash-flow-pool
-  [incomes]="incomeByCurrency"
-  [expenses]="expenseByCurrency"
-  [baseCurrency]="currency?.code ?? 'USD'"
-  [loading]="incomeByCurrencyLoading || expenseByCurrencyLoading"
-></app-cash-flow-pool>
+<div class="analytics-grid">
+  <app-cash-flow-pool
+    class="grid-pool"
+    [incomes]="incomeByCurrency"
+    [expenses]="expenseByCurrency"
+    [baseCurrency]="currency?.code ?? 'USD'"
+    [loading]="incomeByCurrencyLoading || expenseByCurrencyLoading"
+  ></app-cash-flow-pool>
+
+    <app-category-ranking-card
+      title="Income By Organization"
+      type="income"
+      [items]="incomeByOrganization"
+      [baseCurrency]="currency?.code ?? 'USD'"
+      [limit]="30"
+      [loading]="incomeByOrganizationLoading"
+    ></app-category-ranking-card>
+
+    <app-category-ranking-card
+      title="Expense By Category"
+      type="expense"
+      [items]="expenseByCategory"
+      [baseCurrency]="currency?.code ?? 'USD'"
+      [limit]="30"
+      [loading]="expenseByCategoryLoading"
+    ></app-category-ranking-card>
+
+</div>
 

@@ -1,0 +1,191 @@
+:host
+  display: flex
+  flex: 1
+  min-width: 0
+
+.ranking-card
+  flex: 1
+  min-width: 0
+  display: flex
+  flex-direction: column
+  background: #fff
+  border: 1px solid #ddd
+  padding: 18px 20px
+  gap: 12px
+  box-sizing: border-box
+  --accent-color: #1a7a2e
+  --bar-bg: rgba(26, 122, 46, 0.07)
+
+  &.is-expense
+    --accent-color: #a01a1a
+    --bar-bg: rgba(160, 26, 26, 0.06)
+
+.ranking-header
+  display: flex
+  justify-content: space-between
+  align-items: center
+  gap: 12px
+  min-height: 22px
+
+.header-left
+  display: flex
+  align-items: center
+  gap: 8px
+
+.ranking-title
+  font-size: 9px
+  font-weight: 700
+  letter-spacing: 1.5px
+  text-transform: uppercase
+  color: #888
+
+.ranking-badge
+  font-size: 9px
+  font-weight: 700
+  letter-spacing: 0.8px
+  padding: 2px 6px
+  border-radius: 3px
+  background: #f3f3f3
+  color: #666
+
+.ranking-grand-total
+  font-family: Georgia, serif
+  font-size: 18px
+  font-weight: 700
+  color: var(--accent-color)
+  font-variant-numeric: tabular-nums
+
+.table-head
+  display: grid
+  grid-template-columns: 26px minmax(0, 1fr) 54px 115px
+  align-items: center
+  gap: 8px
+  padding: 6px 8px
+  border-top: 1px solid #eee
+  border-bottom: 1px solid #ddd
+  font-size: 8.5px
+  font-weight: 700
+  letter-spacing: 1.2px
+  text-transform: uppercase
+  color: #999
+
+  .col-share,
+  .col-amount
+    text-align: right
+
+.ranking-list
+  display: flex
+  flex-direction: column
+  gap: 3px
+
+.ranking-row
+  position: relative
+  display: grid
+  grid-template-columns: 26px minmax(0, 1fr) 54px 115px
+  align-items: center
+  gap: 8px
+  padding: 7px 8px
+  border-radius: 4px
+  overflow: hidden
+  transition: background-color 0.15s ease
+
+  &:hover:not(.is-skeleton)
+    background: #fafafa
+
+.row-bar
+  position: absolute
+  top: 0
+  left: 0
+  bottom: 0
+  background: var(--bar-bg)
+  pointer-events: none
+  z-index: 0
+  transition: width 0.3s ease
+
+.col-rank,
+.col-name-wrap,
+.col-share,
+.col-amount
+  position: relative
+  z-index: 1
+
+.col-rank
+  font-size: 11px
+  font-weight: 600
+  color: #999
+  font-variant-numeric: tabular-nums
+
+.col-name-wrap
+  display: flex
+  align-items: baseline
+  gap: 6px
+  min-width: 0
+
+.col-name
+  font-size: 13px
+  font-weight: 600
+  color: #222
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
+
+.col-count
+  font-size: 11px
+  color: #999
+  flex-shrink: 0
+
+.col-share
+  font-size: 12px
+  color: #777
+  text-align: right
+  font-variant-numeric: tabular-nums
+
+.col-amount
+  font-family: Georgia, serif
+  font-size: 13px
+  font-weight: 700
+  color: #111
+  text-align: right
+  font-variant-numeric: tabular-nums
+  white-space: nowrap
+
+.empty-state
+  text-align: center
+  font-size: 12px
+  color: #999
+  padding: 28px 0
+
+// Shimmer Skeleton
+.skeleton-line
+  border-radius: 4px
+  background: linear-gradient(90deg, #f0f0f0 25%, #e4e4e4 50%, #f0f0f0 75%)
+  background-size: 200% 100%
+  animation: shimmer 1.4s ease-in-out infinite
+
+.skeleton-header-total
+  height: 20px
+  width: 110px
+
+.skeleton-rank
+  height: 12px
+  width: 16px
+
+.skeleton-name
+  height: 14px
+  width: 72%
+
+.skeleton-share
+  height: 12px
+  width: 38px
+  justify-self: end
+
+.skeleton-amount
+  height: 14px
+  width: 86px
+  justify-self: end
+
+@keyframes shimmer
+  0%
+    background-position: 200% 0
+  100%
+    background-position: -200% 0

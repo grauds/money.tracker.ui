@@ -101,6 +101,7 @@ import {
   DashboardComponent,
   DashboardStatsCardComponent,
   DashboardChartContainerComponent,
+  CategoryRankingCardComponent,
   CashFlowPoolComponent,
 } from './dashboard';
 
@@ -176,7 +177,9 @@ import {
     CalendarDayComponent,
     WordpressArticleComponent,
     TimelineComponent,
-    CashFlowPoolComponent
+    CashFlowPoolComponent,
+    CategoryRankingCardComponent,
+    CategoryRankingCardComponent
   ],
   providers: [CurrencyPipe],
 })

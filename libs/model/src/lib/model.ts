@@ -43,3 +43,4 @@ export type { CurrencyExchangeStat } from '../dto/currency-exchange-stat';
 export type { DashboardDelta } from '../dto/dashboard-delta';
 export type { IncomeByCurrency } from '../dto/income-by-currency';
 export type { ExpenseByCurrency } from '../dto/expense-by-currency';
+export type { CategoryAmountItem } from '../dto/category-amount-item';

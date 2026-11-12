@@ -1,0 +1,72 @@
+<section class="ranking-card" [class.is-expense]="type() === 'expense'">
+  <!-- Header -->
+  <div class="ranking-header">
+    <div class="header-left">
+      <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">{{ title() }}</h3>
+      @if (!loading() && topItems().length > 0) {
+        <span class="ranking-badge">TOP {{ topItems().length }}</span>
+      }
+    </div>
+
+    @if (loading()) {
+      <div class="skeleton-line skeleton-header-total"></div>
+    } @else {
+      <span class="ranking-grand-total">
+        {{ totalSum() | currency: baseCurrency() : 'symbol' : '1.2-2' }}
+      </span>
+    }
+  </div>
+
+  <!-- Column Subheader -->
+  <div class="table-head">
+    <span class="col-rank">#</span>
+    <span class="col-name">NAME</span>
+    <span class="col-share">SHARE</span>
+    <span class="col-amount">
+      {{ type() === 'income' ? 'RECEIVED' : 'SPENT' }} ({{ baseCurrency() }})
+    </span>
+  </div>
+
+  <!-- Body -->
+  @if (loading()) {
+    <div class="ranking-list" aria-busy="true">
+      @for (row of skeletonRows; track row) {
+        <div class="ranking-row is-skeleton">
+          <span class="skeleton-line skeleton-rank"></span>
+          <span class="skeleton-line skeleton-name"></span>
+          <span class="skeleton-line skeleton-share"></span>
+          <span class="skeleton-line skeleton-amount"></span>
+        </div>
+      }
+    </div>
+  } @else if (topItems().length === 0) {
+    <div class="empty-state">No category data available</div>
+  } @else {
+    <div class="ranking-list">
+      @for (item of topItems(); track item.name) {
+        <div class="ranking-row">
+          <!-- Subtle background bar proportional to #1 category -->
+          <div
+            class="row-bar"
+            [style.width.%]="item.relativeWidthPercent"
+          ></div>
+
+          <span class="col-rank">{{ item.rank }}</span>
+
+          <div class="col-name-wrap">
+            <span class="col-name" [title]="item.name">{{ item.name }}</span>
+            @if (item.txCount !== undefined) {
+              <span class="col-count">{{ item.txCount }} txns</span>
+            }
+          </div>
+
+          <span class="col-share">{{ item.sharePercent | number: '1.1-1' }}%</span>
+
+          <span class="col-amount">
+            {{ item.total | currency: baseCurrency() : 'symbol' : '1.2-2' }}
+          </span>
+        </div>
+      }
+    </div>
+  }
+</section>
