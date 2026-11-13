@@ -1,5 +1,4 @@
 <section class="ranking-card" [class.is-expense]="type() === 'expense'">
-  <!-- Шапка -->
   <div class="ranking-header">
     <div class="header-left">
       <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">{{ title() }}</h3>
@@ -17,7 +16,6 @@
     }
   </div>
 
-  <!-- Заголовки столбцов -->
   <div class="table-head">
     <span class="col-rank">#</span>
     <span class="col-name">{{ entityLabel() }}</span>
@@ -27,7 +25,6 @@
     </span>
   </div>
 
-  <!-- Список -->
   @if (loading()) {
     <div class="ranking-list" aria-busy="true">
       @for (row of skeletonRows; track row) {
@@ -69,7 +66,6 @@
     </div>
   }
 
-  <!-- Кнопка раскрытия -->
   @if (!loading() && availableCount() > initialLimit()) {
     <button type="button" class="expand-toggle-btn" (click)="toggleExpand()">
       @if (isExpanded()) {

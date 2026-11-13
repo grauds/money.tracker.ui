@@ -25,10 +25,11 @@ import {
   ExpenseByCurrency, CategoryAmountItem
 } from '@clematis-shared/model';
 import {
+  AccountsService,
   ExpenseService,
   IncomeService,
   MoneyTypeService,
-  StatsService,
+  StatsService
 } from '@clematis-shared/shared-components';
 
 @Component({
@@ -43,6 +44,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   infoLoading = false;
   infoAbout: InfoAbout | undefined;
+
+  totalsLoading = false;
+  total = 0;
+
+  totalsHistoryLoading = false;
+  totalWeekAgo = 0;
 
   totalIncomeLoading = false;
   totalIncome: number | undefined;
@@ -74,6 +81,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private readonly moneyTypeService: MoneyTypeService,
     private readonly incomeService: IncomeService,
     private readonly expensesService: ExpenseService,
+    private readonly accountsService: AccountsService,
   ) {
     this.loadInfoAbout();
 
@@ -92,6 +100,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.loadExpenseByCurrency$(),
             this.loadExpenseByCategory$(),
             this.loadIncomeByOrganization$(),
+            this.getAccountsTotal$(),
+            this.getAccountsTotalWeekAgo$(),
           ),
         ),
       )
@@ -230,6 +240,34 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }),
       finalize(() => (this.expenseByCategoryLoading = false)),
     );
+  }
+
+  private getAccountsTotal$() {
+    this.totalsLoading = true;
+    return this.accountsService.getAccountsTotalInCurrency(this.currency).pipe(
+      tap((total) => (this.total = total)),
+      catchError(() => {
+        this.total = 0;
+        return of(0);
+      }),
+      finalize(() => (this.totalsLoading = false)),
+    );
+  }
+
+  private getAccountsTotalWeekAgo$() {
+    this.totalsHistoryLoading = true;
+    return this.accountsService
+      .getAccountsTotalHistoryInCurrency(this.currency, 7)
+      .pipe(
+        tap((total) => (this.totalWeekAgo = total)),
+        catchError(() => {
+          if (this.totalWeekAgo === undefined) {
+            this.totalWeekAgo = 0;
+          }
+          return of(0);
+        }),
+        finalize(() => (this.totalsHistoryLoading = false)),
+      );
   }
 
   getLastDate(): string {

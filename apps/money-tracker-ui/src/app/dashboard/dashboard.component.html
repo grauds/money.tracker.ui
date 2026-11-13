@@ -1,30 +1,21 @@
 <div class="dashboard-container">
   <section class="stats-strip">
     <app-dashboard-stats-card
-      title="INCOME"
-      [value]="totalIncome"
+      title="BALANCE"
+      [subtitle]="'All accounts included'"
+      [value]="total"
       [currencyCode]="currency?.code ?? ''"
-      [positive]="true"
-      [loading]="totalIncomeLoading"
+      [positive]="total > 0"
+      [loading]="totalsLoading"
     ></app-dashboard-stats-card>
 
     <app-dashboard-stats-card
-      title="EXPENSES"
-      [value]="totalExpense"
+      title="WEEK DELTA"
+      [value]="total - totalWeekAgo"
+      [subtitle]="'Over the last 7 days'"
       [currencyCode]="currency?.code ?? ''"
-      [negative]="true"
-      [loading]="totalExpenseLoading"
-    ></app-dashboard-stats-card>
-
-    <app-dashboard-stats-card
-      title="NET SAVINGS"
-      [value]="netSavings"
-      [currencyCode]="currency?.code ?? ''"
-      [subtitle]="savingsSubtitle"
-      [positive]="(netSavings ?? 0) > 0"
-      [negative]="(netSavings ?? 0) < 0"
-      [showSign]="true"
-      [loading]="netSavingsLoading"
+      [negative]="(total - totalWeekAgo) < 0"
+      [loading]="totalsHistoryLoading && totalsLoading"
     ></app-dashboard-stats-card>
 
     <app-dashboard-stats-card
@@ -45,7 +36,8 @@
     ></app-cash-flow-pool>
 
     <app-category-ranking-card
-      title="Income By Organization"
+      title="Top Income"
+      entityLabel="NAME"
       type="income"
       [items]="incomeByOrganization"
       [baseCurrency]="currency?.code ?? 'USD'"
@@ -53,8 +45,10 @@
     ></app-category-ranking-card>
 
     <app-category-ranking-card
-      title="Expense By Category"
+      title="Top Expense Categories"
+      entityLabel="NAME"
       type="expense"
+      [maxLimit]="50"
       [items]="expenseByCategory"
       [baseCurrency]="currency?.code ?? 'USD'"
       [loading]="expenseByCategoryLoading"
@@ -62,3 +56,5 @@
 
   </div>
 </div>
+
+<div class="footer"></div>
