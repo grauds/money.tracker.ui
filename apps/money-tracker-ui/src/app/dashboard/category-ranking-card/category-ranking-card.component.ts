@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, signal } from '@angular/core';
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
 
 export interface CategoryAmountItem {
@@ -22,25 +22,39 @@ export interface ProcessedCategoryItem extends CategoryAmountItem {
 })
 export class CategoryRankingCardComponent {
   title = input.required<string>();
+  entityLabel = input<string>('CATEGORY');
   items = input.required<CategoryAmountItem[]>();
   baseCurrency = input<string>('USD');
   type = input<'income' | 'expense'>('expense');
-  limit = input<number>(20);
+  initialLimit = input<number>(10);
+  maxLimit = input<number>(20);
   loading = input<boolean>(false);
 
-  // Skeleton placeholder rows
-  readonly skeletonRows = Array.from({ length: 8 }, (_, i) => i);
+  isExpanded = signal<boolean>(false);
+
+  readonly skeletonRows = Array.from({ length: 10 }, (_, i) => i);
 
   totalSum = computed(() =>
     (this.items() ?? []).reduce((acc, item) => acc + Math.abs(item.total), 0),
   );
 
+  availableCount = computed(() =>
+    Math.min(
+      (this.items() ?? []).filter((i) => Math.abs(i.total) > 0).length,
+      this.maxLimit(),
+    ),
+  );
+
   topItems = computed<ProcessedCategoryItem[]>(() => {
     const raw = this.items() ?? [];
+    const currentLimit = this.isExpanded()
+      ? this.maxLimit()
+      : this.initialLimit();
+
     const sorted = [...raw]
       .filter((i) => Math.abs(i.total) > 0)
       .sort((a, b) => Math.abs(b.total) - Math.abs(a.total))
-      .slice(0, this.limit());
+      .slice(0, currentLimit);
 
     if (sorted.length === 0) return [];
 
@@ -53,10 +67,13 @@ export class CategoryRankingCardComponent {
         ...item,
         rank: idx + 1,
         sharePercent: overallTotal > 0 ? (absVal / overallTotal) * 100 : 0,
-        // Scale progress bar relative to #1 category so visual differences pop
         relativeWidthPercent:
           maxItemAmount > 0 ? (absVal / maxItemAmount) * 100 : 0,
       };
     });
   });
+
+  toggleExpand(): void {
+    this.isExpanded.update((v) => !v);
+  }
 }

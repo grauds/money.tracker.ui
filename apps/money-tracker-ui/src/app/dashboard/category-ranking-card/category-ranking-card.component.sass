@@ -10,8 +10,8 @@
   flex-direction: column
   background: #fff
   border: 1px solid #ddd
-  padding: 18px 20px
-  gap: 12px
+  padding: 16px 18px
+  gap: 10px
   box-sizing: border-box
   --accent-color: #1a7a2e
   --bar-bg: rgba(26, 122, 46, 0.07)
@@ -23,7 +23,7 @@
 .ranking-header
   display: flex
   justify-content: space-between
-  align-items: center
+  align-items: baseline
   gap: 12px
   min-height: 22px
 
@@ -33,19 +33,20 @@
   gap: 8px
 
 .ranking-title
-  font-size: 9px
-  font-weight: 700
+  font-family: Georgia, serif
+  font-size: 10px
+  font-weight: 900
   letter-spacing: 1.5px
   text-transform: uppercase
-  color: #888
+  color: #1a1a1a
 
 .ranking-badge
-  font-size: 9px
+  font-size: 8.5px
   font-weight: 700
   letter-spacing: 0.8px
   padding: 2px 6px
-  border-radius: 3px
-  background: #f3f3f3
+  background: #faf8f5
+  border: 1px solid #ddd
   color: #666
 
 .ranking-grand-total
@@ -57,17 +58,18 @@
 
 .table-head
   display: grid
-  grid-template-columns: 26px minmax(0, 1fr) 54px 115px
+  grid-template-columns: 24px minmax(0, 1fr) 52px 115px
   align-items: center
   gap: 8px
-  padding: 6px 8px
-  border-top: 1px solid #eee
-  border-bottom: 1px solid #ddd
-  font-size: 8.5px
+  padding: 5px 6px
+  border-top: 1px solid #ddd
+  border-bottom: 2px solid #1a1a1a
+  font-family: Georgia, serif
+  font-size: 8px
   font-weight: 700
-  letter-spacing: 1.2px
+  letter-spacing: 1px
   text-transform: uppercase
-  color: #999
+  color: #888
 
   .col-share,
   .col-amount
@@ -76,21 +78,39 @@
 .ranking-list
   display: flex
   flex-direction: column
-  gap: 3px
+  flex: 1
+  min-height: 0
+  scrollbar-gutter: stable
+
+  &.is-expanded
+    height: 315px
+    max-height: 315px
+    overflow-y: auto
+    padding-right: 4px
+
+    &::-webkit-scrollbar
+      width: 4px
+
+    &::-webkit-scrollbar-track
+      background: #faf8f5
+
+    &::-webkit-scrollbar-thumb
+      background: #ccc
 
 .ranking-row
   position: relative
   display: grid
-  grid-template-columns: 26px minmax(0, 1fr) 54px 115px
+  grid-template-columns: 24px minmax(0, 1fr) 52px 115px
   align-items: center
   gap: 8px
-  padding: 7px 8px
-  border-radius: 4px
+  padding: 6px
+  border-bottom: 1px solid #eee
   overflow: hidden
+  flex-shrink: 0
   transition: background-color 0.15s ease
 
   &:hover:not(.is-skeleton)
-    background: #fafafa
+    background: #f0ede8
 
 .row-bar
   position: absolute
@@ -111,7 +131,7 @@
 
 .col-rank
   font-size: 11px
-  font-weight: 600
+  font-weight: 700
   color: #999
   font-variant-numeric: tabular-nums
 
@@ -122,42 +142,60 @@
   min-width: 0
 
 .col-name
-  font-size: 13px
+  font-size: 12px
   font-weight: 600
-  color: #222
+  color: #1a1a1a
   white-space: nowrap
   overflow: hidden
   text-overflow: ellipsis
 
 .col-count
-  font-size: 11px
-  color: #999
+  font-size: 10px
+  color: #888
   flex-shrink: 0
 
 .col-share
-  font-size: 12px
-  color: #777
+  font-size: 11px
+  color: #666
   text-align: right
   font-variant-numeric: tabular-nums
 
 .col-amount
   font-family: Georgia, serif
-  font-size: 13px
+  font-size: 12px
   font-weight: 700
-  color: #111
+  color: #1a1a1a
   text-align: right
   font-variant-numeric: tabular-nums
   white-space: nowrap
 
+.expand-toggle-btn
+  margin-top: auto
+  align-self: stretch
+  background: #fafafa
+  border: 1px solid #ddd
+  padding: 6px 12px
+  font-family: Georgia, serif
+  font-size: 10px
+  font-weight: 700
+  letter-spacing: 0.8px
+  text-transform: uppercase
+  color: #555
+  cursor: pointer
+  transition: background-color 0.15s ease, color 0.15s ease
+
+  &:hover
+    background: #f0ede8
+    color: #1a1a1a
+
 .empty-state
   text-align: center
-  font-size: 12px
+  font-size: 11px
   color: #999
+  font-style: italic
   padding: 28px 0
 
-// Shimmer Skeleton
 .skeleton-line
-  border-radius: 4px
   background: linear-gradient(90deg, #f0f0f0 25%, #e4e4e4 50%, #f0f0f0 75%)
   background-size: 200% 100%
   animation: shimmer 1.4s ease-in-out infinite

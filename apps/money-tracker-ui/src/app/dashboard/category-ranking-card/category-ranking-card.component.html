@@ -1,5 +1,5 @@
 <section class="ranking-card" [class.is-expense]="type() === 'expense'">
-  <!-- Header -->
+  <!-- Шапка -->
   <div class="ranking-header">
     <div class="header-left">
       <h3 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">{{ title() }}</h3>
@@ -17,17 +17,17 @@
     }
   </div>
 
-  <!-- Column Subheader -->
+  <!-- Заголовки столбцов -->
   <div class="table-head">
     <span class="col-rank">#</span>
-    <span class="col-name">NAME</span>
+    <span class="col-name">{{ entityLabel() }}</span>
     <span class="col-share">SHARE</span>
     <span class="col-amount">
       {{ type() === 'income' ? 'RECEIVED' : 'SPENT' }} ({{ baseCurrency() }})
     </span>
   </div>
 
-  <!-- Body -->
+  <!-- Список -->
   @if (loading()) {
     <div class="ranking-list" aria-busy="true">
       @for (row of skeletonRows; track row) {
@@ -40,12 +40,11 @@
       }
     </div>
   } @else if (topItems().length === 0) {
-    <div class="empty-state">No category data available</div>
+    <div class="empty-state">No data available</div>
   } @else {
-    <div class="ranking-list">
+    <div class="ranking-list" [class.is-expanded]="isExpanded()">
       @for (item of topItems(); track item.name) {
         <div class="ranking-row">
-          <!-- Subtle background bar proportional to #1 category -->
           <div
             class="row-bar"
             [style.width.%]="item.relativeWidthPercent"
@@ -68,5 +67,16 @@
         </div>
       }
     </div>
+  }
+
+  <!-- Кнопка раскрытия -->
+  @if (!loading() && availableCount() > initialLimit()) {
+    <button type="button" class="expand-toggle-btn" (click)="toggleExpand()">
+      @if (isExpanded()) {
+        <span>Show top {{ initialLimit() }} ↑</span>
+      } @else {
+        <span>Show all {{ availableCount() }} ↓</span>
+      }
+    </button>
   }
 </section>

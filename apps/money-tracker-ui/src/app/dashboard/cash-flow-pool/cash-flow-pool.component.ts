@@ -37,61 +37,17 @@ export class CashFlowPoolComponent {
 
   hoveredStreamId = signal<string | null>(null);
 
-  // SVG coordinate constants
-  readonly viewBoxWidth = 920;
-  readonly poolWidth = 150;
-  readonly poolX = 385;
-  readonly leftAnchorX = 245;
-  readonly rightAnchorX = 675;
+  // Компактная геометрия без пустых боковых полей
+  readonly viewBoxWidth = 740;
+  readonly poolWidth = 144;
+  readonly poolX = 298;
+  readonly leftAnchorX = 195;
+  readonly rightAnchorX = 545;
 
   private readonly minPoolHeight = 272;
   private readonly headerOffset = 44;
   private readonly minLabelSlotHeight = 46;
-  private readonly verticalPadding = 32; // Extra breathing room top and bottom
-
-  // Helper to compute exact stack height needed for one side
-  private computeSideOuterHeight(items: CurrencyFlowItem[]): number {
-    const filtered = items.filter((i) => Math.abs(i.totalConverted) > 0);
-    if (filtered.length === 0) return 0;
-
-    const maxVol = this.maxVolume();
-    const maxRibbonArea = 190;
-    const minRibbonHeight = 5;
-
-    return filtered
-      .map((item) => {
-        const h = Math.max(
-          minRibbonHeight,
-          (Math.abs(item.totalConverted) / maxVol) * maxRibbonArea,
-        );
-        return Math.max(h + 14, this.minLabelSlotHeight);
-      })
-      .reduce((sum, slotH) => sum + slotH, 0);
-  }
-
-  // Dynamically grow canvas height from the actual summed slot heights + padding
-  layoutMetrics = computed(() => {
-    const inOuterHeight = this.computeSideOuterHeight(this.incomes() ?? []);
-    const outOuterHeight = this.computeSideOuterHeight(this.expenses() ?? []);
-    const maxOuterHeight = Math.max(inOuterHeight, outOuterHeight);
-
-    const poolHeight = Math.max(
-      this.minPoolHeight,
-      maxOuterHeight + this.verticalPadding,
-    );
-    const poolTop = this.headerOffset;
-    const viewBoxHeight = poolTop + poolHeight + 36; // Generous bottom buffer prevents clipping
-
-    return {
-      poolTop,
-      poolHeight,
-      viewBoxHeight,
-    };
-  });
-
-  poolTop = computed(() => this.layoutMetrics().poolTop);
-  poolHeight = computed(() => this.layoutMetrics().poolHeight);
-  viewBoxHeight = computed(() => this.layoutMetrics().viewBoxHeight);
+  private readonly verticalPadding = 32;
 
   private readonly incomePalette = [
     '#1a7a2e',
@@ -132,6 +88,44 @@ export class CashFlowPoolComponent {
   private maxVolume = computed(() =>
     Math.max(this.totalIncome(), this.totalExpense(), 1),
   );
+
+  private computeSideOuterHeight(items: CurrencyFlowItem[]): number {
+    const filtered = items.filter((i) => Math.abs(i.totalConverted) > 0);
+    if (filtered.length === 0) return 0;
+
+    const maxVol = this.maxVolume();
+    const maxRibbonArea = 190;
+    const minRibbonHeight = 5;
+
+    return filtered
+      .map((item) => {
+        const h = Math.max(
+          minRibbonHeight,
+          (Math.abs(item.totalConverted) / maxVol) * maxRibbonArea,
+        );
+        return Math.max(h + 14, this.minLabelSlotHeight);
+      })
+      .reduce((sum, slotH) => sum + slotH, 0);
+  }
+
+  layoutMetrics = computed(() => {
+    const inOuterHeight = this.computeSideOuterHeight(this.incomes() ?? []);
+    const outOuterHeight = this.computeSideOuterHeight(this.expenses() ?? []);
+    const maxOuterHeight = Math.max(inOuterHeight, outOuterHeight);
+
+    const poolHeight = Math.max(
+      this.minPoolHeight,
+      maxOuterHeight + this.verticalPadding,
+    );
+    const poolTop = this.headerOffset;
+    const viewBoxHeight = poolTop + poolHeight + 36;
+
+    return { poolTop, poolHeight, viewBoxHeight };
+  });
+
+  poolTop = computed(() => this.layoutMetrics().poolTop);
+  poolHeight = computed(() => this.layoutMetrics().poolHeight);
+  viewBoxHeight = computed(() => this.layoutMetrics().viewBoxHeight);
 
   inflowStreams = computed<FlowStream[]>(() =>
     this.buildStreams(
@@ -178,7 +172,6 @@ export class CashFlowPoolComponent {
     const maxRibbonArea = 190;
     const minRibbonHeight = 5;
 
-    // 1. Compute proportional ribbon thicknesses on the pool wall
     const rawHeights = sorted.map((item) =>
       Math.max(
         minRibbonHeight,
@@ -187,13 +180,11 @@ export class CashFlowPoolComponent {
     );
     const totalRibbonStack = rawHeights.reduce((a, b) => a + b, 0);
 
-    // 2. Compute non-overlapping label slot heights on the outer column
     const slotHeights = rawHeights.map((h) =>
-      Math.max(h + 12, this.minLabelSlotHeight),
+      Math.max(h + 14, this.minLabelSlotHeight),
     );
     const totalOuterHeight = slotHeights.reduce((a, b) => a + b, 0);
 
-    // 3. Center both stacks vertically around the pool midpoint
     const poolCenterY = poolTop + poolHeight / 2;
     let currentPoolY = poolCenterY - totalRibbonStack / 2;
     let currentSlotTopY = poolCenterY - totalOuterHeight / 2;
@@ -206,12 +197,10 @@ export class CashFlowPoolComponent {
       const h = rawHeights[idx];
       const slotH = slotHeights[idx];
 
-      // Pool wall attachment coordinates (packed tightly)
       const poolY0 = currentPoolY;
       const poolY1 = currentPoolY + h;
       currentPoolY = poolY1;
 
-      // Outer label anchor coordinates (generously spaced)
       const labelY = currentSlotTopY + slotH / 2;
       const outerY0 = labelY - h / 2;
       const outerY1 = labelY + h / 2;
@@ -253,7 +242,6 @@ export class CashFlowPoolComponent {
     });
   }
 
-  // Smooth cubic Bezier ribbon connecting (x0, y0..y1) to (x1, ty0..ty1)
   private createRibbonPath(
     x0: number,
     y0: number,
