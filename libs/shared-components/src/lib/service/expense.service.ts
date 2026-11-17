@@ -63,4 +63,13 @@ export class ExpenseService extends SearchService<ExpenseItem> {
       { params: { code } },
     );
   }
+
+  totalByOrganizations(code: string): Observable<CategoryAmountItem[]> {
+    return this.http.get<CategoryAmountItem[]>(
+      this.getUrl('/expenses/search/totalByOrganizations'),
+      {
+        params: { code },
+      },
+    );
+  }
 }

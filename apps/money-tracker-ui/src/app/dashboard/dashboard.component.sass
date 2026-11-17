@@ -72,6 +72,35 @@
   min-width: 0
   display: flex
 
+.segmented-toggle
+  display: inline-flex
+  align-items: center
+  background-color: #f1f3f5
+  padding: 3px
+  border-radius: 8px
+  border: 1px solid #dee2e6
+
+.toggle-btn
+  border: none
+  background: transparent
+  padding: 4px 10px
+  font-size: 0.75rem
+  font-weight: 600
+  color: #6c757d
+  border-radius: 6px
+  cursor: pointer
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease
+  line-height: 1.25
+  white-space: nowrap
+
+.toggle-btn:hover:not(.active)
+  color: #212529
+
+.toggle-btn.active
+  background-color: #ffffff
+  color: #212529
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+
 // =====================================================================
 // CONTENT GRID & PANELS (если используются ниже на странице)
 // =====================================================================

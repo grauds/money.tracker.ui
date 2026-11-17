@@ -44,15 +44,34 @@
       [loading]="incomeByOrganizationLoading"
     ></app-category-ranking-card>
 
+
     <app-category-ranking-card
-      title="Top Expense Categories"
+      [title]="activeExpenseTitle()"
       entityLabel="NAME"
       type="expense"
       [maxLimit]="50"
-      [items]="expenseByCategory"
+      [items]="activeExpenseItems()"
       [baseCurrency]="currency?.code ?? 'USD'"
-      [loading]="expenseByCategoryLoading"
-    ></app-category-ranking-card>
+      [loading]="activeExpenseLoading()"
+    ><div header-actions class="segmented-toggle" role="group" aria-label="Group expenses by">
+        <button
+          type="button"
+          class="toggle-btn"
+          [class.active]="expenseGroupBy() === 'category'"
+          (click)="expenseGroupBy.set('category')"
+        >
+          Categories
+        </button>
+        <button
+          type="button"
+          class="toggle-btn"
+          [class.active]="expenseGroupBy() === 'organization'"
+          (click)="expenseGroupBy.set('organization')"
+        >
+          Places
+        </button>
+      </div>
+    </app-category-ranking-card>
 
   </div>
 </div>

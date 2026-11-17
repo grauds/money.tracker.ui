@@ -7,13 +7,18 @@
       }
     </div>
 
-    @if (loading()) {
-      <div class="skeleton-line skeleton-header-total"></div>
-    } @else {
-      <span class="ranking-grand-total">
-        {{ totalSum() | currency: baseCurrency() : 'symbol' : '1.2-2' }}
-      </span>
-    }
+    <div class="header-right">
+
+      @if (loading()) {
+        <div class="skeleton-line skeleton-header-total"></div>
+      } @else {
+        <span class="ranking-grand-total">
+          {{ totalSum() | currency: baseCurrency() : 'symbol' : '1.2-2' }}
+        </span>
+      }
+
+      <ng-content select="[header-actions]"></ng-content>
+    </div>
   </div>
 
   <div class="table-head">

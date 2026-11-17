@@ -53,7 +53,7 @@ export const MY_FORMATS = {
 export class DateRangeSelectorComponent {
   @Input() loading = false;
 
-  startDate = new FormControl(moment().add(-6, 'M'));
+  startDate = new FormControl(moment().add(-24, 'M'));
 
   endDate = new FormControl(moment().add(1, 'M'));
 

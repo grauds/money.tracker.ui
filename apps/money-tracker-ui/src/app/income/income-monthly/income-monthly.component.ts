@@ -66,7 +66,7 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  startDate = moment().add(-6, 'M');
+  startDate = moment().add(-24, 'M');
 
   endDate = moment().add(1, 'M');
 

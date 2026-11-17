@@ -2,7 +2,7 @@ import {
   Component,
   OnDestroy,
   OnInit,
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, signal, computed
 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {
@@ -66,8 +66,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   incomeByOrganizationLoading = false;
   incomeByOrganization: CategoryAmountItem[] = [];
 
-  expenseByCategoryLoading = false;
-  expenseByCategory: CategoryAmountItem[] = [];
+  expenseByCategory = signal<CategoryAmountItem[]>([]);
+  expenseByOrganization = signal<CategoryAmountItem[]>([]);
+  expenseByCategoryLoading = signal<boolean>(false);
+  expenseByOrganizationLoading = signal<boolean>(false);
+
+  expenseGroupBy = signal<'category' | 'organization'>('category');
 
   stats: DashboardStats | null = null;
   today = new Date();
@@ -100,6 +104,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.loadExpenseByCurrency$(),
             this.loadExpenseByCategory$(),
             this.loadIncomeByOrganization$(),
+            this.loadExpenseByOrganization$(),
             this.getAccountsTotal$(),
             this.getAccountsTotalWeekAgo$(),
           ),
@@ -223,22 +228,41 @@ export class DashboardComponent implements OnInit, OnDestroy {
     );
   }
 
-  private loadExpenseByCategory$() {
+  private loadExpenseByOrganization$() {
     if (!this.currency) {
-      this.expenseByCategory = [];
+      this.expenseByOrganization.set([]);
       return of([]);
     }
 
-    this.expenseByCategoryLoading = true;
+    this.expenseByOrganizationLoading.set(true);
 
-    return this.expensesService.totalByCategories(this.currency.code).pipe(
-      tap((items) => (this.expenseByCategory = items ?? [])),
+    return this.expensesService.totalByOrganizations(this.currency.code).pipe(
+      tap((items) => this.expenseByOrganization.set(items ?? [])),
       catchError(() => {
-        this.errorMessage = 'Failed to load expenses by category';
-        this.expenseByCategory = [];
+        this.errorMessage = 'Failed to load expenses by organization';
+        this.expenseByOrganization.set([]);
         return of([]);
       }),
-      finalize(() => (this.expenseByCategoryLoading = false)),
+      finalize(() => this.expenseByOrganizationLoading.set(false)),
+    );
+  }
+
+  private loadExpenseByCategory$() {
+    if (!this.currency) {
+      this.expenseByCategory.set([]);
+      return of([]);
+    }
+
+    this.expenseByCategoryLoading.set(true);
+
+    return this.expensesService.totalByCategories(this.currency.code).pipe(
+      tap((items) => this.expenseByCategory.set(items ?? [])),
+      catchError(() => {
+        this.errorMessage = 'Failed to load expenses by category';
+        this.expenseByCategory.set([]);
+        return of([]);
+      }),
+      finalize(() => this.expenseByCategoryLoading.set(false)),
     );
   }
 
@@ -269,6 +293,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
         finalize(() => (this.totalsHistoryLoading = false)),
       );
   }
+
+  activeExpenseTitle = computed(() =>
+    this.expenseGroupBy() === 'category'
+      ? 'Top Expenses'
+      : 'Top Expenses',
+  );
+
+  activeExpenseItems = computed(() =>
+    this.expenseGroupBy() === 'category'
+      ? this.expenseByCategory()
+      : this.expenseByOrganization(),
+  );
+
+  activeExpenseLoading = computed(() =>
+    this.expenseGroupBy() === 'category'
+      ? this.expenseByCategoryLoading()
+      : this.expenseByOrganizationLoading(),
+  );
 
   getLastDate(): string {
     if (this.infoAbout?.dates?.end) {
