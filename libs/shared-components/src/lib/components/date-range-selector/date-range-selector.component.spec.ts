@@ -13,8 +13,8 @@ describe('DateRangeSelectorComponent', () => {
   });
 
   it('should initialize with default date range', () => {
-    const expectedStartMonth = moment().add(-6, 'M').month();
-    const expectedStartYear = moment().add(-6, 'M').year();
+    const expectedStartMonth = moment().add(-24, 'M').month();
+    const expectedStartYear = moment().add(-24, 'M').year();
     const expectedEndMonth = moment().add(1, 'M').month();
     const expectedEndYear = moment().add(1, 'M').year();
 
