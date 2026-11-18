@@ -43,10 +43,10 @@ describe('EntityExpensesComponent', () => {
     expect(component.chartConfig).toEqual({});
     expect(component.displayedColumns).toEqual([
       'commodityname',
+      'organizationname',
       'transferdate',
       'price',
       'qty',
-      'organizationname',
     ]);
   });
 

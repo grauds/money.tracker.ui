@@ -42,10 +42,10 @@ describe('EntityIncomeComponent', () => {
     expect(component.income).toEqual([]);
     expect(component.chartConfig).toEqual({});
     expect(component.displayedColumns).toEqual([
+      'organizationname',
       'commodityname',
       'transferdate',
       'price',
-      'organizationname',
     ]);
   });
 
