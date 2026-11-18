@@ -1,6 +1,13 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { MoneyType } from '@clematis-shared/model';
 
+export interface PurchasePricePoint {
+  tradeplaceName: string;
+  transferDate: string | Date;
+  price: number;
+  currencyCode?: string;
+}
+
 @Component({
   selector: 'lib-entity-balance-info',
   templateUrl: './entity-balance-info.component.html',
@@ -17,4 +24,5 @@ export class EntityBalanceInfoComponent {
   @Input() averagePrice: number | undefined;
   @Input() totalQty: number | undefined;
   @Input() description: string | undefined;
+  @Input() purchaseHistory: PurchasePricePoint[] = [];
 }

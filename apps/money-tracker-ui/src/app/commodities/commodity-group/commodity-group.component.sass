@@ -1,17 +1,42 @@
 .summary-header
   display: flex
+  flex-wrap: wrap
   justify-content: space-between
-  align-items: flex-start
   gap: 24px
-  width: 100%
-  padding: 20px
-  box-sizing: border-box
-  border-radius: 0
-  margin-bottom: 20px
+  min-height: 120px
 
 .summary-details
-  flex: 1
-  min-width: 0 /* Prevents text overflow issues */
+  flex: 1 1 300px
+
+.entity-title
+  margin: 0
+  font-size: 1.75rem
+  font-weight: 600
+  color: #212529
+  letter-spacing: -0.2px
+
+.product-info
+  flex: 1 1 450px
+  min-width: 0
+
+.section-header
+  display: flex
+  flex-direction: column
+  margin: 32px 0 16px 0
+  padding-left: 16px
+  border-left: 4px solid #0d6efd
+
+  h3
+    margin: 0
+    font-size: 1.25rem
+    font-weight: 600
+    color: #212529
+    letter-spacing: -0.2px
+
+  small
+    color: #6c757d
+    font-size: 0.85rem
+    margin-top: 2px
 
 .description-box
   max-height: 350px

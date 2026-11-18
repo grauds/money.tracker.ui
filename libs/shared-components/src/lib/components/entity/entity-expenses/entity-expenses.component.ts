@@ -4,6 +4,9 @@ import { formatDate } from '@angular/common';
 import { RequestParam } from '@lagoshny/ngx-hateoas-client';
 import { ExpenseItemsService } from '../../../service/expense-items.service';
 
+export type ExpenseColumn =
+  'commodityname' | 'transferdate' | 'price' | 'qty' | 'organizationname';
+
 @Component({
   selector: 'app-entity-expenses',
   templateUrl: './entity-expenses.component.html',
@@ -16,13 +19,22 @@ export class EntityExpensesComponent {
 
   expenses: ExpenseItem[] = [];
 
-  displayedColumns: string[] = [
+  private readonly allColumns: ExpenseColumn[] = [
     'commodityname',
+    'organizationname',
     'transferdate',
     'price',
     'qty',
-    'organizationname',
   ];
+
+  @Input() hiddenColumns: ExpenseColumn[] = [];
+
+  get displayedColumns(): ExpenseColumn[] {
+    if (!this.hiddenColumns || this.hiddenColumns.length === 0) {
+      return this.allColumns;
+    }
+    return this.allColumns.filter((col) => !this.hiddenColumns.includes(col));
+  }
 
   @Input({ required: true }) expenseService!: ExpenseItemsService;
   @Input({ required: true }) cookieStateKey!: string;
@@ -50,7 +62,7 @@ export class EntityExpensesComponent {
         this.chartConfig = {};
       }
       this.entitiesChanged.emit(this.expenses);
-    })
+    });
   }
 
   private generateChartConfig(expenses: ExpenseItem[]): any {

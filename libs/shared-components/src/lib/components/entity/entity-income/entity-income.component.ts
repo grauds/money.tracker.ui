@@ -4,6 +4,9 @@ import { formatDate } from '@angular/common';
 import { RequestParam } from '@lagoshny/ngx-hateoas-client';
 import { IncomeItemsService } from '../../../service/income-items.service';
 
+export type IncomeColumn =
+  'commodityname' | 'transferdate' | 'price' | 'organizationname';
+
 @Component({
   selector: 'app-entity-income',
   templateUrl: './entity-income.component.html',
@@ -16,12 +19,21 @@ export class EntityIncomeComponent {
 
   income: IncomeItem[] = [];
 
-  displayedColumns: string[] = [
+  private readonly allColumns: IncomeColumn[] = [
+    'organizationname',
     'commodityname',
     'transferdate',
     'price',
-    'organizationname'
   ];
+
+  @Input() hiddenColumns: IncomeColumn[] = [];
+
+  get displayedColumns(): IncomeColumn[] {
+    if (!this.hiddenColumns || this.hiddenColumns.length === 0) {
+      return this.allColumns;
+    }
+    return this.allColumns.filter((col) => !this.hiddenColumns.includes(col));
+  }
 
   @Input({ required: true }) incomeService!: IncomeItemsService;
   @Input({ required: true }) cookieStateKey!: string;
@@ -49,7 +61,7 @@ export class EntityIncomeComponent {
         this.chartConfig = {};
       }
       this.entitiesChanged.emit(this.income);
-    })
+    });
   }
 
   private generateChartConfig(income: IncomeItem[]): any {

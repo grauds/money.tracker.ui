@@ -1,0 +1,221 @@
+.balance-overview
+  width: 100%
+  min-width: 0
+  display: flex
+  flex-direction: column
+  gap: 16px
+  font-family: inherit
+  color: inherit
+
+  .metrics-grid
+    display: grid
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))
+    gap: 16px
+
+  .metric-card
+    background: #ffffff
+    border: 1px solid #e2e8f0
+    border-radius: 12px
+    padding: 14px 18px
+    display: flex
+    flex-direction: column
+    justify-content: center
+    gap: 6px
+    min-height: 86px
+    min-width: 0
+    box-sizing: border-box
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03)
+
+    .metric-label
+      font-size: 0.75rem
+      font-weight: 600
+      text-transform: uppercase
+      letter-spacing: 0.05em
+      color: #64748b
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
+
+    .metric-value
+      font-size: clamp(1.05rem, 1.5vw, 1.4rem)
+      font-weight: 700
+      line-height: 1.2
+      font-variant-numeric: tabular-nums
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
+
+      &.is-positive
+        color: #15803d
+
+      &.is-negative
+        color: #b91c1c
+
+    &--income
+      background: linear-gradient(to bottom right, #ffffff, #f0fdf4)
+      border-color: #dcfce7
+      .metric-label, .metric-value
+        color: #15803d
+
+    &--expenses
+      background: linear-gradient(to bottom right, #ffffff, #fef2f2)
+      border-color: #fee2e2
+      .metric-label, .metric-value
+        color: #b91c1c
+
+    &--balance
+      background: #f8fafc
+      .metric-value
+        color: #334155
+
+    // Широкая карточка на всю строку сетки
+    &--wide
+      grid-column: 1 / -1
+      background: #f8fafc
+      justify-content: flex-start
+      gap: 12px
+      height: auto
+
+      .meta-summary-bar
+        display: flex
+        flex-wrap: wrap
+        align-items: center
+        justify-content: space-between
+        gap: 16px
+        padding-bottom: 10px
+        border-bottom: 1px solid #e2e8f0
+
+      .meta-item
+        display: flex
+        align-items: baseline
+        gap: 6px
+        font-size: 0.9rem
+        font-variant-numeric: tabular-nums
+
+        .meta-label
+          color: #64748b
+          font-weight: 500
+
+        .meta-val
+          color: #0f172a
+          font-weight: 700
+          font-size: 1.05rem
+
+        .meta-unit
+          color: #94a3b8
+          font-size: 0.8rem
+
+      .purchases-table-wrapper
+        max-height: 150px // Ограничиваем высоту, чтобы таблица не ломала верстку шапки
+        overflow-y: auto
+        border-radius: 8px
+        border: 1px solid #e2e8f0
+        background: #ffffff
+
+        &::-webkit-scrollbar
+          width: 5px
+
+        &::-webkit-scrollbar-thumb
+          background: #cbd5e1
+          border-radius: 4px
+
+      .purchases-table
+        width: 100%
+        border-collapse: collapse
+        font-size: 0.85rem
+        font-variant-numeric: tabular-nums
+
+        th
+          position: sticky
+          top: 0
+          background: #f1f5f9
+          color: #64748b
+          font-weight: 600
+          font-size: 0.72rem
+          text-transform: uppercase
+          letter-spacing: 0.04em
+          padding: 8px 12px
+          text-align: left
+          border-bottom: 1px solid #e2e8f0
+          z-index: 1
+
+          &.text-right
+            text-align: right
+
+        td
+          padding: 7px 12px
+          border-bottom: 1px solid #f1f5f9
+          color: #334155
+
+        tr:last-child td
+          border-bottom: none
+
+        tr:hover td
+          background: #f8fafc
+
+        .col-place
+          font-weight: 500
+          color: #0f172a
+          max-width: 220px
+          white-space: nowrap
+          overflow: hidden
+          text-overflow: ellipsis
+
+        .col-date
+          color: #64748b
+          white-space: nowrap
+
+        .col-price
+          font-weight: 600
+          color: #0f172a
+          white-space: nowrap
+
+          &.text-right
+            text-align: right
+
+  .product-description
+    border-top: 1px solid #e2e8f0
+    padding-top: 16px
+
+    .section-title
+      font-size: 0.75rem
+      font-weight: 600
+      text-transform: uppercase
+      letter-spacing: 0.05em
+      color: #64748b
+      margin: 0 0 8px 0
+
+    .description-content
+      max-height: 140px
+      overflow-y: auto
+      font-size: 0.925rem
+      color: #334155
+      line-height: 1.6
+      padding-right: 8px
+
+.skeleton
+  background: #e2e8f0
+  border-radius: 6px
+  position: relative
+  overflow: hidden
+
+  &::after
+    content: ""
+    position: absolute
+    inset: 0
+    transform: translateX(-100%)
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65), transparent)
+    animation: shimmer 1.5s infinite
+
+  &-value
+    height: 26px
+    width: 70%
+
+  &-text
+    height: 16px
+    width: 100%
+    margin-bottom: 6px
+
+@keyframes shimmer
+  100%
+    transform: translateX(100%)

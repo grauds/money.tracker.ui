@@ -173,6 +173,11 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
       return throwError(() => new Error('No entity provided to setEntity.'));
     }
 
+    if (this.entity?.getSelfLinkHref() === entity.getSelfLinkHref()) {
+      this.onEntityLoaded(entity);
+      return of();
+    }
+
     this.entity = entity;
     this.title.setTitle(entity.name ? entity.name : entity.getSelfLinkHref());
 

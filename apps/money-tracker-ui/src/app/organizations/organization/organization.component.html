@@ -42,6 +42,7 @@
 
 <app-entity-expenses
   [expenseService]="expenseService"
+  [hiddenColumns]="['organizationname']"
   [cookieStateKey]="'organization-expense'"
   [queryArguments]="getQueryArguments()"
   [queryName]="'tradeplace'"
@@ -62,6 +63,7 @@
 
 <app-entity-income
   [incomeService]="incomeService"
+  [hiddenColumns]="['organizationname']"
   [cookieStateKey]="'organization-income'"
   [queryArguments]="getQueryArguments()"
   [queryName]="'tradeplace'"

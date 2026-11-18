@@ -1,61 +1,122 @@
-<div class="product-info" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; font-family: system-ui, -apple-system, sans-serif;">
+@let hasIncome = (incomeSum ?? 0) > 0;
+@let hasExpenses = (expensesSum ?? 0) > 0;
+@let hasBalance = hasIncome && hasExpenses;
+@let hasMeta = (totalQty ?? 0) > 1;
+@let hasPurchases = (purchaseHistory?.length ?? 0) > 0;
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
-    <!-- Income Block (Green Theme) -->
-    @if (!loading && incomeSum > 0) {
-      <div style="background: #f4fbf7; text-align: right; border: 1px solid #e1f5eb; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
-        <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #2b8a3e;">Income</span>
-        <strong style="font-size: 1.4rem; font-weight: 700; color: #2b8a3e;">
-          {{ !loading ? (incomeSum | currencySpace : this.currency.code :'symbol') : '-' }}
-        </strong>
-      </div>
-    }
+@if (loading || hasIncome || hasExpenses || hasMeta || hasPurchases) {
+  <div class="balance-overview">
+    <div class="metrics-grid">
 
-    <!-- Expenses Block (Red Theme) -->
-    @if (!loading && expensesSum > 0) {
-      <div style="background: #fff5f5; border: 1px solid #ffe3e3; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
-        <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #c92a2a;">Expenses</span>
-        <strong style="font-size: 1.4rem; font-weight: 700; color: #c92a2a;">
-          {{ !loading ? (expensesSum | currencySpace : this.currency.code :'symbol') : '-' }}
-        </strong>
-      </div>
-    }
-
-    <!-- Key Metrics Badges (Meta Data) -->
-    @if(totalQty && totalQty > 1) {
-      <div class="product-meta" style="display: flex; flex-wrap: wrap; gap: 12px;">
-        <div style="background: #f8f9fa; border: 1px solid #e9ecef; padding: 8px 14px; border-radius: 8px; font-size: 0.875rem; color: #495057;">
-          <div>
-            <span style="color: #868e96; font-weight: 500; margin-right: 4px;">Average Price:</span>
-            <strong style="color: #212529; font-weight: 600;">{{ averagePrice | currencySpace : this.currency.code :'symbol' }}</strong>
-            <span style="color: #868e96;"> / {{ unitTypeName }}</span>
-          </div>
-          <div>
-            <span style="color: #868e96; font-weight: 500; margin-right: 4px;">Quantity:</span>
-            <strong style="color: #212529; font-weight: 600;">{{ totalQty }} {{ unitTypeName }}</strong>
-          </div>
+      <!-- Income -->
+      @if (loading || hasIncome) {
+        <div class="metric-card metric-card--income">
+          <span class="metric-label">Income</span>
+          @if (loading) {
+            <div class="skeleton skeleton-value"></div>
+          } @else {
+            <strong class="metric-value" [title]="incomeSum | currencySpace : currency?.code : 'symbol'">
+              {{ incomeSum | currencySpace : currency?.code : 'symbol' }}
+            </strong>
+          }
         </div>
+      }
+
+      <!-- Expenses -->
+      @if (loading || hasExpenses) {
+        <div class="metric-card metric-card--expenses">
+          <span class="metric-label">Expenses</span>
+          @if (loading) {
+            <div class="skeleton skeleton-value"></div>
+          } @else {
+            <strong class="metric-value" [title]="expensesSum | currencySpace : currency?.code : 'symbol'">
+              {{ expensesSum | currencySpace : currency?.code : 'symbol' }}
+            </strong>
+          }
+        </div>
+      }
+
+      <!-- Net Balance -->
+      @if (loading || hasBalance) {
+        <div class="metric-card metric-card--balance">
+          <span class="metric-label">Net Balance</span>
+          @if (loading) {
+            <div class="skeleton skeleton-value"></div>
+          } @else {
+            @let balance = (incomeSum || 0) - (expensesSum || 0);
+            <strong
+              class="metric-value"
+              [class.is-positive]="balance > 0"
+              [class.is-negative]="balance < 0"
+              [title]="balance | currencySpace : currency?.code : 'symbol'">
+              {{ balance | currencySpace : currency?.code : 'symbol' }}
+            </strong>
+          }
+        </div>
+      }
+
+      <!-- Широкая карточка: Средняя цена + Таблица мест покупок -->
+      @if (hasMeta || hasPurchases) {
+        <div class="metric-card metric-card--wide">
+          @if (loading) {
+            <div class="skeleton skeleton-text"></div>
+            <div class="skeleton skeleton-text" style="width: 80%"></div>
+            <div class="skeleton skeleton-text" style="width: 60%"></div>
+          } @else {
+            <!-- Верхняя панель со средней ценой и общим количеством -->
+            @if (hasMeta) {
+              <div class="meta-summary-bar">
+                <div class="meta-item">
+                  <span class="meta-label">Avg. Price:</span>
+                  <strong class="meta-val">{{ averagePrice | currencySpace : currency?.code : 'symbol' }}</strong>
+                  <span class="meta-unit">/ {{ unitTypeName }}</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Total Quantity:</span>
+                  <strong class="meta-val">{{ totalQty | number : '1.0-2' }} {{ unitTypeName }}</strong>
+                </div>
+              </div>
+            }
+
+            <!-- Компактная таблица покупок (Место, Дата, Цена) -->
+            @if (hasPurchases) {
+              <div class="purchases-table-wrapper">
+                <table class="purchases-table">
+                  <thead>
+                  <tr>
+                    <th>Place</th>
+                    <th>Date</th>
+                    <th class="text-right">Price</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    @for (item of purchaseHistory; track $index) {
+                      <tr>
+                        <td class="col-place" [title]="item.tradeplaceName">
+                          {{ item.tradeplaceName || '—' }}
+                        </td>
+                        <td class="col-date">
+                          {{ item.transferDate | date : 'dd.MM.yyyy' }}
+                        </td>
+                        <td class="col-price text-right">
+                          {{ item.price | currencySpace : (item.currencyCode || currency?.code) : 'symbol' }}
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
+          }
+        </div>
+      }
+    </div>
+
+    @if (description) {
+      <div class="product-description">
+        <h4 class="section-title">Description</h4>
+        <div class="description-content">{{ description }}</div>
       </div>
     }
   </div>
-
-  <!-- Dynamic Profit/Loss Balance Tracker -->
-  @if (!loading && incomeSum > 0 && expensesSum > 0) {
-    <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 12px 16px; display: flex; flex-direction: column; justify-content: space-between; align-items: center;">
-      <span style="font-size: 0.9rem; font-weight: 500; color: #495057;">Net Balance</span>
-      <strong [style.color]="(incomeSum - expensesSum) >= 0 ? '#2b8a3e' : '#c92a2a'" style="font-size: 1.15rem; font-weight: 700;">
-        {{ !loading ? ((incomeSum - expensesSum) | currencySpace : this.currency.code :'symbol') : '-' }}
-      </strong>
-    </div>
-  }
-
-  <!-- Description Section -->
-  @if (description) {
-    <div class="product-description" style="margin-top: 4px; border-top: 1px solid #f1f3f5; padding-top: 16px;">
-      <h4 style="margin: 0 0 8px 0; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #868e96;">Description</h4>
-      <div style="max-height: 140px; overflow-y: auto; font-size: 0.925rem; color: #495057; line-height: 1.6; padding-right: 8px;">
-        {{ description }}
-      </div>
-    </div>
-  }
-</div>
+}
