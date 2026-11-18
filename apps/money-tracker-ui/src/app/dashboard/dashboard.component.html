@@ -39,10 +39,29 @@
       title="Top Income"
       entityLabel="NAME"
       type="income"
-      [items]="incomeByOrganization"
+      [items]="activeIncomeItems()"
       [baseCurrency]="currency?.code ?? 'USD'"
-      [loading]="incomeByOrganizationLoading"
-    ></app-category-ranking-card>
+      [loading]="activeIncomeLoading()"
+    >
+      <div header-actions class="segmented-toggle" role="group" aria-label="Group income by">
+        <button
+          type="button"
+          class="toggle-btn"
+          [class.active]="incomeGroupBy() === 'category'"
+          (click)="incomeGroupBy.set('category')"
+        >
+          Categories
+        </button>
+        <button
+          type="button"
+          class="toggle-btn"
+          [class.active]="incomeGroupBy() === 'organization'"
+          (click)="incomeGroupBy.set('organization')"
+        >
+          Places
+        </button>
+      </div>
+    </app-category-ranking-card>
 
 
     <app-category-ranking-card

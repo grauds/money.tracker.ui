@@ -63,14 +63,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
   expenseByCurrencyLoading = false;
   expenseByCurrency: ExpenseByCurrency[] = [];
 
-  incomeByOrganizationLoading = false;
-  incomeByOrganization: CategoryAmountItem[] = [];
+  incomeByCategory = signal<CategoryAmountItem[]>([]);
+  incomeByOrganization = signal<CategoryAmountItem[]>([]);
+  incomeByCategoryLoading = signal<boolean>(false);
+  incomeByOrganizationLoading = signal<boolean>(false);
 
   expenseByCategory = signal<CategoryAmountItem[]>([]);
   expenseByOrganization = signal<CategoryAmountItem[]>([]);
   expenseByCategoryLoading = signal<boolean>(false);
   expenseByOrganizationLoading = signal<boolean>(false);
 
+  incomeGroupBy = signal<'category' | 'organization'>('category');
   expenseGroupBy = signal<'category' | 'organization'>('category');
 
   stats: DashboardStats | null = null;
@@ -102,6 +105,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.loadExpense$(),
             this.loadIncomeByCurrency$(),
             this.loadExpenseByCurrency$(),
+            this.loadIncomeByCategory$(),
             this.loadExpenseByCategory$(),
             this.loadIncomeByOrganization$(),
             this.loadExpenseByOrganization$(),
@@ -211,20 +215,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private loadIncomeByOrganization$() {
     if (!this.currency) {
-      this.incomeByOrganization = [];
+      this.incomeByOrganization.set([]);
       return of([]);
     }
 
-    this.incomeByOrganizationLoading = true;
+    this.incomeByOrganizationLoading.set(true);
 
     return this.incomeService.totalByOrganizations(this.currency.code).pipe(
-      tap((items) => (this.incomeByOrganization = items ?? [])),
+      tap((items) => this.incomeByOrganization.set(items ?? [])),
       catchError(() => {
         this.errorMessage = 'Failed to load income by organization';
-        this.incomeByOrganization = [];
+        this.incomeByOrganization.set([]);
         return of([]);
       }),
-      finalize(() => (this.incomeByOrganizationLoading = false)),
+      finalize(() => this.incomeByOrganizationLoading.set(false)),
     );
   }
 
@@ -244,6 +248,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return of([]);
       }),
       finalize(() => this.expenseByOrganizationLoading.set(false)),
+    );
+  }
+
+  private loadIncomeByCategory$() {
+    if (!this.currency) {
+      this.incomeByCategory.set([]);
+      return of([]);
+    }
+
+    this.incomeByCategoryLoading.set(true);
+
+    return this.incomeService.totalByCategories(this.currency.code).pipe(
+      tap((items) => this.incomeByCategory.set(items ?? [])),
+      catchError(() => {
+        this.errorMessage = 'Failed to load income by category';
+        this.incomeByCategory.set([]);
+        return of([]);
+      }),
+      finalize(() => this.incomeByCategoryLoading.set(false)),
     );
   }
 
@@ -294,10 +317,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
       );
   }
 
+  activeIncomeTitle = computed(() =>
+    this.incomeGroupBy() === 'category' ? 'Top Expenses' : 'Top Expenses',
+  );
+
+  activeIncomeItems = computed(() =>
+    this.incomeGroupBy() === 'category'
+      ? this.incomeByCategory()
+      : this.incomeByOrganization(),
+  );
+
+  activeIncomeLoading = computed(() =>
+    this.incomeGroupBy() === 'category'
+      ? this.incomeByCategoryLoading()
+      : this.incomeByOrganizationLoading(),
+  );
+
   activeExpenseTitle = computed(() =>
-    this.expenseGroupBy() === 'category'
-      ? 'Top Expenses'
-      : 'Top Expenses',
+    this.expenseGroupBy() === 'category' ? 'Top Expenses' : 'Top Expenses',
   );
 
   activeExpenseItems = computed(() =>

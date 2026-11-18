@@ -57,11 +57,20 @@ export class IncomeService extends SearchService<IncomeItem> {
     );
   }
 
+  totalByCategories(code: string): Observable<CategoryAmountItem[]> {
+    return this.http.get<CategoryAmountItem[]>(
+      this.getUrl('/income/search/totalByCategories'),
+      {
+        params: { code },
+      },
+    );
+  }
+
   totalByOrganizations(code: string): Observable<CategoryAmountItem[]> {
     return this.http.get<CategoryAmountItem[]>(
       this.getUrl('/income/search/totalByOrganizations'),
       {
-        params: { code }
+        params: { code },
       },
     );
   }
