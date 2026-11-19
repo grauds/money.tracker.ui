@@ -118,9 +118,8 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
         next: () => {
           this.setLoading(false);
         },
-        error: (err) => {
+        error: () => {
           this.setLoading(false);
-          // Optional: Handle downstream errors here if needed
         },
       });
   }
@@ -173,12 +172,8 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
       return throwError(() => new Error('No entity provided to setEntity.'));
     }
 
-    if (this.entity?.getSelfLinkHref() === entity.getSelfLinkHref()) {
-      this.onEntityLoaded(entity);
-      return of();
-    }
-
     this.entity = entity;
+    this.path = [];
     this.title.setTitle(entity.name ? entity.name : entity.getSelfLinkHref());
 
     // Ensure parent$ completes or emits a fallback if it's empty
@@ -242,6 +237,7 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
       }),
       switchMap((result) => {
         if (result.parent) {
+          // get path from server
           return this.entityService
             .getPath(Utils.getIdFromSelfUrl(result.parent))
             .pipe(

@@ -4,7 +4,6 @@ import { PageNotFoundComponent } from '@clematis-shared/shared-components';
 
 import { canActivate } from './app/auth/auth.guard';
 
-import { AboutComponent } from './app/about/about.component';
 import { DashboardComponent } from './app/dashboard/dashboard.component';
 import { AccountsDashboardComponent } from './app/accounts/accounts-dashboard/accounts-dashboard.component';
 import { AgentCommoditiesComponent } from './app/expenses/agent-commodities/agent-commodities.component';
