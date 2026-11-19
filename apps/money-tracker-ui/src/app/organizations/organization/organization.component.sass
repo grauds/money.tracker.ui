@@ -33,7 +33,7 @@
 .summary-header
   display: flex
   justify-content: space-between
-  align-items: flex-start
+  align-items: stretch
   gap: 24px
   width: 100%
   padding: 20px 24px
@@ -107,6 +107,113 @@
 // =====================================================================
 .ledger-grid
   display: flex
+  flex: 1 1 auto
   flex-direction: column
   gap: 1.15rem
   width: 100%
+
+// =====================================================================
+// ORGANIZATION DOSSIER (Дополнительная информация)
+// =====================================================================
+.org-dossier
+  background: #ffffff
+  border: 1px solid #ddd
+  border-top: none
+  margin-top: auto
+  box-sizing: border-box
+
+.dossier-grid
+  display: grid
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))
+  gap: 1px
+  background: #ddd
+
+.dossier-cell
+  background: #ffffff
+  padding: 12px 20px
+  display: flex
+  flex-direction: column
+  justify-content: center
+  gap: 4px
+  min-width: 0
+
+  &--wide
+    grid-column: span 2
+
+    @media (max-width: 640px)
+      grid-column: span 1
+
+.dossier-label
+  font-family: Georgia, serif
+  font-size: 9px
+  font-weight: 900
+  letter-spacing: 1.5px
+  text-transform: uppercase
+  color: #888
+
+.dossier-value
+  font-size: 13px
+  font-weight: 600
+  color: #1a1a1a
+  word-break: break-word
+
+.dossier-num
+  font-variant-numeric: tabular-nums
+
+.dossier-link
+  font-size: 13px
+  font-weight: 600
+  color: #1a1a1a
+  text-decoration: none
+  border-bottom: 1px solid #ccc
+  align-self: flex-start
+  max-width: 100%
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
+  transition: border-color 0.15s ease, color 0.15s ease
+
+  &:hover
+    color: darkviolet
+    border-bottom-color: darkviolet
+
+.dossier-address-row
+  display: flex
+  align-items: baseline
+  justify-content: space-between
+  gap: 12px
+
+.dossier-action-link
+  flex-shrink: 0
+  font-family: Georgia, serif
+  font-size: 9.5px
+  font-weight: 700
+  letter-spacing: 0.8px
+  text-transform: uppercase
+  color: #555
+  background: #faf8f5
+  border: 1px solid #ddd
+  padding: 2px 7px
+  text-decoration: none
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease
+
+  &:hover
+    background: #1a1a1a
+    color: #faf8f5
+    border-color: #1a1a1a
+
+.dossier-remarks
+  padding: 12px 20px
+  background: #faf8f5
+  border-top: 1px solid #ddd
+  display: flex
+  flex-direction: column
+  gap: 4px
+
+.remarks-text
+  margin: 0
+  font-size: 12.5px
+  font-style: italic
+  line-height: 1.5
+  color: #444
+  white-space: pre-line

@@ -85,4 +85,23 @@ export class OrganizationComponent
       this.expenses = $event;
     });
   }
+
+  getMapUrl(address: string): string {
+    return `https://yandex.ru/maps/?text=${encodeURIComponent(
+      this.normalizeUrl(address)
+    )
+    }`;
+  }
+
+  normalizeUrl(url: string): string {
+    const trimmed = url.trim();
+    return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+  }
+
+  formatUrlDisplay(url: string): string {
+    return url
+      .trim()
+      .replace(/^https?:\/\/(www\.)?/i, '')
+      .replace(/\/$/, '');
+  }
 }

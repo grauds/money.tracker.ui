@@ -25,8 +25,78 @@
           [incomeSum]="incomeSum"
           [currency]="currency"
         ></lib-entity-balance-info>
+
+
+        @if (entity.fullname || entity.address || entity.phone || entity.fax || entity.email || entity.url || entity.remarks) {
+          <section class="org-dossier">
+            <div class="dossier-grid">
+
+              @if (entity.fullname) {
+                <div class="dossier-cell dossier-cell--wide">
+                  <span class="dossier-label">Full Legal Name</span>
+                  <span class="dossier-value">{{ entity.fullname }}</span>
+                </div>
+              }
+
+              @if (entity.address) {
+                <div class="dossier-cell dossier-cell--wide">
+                  <span class="dossier-label">Address</span>
+                  <div class="dossier-address-row">
+                    <span class="dossier-value">{{ entity.address }}</span>
+                    <a href="{{ getMapUrl(entity.address) }}" target="_blank"
+                       class="dossier-map-link" title="Open in Yandex Maps">
+                      Map ↗
+                    </a>
+                  </div>
+                </div>
+              }
+
+              @if (entity.url) {
+                <div class="dossier-cell">
+                  <span class="dossier-label">Website</span>
+                  <a href="{{ entity.url }}" target="_blank">
+                    {{ formatUrlDisplay(entity.url) }} ↗
+                  </a>
+                </div>
+              }
+
+              @if (entity.email) {
+                <div class="dossier-cell">
+                  <span class="dossier-label">Email</span>
+                  <a href="mailto:{{ entity.email }}">
+                    {{ entity.email }}
+                  </a>
+                </div>
+              }
+
+              @if (entity.phone) {
+                <div class="dossier-cell">
+                  <span class="dossier-label">Phone</span>
+                  {{ entity.phone }}
+                </div>
+              }
+
+              @if (entity.fax) {
+                <div class="dossier-cell">
+                  <span class="dossier-label">Fax</span>
+                  <span class="dossier-value dossier-num">{{ entity.fax }}</span>
+                </div>
+              }
+
+            </div>
+
+            @if (entity.remarks) {
+              <div class="dossier-remarks">
+                <span class="dossier-label">Remarks</span>
+                <p class="remarks-text">{{ entity.remarks }}</p>
+              </div>
+            }
+          </section>
+        }
+
       </div>
     </header>
+
 
     @if (this.expenses.length > 0) {
       <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; margin-left: 20px; border-left: 4px solid #0d6efd;">
