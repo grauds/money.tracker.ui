@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
-import { AccountsService, SharedComponentsModule } from '@clematis-shared/shared-components';
+import { AccountsService } from '@clematis-shared/shared-components';
 import { RequestParam, Sort } from '@lagoshny/ngx-hateoas-client';
 import { Entity } from '@clematis-shared/model';
 

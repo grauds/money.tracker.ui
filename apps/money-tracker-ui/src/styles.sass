@@ -23,3 +23,169 @@
   width: auto
   transform: rotate(-5deg)
   margin-right: 30px
+
+// Настройка токенов Angular Material MDC под газетный стиль
+.mat-mdc-paginator
+  --mat-paginator-container-background-color: #faf8f5
+  --mat-paginator-container-text-color: #1a1a1a
+  --mat-paginator-container-text-font: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif
+  --mat-paginator-container-text-size: 11px
+  --mat-paginator-container-size: 38px
+  --mat-paginator-enabled-icon-color: #1a1a1a
+  --mat-paginator-disabled-icon-color: #bbb
+  --mat-option-label-text-size: 12px
+
+  border-top: 1px solid #ddd
+  background: #faf8f5 !important
+  font-variant-numeric: tabular-nums
+  container-type: inline-size // Позволяет пагинатору знать ширину своего родителя
+
+  .mat-mdc-paginator-container
+    min-height: 38px
+    padding: 4px 8px
+    justify-content: space-between
+    flex-wrap: nowrap
+    gap: 6px
+
+  // Компактный селектор количества строк
+  .mat-mdc-paginator-page-size
+    align-items: center
+    margin-right: 0
+
+  .mat-mdc-paginator-page-size-label
+    font-size: 10px
+    color: #777
+    font-style: italic
+    margin: 0 6px 0 0
+
+  .mat-mdc-paginator-page-size-select
+    width: 54px
+    margin: 0
+
+    .mat-mdc-text-field-wrapper
+      padding: 0 6px
+      background: #ffffff
+      border: 1px solid #ddd
+      border-radius: 0 !important
+
+    .mat-mdc-form-field-infix
+      padding: 2px 0 !important
+      min-height: 24px
+
+    .mdc-notched-outline
+      display: none // Убираем стандартную рамку Material
+
+  // Диапазон страниц (1 – 5 of 24)
+  .mat-mdc-paginator-range-actions
+    gap: 2px
+
+  .mat-mdc-paginator-range-label
+    margin: 0 8px
+    font-family: Georgia, serif
+    font-size: 11px
+    font-weight: 700
+    color: #1a1a1a
+    white-space: nowrap
+
+  // Кнопки-стрелки: делаем компактными с острыми углами
+  .mat-mdc-icon-button
+    width: 28px !important
+    height: 28px !important
+    padding: 2px !important
+    border-radius: 0 !important
+
+    &:hover:not([disabled])
+      background: #f0ede8
+
+// =====================================================================
+// АДАПТИВ ДЛЯ УЗКИХ КОЛОНОК (например, Subgroups шириной ~300-380px)
+// =====================================================================
+@container (max-width: 420px)
+  .mat-mdc-paginator
+    // Прячем длинный текст "Items per page:", оставляем только компактный дропдаун
+    .mat-mdc-paginator-page-size-label
+      display: none
+
+    .mat-mdc-paginator-range-label
+      margin: 0 4px
+      font-size: 10px
+
+@container (max-width: 320px)
+  .mat-mdc-paginator
+    // Если места совсем мало (< 320px), прячем кнопки в начало/конец и выбор размера
+    .mat-mdc-paginator-page-size,
+    .mat-mdc-paginator-navigation-first,
+    .mat-mdc-paginator-navigation-last
+      display: none
+
+// 2. Выпадающий список чисел (рендерится в cdk-overlay-container)
+.cdk-overlay-container .mat-mdc-select-panel
+  --mat-option-label-text-font: Georgia, serif
+  --mat-option-label-text-size: 11px
+  --mat-option-label-text-line-height: 1.2
+  --mat-option-selected-state-label-text-color: #1a1a1a
+  --mat-option-hover-state-layer-color: #f0ede8
+  --mat-option-selected-state-layer-color: #faf8f5
+
+  background: #ffffff !important
+  border: 1px solid #ddd
+  border-radius: 0 !important
+  padding: 0 !important
+  min-width: 56px !important
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important
+
+  .mat-mdc-option
+    min-height: 28px !important
+    padding: 0 10px !important
+    border-bottom: 1px solid #eee
+    font-variant-numeric: tabular-nums
+
+    &:last-child
+      border-bottom: none
+
+    .mdc-list-item__primary-text
+      font-family: Georgia, serif !important
+      font-size: 11px !important
+      font-weight: 700
+      color: #1a1a1a
+
+    // Выбранный пункт в списке
+    &.mdc-list-item--selected
+      background: #1a1a1a !important
+
+      .mdc-list-item__primary-text
+        color: #faf8f5 !important
+
+      .mat-pseudo-checkbox
+        display: none // Убираем лишнюю галочку Material для экономии места
+
+.cdk-overlay-container .mat-mdc-select-panel
+  background: #ffffff !important
+  border: 1px solid #ddd !important
+  border-radius: 0 !important
+  padding: 0 !important
+  min-width: 54px !important
+
+  .mat-mdc-option
+    padding: 0 8px !important
+    border-bottom: 1px solid #eee
+
+    &:last-child
+      border-bottom: none
+
+    .mdc-list-item__primary-text
+      font-family: Georgia, serif !important
+      font-size: 11px !important
+      font-weight: 700 !important
+      line-height: 1 !important
+      color: #1a1a1a !important
+      font-variant-numeric: tabular-nums
+
+    &.mdc-list-item--selected
+      background: #1a1a1a !important
+
+      .mdc-list-item__primary-text
+        color: #faf8f5 !important
+
+      .mat-pseudo-checkbox
+        display: none !important

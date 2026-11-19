@@ -1,17 +1,23 @@
 @reference "tailwindcss"
 
 .breadcrumbs
-  @apply flex text-gray-400 p-3 pb-0
-  margin-bottom: 5px
+  @apply flex flex-wrap items-center text-sm pb-0
+  font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif
+  color: #777
 
 .breadcrumbs .path-divider
-  @apply ml-2 mr-2 cursor-default
+  @apply mx-2 cursor-default select-none inline-flex items-center leading-none
+  color: #aaa
 
 .breadcrumbs .path-item
-  @apply flex
+  @apply inline-flex items-center leading-none
+
+  // Сбрасываем возможные margin-bottom от Bootstrap у <p> или <span>
+  p, span, a
+    @apply m-0 leading-normal
 
 .breadcrumbs .active-ctrl
-  @apply cursor-pointer
+  @apply cursor-pointer transition-colors duration-150
 
 .breadcrumbs .active-ctrl:hover
-  @apply text-gray-700
+  color: #1a1a1a

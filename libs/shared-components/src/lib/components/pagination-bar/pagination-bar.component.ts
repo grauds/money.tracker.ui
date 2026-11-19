@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-pagination-bar',
   templateUrl: './pagination-bar.component.html',
-  styleUrls: ['./pagination-bar.component.css'],
+  styleUrls: ['./pagination-bar.component.sass'],
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })

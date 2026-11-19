@@ -1,46 +1,162 @@
-.summary-header
-  display: flex
-  justify-content: space-between
-  align-items: flex-start
-  gap: 24px
+:host
+  display: block
   width: 100%
-  padding: 20px
-  box-sizing: border-box
-  border-radius: 0
-  margin-bottom: 0
+  min-height: 100%
+  background: #faf8f5
+  font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif
+  color: #1a1a1a
+  line-height: 1.4
 
-.summary-details
-  flex: 1
-  min-width: 0 /* Prevents text overflow issues */
-
-.description-box
-  max-height: 350px
-  margin: 10px 0
-  overflow: auto
-
-/* Right-aligned prominent financial box */
-.summary-total
+.group-page
+  max-width: 1840px
+  margin: 0 auto
+  padding: 16px 20px 32px
   display: flex
   flex-direction: column
-  align-items: flex-end
-  justify-content: center
-  text-align: right
-  flex-shrink: 0 /* Stops total box from squeezing */
-  padding: 12px 20px
-  background-color: #f8f9fa /* Light contrast badge color */
-  border-radius: 8px
-  border: 1px solid #e9ecef
+  gap: 16px
+  box-sizing: border-box
 
-.total-label
-  font-size: 0.85rem
+.summary-banner
+  display: flex
+  flex-wrap: wrap
+  align-items: flex-start
+  justify-content: space-between
+  gap: 20px
+  background: #ffffff
+  border: 1px solid #ddd
+  border-top: 3px solid darkviolet
+  padding: 20px 20px
+  box-sizing: border-box
+
+.summary-identity
+  flex: 1 1 320px
+  min-width: 0
+  display: flex
+  flex-direction: column
+  gap: 6px
+
+.entity-eyebrow
+  font-family: Georgia, serif
+  font-size: 9px
+  font-weight: 900
+  letter-spacing: 1.5px
   text-transform: uppercase
-  letter-spacing: 1px
-  color: #6c757d
-  font-weight: 600
+  color: #888
 
-.total-amount
-  font-size: 1.75rem /* Large, prominent text */
+.entity-heading
+  margin: 0
+  font-family: Georgia, serif
+  font-size: 24px
   font-weight: 700
-  color: #198754 /* Clean financial green color (or use inherit/primary) */
-  white-space: nowrap
-  margin-top: 4px
+  line-height: 1.2
+  color: #1a1a1a
+  letter-spacing: -0.2px
+
+.entity-desc
+  margin: 4px 0 0 0
+  font-size: 13px
+  line-height: 1.55
+  color: #555
+  max-width: 68ch
+  max-height: 140px
+  overflow-y: auto
+  padding-right: 6px
+
+  &::-webkit-scrollbar
+    width: 4px
+
+  &::-webkit-scrollbar-track
+    background: #faf8f5
+
+  &::-webkit-scrollbar-thumb
+    background: #ccc
+
+.summary-metrics
+  flex: 1 1 420px
+  min-width: 0
+
+
+.workspace-grid
+  display: flex
+  align-items: flex-start
+  gap: 16px
+  width: 100%
+
+  @media (max-width: 1024px)
+    flex-direction: column
+
+.panel-card
+  background: #ffffff
+  border: 1px solid #ddd
+  display: flex
+  flex-direction: column
+  box-sizing: border-box
+
+  &[hidden]
+    display: none !important
+
+.sidebar-panel
+  flex: 0 0 32%
+  max-width: 460px
+  min-width: 280px
+
+  @media (max-width: 1024px)
+    flex: 1 1 auto
+    width: 100%
+    max-width: none
+
+.main-panel
+  flex: 1 1 0
+  min-width: 0
+
+  @media (max-width: 1024px)
+    width: 100%
+
+.panel-header
+  padding: 10px 16px
+  border-bottom: 1px solid #ddd
+  background: #fafafa
+  display: flex
+  flex-wrap: wrap
+  align-items: baseline
+  justify-content: space-between
+  gap: 8px
+
+.panel-header-main
+  display: flex
+  align-items: center
+  gap: 8px
+
+.panel-title
+  font-family: Georgia, serif
+  font-size: 10px
+  font-weight: 900
+  letter-spacing: 1.5px
+  text-transform: uppercase
+  margin: 0
+  color: #1a1a1a
+
+.panel-count
+  font-size: 9px
+  font-weight: 700
+  letter-spacing: 0.6px
+  padding: 1px 6px
+  background: #ffffff
+  border: 1px solid #ddd
+  color: #555
+  font-variant-numeric: tabular-nums
+
+.panel-subtitle
+  font-size: 10px
+  color: #888
+  font-style: italic
+
+.panel-body
+  padding: 0
+
+
+.ledger-grid
+  display: flex
+  flex-direction: column
+  gap: 16px
+  width: 100%

@@ -1,0 +1,57 @@
+:host
+  display: block
+  font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif
+
+.pagination
+  display: inline-flex
+  flex-wrap: wrap
+  align-items: stretch
+  list-style: none
+  padding: 0
+  margin: 16px 0
+  background: #ddd
+  border: 1px solid #ddd
+  gap: 1px
+
+  li
+    display: flex
+    background: #ffffff
+
+    > a
+      display: flex
+      align-items: center
+      justify-content: center
+      min-width: 32px
+      height: 30px
+      padding: 0 10px
+      font-family: Georgia, serif
+      font-size: 11px
+      font-weight: 700
+      letter-spacing: 0.4px
+      color: #1a1a1a
+      text-decoration: none
+      cursor: pointer
+      user-select: none
+      font-variant-numeric: tabular-nums
+      transition: background-color 0.15s ease, color 0.15s ease
+
+      &:hover
+        background: #f0ede8
+        color: #1a1a1a
+
+    // Активная страница
+    &.active > a
+      background: #1a1a1a
+      color: #faf8f5
+      cursor: default
+
+      &:hover
+        background: #1a1a1a
+        color: #faf8f5
+
+    // Отключенные кнопки (First / Prev на 1-й странице)
+    &.disabled > a
+      background: #faf8f5
+      color: #aaa
+      pointer-events: none
+      cursor: default

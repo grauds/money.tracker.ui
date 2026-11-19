@@ -1,77 +1,162 @@
-.summary-header
+:host
+  display: block
+  width: 100%
+  min-height: 100%
+  background: #faf8f5
+  font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif
+  color: #1a1a1a
+  line-height: 1.4
+
+.group-page
+  max-width: 1840px
+  margin: 0 auto
+  padding: 16px 20px 32px
+  display: flex
+  flex-direction: column
+  gap: 16px
+  box-sizing: border-box
+
+.summary-banner
   display: flex
   flex-wrap: wrap
+  align-items: flex-start
   justify-content: space-between
-  gap: 24px
-  min-height: 120px
+  gap: 20px
+  background: #ffffff
+  border: 1px solid #ddd
+  border-top: 3px solid darkviolet
+  padding: 20px 20px
+  box-sizing: border-box
 
-.summary-details
-  flex: 1 1 300px
+.summary-identity
+  flex: 1 1 320px
+  min-width: 0
+  display: flex
+  flex-direction: column
+  gap: 6px
 
-.entity-title
+.entity-eyebrow
+  font-family: Georgia, serif
+  font-size: 9px
+  font-weight: 900
+  letter-spacing: 1.5px
+  text-transform: uppercase
+  color: #888
+
+.entity-heading
   margin: 0
-  font-size: 1.75rem
-  font-weight: 600
-  color: #212529
+  font-family: Georgia, serif
+  font-size: 24px
+  font-weight: 700
+  line-height: 1.2
+  color: #1a1a1a
   letter-spacing: -0.2px
 
-.product-info
-  flex: 1 1 450px
+.entity-desc
+  margin: 4px 0 0 0
+  font-size: 13px
+  line-height: 1.55
+  color: #555
+  max-width: 68ch
+  max-height: 140px
+  overflow-y: auto
+  padding-right: 6px
+
+  &::-webkit-scrollbar
+    width: 4px
+
+  &::-webkit-scrollbar-track
+    background: #faf8f5
+
+  &::-webkit-scrollbar-thumb
+    background: #ccc
+
+.summary-metrics
+  flex: 1 1 420px
   min-width: 0
 
-.section-header
+
+.workspace-grid
+  display: flex
+  align-items: flex-start
+  gap: 16px
+  width: 100%
+
+  @media (max-width: 1024px)
+    flex-direction: column
+
+.panel-card
+  background: #ffffff
+  border: 1px solid #ddd
   display: flex
   flex-direction: column
-  margin: 32px 0 16px 0
-  padding-left: 16px
-  border-left: 4px solid #0d6efd
+  box-sizing: border-box
 
-  h3
-    margin: 0
-    font-size: 1.25rem
-    font-weight: 600
-    color: #212529
-    letter-spacing: -0.2px
+  &[hidden]
+    display: none !important
 
-  small
-    color: #6c757d
-    font-size: 0.85rem
-    margin-top: 2px
+.sidebar-panel
+  flex: 0 0 32%
+  max-width: 460px
+  min-width: 280px
 
-.description-box
-  max-height: 350px
-  margin: 10px 0
-  overflow: auto
+  @media (max-width: 1024px)
+    flex: 1 1 auto
+    width: 100%
+    max-width: none
 
-/* Right-aligned prominent financial box */
-.summary-total
+.main-panel
+  flex: 1 1 0
+  min-width: 0
+
+  @media (max-width: 1024px)
+    width: 100%
+
+.panel-header
+  padding: 10px 16px
+  border-bottom: 1px solid #ddd
+  background: #fafafa
   display: flex
-  flex-direction: column
-  align-items: flex-end
-  justify-content: center
-  text-align: right
-  flex-shrink: 0 /* Stops total box from squeezing */
-  padding: 12px 20px
-  background-color: #f8f9fa /* Light contrast badge color */
-  border-radius: 8px
-  border: 1px solid #e9ecef
+  flex-wrap: wrap
+  align-items: baseline
+  justify-content: space-between
+  gap: 8px
 
-.total-label
-  font-size: 0.85rem
+.panel-header-main
+  display: flex
+  align-items: center
+  gap: 8px
+
+.panel-title
+  font-family: Georgia, serif
+  font-size: 10px
+  font-weight: 900
+  letter-spacing: 1.5px
   text-transform: uppercase
-  letter-spacing: 1px
-  color: #6c757d
-  font-weight: 600
+  margin: 0
+  color: #1a1a1a
 
-.total-amount
-  font-size: 1.75rem /* Large, prominent text */
+.panel-count
+  font-size: 9px
   font-weight: 700
-  color: #198754 /* Clean financial green color (or use inherit/primary) */
-  white-space: nowrap
-  margin-top: 4px
+  letter-spacing: 0.6px
+  padding: 1px 6px
+  background: #ffffff
+  border: 1px solid #ddd
+  color: #555
+  font-variant-numeric: tabular-nums
+
+.panel-subtitle
+  font-size: 10px
+  color: #888
+  font-style: italic
+
+.panel-body
+  padding: 0
+
 
 .ledger-grid
   display: flex
   flex-direction: column
-  gap: 1.15rem
+  gap: 16px
   width: 100%

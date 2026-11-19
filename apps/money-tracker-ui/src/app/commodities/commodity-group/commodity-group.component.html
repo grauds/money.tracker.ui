@@ -1,75 +1,68 @@
 @if (entity) {
-  <app-breadcrumbs [path]="path"></app-breadcrumbs>
+  <div class="group-page">
+    <app-breadcrumbs [path]="path"></app-breadcrumbs>
 
-  <div>
-    <div class="back-area">
-      <div class="jumbotron summary-header">
+    <header class="summary-banner">
 
-        <!-- Left Side: Title and Description -->
-        <div class="summary-details">
-          <h2 style="margin: 0; font-size: 1.75rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
-            {{ entity ? entity.name : '' }}
-          </h2>
-          @if (entity.description) {
-            <div class="description-box">
-              {{ entity.description }}
-            </div>
-          }
-        </div>
-
-        <div class="product-info">
-          <!-- Financial Overview Section -->
-          <lib-entity-balance-info
-            [loading]="loading"
-            [expensesSum]="expensesSum"
-            [incomeSum]="incomeSum"
-            [currency]="currency"
-          ></lib-entity-balance-info>
-        </div>
-      </div>
-    </div>
-
-    <div class="flex gap-[2%] flex-nowrap content-start">
-      <div class="w-1/3 h-1/4" [hidden]="!children || children.length === 0">
-
-        @if (children && children.length > 0) {
-          <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
-            <div>
-              <h3 style="margin: 0 0 0 20px; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
-                Subgroups
-              </h3>
-              <small style="margin: 0 0 0 20px; color: #6c757d; font-size: 0.85rem;">Child groups and some stats (to be updated)</small>
-            </div>
-          </div>
+      <div>
+        <span>Commodity Group</span>
+        <h1 style="margin: 0; font-size: 1.5rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">{{ entity.name }}</h1>
+        @if (entity.description) {
+          <p>{{ entity.description }}</p>
         }
+      </div>
+      <div class="summary-metrics">
+        <lib-entity-balance-info
+          [loading]="loading"
+          [expensesSum]="expensesSum"
+          [incomeSum]="incomeSum"
+          [currency]="currency"
+        ></lib-entity-balance-info>
+      </div>
+    </header>
 
-        <app-entity-list
-          [updateRouterState]="false"
-          (loading$)="setLoading($event)"
-          [cookieStateKey]="'commodity-group-subgroups'"
-          [searchRequest]="{
+    <div class="workspace-grid">
+      <aside class="panel-card sidebar-panel" [hidden]="!children || children.length === 0">
+        <div class="panel-header">
+          <div class="panel-header-main">
+            <h2 class="panel-title">Subgroups</h2>
+            @if (children && children.length > 0) {
+              <span class="panel-count">{{ children.length }}</span>
+            }
+          </div>
+          <span class="panel-subtitle">Child groups and hierarchy</span>
+        </div>
+
+        <div class="panel-body">
+          <app-entity-list
+            [updateRouterState]="false"
+            (loading$)="setLoading($event)"
+            [cookieStateKey]="'commodity-group-subgroups'"
+            [searchRequest]="{
             queryArguments: getQueryArguments(),
             queryName: 'recursiveByParentId'
           }"
-          (entitiesChange$)="setEntities($event)"
-          [sort]="getSort()"
-        ></app-entity-list>
-
-      </div>
-      <div class="flex-1 h-3/4">
-        <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
-          <div>
-            <h3 style="margin: 0 0 0 20px; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
-              Group Commodities
-            </h3>
-            <small style="margin: 0 0 0 20px; color: #6c757d; font-size: 0.85rem;">List of this group and subgroups commodities</small>
-          </div>
+            (entitiesChange$)="setEntities($event)"
+            [sort]="getSort()"
+          ></app-entity-list>
         </div>
-        <app-commodity-group-commodities
-          [id]="id"
-        >
-        </app-commodity-group-commodities>
-      </div>
+      </aside>
+
+      <main class="panel-card main-panel">
+        <div class="panel-header">
+          <div class="panel-header-main">
+            <h2 class="panel-title">Group Commodities</h2>
+          </div>
+          <span class="panel-subtitle">List of this group and subgroups commodities</span>
+        </div>
+
+        <div class="panel-body">
+          <app-commodity-group-commodities
+            [id]="id"
+          ></app-commodity-group-commodities>
+        </div>
+      </main>
+
     </div>
 
   </div>
