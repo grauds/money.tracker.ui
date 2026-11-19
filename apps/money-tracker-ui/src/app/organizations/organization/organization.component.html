@@ -1,73 +1,74 @@
 @if (entity) {
-  <app-breadcrumbs [path]="path"></app-breadcrumbs>
-}
-@if (entity) {
-  <div class="jumbotron summary-header">
+  <div class="page">
+    <app-breadcrumbs [path]="path"></app-breadcrumbs>
 
-    <div class="product-media" style="flex-shrink: 0; background: #ffffff; padding: 12px; border: 1px solid #dee2e6; border-radius: 6px;">
-      <app-photo-uploader
-        [entityName]="'organizations'"
-        [entityId]="id"
-        [extraPath]="'main'"
-      ></app-photo-uploader>
-    </div>
+    <header class="jumbotron summary-header">
 
-    <div class="ledger-grid">
-      <div class="summary-details">
-        <h2 style="margin: 0; font-size: 1.75rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
-          {{ !loading ? (entity ? entity.name : 'Not loaded') : 'Loading...' }}
-        </h2>
+      <div class="product-media" style="flex-shrink: 0; background: #ffffff; padding: 0 1px 0 0; border: 1px solid #dee2e6; border-radius: 6px;">
+        <app-photo-uploader
+          [entityName]="'organizations'"
+          [entityId]="id"
+          [extraPath]="'main'"
+        ></app-photo-uploader>
       </div>
 
-      <lib-entity-balance-info
-        [loading]="loading"
-        [expensesSum]="expensesSum"
-        [incomeSum]="incomeSum"
-        [currency]="currency"
-      ></lib-entity-balance-info>
-    </div>
+      <div class="ledger-grid">
+        <div class="summary-details">
+          <h2 style="margin: 0; font-size: 1.5rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+            {{ !loading ? (entity ? entity.name : 'Not loaded') : 'Loading...' }}
+          </h2>
+        </div>
+
+        <lib-entity-balance-info
+          [loading]="loading"
+          [expensesSum]="expensesSum"
+          [incomeSum]="incomeSum"
+          [currency]="currency"
+        ></lib-entity-balance-info>
+      </div>
+    </header>
+
+    @if (this.expenses.length > 0) {
+      <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; margin-left: 20px; border-left: 4px solid #0d6efd;">
+        <div>
+          <h3 style="margin: 20px 0 0 20px;  font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+            Price & Analytics Trends
+          </h3>
+          <small style="margin: 0 0 0 20px; color: #6c757d; font-size: 0.85rem;">Historical data and purchase distribution</small>
+        </div>
+      </div>
+    }
+
+    <app-entity-expenses
+      [expenseService]="expenseService"
+      [hiddenColumns]="['organizationname']"
+      [cookieStateKey]="'organization-expense'"
+      [queryArguments]="getQueryArguments()"
+      [queryName]="'tradeplace'"
+      (loadingChanged)="setLoading($event)"
+      (entitiesChanged)="setExpenses($event)"
+    ></app-entity-expenses>
+
+    @if (this.income.length > 0) {
+      <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
+        <div>
+          <h3 style="margin: 20px 0 0 20px;  font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
+            Income & Analytics Trends
+          </h3>
+          <small style="margin: 0 0 0 20px; color: #6c757d; font-size: 0.85rem;">Historical data and income distribution</small>
+        </div>
+      </div>
+    }
+
+    <app-entity-income
+      [incomeService]="incomeService"
+      [hiddenColumns]="['organizationname']"
+      [cookieStateKey]="'organization-income'"
+      [queryArguments]="getQueryArguments()"
+      [queryName]="'tradeplace'"
+      (loadingChanged)="setLoading($event)"
+      (entitiesChanged)="setIncome($event)"
+    >
+    </app-entity-income>
   </div>
 }
-
-@if (entity && this.expenses.length > 1) {
-  <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; margin-left: 20px; border-left: 4px solid #0d6efd;">
-    <div>
-      <h3 style="margin: 20px 0 0 20px; font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
-        Price & Analytics Trends
-      </h3>
-      <small style="margin: 0 0 0 20px; color: #6c757d; font-size: 0.85rem;">Historical data and purchase distribution</small>
-    </div>
-  </div>
-}
-
-<app-entity-expenses
-  [expenseService]="expenseService"
-  [hiddenColumns]="['organizationname']"
-  [cookieStateKey]="'organization-expense'"
-  [queryArguments]="getQueryArguments()"
-  [queryName]="'tradeplace'"
-  (loadingChanged)="setLoading($event)"
-  (entitiesChanged)="setExpenses($event)"
-></app-entity-expenses>
-
-@if (entity && this.income.length > 1) {
-  <div class="d-flex align-items: center; margin: 32px; padding-left: 12px; border-left: 4px solid #0d6efd;">
-    <div>
-      <h3 style="margin: 20px 0 0 20px;  font-size: 1.25rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
-        Income & Analytics Trends
-      </h3>
-      <small style="margin: 0 0 0 20px; color: #6c757d; font-size: 0.85rem;">Historical data and income distribution</small>
-    </div>
-  </div>
-}
-
-<app-entity-income
-  [incomeService]="incomeService"
-  [hiddenColumns]="['organizationname']"
-  [cookieStateKey]="'organization-income'"
-  [queryArguments]="getQueryArguments()"
-  [queryName]="'tradeplace'"
-  (loadingChanged)="setLoading($event)"
-  (entitiesChanged)="setIncome($event)"
->
-</app-entity-income>

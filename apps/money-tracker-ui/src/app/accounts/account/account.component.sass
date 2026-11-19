@@ -1,5 +1,112 @@
+:host
+  display: block
+  width: 100%
+  min-height: 100%
+  background: #faf8f5
+  font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif
+  color: #1a1a1a
+  font-size: 12px
+  line-height: 1.4
+
+.page
+  max-width: 1840px
+  margin: 0 auto
+  padding: 16px 20px 32px
+  display: flex
+  flex-direction: column
+  gap: 16px
+  box-sizing: border-box
+
+  // Заголовок сущности в шапке
+  h2
+    margin: 0
+    font-family: Georgia, serif
+    font-size: 24px
+    font-weight: 700
+    line-height: 1.2
+    color: #1a1a1a
+    letter-spacing: -0.2px
+
+// =====================================================================
+// SUMMARY HEADER
+// =====================================================================
+.summary-header
+  display: flex
+  justify-content: space-between
+  align-items: flex-start
+  gap: 24px
+  width: 100%
+  padding: 20px 24px
+  background: #ffffff
+  border: 1px solid #ddd
+  border-top: 3px solid darkviolet
+  box-sizing: border-box
+  border-radius: 0
+  margin-bottom: 0
+
+.summary-details
+  min-width: 0
+
+.description-box
+  max-height: 220px
+  margin: 8px 0 0 0
+  padding-right: 8px
+  overflow-y: auto
+  font-size: 13px
+  line-height: 1.55
+  color: #555
+  max-width: 68ch
+
+  &::-webkit-scrollbar
+    width: 4px
+
+  &::-webkit-scrollbar-track
+    background: #faf8f5
+
+  &::-webkit-scrollbar-thumb
+    background: #ccc
+
+// =====================================================================
+// RIGHT-ALIGNED PROMINENT FINANCIAL BOX
+// =====================================================================
+.summary-total
+  display: flex
+  flex-direction: column
+  align-items: flex-end
+  justify-content: space-between
+  text-align: right
+  flex-shrink: 0
+  min-width: 180px
+  height: 76px // Совпадает с высотой .stat-cell в дашборде
+  padding: 14px 18px
+  background-color: #faf8f5
+  border-radius: 0
+  border: 1px solid #ddd
+  box-sizing: border-box
+
+.total-label
+  font-family: Georgia, serif
+  font-size: 10px
+  font-weight: 900
+  letter-spacing: 1.5px
+  text-transform: uppercase
+  color: #666
+  white-space: nowrap
+
+.total-amount
+  font-family: Georgia, serif
+  font-size: 20px
+  font-weight: 700
+  line-height: 22px
+  color: #1a7a2e // Фирменный зелёный цвет из дашборда
+  font-variant-numeric: tabular-nums
+  white-space: nowrap
+
+// =====================================================================
+// LEDGER GRID
+// =====================================================================
 .ledger-grid
   display: flex
   flex-direction: column
-  gap: 1.15rem
+  gap: 16px
   width: 100%

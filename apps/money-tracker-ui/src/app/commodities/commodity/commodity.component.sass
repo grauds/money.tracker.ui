@@ -1,52 +1,112 @@
+:host
+  display: block
+  width: 100%
+  min-height: 100%
+  background: #faf8f5
+  font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif
+  color: #1a1a1a
+  font-size: 12px
+  line-height: 1.4
+
+.page
+  max-width: 1840px
+  margin: 0 auto
+  padding: 16px 20px 32px
+  display: flex
+  flex-direction: column
+  gap: 16px
+  box-sizing: border-box
+
+  // Заголовок сущности в шапке
+  h2
+    margin: 0
+    font-family: Georgia, serif
+    font-size: 24px
+    font-weight: 700
+    line-height: 1.2
+    color: #1a1a1a
+    letter-spacing: -0.2px
+
+// =====================================================================
+// SUMMARY HEADER
+// =====================================================================
 .summary-header
   display: flex
   justify-content: space-between
   align-items: flex-start
   gap: 24px
   width: 100%
-  padding: 20px
+  padding: 20px 24px
+  background: #ffffff
+  border: 1px solid #ddd
+  border-top: 3px solid darkviolet
   box-sizing: border-box
   border-radius: 0
   margin-bottom: 0
 
 .summary-details
-  flex: 1
-  min-width: 0 /* Prevents text overflow issues */
+  min-width: 0
 
 .description-box
-  max-height: 350px
-  margin: 10px 0
-  overflow: auto
+  max-height: 220px
+  margin: 8px 0 0 0
+  padding-right: 8px
+  overflow-y: auto
+  font-size: 13px
+  line-height: 1.55
+  color: #555
+  max-width: 68ch
 
-/* Right-aligned prominent financial box */
+  &::-webkit-scrollbar
+    width: 4px
+
+  &::-webkit-scrollbar-track
+    background: #faf8f5
+
+  &::-webkit-scrollbar-thumb
+    background: #ccc
+
+// =====================================================================
+// RIGHT-ALIGNED PROMINENT FINANCIAL BOX
+// =====================================================================
 .summary-total
   display: flex
   flex-direction: column
   align-items: flex-end
-  justify-content: center
+  justify-content: space-between
   text-align: right
-  flex-shrink: 0 /* Stops total box from squeezing */
-  padding: 12px 20px
-  background-color: #f8f9fa /* Light contrast badge color */
-  border-radius: 8px
-  border: 1px solid #e9ecef
+  flex-shrink: 0
+  min-width: 180px
+  height: 76px // Совпадает с высотой .stat-cell в дашборде
+  padding: 14px 18px
+  background-color: #faf8f5
+  border-radius: 0
+  border: 1px solid #ddd
+  box-sizing: border-box
 
 .total-label
-  font-size: 0.85rem
+  font-family: Georgia, serif
+  font-size: 10px
+  font-weight: 900
+  letter-spacing: 1.5px
   text-transform: uppercase
-  letter-spacing: 1px
-  color: #6c757d
-  font-weight: 600
+  color: #666
+  white-space: nowrap
 
 .total-amount
-  font-size: 1.75rem /* Large, prominent text */
+  font-family: Georgia, serif
+  font-size: 20px
   font-weight: 700
-  color: #198754 /* Clean financial green color (or use inherit/primary) */
+  line-height: 22px
+  color: #1a7a2e // Фирменный зелёный цвет из дашборда
+  font-variant-numeric: tabular-nums
   white-space: nowrap
-  margin-top: 4px
 
+// =====================================================================
+// LEDGER GRID
+// =====================================================================
 .ledger-grid
   display: flex
   flex-direction: column
-  gap: 1.15rem
+  gap: 16px
   width: 100%
