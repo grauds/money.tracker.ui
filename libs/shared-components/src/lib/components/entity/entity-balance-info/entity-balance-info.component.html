@@ -1,122 +1,127 @@
 @let hasIncome = (incomeSum ?? 0) > 0;
 @let hasExpenses = (expensesSum ?? 0) > 0;
-@let hasBalance = hasIncome && hasExpenses;
-@let hasMeta = (totalQty ?? 0) > 1;
-@let hasPurchases = (purchaseHistory?.length ?? 0) > 0;
+@let hasBoth = hasIncome && hasExpenses;
+@let hasQty = (totalQty ?? 0) > 0;
 
-@if (loading || hasIncome || hasExpenses || hasMeta || hasPurchases) {
-  <div class="balance-overview">
-    <div class="metrics-grid">
+<div class="editorial-balance">
+  <!-- Единая полоса постоянной высоты (76px) -->
+  <div class="stats-strip">
 
-      <!-- Income -->
-      @if (loading || hasIncome) {
-        <div class="metric-card metric-card--income">
-          <span class="metric-label">Income</span>
-          @if (loading) {
-            <div class="skeleton skeleton-value"></div>
-          } @else {
-            <strong class="metric-value" [title]="incomeSum | currencySpace : currency?.code : 'symbol'">
-              {{ incomeSum | currencySpace : currency?.code : 'symbol' }}
-            </strong>
-          }
-        </div>
-      }
+    @if (loading) {
+      <!-- Состояние загрузки: 1 ячейка-заглушка на всю ширину -->
+      <div class="stat-cell">
+        <span class="stat-title">Financial Summary</span>
+        <div class="skeleton-line skeleton-amount"></div>
+      </div>
 
-      <!-- Expenses -->
-      @if (loading || hasExpenses) {
-        <div class="metric-card metric-card--expenses">
-          <span class="metric-label">Expenses</span>
-          @if (loading) {
-            <div class="skeleton skeleton-value"></div>
-          } @else {
-            <strong class="metric-value" [title]="expensesSum | currencySpace : currency?.code : 'symbol'">
-              {{ expensesSum | currencySpace : currency?.code : 'symbol' }}
-            </strong>
-          }
-        </div>
-      }
+    } @else if (hasBoth) {
+      <!-- Случай 1: Есть и доходы, и расходы -> 3 колонки в том же ряду -->
+      <div class="stat-cell">
+        <span class="stat-title">Income</span>
+        <span class="stat-value is-income">
+          {{ incomeSum | currencySpace : currency?.code : 'symbol' }}
+        </span>
+      </div>
 
-      <!-- Net Balance -->
-      @if (loading || hasBalance) {
-        <div class="metric-card metric-card--balance">
-          <span class="metric-label">Net Balance</span>
-          @if (loading) {
-            <div class="skeleton skeleton-value"></div>
-          } @else {
-            @let balance = (incomeSum || 0) - (expensesSum || 0);
-            <strong
-              class="metric-value"
-              [class.is-positive]="balance > 0"
-              [class.is-negative]="balance < 0"
-              [title]="balance | currencySpace : currency?.code : 'symbol'">
-              {{ balance | currencySpace : currency?.code : 'symbol' }}
-            </strong>
-          }
-        </div>
-      }
+      <div class="stat-cell">
+        <span class="stat-title">Expenses</span>
+        <span class="stat-value is-expense">
+          {{ expensesSum | currencySpace : currency?.code : 'symbol' }}
+        </span>
+      </div>
 
-      <!-- Широкая карточка: Средняя цена + Таблица мест покупок -->
-      @if (hasMeta || hasPurchases) {
-        <div class="metric-card metric-card--wide">
-          @if (loading) {
-            <div class="skeleton skeleton-text"></div>
-            <div class="skeleton skeleton-text" style="width: 80%"></div>
-            <div class="skeleton skeleton-text" style="width: 60%"></div>
-          } @else {
-            <!-- Верхняя панель со средней ценой и общим количеством -->
-            @if (hasMeta) {
-              <div class="meta-summary-bar">
-                <div class="meta-item">
-                  <span class="meta-label">Avg. Price:</span>
-                  <strong class="meta-val">{{ averagePrice | currencySpace : currency?.code : 'symbol' }}</strong>
-                  <span class="meta-unit">/ {{ unitTypeName }}</span>
-                </div>
-                <div class="meta-item">
-                  <span class="meta-label">Total Quantity:</span>
-                  <strong class="meta-val">{{ totalQty | number : '1.0-2' }} {{ unitTypeName }}</strong>
-                </div>
-              </div>
-            }
+      <div class="stat-cell">
+        <span class="stat-title">Net Balance</span>
+        @let balance = (incomeSum || 0) - (expensesSum || 0);
+        <span
+          class="stat-value"
+          [class.is-income]="balance > 0"
+          [class.is-expense]="balance < 0"
+          [class.is-zero]="balance === 0">
+          {{ balance | currencySpace : currency?.code : 'symbol' }}
+        </span>
+      </div>
 
-            <!-- Компактная таблица покупок (Место, Дата, Цена) -->
-            @if (hasPurchases) {
-              <div class="purchases-table-wrapper">
-                <table class="purchases-table">
-                  <thead>
-                  <tr>
-                    <th>Place</th>
-                    <th>Date</th>
-                    <th class="text-right">Price</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                    @for (item of purchaseHistory; track $index) {
-                      <tr>
-                        <td class="col-place" [title]="item.tradeplaceName">
-                          {{ item.tradeplaceName || '—' }}
-                        </td>
-                        <td class="col-date">
-                          {{ item.transferDate | date : 'dd.MM.yyyy' }}
-                        </td>
-                        <td class="col-price text-right">
-                          {{ item.price | currencySpace : (item.currencyCode || currency?.code) : 'symbol' }}
-                        </td>
-                      </tr>
-                    }
-                  </tbody>
-                </table>
-              </div>
-            }
-          }
-        </div>
-      }
-    </div>
+    } @else if (hasIncome) {
+      <!-- Случай 2: Только доходы (зарплата, аванс) -> 1 ячейка без лишних Expenses и Net -->
+      <div class="stat-cell">
+        <span class="stat-title">Total Received</span>
+        <span class="stat-value is-income">
+          {{ incomeSum | currencySpace : currency?.code : 'symbol' }}
+        </span>
+      </div>
 
-    @if (description) {
-      <div class="product-description">
-        <h4 class="section-title">Description</h4>
-        <div class="description-content">{{ description }}</div>
+    } @else if (hasExpenses) {
+      <!-- Случай 3: Только расходы (морковь, бензин) -> 1 ячейка без лишнего Income -->
+      <div class="stat-cell">
+        <span class="stat-title">Total Spent</span>
+        <span class="stat-value is-expense">
+          {{ expensesSum | currencySpace : currency?.code : 'symbol' }}
+        </span>
+      </div>
+
+    } @else {
+      <!-- Случай 4: Позиция еще ни разу не покупалась и не приносила доход -->
+      <div class="stat-cell">
+        <span class="stat-title">Financial Summary</span>
+        <span class="stat-value is-zero">No transactions</span>
       </div>
     }
+
+    <!-- Средняя цена и количество (если это товар с единицами измерения, встают в ту же полосу) -->
+    @if (!loading && hasQty) {
+      <div class="stat-cell">
+        <span class="stat-title">Average Price</span>
+        <span class="stat-value">
+          {{ (averagePrice || 0) | currencySpace : currency?.code : 'symbol' }}
+          @if (unitTypeName) {
+            <span class="stat-unit">/ {{ unitTypeName }}</span>
+          }
+        </span>
+      </div>
+
+      <div class="stat-cell">
+        <span class="stat-title">Total Quantity</span>
+        <span class="stat-value">
+          {{ totalQty | number : '1.0-2' }}
+          @if (unitTypeName) {
+            <span class="stat-unit">{{ unitTypeName }}</span>
+          }
+        </span>
+      </div>
+    }
+
   </div>
-}
+
+  <!-- Таблица истории цен и мест покупок (в стиле ranking-card) -->
+  @if ((purchaseHistory?.length ?? 0) > 0) {
+    <div class="history-panel">
+      <div class="panel-header">
+        <h4 class="panel-title">Purchase History</h4>
+        <span class="panel-badge">{{ purchaseHistory.length }} RECORDS</span>
+      </div>
+
+      <div class="table-head">
+        <span>Tradeplace</span>
+        <span>Date</span>
+        <span class="col-right">Price</span>
+      </div>
+
+      <div class="history-list">
+        @for (item of purchaseHistory; track $index) {
+          <div class="history-row">
+            <span class="col-place" [title]="item.tradeplaceName">
+              {{ item.tradeplaceName || '—' }}
+            </span>
+            <span class="col-date">
+              {{ item.transferDate | date : 'dd.MM.yyyy' }}
+            </span>
+            <span class="col-price">
+              {{ item.price | currencySpace : (item.currencyCode || currency?.code) : 'symbol' }}
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
