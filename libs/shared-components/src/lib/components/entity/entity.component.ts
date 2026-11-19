@@ -173,7 +173,6 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
     }
 
     this.entity = entity;
-    this.path = [];
     this.title.setTitle(entity.name ? entity.name : entity.getSelfLinkHref());
 
     // Ensure parent$ completes or emits a fallback if it's empty
@@ -250,6 +249,8 @@ export abstract class EntityComponent<T extends Entity, P extends Entity>
               map(() => undefined),
             );
         }
+
+        this.path = [];
         return of(undefined);
       }),
       catchError((err) => {
