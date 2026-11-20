@@ -2,28 +2,29 @@
   <div class="group-page">
     <app-breadcrumbs [path]="path"></app-breadcrumbs>
 
-    <header class="summary-banner">
-
-      <div>
-        <span>Account Group</span>
-        <h1 style="margin: 0; font-size: 1.5rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">{{ entity.name }}</h1>
-        @if (entity.description) {
-          <p>{{ entity.description }}</p>
-        }
-      </div>
-      <div class="summary-metrics">
-        <lib-entity-balance-info
-          [loading]="loading"
-          [expensesSum]="expensesSum"
-          [incomeSum]="incomeSum"
-          [currency]="currency"
-        ></lib-entity-balance-info>
-      </div>
-    </header>
-
     <div class="workspace-grid">
-      <aside class="panel-card sidebar-panel" [hidden]="!children || children.length === 0">
-        <div class="panel-header">
+      <aside class="panel-card sidebar-panel">
+
+        <header class="summary-banner">
+
+          <div>
+            <span>Account Group</span>
+            <h1 style="margin: 0; font-size: 1.5rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">{{ entity.name }}</h1>
+            @if (entity.description) {
+              <p>{{ entity.description }}</p>
+            }
+          </div>
+          <div class="summary-metrics">
+            <lib-entity-balance-info
+              [loading]="loading"
+              [expensesSum]="expensesSum"
+              [incomeSum]="incomeSum"
+              [currency]="currency"
+            ></lib-entity-balance-info>
+          </div>
+        </header>
+
+        <div class="panel-header" [hidden]="!children || children.length === 0">
           <div class="panel-header-main">
             <h2 class="panel-title">Subgroups</h2>
             @if (children && children.length > 0) {
