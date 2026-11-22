@@ -6,6 +6,7 @@ export {
 } from './lib/service/environment.service';
 export type { EnvironmentInterface } from './lib/service/environment-interface';
 
+export { NewspaperHeaderComponent } from './lib/components/newspaper-header/newspaper-header.component';
 export { BreadcrumbsComponent } from './lib/components/breadcrumbs/breadcrumbs.component';
 export { DateBreadcrumbsComponent } from './lib/components/date-breadcrumbs/date-breadcrumbs.component';
 export { EntityElementComponent } from './lib/components/entity-list/entity-element/entity-element.component';

@@ -1,18 +1,10 @@
 <div class="back-area">
   <div class="jumbotron summary-header">
-    <!-- Left Side: Title and Description -->
-    <div class="summary-details">
-      <h2 style="margin: 0; font-size: 1.75rem; font-weight: 600; color: #212529; letter-spacing: -0.2px;">
-        Reselling Statistics
-      </h2>
-      <div class="description-box">
-        Things are bought and then sold, was it profitable?
-      </div>
-    </div>
-
-    <!-- Right Side: Total Display -->
-    <!-- Financial Overview Section -->
-
+    <lib-newspaper-header
+      [title]="'Reselling Statistics'"
+      [subtitle]="'Things are bought and then sold, was it profitable?'"
+    >
+    </lib-newspaper-header>
     <div class="product-info" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; font-family: system-ui, -apple-system, sans-serif;">
 
       <lib-entity-balance-info

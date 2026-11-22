@@ -115,6 +115,9 @@ interface EntityGridState {
 export class EntityListComponent<T extends Entity>
   implements OnInit, OnDestroy, OnChanges
 {
+  @Input() title: string | undefined;
+  @Input() subtitle: string | undefined;
+
   @Input() searchService!: SearchService<T>;
   @Input() searchServiceOverride?: SearchService<T>;
 
@@ -359,7 +362,10 @@ export class EntityListComponent<T extends Entity>
 
     // Push the fresh filter to your stream and save it
     this.filter$.next(updatedFilter);
-    console.log(`EntityList: sending updated filter to stream`, Object.fromEntries(updatedFilter));
+    console.log(
+      `EntityList: sending updated filter to stream`,
+      Object.fromEntries(updatedFilter),
+    );
     this.saveAndUpdateData();
   }
 

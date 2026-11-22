@@ -1,0 +1,14 @@
+@if (title || subtitle) {
+  <div class="summary-details">
+    @if (title) {
+      <h2 class="title">
+        {{ title }}
+      </h2>
+    }
+    @if (subtitle) {
+      <div class="description-box">
+        {{ subtitle }}
+      </div>
+    }
+  </div>
+}

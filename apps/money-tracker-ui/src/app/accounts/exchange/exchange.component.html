@@ -1,30 +1,34 @@
 @if (this.report) {
   <h4 class="header" [hidden]="loading">
-    <span
-    ><b>Sold:</b>
-      {{
-        (this.report.sourceAmount ? this.report.sourceAmount : 0)
-          | currencySpace : this.sourceCurrency.code :'symbol'
-      }},
-    </span>
+      <span
+      ><b>Sold:</b>
+        {{
+          (this.report.sourceAmount ? this.report.sourceAmount : 0)
+            | currencySpace : this.sourceCurrency.code :'symbol'
+        }},
+      </span>
     <span
     ><b>Bought:</b>
       {{
         (this.report.destAmount ? this.report.destAmount : 0)
           | currencySpace : this.destCurrency.code :'symbol'
       }},
-    </span>
+      </span>
     <span
     ><b>Average:</b>
       {{
         (this.report.avgRate ? 1 / this.report.avgRate : 0) | number : '1.6-8'
       }}
       ,
-    </span>
+      </span>
     <span
     ><b>Current:</b>
       {{ (this.report.curRate ? 1 / this.report.curRate : 0) | number : '1.6-8' }}
-    </span>
+      </span>
+      <span
+          ><b>Profit:</b>
+        {{ this.report.delta | currencySpace : this.destCurrency.code :'symbol' }}
+          </span>
   </h4>
 }
 
@@ -32,37 +36,40 @@
   <span><b>Loading...</b></span>
 </h4>
 
-<app-money-type-selector
-  [label]="'Available source currencies'"
-  [disabled]="loading"
-  [currencies]="getSourceCurrencies()"
-  [currency]="sourceCurrency"
-  (currency$)="updatesSourceCurrency($event)"
-></app-money-type-selector>
+<div class="back-area">
+  <div class="jumbotron summary-header">
+    <lib-newspaper-header
+      [title]="'Exchange events'"
+      [subtitle]="'The log of exchange events and their profit'"
+    >
+    </lib-newspaper-header>
 
-<button mat-icon-button (click)="swapCurrencies()">
-  <mat-icon>swap_horiz</mat-icon>
-</button>
+    <div>
+      <app-money-type-selector
+        [label]="'Available source currencies'"
+        [disabled]="loading"
+        [currencies]="getSourceCurrencies()"
+        [currency]="sourceCurrency"
+        (currency$)="updatesSourceCurrency($event)"
+      ></app-money-type-selector>
 
-<app-money-type-selector
-  [label]="'Available destination currencies'"
-  [disabled]="loading"
-  [currencies]="getDestCurrencies()"
-  [currency]="destCurrency"
-  (currency$)="updatesDestCurrency($event)"
-></app-money-type-selector>
+      <button mat-icon-button (click)="swapCurrencies()">
+        <mat-icon>swap_horiz</mat-icon>
+      </button>
 
-@if (this.report && this.report.delta) {
-  <div
-    class="rubber timeHeader"
-    [ngClass]="{
-    positive: this.report.delta > 0,
-    negative: this.report.delta < 0
-  }"
-  >
-    {{ this.report.delta | currencySpace : this.destCurrency.code :'symbol' }}
+      <app-money-type-selector
+        [label]="'Available destination currencies'"
+        [disabled]="loading"
+        [currencies]="getDestCurrencies()"
+        [currency]="destCurrency"
+        (currency$)="updatesDestCurrency($event)"
+      ></app-money-type-selector>
+    </div>
   </div>
-}
+
+</div>
+
+
 
 <ng-template #exchangeTable let-entities="entities">
   <table mat-table [dataSource]="entities">

@@ -37,30 +37,6 @@
   border-radius: 0
   margin-bottom: 16px
 
-.summary-details
-  flex: 1 1 320px
-  min-width: 0
-
-.description-box
-  max-height: 220px
-  margin: 8px 0 0 0
-  padding-right: 8px
-  overflow-y: auto
-  font-size: 13px
-  font-style: italic
-  line-height: 1.55
-  color: #666
-  max-width: 68ch
-
-  &::-webkit-scrollbar
-    width: 4px
-
-  &::-webkit-scrollbar-track
-    background: #faf8f5
-
-  &::-webkit-scrollbar-thumb
-    background: #ccc
-
 // =====================================================================
 // RIGHT-ALIGNED PROMINENT FINANCIAL BOX
 // =====================================================================
@@ -100,55 +76,3 @@
   &.is-negative
     color: #a01a1a
 
-// =====================================================================
-// RESELLING TABLE (Material / HTML table styling)
-// =====================================================================
-::ng-deep .mat-mdc-table,
-table
-  width: 100%
-  background: #ffffff !important
-  border: 1px solid #ddd
-  border-collapse: collapse
-  font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif !important
-
-  .mat-mdc-header-row,
-  thead tr
-    height: 36px !important
-    background: #fafafa !important
-
-  .mat-mdc-header-cell,
-  th
-    font-family: Georgia, serif !important
-    font-size: 9px !important
-    font-weight: 900 !important
-    letter-spacing: 1.2px !important
-    text-transform: uppercase
-    color: #666 !important
-    border-bottom: 2px solid #1a1a1a !important
-    padding: 8px 16px !important
-
-  .mat-mdc-row,
-  tbody tr
-    height: 38px !important
-    transition: background-color 0.15s ease
-
-    &:hover
-      background: #f0ede8 !important
-
-  .mat-mdc-cell,
-  td
-    font-size: 12.5px !important
-    color: #1a1a1a !important
-    border-bottom: 1px solid #eee !important
-    padding: 8px 16px !important
-    font-variant-numeric: tabular-nums
-
-  a
-    color: #1a1a1a
-    font-weight: 600
-    text-decoration: none
-    border-bottom: 1px solid #ccc
-    transition: border-color 0.15s ease
-
-    &:hover
-      border-bottom-color: #1a1a1a

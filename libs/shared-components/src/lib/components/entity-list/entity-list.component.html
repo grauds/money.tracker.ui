@@ -12,24 +12,33 @@
 }
 
 @if (!error) {
-  <div>
-    @if (filterTemplate) {
-      <div class="container filter">
-        <!-- Expose the component instance via context so form inputs inside
-        custom template can bind fields or read gridState directly -->
-        <ng-container
-          *ngTemplateOutlet="filterTemplate; context: { component: this }">
-        </ng-container>
-        <div class="filterButtons">
-          <!-- Triggering data reloading. The actual values should be bound to inputs inside
-          template, which call setFilter(id, value) on change/input -->
-          <button mat-icon-button (click)="loadData()" matTooltip="Apply Filters">
-            <mat-icon>search</mat-icon>
-          </button>
-          <button mat-icon-button (click)="clearFilter()" matTooltip="Clear Filters">
-            <mat-icon>clear</mat-icon>
-          </button>
-        </div>
+  <div class="container">
+    @if (title || subtitle || filterTemplate) {
+      <div class="header">
+        <lib-newspaper-header
+          [title]="title"
+          [subtitle]="subtitle"
+        >
+        </lib-newspaper-header>
+        @if (filterTemplate) {
+          <div class="filter">
+            <!-- Expose the component instance via context so form inputs inside
+            custom template can bind fields or read gridState directly -->
+            <ng-container
+              *ngTemplateOutlet="filterTemplate; context: { component: this }">
+            </ng-container>
+            <div class="filterButtons">
+              <!-- Triggering data reloading. The actual values should be bound to inputs inside
+              template, which call setFilter(id, value) on change/input -->
+              <button mat-icon-button (click)="loadData()" matTooltip="Apply Filters">
+                <mat-icon>search</mat-icon>
+              </button>
+              <button mat-icon-button (click)="clearFilter()" matTooltip="Clear Filters">
+                <mat-icon>clear</mat-icon>
+              </button>
+            </div>
+          </div>
+        }
       </div>
     }
     @if (entities && entities.length > 0) {

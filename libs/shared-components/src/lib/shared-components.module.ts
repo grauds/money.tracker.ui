@@ -43,6 +43,7 @@ import { ErrorDialogService } from './error/error-dialog/error-dialog.service';
 import { GlobalErrorHandler } from './error/global-error-handler';
 import { ErrorHandlerInterceptor } from './error/error-handler.interceptor';
 
+import { NewspaperHeaderComponent } from './components/newspaper-header/newspaper-header.component'
 import { DayLinkComponent } from './components/day-link/day-link.component';
 import { PageSizeComponent } from './components/page-size/page-size.component';
 import { EntityListComponent } from './components/entity-list/entity-list.component';
@@ -116,6 +117,7 @@ import { WordpressArticleComponent } from './components/wordpress-article/wordpr
     TelegramFeedComponent,
     DayLinkComponent,
     WordpressArticleComponent,
+    NewspaperHeaderComponent,
   ],
   declarations: [
     EntityListComponent,
@@ -135,6 +137,7 @@ import { WordpressArticleComponent } from './components/wordpress-article/wordpr
     EntityIncomeComponent,
     DayLinkComponent,
     WordpressArticleComponent,
+    NewspaperHeaderComponent,
   ],
   providers: [
     AccountsService,
