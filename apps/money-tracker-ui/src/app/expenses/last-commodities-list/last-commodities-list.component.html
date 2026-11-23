@@ -75,13 +75,11 @@
   </table>
 </ng-template>
 
-<div>
-  <app-entity-list
-    #entityList
-    [filterTemplate]="filter"
-    [tableTemplate]="lastExpensesTable"
-    [title]="'History For A Commodity'"
-    [subtitle]="'When and how many days ago the commodity was purchased the last time?'"
-  >
-  </app-entity-list>
-</div>
+<app-entity-list
+  #entityList
+  [filterTemplate]="filter"
+  [tableTemplate]="lastExpensesTable"
+  [title]="'History For A Commodity'"
+  [subtitle]="'When and how many days ago the commodity was purchased the last time?'"
+>
+</app-entity-list>

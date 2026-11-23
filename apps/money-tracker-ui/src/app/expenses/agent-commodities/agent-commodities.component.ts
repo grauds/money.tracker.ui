@@ -1,11 +1,36 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { BehaviorSubject, combineLatest, Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
-
-import { AgentCommodities, InfoAbout, MoneyType, Page } from '@clematis-shared/model';
 import {
-  ExpenseItemsService, MoneyTypeService,
-  StatsService
+  Component,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import {
+  BehaviorSubject,
+  catchError,
+  combineLatest,
+  distinctUntilChanged,
+  finalize,
+  map,
+  Observable,
+  of,
+  startWith,
+  Subject,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
+
+import {
+  AgentCommodities,
+  InfoAbout,
+  MoneyType,
+  Page,
+} from '@clematis-shared/model';
+import {
+  ExpenseItemsService,
+  MoneyTypeService,
+  StatsService,
 } from '@clematis-shared/shared-components';
 
 import * as _moment from 'moment';
@@ -15,19 +40,24 @@ import { formatDate } from '@angular/common';
 
 const moment = _rollupMoment || _moment;
 
-// See the Moment.js docs for the meaning of these formats:
-// https://momentjs.com/docs/#/displaying/format/
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'MM/YYYY',
-  },
-  display: {
-    dateInput: 'MM/YYYY',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
+export interface VisibleAreaSummary {
+  name: string;
+  color: string;
+  total: number;
+  percentage: number;
+}
+
+const CHART_PALETTE = [
+  '#5470c6',
+  '#91cc75',
+  '#fac858',
+  '#ee6666',
+  '#73c0de',
+  '#3ba272',
+  '#fc8452',
+  '#9a60b4',
+  '#ea7ccc',
+];
 
 @Component({
   selector: 'app-agent-commodities',
@@ -43,18 +73,32 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
 
   loading = false;
 
-  startDate = moment().add(-6, 'M');
+  errorMessage: string | null = null;
+
+  activeCurrencyCode = '';
+
+  totalVisibleArea = 0;
+
+  visibleSeriesTotals: VisibleAreaSummary[] = [];
+
+  startDate = moment().add(-24, 'M');
 
   endDate = moment().add(1, 'M');
 
   showGroups = true;
 
-  showGroupsEvent = new BehaviorSubject<boolean>(true);
-
   infoAbout: InfoAbout | undefined;
 
+  private chartInstance: any = null;
+  private currentChartSeries: {
+    name: string;
+    color: string;
+    data: number[];
+  }[] = [];
+  private selectedSeries: Record<string, boolean> = {};
+
   private startDate$ = new BehaviorSubject<moment.Moment>(
-    moment().add(-6, 'M'),
+    moment().add(-24, 'M'),
   );
   private endDate$ = new BehaviorSubject<moment.Moment>(moment().add(1, 'M'));
   private showGroups$ = new BehaviorSubject<boolean>(true);
@@ -68,41 +112,119 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
     private readonly title: Title,
   ) {}
 
+  get selectedCurrencyCode(): string {
+    return (
+      this.activeCurrencyCode ||
+      this.moneyTypeService.getSelectedMoneyType()?.code ||
+      ''
+    );
+  }
+
   ngOnInit(): void {
     this.title.setTitle('Expenses Groups Trends');
     this.loadStats();
     this.listenToFilterChanges();
   }
 
-  private loadStats() {
-    this.statsLoading = true;
-    this.statsService.getInfoAbout().subscribe((infoAbout) => {
-      this.infoAbout = infoAbout;
-      this.statsLoading = false;
+  onChartInit(ec: any): void {
+    this.chartInstance = ec;
+
+    this.chartInstance.on('legendselectchanged', (params: any) => {
+      this.selectedSeries = params.selected || {};
+      this.recalculateVisibleTotals();
     });
   }
 
-  private listenToFilterChanges() {
-    // The method combineLatest waits for all filters and triggers
-    // one request when any changes
-    combineLatest([this.startDate$, this.endDate$, this.showGroups$])
-      .pipe(
-        tap(() => (this.loading = true)),
-        switchMap(([start, end, showGroups]) => {
-          // Store showGroups locally if your chart logic relies on `this.showGroups`
-          this.showGroups = showGroups;
+  private getCurrencyStream(): Observable<MoneyType | null> {
+    const serviceAny = this.moneyTypeService as any;
+    const source$: Observable<MoneyType> | undefined =
+      serviceAny.selectedMoneyType$ ??
+      serviceAny.moneyType$ ??
+      serviceAny.currency$;
 
-          return this.createChart(
-            this.moneyTypeService.getSelectedMoneyType(),
-            start,
-            end,
-          );
+    const initial = this.moneyTypeService.getSelectedMoneyType() ?? null;
+
+    return source$
+      ? source$.pipe(
+          startWith(initial),
+          distinctUntilChanged((prev, curr) => prev?.code === curr?.code),
+        )
+      : of(initial);
+  }
+
+  private loadStats() {
+    this.statsLoading = true;
+    this.statsService
+      .getInfoAbout()
+      .pipe(
+        catchError((error) => {
+          console.error('Failed to load stats info:', error);
+          return of(undefined);
         }),
-        takeUntil(this.destroy$)
+        finalize(() => (this.statsLoading = false)),
+        takeUntil(this.destroy$),
       )
-      .subscribe((chart) => {
-        this.chart = chart;
-        this.loading = false;
+      .subscribe((infoAbout) => {
+        this.infoAbout = infoAbout;
+      });
+  }
+
+  private listenToFilterChanges() {
+    // Fetch converted data whenever startDate, endDate, OR global currency changes
+    const data$ = combineLatest([
+      this.startDate$,
+      this.endDate$,
+      this.getCurrencyStream(),
+    ]).pipe(
+      tap(() => {
+        this.loading = true;
+        this.errorMessage = null;
+      }),
+      switchMap(([start, end, currency]) => {
+        if (!currency) {
+          this.loading = false;
+          return of<{ items: AgentCommodities[]; currencyCode: string } | null>(
+            null,
+          );
+        }
+
+        return this.expenseItemsService
+          .getAgentExpencesInCurrency(
+            currency,
+            start.month() + 1, // Convert Moment's 0-11 to Firebird's 1-12
+            start.year(),
+            end.month() + 1, // Convert Moment's 0-11 to Firebird's 1-12
+            end.year(),
+          )
+          .pipe(
+            map((response: Page<AgentCommodities>) => ({
+              items: response.content ?? [],
+              currencyCode: currency.code,
+            })),
+            catchError((error) => {
+              console.error('Failed to load chart data:', error);
+              this.errorMessage =
+                'Could not load expense data. Please try again.';
+              return of(null);
+            }),
+            finalize(() => (this.loading = false)),
+          );
+      }),
+    );
+
+    // Rebuild chart & summary table in memory whenever data OR showGroups changes
+    combineLatest([data$, this.showGroups$])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([result, showGroups]) => {
+        this.showGroups = showGroups;
+        if (result) {
+          this.activeCurrencyCode = result.currencyCode;
+          this.chart = this.createChartFromData(
+            result.items,
+            showGroups,
+            result.currencyCode,
+          );
+        }
       });
   }
 
@@ -139,80 +261,43 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private createChart(
-    currency: MoneyType,
-    start: moment.Moment,
-    end: moment.Moment,
-  ): Observable<any> {
-    const chart = {};
-
-    let ticks: string[] = [];
+  private createChartFromData(
+    items: AgentCommodities[],
+    showGroups: boolean,
+    currencyCode: string,
+  ): any {
     const series: Map<string, AgentCommodities[]> = new Map();
 
-    return currency
-      ? of(chart).pipe(
-          switchMap(() => {
-            return this.expenseItemsService.getAgentExpencesInCurrency(
-              currency,
-              start.month(),
-              start.year(),
-              end.month(),
-              end.year(),
-            );
-          }),
-          switchMap((response: Page<AgentCommodities>) => {
-            return of(response.content);
-          }),
-          switchMap((response: AgentCommodities[]) => {
-            // form series of data in the interval
-            response.forEach((month: AgentCommodities) => {
-              if (month.agent && month.commodityGroup) {
-                const key =
-                  month.agent +
-                  (this.showGroups ? ': ' + month.commodityGroup : '');
-                let values: AgentCommodities[] = [];
-                if (series.get(key)) {
-                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                  values = series.get(key)!;
-                }
-                if (this.showGroups) {
-                  values.push(month);
-                } else {
-                  let found = false;
-                  for (const i in values) {
-                    if (
-                      values[i].agent == month.agent &&
-                      values[i].an == month.an &&
-                      values[i].mois == month.mois
-                    ) {
-                      values[i].total += month.total;
-                      values[i].total = Number(values[i].total.toFixed(4));
-                      found = true;
-                      break;
-                    }
-                  }
-                  if (!found) {
-                    values.push(month);
-                  }
-                }
-                series.set(key, values);
-              }
-            });
+    items.forEach((month: AgentCommodities) => {
+      if (month.agent && month.commodityGroup) {
+        const key =
+          month.agent + (showGroups ? ': ' + month.commodityGroup : '');
+        const values = series.get(key) ?? [];
 
-            // form unique ticks
-            ticks = response
-              .map((month: AgentCommodities) => {
-                return month.an + '/' + month.mois;
-              })
-              .filter((value, index, self) => self.indexOf(value) === index);
+        if (showGroups) {
+          values.push(month);
+        } else {
+          const existing = values.find(
+            (v) =>
+              v.agent === month.agent &&
+              v.an === month.an &&
+              v.mois === month.mois,
+          );
+          if (existing) {
+            existing.total = Number((existing.total + month.total).toFixed(4));
+          } else {
+            values.push({ ...month });
+          }
+        }
+        series.set(key, values);
+      }
+    });
 
-            return of(0);
-          }),
-          switchMap(() => {
-            return of(this.buildChart(ticks, series));
-          }),
-        )
-      : of(chart);
+    const ticks = Array.from(
+      new Set(items.map((month) => `${month.an}/${month.mois}`)),
+    );
+
+    return this.buildChart(ticks, series, currencyCode);
   }
 
   private getChartsSeries(
@@ -220,12 +305,17 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
     series: Map<string, AgentCommodities[]>,
   ): any[] {
     const chartSeries: any[] = [];
+    let colorIndex = 0;
 
     series.forEach((commoditiesMonthly: AgentCommodities[], name: string) => {
-      return chartSeries.push({
+      const color = CHART_PALETTE[colorIndex % CHART_PALETTE.length];
+      colorIndex++;
+
+      chartSeries.push({
         name: name,
         type: 'line',
         stack: 'total',
+        color: color,
         areaStyle: {},
         emphasis: {
           focus: 'series',
@@ -247,17 +337,57 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
     return chartSeries;
   }
 
-  private buildChart(ticks: string[], series: Map<string, AgentCommodities[]>) {
+  private recalculateVisibleTotals(): void {
+    let grandTotal = 0;
+    const rawVisible: { name: string; color: string; total: number }[] = [];
+
+    for (const s of this.currentChartSeries) {
+      const isVisible = this.selectedSeries[s.name];
+      if (isVisible) {
+        const seriesSum = s.data.reduce((acc, val) => acc + (val || 0), 0);
+        grandTotal += seriesSum;
+        rawVisible.push({
+          name: s.name,
+          color: s.color,
+          total: Number(seriesSum.toFixed(2)),
+        });
+      }
+    }
+
+    this.totalVisibleArea = Number(grandTotal.toFixed(2));
+    this.visibleSeriesTotals = rawVisible
+      .map((item) => ({
+        ...item,
+        percentage: grandTotal > 0 ? (item.total / grandTotal) * 100 : 0,
+      }))
+      .sort((a, b) => b.total - a.total);
+  }
+
+  private buildChart(
+    ticks: string[],
+    series: Map<string, AgentCommodities[]>,
+    currencyCode: string,
+  ) {
+    const builtSeries = this.getChartsSeries(ticks, series);
+    this.currentChartSeries = builtSeries;
+
+    this.selectedSeries = {};
+    builtSeries.forEach((s) => {
+      this.selectedSeries[s.name] = true;
+    });
+
+    this.recalculateVisibleTotals();
+
     return {
+      color: CHART_PALETTE,
       legend: {
         backgroundColor: 'rgba(206,206,206,0.7)',
         type: 'scroll',
         right: 10,
         top: 20,
         bottom: 20,
-        data: (function () {
-          return [...series.keys()].sort();
-        })(),
+        data: [...series.keys()].sort(),
+        selected: this.selectedSeries,
       },
       tooltip: {
         trigger: 'axis',
@@ -278,10 +408,12 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
         },
         confine: false,
         formatter: function (params: any[]) {
-          let output = params[0].axisValueLabel + '<br/>';
+          if (!params || params.length === 0) {
+            return '';
+          }
+          let output = params[0].axisValueLabel + '';
           output += '<table class="w-full">';
-
-          const sorted: any[] = params.sort(
+          const sorted: any[] = [...params].sort(
             (paramA, paramB) => paramB.value - paramA.value,
           );
           sorted.forEach(function (param) {
@@ -315,7 +447,7 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
           type: 'value',
         },
       ],
-      series: this.getChartsSeries(ticks, series),
+      series: builtSeries,
     };
   }
 }
