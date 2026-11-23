@@ -6,6 +6,7 @@ export {
 } from './lib/service/environment.service';
 export type { EnvironmentInterface } from './lib/service/environment-interface';
 
+export { MultirowTableComponent } from './lib/components/multirow-table/multirow-table.component';
 export { NewspaperHeaderComponent } from './lib/components/newspaper-header/newspaper-header.component';
 export { BreadcrumbsComponent } from './lib/components/breadcrumbs/breadcrumbs.component';
 export { DateBreadcrumbsComponent } from './lib/components/date-breadcrumbs/date-breadcrumbs.component';

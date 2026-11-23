@@ -46,7 +46,7 @@ import { ExpensesListComponent } from './expenses/expences-list/expenses-list.co
 import { CommodityComponent } from './commodities/commodity/commodity.component';
 import { CommodityGroupComponent } from './commodities/commodity-group/commodity-group.component';
 
-import { NgxEchartsModule } from 'ngx-echarts';
+import { NgxEchartsDirective, NgxEchartsModule } from 'ngx-echarts';
 
 import { OrganizationComponent } from './organizations/organization/organization.component';
 import { OrganizationGroupComponent } from './organizations/organization-group/organization-group.component';
@@ -179,7 +179,8 @@ import {
     TimelineComponent,
     CashFlowPoolComponent,
     CategoryRankingCardComponent,
-    CategoryRankingCardComponent
+    CategoryRankingCardComponent,
+    NgxEchartsDirective
   ],
   providers: [CurrencyPipe],
 })

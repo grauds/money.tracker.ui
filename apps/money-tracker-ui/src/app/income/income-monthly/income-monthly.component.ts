@@ -1,16 +1,43 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  combineLatest,
+  distinctUntilChanged,
+  finalize,
+  map,
+  Observable,
+  of,
+  startWith,
+  Subject,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
+
+import { ResourceCollection } from '@lagoshny/ngx-hateoas-client';
 
 import {
-  ResourceCollection,
-} from '@lagoshny/ngx-hateoas-client';
+  IncomeMonthly,
+  MoneyType,
+} from '@clematis-shared/model';
 
-import { IncomeMonthly, MoneyType } from '@clematis-shared/model';
 import {
   IncomeItemsService,
-  MoneyTypeService
+  MoneyTypeService,
 } from '@clematis-shared/shared-components';
+
+import * as _moment from 'moment';
+// tslint:disable-next-line:no-duplicate-imports
+import { default as _rollupMoment } from 'moment';
+const moment = _rollupMoment || _moment;
+
 
 import {
   DateAdapter,
@@ -22,13 +49,6 @@ import {
   MomentDateAdapter,
 } from '@angular/material-moment-adapter';
 
-import * as _moment from 'moment';
-// tslint:disable-next-line:no-duplicate-imports
-import { default as _rollupMoment } from 'moment';
-const moment = _rollupMoment || _moment;
-
-// See the Moment.js docs for the meaning of these formats:
-// https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
   parse: {
     dateInput: 'MM/YYYY',
@@ -41,11 +61,31 @@ export const MY_FORMATS = {
   },
 };
 
+export interface VisibleAreaSummary {
+  name: string;
+  color: string;
+  total: number;
+  percentage: number;
+}
+
+const CHART_PALETTE = [
+  '#5470c6',
+  '#91cc75',
+  '#fac858',
+  '#ee6666',
+  '#73c0de',
+  '#3ba272',
+  '#fc8452',
+  '#9a60b4',
+  '#ea7ccc',
+];
+
 @Component({
   selector: 'app-income-monthly',
   templateUrl: './income-monthly.component.html',
   styleUrls: ['./income-monthly.component.sass'],
-  providers: [{
+  providers: [
+    {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
@@ -56,14 +96,19 @@ export const MY_FORMATS = {
   standalone: false,
 })
 export class IncomeMonthlyComponent implements OnInit, OnDestroy {
-
-  chart: any;
+  chart: any = {};
 
   loading = false;
 
-  currency: MoneyType = new MoneyType();
+  errorMessage: string | null = null;
 
-  private destroy$ = new Subject<void>();
+  activeCurrencyCode = '';
+
+  totalVisibleArea = 0;
+
+  visibleSeriesTotals: VisibleAreaSummary[] = [];
+
+  currency: MoneyType = new MoneyType();
 
   startDate = moment().add(-24, 'M');
 
@@ -71,86 +116,149 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
 
   income: Array<IncomeMonthly> = [];
 
+  private chartInstance: any = null;
+  private currentChartSeries: {
+    name: string;
+    color: string;
+    data: number[];
+  }[] = [];
+  private selectedSeries: Record<string, boolean> = {};
+  private hoveredSeriesName: string | null = null;
+
+  private startDate$ = new BehaviorSubject<moment.Moment>(
+    moment().add(-24, 'M'),
+  );
+  private endDate$ = new BehaviorSubject<moment.Moment>(moment().add(1, 'M'));
+  private destroy$ = new Subject<void>();
+
   constructor(
     private readonly moneyTypeService: MoneyTypeService,
     private readonly incomeItemsService: IncomeItemsService,
     private readonly title: Title,
-  ) {
-    this.moneyTypeService.selectedMoneyType$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.currency = this.moneyTypeService.getSelectedMoneyType();
-        this.loadData();
-      });
+  ) {}
+
+  get selectedCurrencyCode(): string {
+    return (
+      this.activeCurrencyCode ||
+      this.currency?.code ||
+      this.moneyTypeService.getSelectedMoneyType()?.code ||
+      ''
+    );
   }
 
   ngOnInit(): void {
     this.title.setTitle('Income');
+    this.listenToFilterChanges();
   }
 
-  updateStartDate(normalizedMonthAndYear: moment.Moment) {
-    this.startDate.month(normalizedMonthAndYear.month());
-    this.startDate.year(normalizedMonthAndYear.year());
-    this.loadData();
-  }
+  onChartInit(ec: any): void {
+    this.chartInstance = ec;
 
-  updateEndDate(normalizedMonthAndYear: moment.Moment) {
-    this.endDate.month(normalizedMonthAndYear.month());
-    this.endDate.year(normalizedMonthAndYear.year());
-    this.loadData();
-  }
-
-  loadData() {
-    this.loading = true;
-    this.createChart().subscribe((chart) => {
-      this.chart = chart;
-      this.loading = false;
+    this.chartInstance.on('legendselectchanged', (params: any) => {
+      this.selectedSeries = params.selected || {};
+      this.recalculateVisibleTotals();
     });
   }
 
-  private createChart(): Observable<any> {
-    const chart = {};
+  private getCurrencyStream(): Observable<MoneyType> {
+    return this.moneyTypeService.selectedMoneyType$.pipe(
+      startWith(null),
+      map(() => this.moneyTypeService.getSelectedMoneyType()),
+      distinctUntilChanged((prev, curr) => prev?.code === curr?.code),
+    );
+  }
 
-    let ticks: string[] = [];
+  private listenToFilterChanges() {
+    // Fetch converted data whenever startDate, endDate, OR global currency changes
+    const data$ = combineLatest([
+      this.startDate$,
+      this.endDate$,
+      this.getCurrencyStream(),
+    ]).pipe(
+      tap(([, , currency]) => {
+        this.currency = currency;
+        this.loading = true;
+        this.errorMessage = null;
+      }),
+      switchMap(([start, end, currency]) => {
+        if (!currency) {
+          this.loading = false;
+          return of<{ items: IncomeMonthly[]; currencyCode: string } | null>(
+            null,
+          );
+        }
+
+        return this.incomeItemsService
+          .getIncomeInCurrency(
+            currency,
+            start.month() + 1, // Convert Moment's 0-11 to Firebird's 1-12
+            start.year(),
+            end.month() + 1, // Convert Moment's 0-11 to Firebird's 1-12
+            end.year(),
+          )
+          .pipe(
+            map((response: ResourceCollection<IncomeMonthly>) => ({
+              items: response.resources ?? [],
+              currencyCode: currency.code,
+            })),
+            catchError((error) => {
+              console.error('Failed to load chart data:', error);
+              this.errorMessage =
+                'Could not load income data. Please try again.';
+              return of(null);
+            }),
+            finalize(() => (this.loading = false)),
+          );
+      }),
+      takeUntil(this.destroy$),
+    );
+
+    // Rebuild chart & summary table in memory whenever data OR showGroups changes
+    combineLatest([data$])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([result]) => {
+        if (result) {
+          this.activeCurrencyCode = result.currencyCode;
+          this.chart = this.createChartFromData(
+            result.items,
+            result.currencyCode,
+          );
+        }
+      });
+  }
+
+  updateStartDate(normalizedMonthAndYear: moment.Moment) {
+    this.startDate$.next(normalizedMonthAndYear);
+  }
+
+  updateEndDate(normalizedMonthAndYear: moment.Moment) {
+    this.endDate$.next(normalizedMonthAndYear);
+  }
+
+  private createChartFromData(
+    items: IncomeMonthly[],
+    currencyCode: string,
+  ): any {
     const series: Map<string, IncomeMonthly[]> = new Map();
 
-    return of(chart).pipe(
-      switchMap(() => {
-        return this.incomeItemsService.getIncomeInCurrency(
-          this.currency,
-          this.startDate.month() + 1,
-          this.startDate.year(),
-          this.endDate.month() + 1,
-          this.endDate.year(),
-        );
-      }),
-      switchMap((response: ResourceCollection<IncomeMonthly>) => {
-        return of(response.resources);
-      }),
-      switchMap((resources: IncomeMonthly[]) => {
-        // form series of data in the interval
-        resources.forEach((incomeMonthly: IncomeMonthly) => {
-          if (incomeMonthly.name) {
-            const values: IncomeMonthly[] =
-              series.get(incomeMonthly.name) ?? [];
-            values.push(incomeMonthly);
-            series.set(incomeMonthly.name, values);
-          }
-        });
+    items.forEach((incomeMonthly: IncomeMonthly) => {
+      if (incomeMonthly.name) {
+        const values: IncomeMonthly[] = series.get(incomeMonthly.name) ?? [];
+        values.push(incomeMonthly);
+        series.set(incomeMonthly.name, values);
+      }
+    });
 
-        // form unique ticks
-        ticks = resources
-          .map((incomeReport: IncomeMonthly) => {
-            return incomeReport.year + '/' + incomeReport.month;
-          })
-          .filter((value, index, self) => self.indexOf(value) === index);
-
-        return of(0);
-      }),
-      switchMap(() => {
-        return of(this.buildChart(ticks, series));
-      }),
+    const ticks = Array.from(
+      new Set(
+        items.map(
+          (incomeReport: IncomeMonthly) =>
+            `${incomeReport.year}/${incomeReport.month}`,
+        ),
+      ),
     );
+
+    return this.buildChart(ticks, series);
   }
 
   private getChartsSeries(
@@ -158,11 +266,17 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
     series: Map<string, IncomeMonthly[]>,
   ): any[] {
     const chartSeries: any[] = [];
+    let colorIndex = 0;
+
     series.forEach((incomeMonthly: IncomeMonthly[], name: string) => {
-      return chartSeries.push({
+      const color = CHART_PALETTE[colorIndex % CHART_PALETTE.length];
+      colorIndex++;
+
+      chartSeries.push({
         name: name,
         type: 'bar',
         stack: 'total',
+        color: color,
         emphasis: {
           focus: 'series',
           label: {
@@ -170,23 +284,64 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
           },
         },
         data: ticks.map((tick) => {
-          return incomeMonthly.find((value: IncomeMonthly) => {
-            return value.year + '/' + value.month === tick;
-          })?.totalConverted;
+          const found = incomeMonthly.find(
+            (value: IncomeMonthly) => `${value.year}/${value.month}` === tick,
+          );
+          return found?.totalConverted ?? 0;
         }),
       });
     });
+
     return chartSeries;
   }
 
+  private recalculateVisibleTotals(): void {
+    let grandTotal = 0;
+    const rawVisible: { name: string; color: string; total: number }[] = [];
+
+    for (const s of this.currentChartSeries) {
+      const isVisible = this.selectedSeries[s.name];
+      if (isVisible) {
+        const seriesSum = s.data.reduce((acc, val) => acc + (val || 0), 0);
+        grandTotal += seriesSum;
+        rawVisible.push({
+          name: s.name,
+          color: s.color,
+          total: Number(seriesSum.toFixed(2)),
+        });
+      }
+    }
+
+    this.totalVisibleArea = Number(grandTotal.toFixed(2));
+    this.visibleSeriesTotals = rawVisible
+      .map((item) => ({
+        ...item,
+        percentage: grandTotal > 0 ? (item.total / grandTotal) * 100 : 0,
+      }))
+      .sort((a, b) => b.total - a.total);
+  }
+
   private buildChart(ticks: string[], series: Map<string, IncomeMonthly[]>) {
+    const builtSeries = this.getChartsSeries(ticks, series);
+    this.currentChartSeries = builtSeries;
+
+    this.selectedSeries = {};
+    builtSeries.forEach((s) => {
+      this.selectedSeries[s.name] = true;
+    });
+
+    this.recalculateVisibleTotals();
+
     return {
+      color: CHART_PALETTE,
       legend: {
         backgroundColor: 'rgba(206,206,206,0.7)',
         type: 'scroll',
         right: 10,
         top: 20,
         bottom: 20,
+        data: [...series.keys()].sort(),
+        selected: this.selectedSeries,
       },
       tooltip: {
         trigger: 'axis',
@@ -196,9 +351,9 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
         backgroundColor: 'rgba(255, 255, 255, 0.8)',
         position: function (
           pos: number[],
-          params: any,
-          el: any,
-          elRect: any,
+          _params: any,
+          _el: any,
+          _elRect: any,
           size: { viewSize: number[] },
         ) {
           const obj: any = { top: 10 };
@@ -206,10 +361,12 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
           return obj;
         },
         formatter: function (params: any[]) {
-          let output = params[0].axisValueLabel + '<br/>';
+          if (!params || params.length === 0) {
+            return '';
+          }
+          let output = params[0].axisValueLabel + '';
           output += '<table class="w-full">';
-
-          const sorted: any[] = params.sort(
+          const sorted: any[] = [...params].sort(
             (paramA, paramB) => paramB.value - paramA.value,
           );
           sorted.forEach(function (param) {
@@ -233,13 +390,36 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
       },
       xAxis: {
         type: 'category',
+        boundaryGap: false,
         data: ticks,
       },
       yAxis: {
         type: 'value',
       },
-      series: this.getChartsSeries(ticks, series),
+      series: builtSeries,
     };
+  }
+
+  onSeriesHover(seriesName: string | null): void {
+    if (!this.chartInstance || this.hoveredSeriesName === seriesName) {
+      return;
+    }
+
+    if (this.hoveredSeriesName) {
+      this.chartInstance.dispatchAction({
+        type: 'downplay',
+        seriesName: this.hoveredSeriesName,
+      });
+    }
+
+    this.hoveredSeriesName = seriesName;
+
+    if (seriesName) {
+      this.chartInstance.dispatchAction({
+        type: 'highlight',
+        seriesName,
+      });
+    }
   }
 
   ngOnDestroy(): void {

@@ -71,6 +71,7 @@ import { MatTooltip } from "@angular/material/tooltip";
 import { EntityBalanceInfoComponent } from './components/entity/entity-balance-info/entity-balance-info.component';
 
 import { WordpressArticleComponent } from './components/wordpress-article/wordpress-article.component'
+import { MultirowTableComponent } from './components/multirow-table/multirow-table.component';
 
 @NgModule({
   imports: [
@@ -118,6 +119,7 @@ import { WordpressArticleComponent } from './components/wordpress-article/wordpr
     DayLinkComponent,
     WordpressArticleComponent,
     NewspaperHeaderComponent,
+    MultirowTableComponent,
   ],
   declarations: [
     EntityListComponent,
@@ -138,6 +140,7 @@ import { WordpressArticleComponent } from './components/wordpress-article/wordpr
     DayLinkComponent,
     WordpressArticleComponent,
     NewspaperHeaderComponent,
+    MultirowTableComponent,
   ],
   providers: [
     AccountsService,

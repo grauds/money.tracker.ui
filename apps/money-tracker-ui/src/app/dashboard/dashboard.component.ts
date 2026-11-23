@@ -317,10 +317,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       );
   }
 
-  activeIncomeTitle = computed(() =>
-    this.incomeGroupBy() === 'category' ? 'Top Expenses' : 'Top Expenses',
-  );
-
   activeIncomeItems = computed(() =>
     this.incomeGroupBy() === 'category'
       ? this.incomeByCategory()
@@ -354,36 +350,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       return formatDate(this.infoAbout.dates.end, 'mediumDate', 'en_US');
     }
     return 'No date';
-  }
-
-  get netSavings(): number | undefined {
-    if (this.totalIncome === undefined || this.totalExpense === undefined) {
-      return undefined;
-    }
-    return this.totalIncome - this.totalExpense;
-  }
-
-  get savingsRate(): number {
-    if (
-      !this.totalIncome ||
-      this.totalIncome <= 0 ||
-      this.netSavings === undefined
-    ) {
-      return 0;
-    }
-    return (this.netSavings / this.totalIncome) * 100;
-  }
-
-  get savingsSubtitle(): string {
-    if (this.netSavings === undefined) {
-      return '';
-    }
-    const formattedRate = (Math.round(this.savingsRate * 10) / 10).toFixed(1);
-    return `savings rate: ${formattedRate}%`;
-  }
-
-  get netSavingsLoading(): boolean {
-    return this.totalIncomeLoading || this.totalExpenseLoading;
   }
 
   formatCurrency(value: number): number {

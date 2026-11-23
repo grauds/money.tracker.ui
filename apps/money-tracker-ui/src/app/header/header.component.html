@@ -47,7 +47,7 @@
           <mat-icon fontIcon="trending_up"></mat-icon>
           @if (!isCollapsed) { <span class="menu-text">Income</span> }
         </a>
-        <a mat-list-item routerLinkActive="active-link" routerLink="/expenses" matTooltip="Expenses" [matTooltipDisabled]="!isCollapsed">
+        <a mat-list-item routerLinkActive="active-link" routerLink="/commoditiesAgents" matTooltip="Expenses Groups Trends" [matTooltipDisabled]="!isCollapsed">
           <mat-icon fontIcon="trending_down"></mat-icon>
           @if (!isCollapsed) { <span class="menu-text">Expenses</span> }
         </a>
@@ -58,13 +58,13 @@
           <div class="menu-divider">------</div>
         }
 
+        <a mat-list-item routerLinkActive="active-link" routerLink="/expenses" matTooltip="Expenses" [matTooltipDisabled]="!isCollapsed">
+          <mat-icon fontIcon="local_grocery_store"></mat-icon>
+          @if (!isCollapsed) { <span class="menu-text">Expenses Journal</span> }
+        </a>
         <a mat-list-item routerLinkActive="active-link" routerLink="/lastCommodities" matTooltip="History" [matTooltipDisabled]="!isCollapsed">
           <mat-icon fontIcon="history"></mat-icon>
-          @if (!isCollapsed) { <span class="menu-text">History</span> }
-        </a>
-        <a mat-list-item routerLinkActive="active-link" routerLink="/commoditiesAgents" matTooltip="Expenses Groups Trends" [matTooltipDisabled]="!isCollapsed">
-          <mat-icon fontIcon="local_grocery_store"></mat-icon>
-          @if (!isCollapsed) { <span class="menu-text">Expenses Groups Trends</span> }
+          @if (!isCollapsed) { <span class="menu-text">Expense Last Date</span> }
         </a>
         <a mat-list-item routerLinkActive="active-link" routerLink="/exchange" matTooltip="Currency Exchange" [matTooltipDisabled]="!isCollapsed">
           <mat-icon fontIcon="currency_exchange"></mat-icon>

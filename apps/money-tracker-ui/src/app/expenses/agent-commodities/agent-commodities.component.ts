@@ -27,6 +27,7 @@ import {
   MoneyType,
   Page,
 } from '@clematis-shared/model';
+
 import {
   ExpenseItemsService,
   MoneyTypeService,
@@ -36,9 +37,8 @@ import {
 import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
 import { default as _rollupMoment } from 'moment';
-import { formatDate } from '@angular/common';
-
 const moment = _rollupMoment || _moment;
+import { formatDate } from '@angular/common';
 
 export interface VisibleAreaSummary {
   name: string;
@@ -69,7 +69,7 @@ const CHART_PALETTE = [
 export class AgentCommoditiesComponent implements OnInit, OnDestroy {
   chart: any = {};
 
-  statsLoading = false;
+  headerLoading = false;
 
   loading = false;
 
@@ -80,6 +80,8 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
   totalVisibleArea = 0;
 
   visibleSeriesTotals: VisibleAreaSummary[] = [];
+
+  currency: MoneyType = new MoneyType();
 
   startDate = moment().add(-24, 'M');
 
@@ -96,14 +98,14 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
     data: number[];
   }[] = [];
   private selectedSeries: Record<string, boolean> = {};
+  private hoveredSeriesName: string | null = null;
 
   private startDate$ = new BehaviorSubject<moment.Moment>(
     moment().add(-24, 'M'),
   );
   private endDate$ = new BehaviorSubject<moment.Moment>(moment().add(1, 'M'));
-  private showGroups$ = new BehaviorSubject<boolean>(true);
-
   private destroy$ = new Subject<void>();
+  private showGroups$ = new BehaviorSubject<boolean>(true);
 
   constructor(
     protected moneyTypeService: MoneyTypeService,
@@ -115,6 +117,7 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
   get selectedCurrencyCode(): string {
     return (
       this.activeCurrencyCode ||
+      this.currency?.code ||
       this.moneyTypeService.getSelectedMoneyType()?.code ||
       ''
     );
@@ -135,38 +138,12 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getCurrencyStream(): Observable<MoneyType | null> {
-    const serviceAny = this.moneyTypeService as any;
-    const source$: Observable<MoneyType> | undefined =
-      serviceAny.selectedMoneyType$ ??
-      serviceAny.moneyType$ ??
-      serviceAny.currency$;
-
-    const initial = this.moneyTypeService.getSelectedMoneyType() ?? null;
-
-    return source$
-      ? source$.pipe(
-          startWith(initial),
-          distinctUntilChanged((prev, curr) => prev?.code === curr?.code),
-        )
-      : of(initial);
-  }
-
-  private loadStats() {
-    this.statsLoading = true;
-    this.statsService
-      .getInfoAbout()
-      .pipe(
-        catchError((error) => {
-          console.error('Failed to load stats info:', error);
-          return of(undefined);
-        }),
-        finalize(() => (this.statsLoading = false)),
-        takeUntil(this.destroy$),
-      )
-      .subscribe((infoAbout) => {
-        this.infoAbout = infoAbout;
-      });
+  private getCurrencyStream(): Observable<MoneyType> {
+    return this.moneyTypeService.selectedMoneyType$.pipe(
+      startWith(null),
+      map(() => this.moneyTypeService.getSelectedMoneyType()),
+      distinctUntilChanged((prev, curr) => prev?.code === curr?.code),
+    );
   }
 
   private listenToFilterChanges() {
@@ -176,7 +153,8 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
       this.endDate$,
       this.getCurrencyStream(),
     ]).pipe(
-      tap(() => {
+      tap(([, , currency]) => {
+        this.currency = currency;
         this.loading = true;
         this.errorMessage = null;
       }),
@@ -210,6 +188,7 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
             finalize(() => (this.loading = false)),
           );
       }),
+      takeUntil(this.destroy$),
     );
 
     // Rebuild chart & summary table in memory whenever data OR showGroups changes
@@ -256,11 +235,6 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   private createChartFromData(
     items: AgentCommodities[],
     showGroups: boolean,
@@ -297,7 +271,7 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
       new Set(items.map((month) => `${month.an}/${month.mois}`)),
     );
 
-    return this.buildChart(ticks, series, currencyCode);
+    return this.buildChart(ticks, series);
   }
 
   private getChartsSeries(
@@ -363,11 +337,7 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
       .sort((a, b) => b.total - a.total);
   }
 
-  private buildChart(
-    ticks: string[],
-    series: Map<string, AgentCommodities[]>,
-    currencyCode: string,
-  ) {
+  private buildChart(ticks: string[], series: Map<string, AgentCommodities[]>) {
     const builtSeries = this.getChartsSeries(ticks, series);
     this.currentChartSeries = builtSeries;
 
@@ -397,9 +367,9 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
         backgroundColor: 'rgba(255, 255, 255, 0.8)',
         position: function (
           pos: number[],
-          params: any,
-          el: any,
-          elRect: any,
+          _params: any,
+          _el: any,
+          _elRect: any,
           size: { viewSize: number[] },
         ) {
           const obj: any = { top: 10 };
@@ -435,19 +405,59 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
         bottom: '3%',
         containLabel: true,
       },
-      xAxis: [
-        {
-          type: 'category',
-          boundaryGap: false,
-          data: ticks,
-        },
-      ],
-      yAxis: [
-        {
-          type: 'value',
-        },
-      ],
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ticks,
+      },
+      yAxis: {
+        type: 'value',
+      },
       series: builtSeries,
     };
+  }
+
+  onSeriesHover(seriesName: string | null): void {
+    if (!this.chartInstance || this.hoveredSeriesName === seriesName) {
+      return;
+    }
+
+    if (this.hoveredSeriesName) {
+      this.chartInstance.dispatchAction({
+        type: 'downplay',
+        seriesName: this.hoveredSeriesName,
+      });
+    }
+
+    this.hoveredSeriesName = seriesName;
+
+    if (seriesName) {
+      this.chartInstance.dispatchAction({
+        type: 'highlight',
+        seriesName,
+      });
+    }
+  }
+
+  private loadStats() {
+    this.headerLoading = true;
+    this.statsService
+      .getInfoAbout()
+      .pipe(
+        catchError((error) => {
+          console.error('Failed to load stats info:', error);
+          return of(undefined);
+        }),
+        finalize(() => (this.headerLoading = false)),
+        takeUntil(this.destroy$),
+      )
+      .subscribe((infoAbout) => {
+        this.infoAbout = infoAbout;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
