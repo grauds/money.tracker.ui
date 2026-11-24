@@ -38,13 +38,13 @@
 
 </div>
 
-<!-- Bind chartInit to track legend toggles -->
-<div echarts [options]="chart"
-     (chartInit)="onChartInit($event)"
-     [loading]="loading"
-     class="chart">
-
-</div>
+<div
+  echarts
+  [options]="chart"
+  (chartInit)="onChartInit($event)"
+  [loading]="loading"
+  class="chart"
+></div>
 
 <div class="date-picker">
   <app-date-range-selector

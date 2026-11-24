@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Account, AccountBalance, MoneyType } from '@clematis-shared/model';
+import { map, Observable } from 'rxjs';
+import { Account, AccountBalance, MonthlyBalanceSummary, MoneyType } from '@clematis-shared/model';
 import { HttpClient } from '@angular/common/http';
 import {
   HateoasResourceService,
@@ -82,5 +82,34 @@ export class AccountsService extends SearchService<Account> {
         code: code,
       },
     });
+  }
+
+  getBalanceSummaryInCurrency(
+    moneyType: MoneyType,
+    moisStart: number,
+    anStart: number,
+    moisEnd: number,
+    anEnd: number,
+  ): Observable<ResourceCollection<MonthlyBalanceSummary>> {
+    return this.http
+      .get<any>(this.getUrl('/monthlyDeltas/search/summary'), {
+        params: {
+          code: moneyType.code,
+          moisStart,
+          anStart,
+          moisEnd,
+          anEnd,
+        },
+      })
+      .pipe(
+        map((response) => {
+          const collection = new ResourceCollection<MonthlyBalanceSummary>();
+          const items = response?._embedded?.monthlyDeltas ?? [];
+          collection.resources = items.map((item: any) =>
+            Object.assign(new MonthlyBalanceSummary(), item),
+          );
+          return collection;
+        }),
+      );
   }
 }

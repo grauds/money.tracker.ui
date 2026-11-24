@@ -281,7 +281,8 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
     const chartSeries: any[] = [];
     let colorIndex = 0;
 
-    series.forEach((commoditiesMonthly: AgentCommodities[], name: string) => {
+    series.forEach(
+      (commoditiesMonthly: AgentCommodities[], name: string) => {
       const color = CHART_PALETTE[colorIndex % CHART_PALETTE.length];
       colorIndex++;
 
@@ -337,7 +338,10 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
       .sort((a, b) => b.total - a.total);
   }
 
-  private buildChart(ticks: string[], series: Map<string, AgentCommodities[]>) {
+  private buildChart(
+    ticks: string[],
+    series: Map<string, AgentCommodities[]>
+  ) {
     const builtSeries = this.getChartsSeries(ticks, series);
     this.currentChartSeries = builtSeries;
 

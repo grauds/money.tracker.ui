@@ -105,8 +105,14 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
   activeCurrencyCode = '';
 
   totalVisibleArea = 0;
-
   visibleSeriesTotals: VisibleAreaSummary[] = [];
+  private currentChartSeries: {
+    name: string;
+    color: string;
+    data: number[];
+  }[] = [];
+  private selectedSeries: Record<string, boolean> = {};
+  private hoveredSeriesName: string | null = null;
 
   currency: MoneyType = new MoneyType();
 
@@ -117,13 +123,6 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
   income: Array<IncomeMonthly> = [];
 
   private chartInstance: any = null;
-  private currentChartSeries: {
-    name: string;
-    color: string;
-    data: number[];
-  }[] = [];
-  private selectedSeries: Record<string, boolean> = {};
-  private hoveredSeriesName: string | null = null;
 
   private startDate$ = new BehaviorSubject<moment.Moment>(
     moment().add(-24, 'M'),
@@ -219,10 +218,7 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
       .subscribe(([result]) => {
         if (result) {
           this.activeCurrencyCode = result.currencyCode;
-          this.chart = this.createChartFromData(
-            result.items,
-            result.currencyCode,
-          );
+          this.chart = this.createChartFromData(result.items);
         }
       });
   }
@@ -236,8 +232,7 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
   }
 
   private createChartFromData(
-    items: IncomeMonthly[],
-    currencyCode: string,
+    items: IncomeMonthly[]
   ): any {
     const series: Map<string, IncomeMonthly[]> = new Map();
 
@@ -250,12 +245,7 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
     });
 
     const ticks = Array.from(
-      new Set(
-        items.map(
-          (incomeReport: IncomeMonthly) =>
-            `${incomeReport.year}/${incomeReport.month}`,
-        ),
-      ),
+      new Set(items.map((item: IncomeMonthly) => `${item.year}/${item.month}`)),
     );
 
     return this.buildChart(ticks, series);
@@ -268,28 +258,29 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
     const chartSeries: any[] = [];
     let colorIndex = 0;
 
-    series.forEach((incomeMonthly: IncomeMonthly[], name: string) => {
-      const color = CHART_PALETTE[colorIndex % CHART_PALETTE.length];
-      colorIndex++;
+    series.forEach(
+      (incomeMonthly: IncomeMonthly[], name: string) => {
+        const color = CHART_PALETTE[colorIndex % CHART_PALETTE.length];
+        colorIndex++;
 
-      chartSeries.push({
-        name: name,
-        type: 'bar',
-        stack: 'total',
-        color: color,
-        emphasis: {
-          focus: 'series',
-          label: {
-            show: true,
+        chartSeries.push({
+          name: name,
+          type: 'bar',
+          stack: 'total',
+          color: color,
+          emphasis: {
+            focus: 'series',
+            label: {
+              show: true,
+            },
           },
-        },
-        data: ticks.map((tick) => {
-          const found = incomeMonthly.find(
-            (value: IncomeMonthly) => `${value.year}/${value.month}` === tick,
-          );
-          return found?.totalConverted ?? 0;
-        }),
-      });
+          data: ticks.map((tick) => {
+            const found = incomeMonthly.find(
+              (value: IncomeMonthly) => `${value.year}/${value.month}` === tick,
+            );
+            return found?.totalConverted ?? 0;
+          }),
+        });
     });
 
     return chartSeries;
@@ -334,15 +325,6 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
 
     return {
       color: CHART_PALETTE,
-      legend: {
-        backgroundColor: 'rgba(206,206,206,0.7)',
-        type: 'scroll',
-        right: 10,
-        top: 20,
-        bottom: 20,
-        data: [...series.keys()].sort(),
-        selected: this.selectedSeries,
-      },
       tooltip: {
         trigger: 'axis',
         axisPointer: {
@@ -364,6 +346,7 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
           if (!params || params.length === 0) {
             return '';
           }
+
           let output = params[0].axisValueLabel + '';
           output += '<table class="w-full">';
           const sorted: any[] = [...params].sort(

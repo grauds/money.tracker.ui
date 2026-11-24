@@ -1,6 +1,7 @@
 export { Account } from '../model/account';
 export { AccountGroup } from '../model/account-group';
 export { AccountBalance } from '../model/account-balance';
+export { MonthlyBalanceSummary } from '../model/monthly-balance-summary';
 export { Commodity } from '../model/commodity';
 export { CommodityGroup } from '../model/commodity-group';
 export type { DatesRange } from '../dto/dates-range';
@@ -17,7 +18,6 @@ export { LastCommodity } from '../model/last-commodity';
 export { MoneyExchange } from '../model/money-exchange';
 export { MoneyType } from '../model/money-type';
 export { MoneyTypes } from '../model/money-types';
-export { MonthlyDelta } from '../model/monthly-delta';
 export { Organization } from '../model/organization';
 export { OrganizationGroup } from '../model/organization-group';
 export { UnitType } from '../model/unit-type';

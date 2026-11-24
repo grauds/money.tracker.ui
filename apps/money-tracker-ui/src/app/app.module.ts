@@ -25,10 +25,10 @@ import {
   UnitType,
   OrganizationGroup,
   Entity,
-  MonthlyDelta,
   AccountBalance,
   MoneyExchange,
   MoneyType,
+  MonthlyBalanceSummary
 } from '@clematis-shared/model';
 
 import {
@@ -205,7 +205,7 @@ export class AppModule {
           Commodity,
           MoneyExchange,
           MoneyType,
-          MonthlyDelta,
+          MonthlyBalanceSummary,
           OrganizationGroup,
           Organization,
           ExpenseItem,
