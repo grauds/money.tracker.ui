@@ -92,7 +92,7 @@ export class AccountsService extends SearchService<Account> {
     anEnd: number,
   ): Observable<ResourceCollection<MonthlyBalanceSummary>> {
     return this.http
-      .get<any>(this.getUrl('/monthlyDeltas/search/summary'), {
+      .get<any>(this.getUrl('/monthly/summary'), {
         params: {
           code: moneyType.code,
           moisStart,
