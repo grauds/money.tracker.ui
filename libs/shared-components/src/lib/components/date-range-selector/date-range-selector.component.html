@@ -1,5 +1,5 @@
 <span>
-  <button mat-icon-button (click)="minusSixMonths()">
+  <button mat-icon-button (click)="shiftRange(-1)">
     <mat-icon>arrow_back</mat-icon>
   </button>
   <mat-form-field appearance="fill">
@@ -44,7 +44,7 @@
     </mat-datepicker>
   </mat-form-field>
 
-  <button mat-icon-button (click)="plusSixMonths()">
+  <button mat-icon-button (click)="shiftRange(1)">
     <mat-icon>arrow_forward</mat-icon>
   </button>
 </span>

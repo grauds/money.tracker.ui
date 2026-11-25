@@ -1,11 +1,19 @@
 import { DateRangeSelectorComponent } from './date-range-selector.component';
 import { Moment, default as moment } from 'moment';
 
+const STORAGE_KEY = 'date_range_selector_state';
+
 describe('DateRangeSelectorComponent', () => {
   let component: DateRangeSelectorComponent;
 
   beforeEach(() => {
+    localStorage.clear();
+    jest.restoreAllMocks();
     component = new DateRangeSelectorComponent();
+  });
+
+  afterEach(() => {
+    localStorage.clear();
   });
 
   it('should create', () => {
@@ -13,8 +21,8 @@ describe('DateRangeSelectorComponent', () => {
   });
 
   it('should initialize with default date range', () => {
-    const expectedStartMonth = moment().add(-24, 'M').month();
-    const expectedStartYear = moment().add(-24, 'M').year();
+    const expectedStartMonth = moment().subtract(24, 'M').month();
+    const expectedStartYear = moment().subtract(24, 'M').year();
     const expectedEndMonth = moment().add(1, 'M').month();
     const expectedEndYear = moment().add(1, 'M').year();
 
@@ -24,9 +32,9 @@ describe('DateRangeSelectorComponent', () => {
     expect(component.endDate.value?.year()).toBe(expectedEndYear);
   });
 
-  it('should initialize minDate to 20 years ago', () => {
+  it('should initialize minDate to 30 years ago', () => {
     const currentYear = new Date().getFullYear();
-    expect(component.minDate.getFullYear()).toBe(currentYear - 20);
+    expect(component.minDate.getFullYear()).toBe(currentYear - 30);
   });
 
   it('should initialize maxDate to 1 year ahead', () => {
@@ -34,8 +42,69 @@ describe('DateRangeSelectorComponent', () => {
     expect(component.maxDate.getFullYear()).toBe(currentYear + 1);
   });
 
+  describe('state restoration', () => {
+    it('should restore valid dates from localStorage on init and emit them asynchronously', async () => {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ start: '2022-03', end: '2023-09' }),
+      );
+
+      // Must be instantiated AFTER localStorage.setItem so the constructor reads it
+      const restoredComponent = new DateRangeSelectorComponent();
+
+      let emittedStart: Moment | undefined;
+      let emittedEnd: Moment | undefined;
+      restoredComponent.startDate$.subscribe((val) => (emittedStart = val));
+      restoredComponent.endDate$.subscribe((val) => (emittedEnd = val));
+
+      restoredComponent.ngOnInit();
+      await Promise.resolve(); // Flush queueMicrotask
+
+      expect(restoredComponent.startDate.value?.format('YYYY-MM')).toBe(
+        '2022-03',
+      );
+      expect(restoredComponent.endDate.value?.format('YYYY-MM')).toBe(
+        '2023-09',
+      );
+      expect(emittedStart?.format('YYYY-MM')).toBe('2022-03');
+      expect(emittedEnd?.format('YYYY-MM')).toBe('2023-09');
+    });
+
+    it('should keep default dates and not emit when localStorage is empty', async () => {
+      const startSpy = jest.spyOn(component.startDate$, 'emit');
+      const endSpy = jest.spyOn(component.endDate$, 'emit');
+
+      component.ngOnInit();
+      await Promise.resolve();
+
+      expect(startSpy).not.toHaveBeenCalled();
+      expect(endSpy).not.toHaveBeenCalled();
+    });
+
+    it('should ignore corrupted JSON in localStorage without throwing', () => {
+      localStorage.setItem(STORAGE_KEY, '{invalid-json');
+
+      expect(() => new DateRangeSelectorComponent().ngOnInit()).not.toThrow();
+    });
+
+    it('should ignore invalid date strings in localStorage', async () => {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ start: 'not-a-date', end: '2023-15' }),
+      );
+      const invalidStorageComponent = new DateRangeSelectorComponent();
+      const startSpy = jest.spyOn(invalidStorageComponent.startDate$, 'emit');
+
+      invalidStorageComponent.ngOnInit();
+      await Promise.resolve();
+
+      expect(startSpy).not.toHaveBeenCalled();
+    });
+  });
+
   describe('#setStartMonthAndYear', () => {
-    it('should update startDate FormControl and emit startDate$', () => {
+    it('should update startDate, emit startDate$, and save to localStorage', () => {
+      component.endDate.setValue(moment('2025-12-01'));
       const testMonth = moment('2024-06-01');
       let emittedValue: Moment | undefined;
 
@@ -43,7 +112,6 @@ describe('DateRangeSelectorComponent', () => {
         emittedValue = emitted;
       });
 
-      // Mock datepicker
       const datepicker = { close: jest.fn() } as any;
 
       component.setStartMonthAndYear(testMonth, datepicker);
@@ -53,11 +121,15 @@ describe('DateRangeSelectorComponent', () => {
       expect(component.startDate.value?.year()).toBe(2024);
       expect(emittedValue?.month()).toBe(5);
       expect(emittedValue?.year()).toBe(2024);
+
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      expect(saved).toEqual({ start: '2024-06', end: '2025-12' });
     });
   });
 
   describe('#setEndMonthAndYear', () => {
-    it('should update endDate FormControl and emit endDate$', () => {
+    it('should update endDate, emit endDate$, and save to localStorage', () => {
+      component.startDate.setValue(moment('2024-01-01'));
       const testMonth = moment('2025-12-01');
       let emittedValue: Moment | undefined;
 
@@ -74,78 +146,74 @@ describe('DateRangeSelectorComponent', () => {
       expect(component.endDate.value?.year()).toBe(2025);
       expect(emittedValue?.month()).toBe(11);
       expect(emittedValue?.year()).toBe(2025);
+
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      expect(saved).toEqual({ start: '2024-01', end: '2025-12' });
     });
   });
 
-  describe('#minusSixMonths', () => {
-    it('should shift both start and end dates by -6 months', () => {
-      const startMonth = moment('2024-06-01');
-      const endMonth = moment('2025-01-01');
-      component.startDate.setValue(moment(startMonth));
-      component.endDate.setValue(moment(endMonth));
-
-      component.minusSixMonths();
-
-      // June - 6 months = December (month 11)
-      expect(component.startDate.value?.month()).toBe(11);
-      expect(component.startDate.value?.year()).toBe(2023);
-      // January - 6 months = July (month 6)
-      expect(component.endDate.value?.month()).toBe(6);
-      expect(component.endDate.value?.year()).toBe(2024);
-    });
-
-    it('should handle undefined start value gracefully', () => {
-      component.startDate.setValue(null as any);
-      component.endDate.setValue(moment('2024-06-01'));
-
-      expect(() => component.minusSixMonths()).not.toThrow();
-    });
-
-    it('should handle undefined end value gracefully', () => {
+  describe('#shiftRange', () => {
+    it('should shift backward by 50% of the selected month span', () => {
+      // 12-month span -> 50% = 6 months
       component.startDate.setValue(moment('2024-06-01'));
-      component.endDate.setValue(null as any);
-
-      expect(() => component.minusSixMonths()).not.toThrow();
-    });
-
-    it('should handle both undefined values gracefully', () => {
-      component.startDate.setValue(null as any);
-      component.endDate.setValue(null as any);
-
-      expect(() => component.minusSixMonths()).not.toThrow();
-    });
-  });
-
-  describe('#plusSixMonths', () => {
-    it('should shift both start and end dates by +6 months', () => {
-      component.startDate.setValue(moment('2024-01-01'));
-      component.endDate.setValue(moment('2024-08-01'));
+      component.endDate.setValue(moment('2025-06-01'));
 
       let startEmitted: Moment | undefined;
-      component.startDate$.subscribe((emitted) => {
-        startEmitted = emitted;
-      });
+      let endEmitted: Moment | undefined;
+      component.startDate$.subscribe((val) => (startEmitted = val));
+      component.endDate$.subscribe((val) => (endEmitted = val));
 
-      component.plusSixMonths();
+      component.shiftRange(-1);
 
-      // January + 6 months = July (month 6)
-      expect(component.startDate.value?.month()).toBe(6);
-      expect(component.startDate.value?.year()).toBe(2024);
-      expect(startEmitted?.month()).toBe(6);
+      expect(component.startDate.value?.format('YYYY-MM')).toBe('2023-12');
+      expect(component.endDate.value?.format('YYYY-MM')).toBe('2024-12');
+      expect(startEmitted?.format('YYYY-MM')).toBe('2023-12');
+      expect(endEmitted?.format('YYYY-MM')).toBe('2024-12');
+
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      expect(saved).toEqual({ start: '2023-12', end: '2024-12' });
     });
 
-    it('should handle undefined start value gracefully', () => {
-      component.startDate.setValue(null as any);
+    it('should shift forward by 50% of the selected month span', () => {
+      // 10-month span -> 50% = 5 months
+      component.startDate.setValue(moment('2024-01-01'));
+      component.endDate.setValue(moment('2024-11-01'));
+
+      component.shiftRange(1);
+
+      expect(component.startDate.value?.format('YYYY-MM')).toBe('2024-06');
+      expect(component.endDate.value?.format('YYYY-MM')).toBe('2025-04');
+    });
+
+    it('should shift by at least 1 month when span is 0 or 1 month', () => {
+      component.startDate.setValue(moment('2024-05-01'));
+      component.endDate.setValue(moment('2024-05-01'));
+
+      component.shiftRange(1);
+
+      expect(component.startDate.value?.format('YYYY-MM')).toBe('2024-06');
+      expect(component.endDate.value?.format('YYYY-MM')).toBe('2024-06');
+    });
+
+    it('should handle null start value gracefully', () => {
+      component.startDate.setValue(null);
       component.endDate.setValue(moment('2024-06-01'));
 
-      expect(() => component.plusSixMonths()).not.toThrow();
+      expect(() => component.shiftRange(-1)).not.toThrow();
     });
 
-    it('should handle undefined end value gracefully', () => {
+    it('should handle null end value gracefully', () => {
       component.startDate.setValue(moment('2024-06-01'));
-      component.endDate.setValue(null as any);
+      component.endDate.setValue(null);
 
-      expect(() => component.plusSixMonths()).not.toThrow();
+      expect(() => component.shiftRange(1)).not.toThrow();
+    });
+
+    it('should handle both null values gracefully', () => {
+      component.startDate.setValue(null);
+      component.endDate.setValue(null);
+
+      expect(() => component.shiftRange(-1)).not.toThrow();
     });
   });
 });
