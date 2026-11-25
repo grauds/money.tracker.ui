@@ -179,13 +179,14 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
               items: response.content ?? [],
               currencyCode: currency.code,
             })),
+            tap(() => (this.loading = false)),
             catchError((error) => {
               console.error('Failed to load chart data:', error);
               this.errorMessage =
                 'Could not load expense data. Please try again.';
+              this.loading = false;
               return of(null);
             }),
-            finalize(() => (this.loading = false)),
           );
       }),
       takeUntil(this.destroy$),

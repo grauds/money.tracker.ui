@@ -200,13 +200,14 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
               items: response.resources ?? [],
               currencyCode: currency.code,
             })),
+            tap(() => (this.loading = false)),
             catchError((error) => {
               console.error('Failed to load chart data:', error);
               this.errorMessage =
                 'Could not load income data. Please try again.';
+              this.loading = false;
               return of(null);
             }),
-            finalize(() => (this.loading = false)),
           );
       }),
       takeUntil(this.destroy$),

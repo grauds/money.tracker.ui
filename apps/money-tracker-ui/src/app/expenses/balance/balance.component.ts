@@ -10,7 +10,6 @@ import {
   catchError,
   combineLatest,
   distinctUntilChanged,
-  finalize,
   map,
   Observable,
   of,
