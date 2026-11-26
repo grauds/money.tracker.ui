@@ -1,14 +1,14 @@
 @if (title || subtitle) {
   <div class="summary-details">
     @if (title) {
-      <h2 class="title">
+      <h3 class="title">
         {{ title }}
-      </h2>
+      </h3>
     }
     @if (subtitle) {
-      <div class="description-box">
+      <small class="description-box">
         {{ subtitle }}
-      </div>
+      </small>
     }
   </div>
 }
