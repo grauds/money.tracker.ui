@@ -8,7 +8,8 @@ import {
   Commodity,
   CommodityGroup,
   ExpenseItem,
-  IncomeItem
+  IncomeItem,
+  PurchasePricePoint,
 } from '@clematis-shared/model';
 import {
   CommoditiesService,
@@ -17,10 +18,11 @@ import {
   IncomeItemsService,
   StorageService,
   PhotoUploaderComponent,
+  PurchasePricePointsService,
   RESOURCE_TYPE,
   PARENT_RESOURCE_TYPE,
   EntityService,
-  MoneyTypeService
+  MoneyTypeService,
 } from '@clematis-shared/shared-components';
 import { Title } from '@angular/platform-browser';
 import {
@@ -57,6 +59,8 @@ export class CommodityComponent
 
   totalQty: number | undefined;
 
+  purchaseHistory: PurchasePricePoint[] = [];
+
   constructor(
     resourceService: HateoasResourceService,
     public readonly expenseService: ExpenseItemsService,
@@ -64,6 +68,7 @@ export class CommodityComponent
     protected override moneyTypeService: MoneyTypeService,
     private readonly commodityService: CommoditiesService,
     private readonly uploadService: StorageService,
+    private readonly purchasePricePointsService: PurchasePricePointsService,
     entityService: EntityService<Commodity, CommodityGroup>,
     route: ActivatedRoute,
     router: Router,
@@ -97,6 +102,7 @@ export class CommodityComponent
 
     forkJoin({
       totals: totals$,
+      purchaseHistory: this.purchasePricePointsService.getByCommodity(this.id),
     }).subscribe({
       next: (result) => {
         if (result.totals) {
@@ -104,6 +110,9 @@ export class CommodityComponent
           if (this.totalQty) {
             this.averagePrice = this.expensesSum / this.totalQty;
           }
+        }
+        if (result.purchaseHistory) {
+          this.purchaseHistory = result.purchaseHistory;
         }
       },
       error: (err) =>
@@ -117,6 +126,7 @@ export class CommodityComponent
     this.unitTypeName = undefined;
     this.totalQty = undefined;
     this.averagePrice = undefined;
+    this.purchaseHistory = [];
   }
 
   getQueryArguments(): RequestParam {

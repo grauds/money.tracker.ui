@@ -12,6 +12,7 @@ export { Expense } from '../model/expense';
 export { ExpenseItem } from '../model/expense-item';
 export { IncomeMonthly } from '../model/income-monthly';
 export { IncomeItem } from '../model/income-item';
+export type { PurchasePricePoint } from '../model/purchase-price-point';
 export type { InfoAbout } from '../dto/info-about';
 export { InOutDelta } from '../model/in-out-delta';
 export { LastCommodity } from '../model/last-commodity';

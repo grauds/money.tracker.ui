@@ -97,21 +97,35 @@
   @if ((purchaseHistory?.length ?? 0) > 0) {
     <div class="history-panel">
       <div class="panel-header">
-        <h4 class="panel-title">Purchase History</h4>
+        <h4 class="panel-title">The Last Prices</h4>
         <span class="panel-badge">{{ purchaseHistory.length }} RECORDS</span>
       </div>
 
       <div class="table-head">
-        <span>Tradeplace</span>
-        <span>Date</span>
-        <span class="col-right">Price</span>
+        <span class="sortable" (click)="toggleSort('place')">
+          Tradeplace
+          @if (isSortedBy('place')) {
+            {{ sortIndicator('place') }}
+          }
+        </span>
+        <span class="sortable" (click)="toggleSort('date')">
+          Date
+          @if (isSortedBy('date')) {
+            {{ sortIndicator('date') }}
+          }
+        </span>
+        <span class="col-right sortable" (click)="toggleSort('price')">
+          Price ▼
+        </span>
       </div>
 
       <div class="history-list">
-        @for (item of purchaseHistory; track $index) {
+        @for (item of sortedHistory; track $index) {
           <div class="history-row">
-            <span class="col-place" [title]="item.tradeplaceName">
-              {{ item.tradeplaceName || '—' }}
+            <span class="col-place">
+              <a [routerLink]="['/organizations', item.tradeplaceId]" [title]="item.tradeplaceName">
+                {{ item.tradeplaceName || '—' }}
+              </a>
             </span>
             <span class="col-date">
               {{ item.transferDate | date : 'dd.MM.yyyy' }}

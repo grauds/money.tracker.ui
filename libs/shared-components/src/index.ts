@@ -58,6 +58,7 @@ export { DashboardService } from './lib/service/dashboard.service';
 export { StorageService } from './lib/service/storage.service';
 export { WeatherService } from './lib/service/weather.service';
 export { WordpressService } from './lib/service/wordpress.service';
+export { PurchasePricePointsService } from './lib/service/purchase-price-points.service';
 
 export type { SearchPostProcessingHandler } from './lib/service/search.service';
 

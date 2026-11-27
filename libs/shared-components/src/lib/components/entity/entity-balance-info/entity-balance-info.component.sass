@@ -9,6 +9,8 @@
   flex-direction: column
   gap: 12px
   width: 100%
+  flex: 1
+  min-height: 0
 
 .stats-strip
   display: flex
@@ -73,6 +75,8 @@
   flex-direction: column
   gap: 8px
   box-sizing: border-box
+  flex: 1
+  min-height: 0
 
 .panel-header
   display: flex
@@ -116,10 +120,18 @@
   .col-right
     text-align: right
 
+  .sortable
+    cursor: pointer
+    user-select: none
+    &:hover
+      color: #1a1a1a
+      text-decoration: underline
+
 .history-list
   display: flex
   flex-direction: column
-  max-height: 155px
+  flex: 1
+  min-height: 0
   overflow-y: auto
   scrollbar-gutter: stable
 
@@ -155,9 +167,17 @@
   overflow: hidden
   text-overflow: ellipsis
 
+  a
+    color: #1a1a1a
+    text-decoration: none
+    &:hover
+      color: #6b1d8a
+      text-decoration: underline
+
 .col-date
-  font-size: 11px
-  color: #666
+  font-size: 13px
+  font-weight: 600
+  color: #1a1a1a
   font-variant-numeric: tabular-nums
   white-space: nowrap
 

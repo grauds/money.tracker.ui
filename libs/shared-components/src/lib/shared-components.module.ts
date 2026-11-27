@@ -38,6 +38,7 @@ import { EntityService } from './service/entity.service';
 
 import { ImmichService } from './service/immich.service';
 import { WordpressService } from './service/wordpress.service';
+import { PurchasePricePointsService } from './service/purchase-price-points.service';
 
 import { ErrorDialogService } from './error/error-dialog/error-dialog.service';
 import { GlobalErrorHandler } from './error/global-error-handler';
@@ -63,12 +64,13 @@ import { EntityThumbnailComponent } from "./components/entity-list/entity-thumbn
 import { EntityNameFilterComponent } from "./components/entity-list/entity-name-filter/entity-name-filter.component";
 import { EntityExpensesComponent } from "./components/entity/entity-expenses/entity-expenses.component";
 import { EntityIncomeComponent } from "./components/entity/entity-income/entity-income.component";
+import { EntityBalanceInfoComponent } from "./components/entity/entity-balance-info/entity-balance-info.component";
 
 import { NgxEchartsDirective } from 'ngx-echarts';
 
 import { TelegramFeedComponent } from './components/telegram-feed/telegram-feed.component';
 import { MatTooltip } from "@angular/material/tooltip";
-import { EntityBalanceInfoComponent } from './components/entity/entity-balance-info/entity-balance-info.component';
+
 
 import { WordpressArticleComponent } from './components/wordpress-article/wordpress-article.component'
 import { MultirowTableComponent } from './components/multirow-table/multirow-table.component';
@@ -111,6 +113,7 @@ import { MultirowTableComponent } from './components/multirow-table/multirow-tab
     DateRangeSelectorComponent,
     StatsTotalsComponent,
     PhotoUploaderComponent,
+    CurrencySpacePipe,
     EntityNameFilterComponent,
     EntityExpensesComponent,
     EntityIncomeComponent,
@@ -161,6 +164,7 @@ import { MultirowTableComponent } from './components/multirow-table/multirow-tab
     EntityService,
     ImmichService,
     WordpressService,
+    PurchasePricePointsService,
     ErrorDialogService,
     {
       provide: ErrorHandler,

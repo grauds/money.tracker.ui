@@ -15,7 +15,8 @@ import {
   EntityService,
   OrganizationGroupsService,
   RESOURCE_TYPE,
-  PARENT_RESOURCE_TYPE, MoneyTypeService
+  PARENT_RESOURCE_TYPE,
+  MoneyTypeService,
 } from '@clematis-shared/shared-components';
 import { Title } from '@angular/platform-browser';
 
