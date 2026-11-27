@@ -33,6 +33,8 @@ export class AccountComponent extends EntityComponent<Account, AccountGroup> {
 
   expenses: ExpenseItem[] = [];
 
+  statsLoading = true;
+
   constructor(
     resourceService: HateoasResourceService,
     public readonly expenseService: ExpenseItemsService,
@@ -58,6 +60,7 @@ export class AccountComponent extends EntityComponent<Account, AccountGroup> {
     if (!entity) {
       return;
     }
+    this.statsLoading = false;
   }
 
   getQueryArguments(): RequestParam {

@@ -99,6 +99,7 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
   chart: any = {};
 
   loading = false;
+  statsLoading = true;
 
   errorMessage: string | null = null;
 
@@ -221,6 +222,7 @@ export class IncomeMonthlyComponent implements OnInit, OnDestroy {
           this.activeCurrencyCode = result.currencyCode;
           this.chart = this.createChartFromData(result.items);
         }
+        this.statsLoading = false;
       });
   }
 

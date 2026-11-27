@@ -40,6 +40,8 @@ export class CommodityGroupComponent extends EntityComponent<
   @ViewChild(EntityListComponent)
   entityList!: EntityListComponent<CommodityGroup>;
 
+  statsLoading = true;
+
   children: Entity[] = [];
 
   constructor(
@@ -65,6 +67,10 @@ export class CommodityGroupComponent extends EntityComponent<
     return {
       id: this.id ? this.id : '',
     };
+  }
+
+  override onEntityLoaded(entity: CommodityGroup) {
+    this.statsLoading = false;
   }
 
   setEntities($event: CommodityGroup[]) {

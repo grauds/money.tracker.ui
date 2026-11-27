@@ -33,6 +33,8 @@ export class AccountGroupComponent extends EntityComponent<
   @ViewChild(EntityListComponent)
   entityList!: EntityListComponent<AccountGroup>;
 
+  statsLoading = true;
+
   children: Entity[] = [];
 
   constructor(
@@ -58,6 +60,10 @@ export class AccountGroupComponent extends EntityComponent<
     return {
       id: this.id ? this.id : '',
     };
+  }
+
+  override onEntityLoaded(entity: AccountGroup) {
+    this.statsLoading = false;
   }
 
   setEntities($event: AccountGroup[]) {

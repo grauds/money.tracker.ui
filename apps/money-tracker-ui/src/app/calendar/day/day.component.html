@@ -169,6 +169,7 @@
             <h2 class="section-heading-accent summary-accent">Financial Summary</h2>
             <lib-entity-balance-info
               [loading]="loading"
+              [statsLoading]="statsLoading"
               [expensesSum]="expensesSum ?? 0"
               [incomeSum]="incomeSum ?? 0"
               [currency]="currency"
@@ -182,6 +183,7 @@
         <h2 class="section-heading-accent summary-accent">Financial Summary</h2>
         <lib-entity-balance-info
           [loading]="loading"
+          [statsLoading]="statsLoading"
           [expensesSum]="expensesSum ?? 0"
           [incomeSum]="incomeSum ?? 0"
           [currency]="currency"

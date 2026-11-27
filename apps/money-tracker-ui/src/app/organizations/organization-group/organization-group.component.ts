@@ -40,6 +40,8 @@ export class OrganizationGroupComponent extends EntityComponent<
   @ViewChild(EntityListComponent)
   entityList!: EntityListComponent<OrganizationGroup>;
 
+  statsLoading = true;
+
   children: Entity[] = [];
 
   constructor(
@@ -65,6 +67,10 @@ export class OrganizationGroupComponent extends EntityComponent<
     return {
       id: this.id ? this.id : '',
     };
+  }
+
+  override onEntityLoaded(entity: OrganizationGroup) {
+    this.statsLoading = false;
   }
 
   setEntities($event: OrganizationGroup[]) {

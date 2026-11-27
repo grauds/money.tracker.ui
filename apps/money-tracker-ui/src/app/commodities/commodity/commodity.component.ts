@@ -28,7 +28,6 @@ import { Title } from '@angular/platform-browser';
 import {
   catchError,
   EMPTY,
-  forkJoin,
 } from "rxjs";
 
 @Component({
@@ -60,6 +59,9 @@ export class CommodityComponent
   totalQty: number | undefined;
 
   purchaseHistory: PurchasePricePoint[] = [];
+
+  private statsLoaded = false;
+  statsLoading = false;
 
   constructor(
     resourceService: HateoasResourceService,
@@ -93,30 +95,42 @@ export class CommodityComponent
 
     this.unitTypeName = entity.unittype?.shortName;
 
-    const totals$ = this.commodityService.getTotalQtyForCommodity(this.id).pipe(
+    if (!this.statsLoaded) {
+      this.loadStats();
+      this.statsLoaded = true;
+    }
+  }
+
+  private loadStats() {
+    this.statsLoading = true;
+    this.commodityService.getTotalQtyForCommodity(this.id).pipe(
       catchError((err) => {
         console.log(err);
         return EMPTY;
       }),
-    );
-
-    forkJoin({
-      totals: totals$,
-      purchaseHistory: this.purchasePricePointsService.getByCommodity(this.id),
-    }).subscribe({
-      next: (result) => {
-        if (result.totals) {
-          this.totalQty = result.totals;
+    ).subscribe({
+      next: (totals) => {
+        this.statsLoading = false;
+        if (totals) {
+          this.totalQty = totals;
           if (this.totalQty) {
             this.averagePrice = this.expensesSum / this.totalQty;
           }
         }
-        if (result.purchaseHistory) {
-          this.purchaseHistory = result.purchaseHistory;
-        }
       },
       error: (err) =>
-        console.error('An error occurred loading commodity data', err),
+        console.error('An error occurred loading commodity stats', err),
+    });
+
+    this.purchasePricePointsService.getByCommodity(this.id).subscribe({
+      next: (purchaseHistory) => {
+        this.statsLoading = false;
+        this.purchaseHistory = purchaseHistory;
+      },
+      error: (err) => {
+        console.error('An error occurred loading purchase history', err);
+        this.statsLoading = false;
+      },
     });
   }
 
@@ -127,6 +141,8 @@ export class CommodityComponent
     this.totalQty = undefined;
     this.averagePrice = undefined;
     this.purchaseHistory = [];
+    this.statsLoaded = false;
+    this.statsLoading = true;
   }
 
   getQueryArguments(): RequestParam {

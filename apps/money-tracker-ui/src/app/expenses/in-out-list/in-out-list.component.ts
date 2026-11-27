@@ -22,6 +22,7 @@ export class InOutListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['commodity.name', 'delta'];
 
   loading = false;
+  statsLoading = true;
 
   totals = { positive: 0, negative: 0 };
 
@@ -64,9 +65,11 @@ export class InOutListComponent implements OnInit, OnDestroy {
       },
       error: () => {
         this.loading = false;
+        this.statsLoading = false;
       },
       complete: () => {
         this.loading = false;
+        this.statsLoading = false;
       },
     });
   }

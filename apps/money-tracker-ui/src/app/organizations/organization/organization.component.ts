@@ -39,6 +39,8 @@ export class OrganizationComponent
   extends EntityComponent<Organization, OrganizationGroup>
   implements OnDestroy
 {
+  statsLoading = true;
+
   image: PhotoUploaderComponent | undefined;
 
   income: IncomeItem[] = [];
@@ -72,6 +74,10 @@ export class OrganizationComponent
     return {
       id: this.id ? this.id : '',
     };
+  }
+
+  override onEntityLoaded(entity: Organization) {
+    this.statsLoading = false;
   }
 
   setIncome($event: IncomeItem[]) {

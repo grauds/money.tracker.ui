@@ -51,6 +51,7 @@ export class DayComponent implements OnInit, OnDestroy {
   @ViewChild(EntityListComponent) entityList!: EntityListComponent<ExpenseItem>;
 
   loading = false;
+  statsLoading = true;
   incomeLoaded: boolean | undefined = undefined;
   expencesLoaded: boolean | undefined = undefined;
 
@@ -135,10 +136,11 @@ export class DayComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.loading = false;
+          this.statsLoading = false;
         },
         error: () => {
           this.loading = false;
-          // Optional: Handle downstream errors here if needed
+          this.statsLoading = false;
         },
       });
   }

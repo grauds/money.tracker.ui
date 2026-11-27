@@ -72,6 +72,7 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
   headerLoading = false;
 
   loading = false;
+  statsLoading = true;
 
   errorMessage: string | null = null;
 
@@ -458,6 +459,7 @@ export class AgentCommoditiesComponent implements OnInit, OnDestroy {
       )
       .subscribe((infoAbout) => {
         this.infoAbout = infoAbout;
+        this.statsLoading = false;
       });
   }
 

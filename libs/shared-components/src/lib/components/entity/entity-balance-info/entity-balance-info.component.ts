@@ -12,6 +12,7 @@ export type SortDirection = 'asc' | 'desc' | null;
 })
 export class EntityBalanceInfoComponent {
   @Input() loading = false;
+  @Input() statsLoading = false;
   @Input() currency!: MoneyType;
   @Input() incomeSum = 0;
   @Input() expensesSum = 0;
