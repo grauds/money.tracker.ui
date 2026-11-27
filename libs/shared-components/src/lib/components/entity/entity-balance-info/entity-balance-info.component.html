@@ -115,7 +115,10 @@
           }
         </span>
         <span class="col-right sortable" (click)="toggleSort('price')">
-          Price ▼
+          Price
+          @if (isSortedBy('price')) {
+            {{ sortIndicator('price') }}
+          }
         </span>
       </div>
 
