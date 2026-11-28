@@ -1,8 +1,31 @@
+export interface WordPressTag {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+export interface WordPressMedia {
+  id: number;
+  source_url: string;
+  alt_text?: string;
+}
+
+export interface WordPressArticlePayload {
+  title: string;
+  content: string;
+  date?: string;
+  status: 'publish' | 'draft';
+  tags?: number[];
+  featured_media?: number;
+}
+
 export interface WordPressArticle {
   id: number;
   date: string;
   title: { rendered: string };
+  featured_media?: number;
   featuredImageUrl?: string;
+  tags?: number[];
   content: {
     rendered: string;
     safeRendered?: any;
@@ -14,6 +37,7 @@ export interface WordPressArticle {
   };
   _embedded?: {
     'wp:featuredmedia'?: Array<{
+      id?: number;
       source_url: string;
       alt_text?: string;
       media_details?: {
@@ -24,5 +48,6 @@ export interface WordPressArticle {
         };
       };
     }>;
+    'wp:term'?: Array<Array<WordPressTag>>;
   };
 }

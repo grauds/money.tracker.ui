@@ -10,4 +10,5 @@ export const environment: EnvironmentInterface = {
   weatherUrl: 'https://192.168.1.118:18443/weather-api',
   immichUrl: 'https://192.168.1.118:18443/immich',
   wordpressUrl: 'https://192.168.1.118:18443/wordpress',
+  wordpressAuthToken: '',
 };

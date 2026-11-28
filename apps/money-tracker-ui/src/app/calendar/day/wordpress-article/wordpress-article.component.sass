@@ -1,296 +1,399 @@
-// Global Variables & Configuration Design Tokens
-$border-radius-lg: 16px
-$border-radius-sm: 12px
-$transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
-$glass-background: rgba(255, 255, 255, 0.48)
-$glass-backdrop: blur(3px)
+$paper-bg: #faf8f5
+$card-bg: #ffffff
+$border-color: #ddd
+$text-ink: #1a1a1a
+$text-muted: #767680
+$font-serif: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif
 
-.wordpress-section
-  background: rgba(255, 255, 255, 1)
-  border-radius: $border-radius-sm
-  border: 1px solid rgba(0, 0, 0, 0.03)
-  overflow: hidden // CRITICAL: Keeps the image corners from overflowing past the card's rounded border radius
+.chronicle-panel
+  background: $card-bg
+  border: 1px solid $border-color
+  font-family: $font-serif
+  color: $text-ink
+  margin-bottom: 0
 
-  @media (max-width: 768px)
-    padding: 1.25rem
+.chronicle-topbar
+  display: flex
+  justify-content: space-between
+  align-items: center
+  padding: 8px 14px
+  background: $paper-bg
+  border-bottom: 1px solid $border-color
 
-  .wp-featured-media
-    // Negative margins pull the banner out over the 2.5rem padding bounds perfectly
-    margin: -2.5rem -2.5rem 2rem -2.5rem
-    width: calc(100% + 5rem) // Reclaims the lost 5rem of total left/right padding space
-    max-height: 400px
-    overflow: hidden
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06)
+  .topbar-left
+    display: flex
+    align-items: baseline
+    gap: 10px
 
-    // Flat override corrections for clean mobile presentation sizing
-    @media (max-width: 768px)
-      margin: -1.25rem -1.25rem 1.25rem -1.25rem
-      width: calc(100% + 2.5rem)
-      max-height: 350px
+  .panel-title
+    font-family: Georgia, serif
+    font-size: 10px
+    font-weight: 900
+    letter-spacing: 1.5px
+    text-transform: uppercase
+    margin: 0
+    color: $text-ink
+
+  .panel-subtitle
+    font-size: 11px
+    font-style: italic
+    color: $text-muted
+
+.paper-alert
+  padding: 8px 14px
+  background: #fdf2f2
+  border-bottom: 1px solid #e5b8b8
+  color: #9b1c1c
+  font-size: 12px
+
+.paper-btn
+  font-family: $font-serif
+  font-size: 11px
+  font-weight: 600
+  letter-spacing: 0.3px
+  padding: 4px 11px
+  background: $card-bg
+  color: $text-ink
+  border: 1px solid $border-color
+  cursor: pointer
+  transition: background-color 0.15s ease, border-color 0.15s ease
+
+  &:hover:not(:disabled)
+    background: $paper-bg
+    border-color: #888
+
+  &.primary
+    background: $text-ink
+    color: #ffffff
+    border-color: $text-ink
+
+    &:hover:not(:disabled)
+      background: #333
+
+  &:disabled
+    opacity: 0.5
+    cursor: not-allowed
+
+// =====================================================================
+// TOOLBAR
+// =====================================================================
+.wysiwyg-sticky-bar
+  position: sticky
+  top: 0
+  z-index: 20
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
+  align-items: center
+  gap: 8px
+  padding: 8px 14px
+  background: rgba(250, 248, 245, 0.96)
+  backdrop-filter: blur(4px)
+  border-bottom: 1px solid $border-color
+
+  .toolbar-group
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    gap: 4px
+
+  .tool-btn
+    font-family: $font-serif
+    font-size: 12px
+    padding: 3px 8px
+    background: $card-bg
+    border: 1px solid $border-color
+    color: $text-ink
+    cursor: pointer
+    display: inline-flex
+    align-items: center
+
+    &:hover
+      background: #eee
+      border-color: #999
+
+    &.danger
+      color: #9b1c1c
+      border-color: #e5b8b8
+      background: #fdf2f2
+
+  .toolbar-sep
+    width: 1px
+    height: 16px
+    background: $border-color
+    margin: 0 3px
+
+// =====================================================================
+// EDITION RECTANGLES
+// =====================================================================
+.editable-rect
+  border: 1px dashed rgba(26, 26, 26, 0.35)
+  background: rgba(250, 248, 245, 0.45)
+  transition: border-color 0.15s ease, background-color 0.15s ease
+
+  &:hover
+    border-color: rgba(26, 26, 26, 0.65)
+    background: rgba(250, 248, 245, 0.75)
+
+  &:focus, &:focus-within
+    outline: none
+    border-style: solid
+    border-color: $text-ink
+    background: rgba(255, 255, 255, 0.85)
+
+.cover-rect
+  position: relative
+  margin: 16px 24px 0
+  min-height: 54px
+  display: flex
+  align-items: center
+  justify-content: center
+  overflow: hidden
+
+  &.has-cover
+    max-height: 360px
+    padding: 0
 
     .wp-responsive-banner
       width: 100%
       height: 100%
-      max-height: 900px
       object-fit: cover
       display: block
 
-      @media (max-width: 768px)
-        max-height: 250px
-
-  .wp-header-block
-    padding: 2.5rem
-
-    .wp-title
-      font-family: Oswald, serif !important
-      color: #33363b
-      line-height: 1.33333
-      font-weight: 400
-      text-transform: uppercase
-      font-size: 60px
-      margin-bottom: 15px
-      margin-top: 15px
-
-    .wp-subtitle
-      font-size: 1.05rem
-      font-style: italic
-      margin: 0
-      color: var(--mat-sys-on-surface-variant, #5c5c64)
-
-    .wp-excerpt
-      margin-top: 1rem
-      font-size: 1.15rem
-      line-height: 1.5
-      font-style: italic
-      color: #475569 // Soft professional slate color tone
-      border-left: 3px solid #cbd5e1 // Subtle separator accent line
-      padding-left: 1rem
-
-    ::ng-deep p
-      margin: 0
-
-  .wp-content-layout
-    display: flex
-    flex-direction: column
-
-    .wp-featured-media
-      max-width: 100%
-      margin: 0 auto
-
-  .wp-body
-    font-size: 1.1rem
-    line-height: 1.55
-    color: var(--mat-sys-on-surface-variant, #3a3a40)
-    font-family: Roboto, serif !important
-    padding: 2.5rem
-
-    p
-      margin-top: 0
-      margin-bottom: 1.5rem
-      text-align: justify
-
-      &:last-child
-        margin-bottom: 0
-
-::ng-deep
-
-  .code-block-wrapper
+  .cover-overlay-controls
     position: relative
-    margin-bottom: 1.5rem
-    width: 100%
-
-    // Elegant floating action button structure
-    .code-copy-btn
-      position: absolute
-      top: 12px
-      right: 12px
-      background: #ffffff
-      border: 1px solid #cbd5e1
-      border-radius: 4px
-      padding: 4px 10px
-      font-family: 'Inter', sans-serif
-      font-size: 0.725rem
-      font-weight: 600
-      color: #475569
-      cursor: pointer
-      z-index: 10
-      transition: all 0.15s ease-in-out
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
-
-      &:hover
-        background: #f1f5f9
-        color: #0f172a
-        border-color: #94a3b8
-
-      &.copied
-        background: #dcfce7
-        color: #15803d
-        border-color: #86efac
-
-  .wp-block-preformatted
-    box-sizing: border-box
-    display: block
-    background: #f8fafc // Modern clean slate background tone accent
-    border: 1px solid #e2e8f0 // Crisp border lines wrapper frame bounds
-    border-radius: $border-radius-sm // Enforces your unified component roundness rule
-    margin: 0 0 1.5em 0
-    max-width: 100%
-    overflow-x: auto
-    padding: 1.25rem 5rem 1.25rem 1.25rem // Extra right padding guarantees code clears the floating copy button safely
-
-    // Target the inner code element layout nodes explicitly to reset type metrics uniform
-    code
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace !important
-      font-size: 0.85rem !important // Enforces uniform small code snippet presentation footprint
-      line-height: 1.6 !important
-      color: #334155
-      display: block
-      font-style: normal // Strips unwanted slant distortion if WordPress passes native <em> formatting variables
-
-      em
-        font-style: normal // Resets semantic code emphasis markup to look uniform
-        color: #0f172a // Optional highlight accent color variation for methods if needed
-        font-weight: 600
-
-      br
-        display: block
-        content: ""
-        margin-top: 0.25rem // Keeps layout spacing rows beautifully readable
-
-  // Base WordPress Media & Text Layout Grid
-  .wp-block-media-text
-    display: grid
-    grid-template-columns: 1fr 1fr
-    gap: 2rem
-    margin: 2rem auto // FIX: Explicitly centers the block horizontally
-    align-items: center
-    max-width: 100%
-
-    // Target the inner media element container
-    .wp-block-media-text__media
-      margin: 0
-      display: flex
-      align-items: center
-      justify-content: center
-
-      img
-        max-width: 100%
-        height: auto
-        display: block
-        border-radius: $border-radius-lg // FIX: Increased to match design token
-
-    // Target the adjacent text wrapper layout block
-    .wp-block-media-text__content
-      padding: 0
-
-    // Image Fill Element Rule Modification
-    &.is-image-fill-element
-      .wp-block-media-text__media
-        height: 100%
-        min-height: 250px
-        position: relative
-
-        img
-          position: absolute
-          top: 0
-          left: 0
-          width: 100%
-          height: 100%
-          object-fit: cover
-
-    // Rounded Style Variant Adjustments
-    &.is-style-rounded
-      .wp-block-media-text__media img,
-      &.is-image-fill-element .wp-block-media-text__media
-        border-radius: $border-radius-lg // FIX: Enforced uniform rounded styling
-
-    // Stacks blocks into single columns on small screen formats
-    &.is-stacked-on-mobile
-      @media (max-width: 768px)
-        grid-template-columns: 1fr !important
-        gap: 1.25rem
-
-        &.is-image-fill-element .wp-block-media-text__media
-          height: 200px
-          min-height: 200px
-
-  // Standard Gutenberg Embedded Images (.wp-block-image)
-  .wp-block-image
-    margin: 2rem auto // FIX: Centered block content elements globally
-    display: block
-    max-width: 100%
-    text-align: center // FIX: Forces text-level nodes and captions to align center
-
-    img
-      max-width: 100%
-      height: auto
-      display: block
-      margin: 0 auto // FIX: Centers the raw image tag inside its parent node
-      border-radius: $border-radius-lg // FIX: Upgraded corner roundness from 8px to 16px
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05)
-      border: 1px solid rgba(0, 0, 0, 0.03)
-      transition: $transition-base
-
-      &:hover
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08)
-
-    // Gutenberg Image Caption Element Styles
-    figcaption
-      margin-top: 0.75rem
-      font-size: 0.85rem
-      color: var(--mat-sys-on-surface-variant, #767680)
-      text-align: center
-      font-style: italic
-      line-height: 1.4
-
-    // Alignment Overrides: Center Aligned (Explicit class target)
-    &.aligncenter
-      display: flex
-      flex-direction: column
-      align-items: center
-      justify-content: center
-
-    // Alignment Overrides: Left Floating Text Wrapping
-    &.alignleft
-      float: left
-      margin: 0.5rem 2rem 1.5rem 0
-      max-width: 50%
-
-      @media (max-width: 576px)
-        float: none
-        margin: 1.5rem auto
-        max-width: 100%
-
-    // Alignment Overrides: Right Floating Text Wrapping
-    &.alignright
-      float: right
-      margin: 0.5rem 0 1.5rem 2rem
-      max-width: 50%
-
-      @media (max-width: 576px)
-        float: none
-        margin: 1.5rem auto
-        max-width: 100%
-
-      // Clearfix helper to prevent text floats from spilling outside the container boundaries
-      &::after
-        content: ""
-        display: table
-        clear: both
-
-  .wp-media-wrapper
+    z-index: 2
     display: flex
-    flex-direction: column
-    gap: 0.6rem
+    gap: 8px
+    padding: 10px
 
-    .wp-embedded-img
-      width: 100%
-      height: auto
-      border-radius: 8px
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06)
-      border: 1px solid rgba(255, 255, 255, 0.6)
+  &.has-cover .cover-overlay-controls
+    position: absolute
+    bottom: 12px
+    right: 12px
+    padding: 0
 
-    .img-caption
-      font-size: 0.75rem
-      color: var(--mat-sys-on-surface-variant, #767680)
-      text-align: center
+.article-title.editable-rect
+  padding: 6px 10px
+  min-height: 36px
+
+  &:empty:before
+    content: attr(data-placeholder)
+    color: #aaa
+    font-weight: 400
+    font-style: italic
+
+.tags-rect
+  padding: 6px 10px
+  margin-top: 8px
+
+.inline-tags-wrapper
+  display: flex
+  flex-wrap: wrap
+  align-items: center
+  gap: 6px
+  width: 100%
+
+.tag-remove
+  background: none
+  border: none
+  cursor: pointer
+  color: $text-muted
+  padding: 0 0 0 4px
+  font-size: 12px
+  line-height: 1
+
+  &:hover
+    color: $text-ink
+
+.inline-tag-adder
+  position: relative
+  display: inline-flex
+  align-items: center
+
+.transparent-tag-input
+  font-family: $font-serif
+  font-size: 11px
+  border: none
+  background: transparent
+  color: $text-ink
+  outline: none
+  width: 120px
+  padding: 2px 4px
+
+  &::placeholder
+    color: #999
+    font-style: italic
+
+.tag-dropdown
+  position: absolute
+  top: 100%
+  left: 0
+  z-index: 30
+  display: flex
+  flex-direction: column
+  min-width: 150px
+  max-height: 160px
+  overflow-y: auto
+  background: $card-bg
+  border: 1px solid $border-color
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)
+
+  button
+    text-align: left
+    padding: 4px 8px
+    background: transparent
+    border: none
+    border-bottom: 1px solid #f0f0f0
+    font-family: $font-serif
+    font-size: 11px
+    cursor: pointer
+
+    &:hover
+      background: $paper-bg
+
+::ng-deep .wysiwyg-blocks-container
+  outline: none
+
+  &:empty:before
+    content: attr(data-placeholder)
+    color: #aaa
+    font-style: italic
+
+  > p,
+  > h3,
+  > h4,
+  > blockquote,
+  > ul,
+  > ol,
+  > figure.wp-block-image,
+  > div
+    border: 1px dashed rgba(26, 26, 26, 0.28)
+    background: rgba(250, 248, 245, 0.35)
+    padding: 8px 12px
+    margin-bottom: 10px
+    transition: border-color 0.15s ease, background-color 0.15s ease
+
+    &:hover
+      border-color: rgba(26, 26, 26, 0.6)
+      background: rgba(250, 248, 245, 0.65)
+
+    &:focus-within
+      border-style: solid
+      border-color: $text-ink
+      background: rgba(255, 255, 255, 0.85)
+
+  figure.wp-block-image
+    cursor: pointer
+
+    &.is-selected
+      border: 2px solid $text-ink
+      background: rgba(250, 248, 245, 0.9)
+
+// =====================================================================
+// ARTICLE STYLES
+// =====================================================================
+.diary-article
+  border-bottom: 1px solid $border-color
+
+  &:last-child
+    border-bottom: none
+
+.wp-featured-media
+  overflow: hidden
+  border-bottom: 1px solid $border-color
+
+  .wp-responsive-banner
+    width: 100%
+    height: 100%
+    object-fit: cover
+    display: block
+
+.article-header
+  padding: 20px 24px 12px
+  border-bottom: 1px solid #eee
+
+  .article-title-row
+    display: flex
+    justify-content: space-between
+    align-items: flex-start
+    gap: 16px
+
+  .article-title
+    font-family: $font-serif
+    font-size: 26px
+    font-weight: 700
+    line-height: 1.25
+    margin: 0 0 6px 0
+    color: $text-ink
+    flex: 1
+
+  .article-meta
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    gap: 8px
+    font-size: 11px
+    color: $text-muted
+    font-style: italic
+
+  .article-tags
+    display: inline-flex
+    flex-wrap: wrap
+    gap: 6px
+
+  .tag-badge
+    display: inline-flex
+    align-items: center
+    font-style: normal
+    background: $paper-bg
+    border: 1px solid $border-color
+    padding: 1px 6px
+    font-size: 10px
+    color: $text-ink
+
+.wp-body
+  font-family: $font-serif
+  font-size: 14px
+  line-height: 1.65
+  color: $text-ink
+  padding: 20px 24px
+  min-height: 220px
+
+  p
+    margin-top: 0
+    margin-bottom: 1.15rem
+    text-align: justify
+
+    &:last-child
+      margin-bottom: 0
+
+  blockquote
+    margin: 1.15rem 0
+    padding: 8px 16px
+    border-left: 3px solid $text-ink
+    background: $paper-bg
+    font-style: italic
+
+::ng-deep .wp-body .wp-block-image
+  margin: 1.5rem auto
+  text-align: center
+
+  img
+    max-width: 100%
+    height: auto
+    display: block
+    margin: 0 auto
+    border: 1px solid $border-color
+    padding: 4px
+    background: $card-bg
+
+.empty-diary
+  padding: 40px 20px
+  text-align: center
+  background: $paper-bg
+  color: $text-muted
+
+  p
+    margin: 0 0 12px 0
+    font-style: italic

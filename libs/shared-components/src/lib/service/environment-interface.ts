@@ -8,4 +8,5 @@ export interface EnvironmentInterface {
   weatherUrl: string;
   immichUrl: string;
   wordpressUrl: string;
+  wordpressAuthToken: string;
 }

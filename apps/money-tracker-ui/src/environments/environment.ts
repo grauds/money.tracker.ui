@@ -14,6 +14,7 @@ export const environment: EnvironmentInterface = {
   weatherUrl: '/weather-api',
   immichUrl: '/immich',
   wordpressUrl: '/wordpress',
+  wordpressAuthToken: '',
 };
 
 /*
